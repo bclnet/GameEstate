@@ -1,0 +1,125 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Icons\dds.png" />
+    <None Remove="Icons\_default.png" />
+    <None Remove="Icons\_folder.png" />
+    <None Remove="Icons\_package.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="View\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="View\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\agrp.png" />
+    <EmbeddedResource Include="Icons\anim.png" />
+    <EmbeddedResource Include="Icons\bsp.png" />
+    <EmbeddedResource Include="Icons\css.png" />
+    <EmbeddedResource Include="Icons\dmx.png" />
+    <EmbeddedResource Include="Icons\ents.png" />
+    <EmbeddedResource Include="Icons\fbx.png" />
+    <EmbeddedResource Include="Icons\gnv.png" />
+    <EmbeddedResource Include="Icons\grass.png" />
+    <EmbeddedResource Include="Icons\hcg.png" />
+    <EmbeddedResource Include="Icons\html.png" />
+    <EmbeddedResource Include="Icons\jpg.png" />
+    <EmbeddedResource Include="Icons\map.png" />
+    <EmbeddedResource Include="Icons\mat.png" />
+    <EmbeddedResource Include="Icons\mdl.png" />
+    <EmbeddedResource Include="Icons\mesh.png" />
+    <EmbeddedResource Include="Icons\morf.png" />
+    <EmbeddedResource Include="Icons\mp3.png" />
+    <EmbeddedResource Include="Icons\_openFile.png" />
+    <EmbeddedResource Include="Icons\pcf.png" />
+    <EmbeddedResource Include="Icons\pdf.png" />
+    <EmbeddedResource Include="Icons\pdi.png" />
+    <EmbeddedResource Include="Icons\phy.png" />
+    <EmbeddedResource Include="Icons\phys.png" />
+    <EmbeddedResource Include="Icons\png.png" />
+    <EmbeddedResource Include="Icons\post.png" />
+    <EmbeddedResource Include="Icons\psd.png" />
+    <EmbeddedResource Include="Icons\rman.png" />
+    <EmbeddedResource Include="Icons\snd.png" />
+    <EmbeddedResource Include="Icons\surf.png" />
+    <EmbeddedResource Include="Icons\dds.png" />
+    <EmbeddedResource Include="Icons\tex.png" />
+    <EmbeddedResource Include="Icons\ttf.png" />
+    <EmbeddedResource Include="Icons\txt.png" />
+    <EmbeddedResource Include="Icons\vis.png" />
+    <EmbeddedResource Include="Icons\vmt.png" />
+    <EmbeddedResource Include="Icons\_package.png" />
+    <EmbeddedResource Include="Icons\vtf.png" />
+    <EmbeddedResource Include="Icons\vtx.png" />
+    <EmbeddedResource Include="Icons\vvd.png" />
+    <EmbeddedResource Include="Icons\wav.png" />
+    <EmbeddedResource Include="Icons\wnod.png" />
+    <EmbeddedResource Include="Icons\wrld.png" />
+    <EmbeddedResource Include="Icons\xml.png" />
+    <EmbeddedResource Include="Icons\_default.png" />
+    <EmbeddedResource Include="Icons\_folder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="NLayer.NAudioSupport" Version="1.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <PackageReference Include="WPFHexaEditor" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameEstate.App.OpenGL\GameEstate.App.OpenGL.csproj" />
+    <ProjectReference Include="..\GameEstate.Graphics.GLControl\GameEstate.Graphics.GLControl.csproj" />
+    <ProjectReference Include="..\GameEstate\GameEstate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\FileExplorer.xaml.cs">
+      <DependentUpon>FileExplorer.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\FileInfo.xaml.cs">
+      <DependentUpon>FileInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Options - Copy.xaml.cs">
+      <DependentUpon>Options.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\Options.xaml.cs">
+      <DependentUpon>Options.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="View\AudioPlayer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\FileExplorer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\FileInfo.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\MainMenu.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\OpenDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\Options.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

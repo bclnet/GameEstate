@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTK.NetStandard" Version="1.0.5.32" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\OpenStack\OpenStack.Graphics.GLControl\OpenStack.Graphics.GLControl.csproj" />
+  </ItemGroup>
+
+</Project>

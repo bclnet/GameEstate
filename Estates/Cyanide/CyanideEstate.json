@@ -1,0 +1,26 @@
+﻿{
+  "id": "Cyanide",
+  "name": "Cyanide",
+  "studio": "",
+  "description": "Cyanide Formats",
+  "pakFileType": "GameEstate.Cyanide.CyanidePakFile, GameEstate.Cyanide",
+  "games": {
+    "TheCouncil": {
+      "name": "The Council",
+      "pak": "game:/*.cpk#TheCouncil"
+    }
+  },
+  "fileManager": {
+    "windows": {
+      "registry": {
+        "TheCouncil": {
+          "key": [
+            "GOG.com/Games/1207658930",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 287630"
+          ],
+          "assets": "Data/Packages"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameEstate.Graphics\GameEstate.Graphics.csproj" />
+    <ProjectReference Include="..\GameEstate\GameEstate.csproj" />
+  </ItemGroup>
+
+  <Target Name="Plugins">
+    <Exec Command="xcopy /Y &quot;..\..\lib\Unity\Plugins\x64\*.dll&quot; &quot;$(ProjectDir)..\..\unity\Simple\Assets\Plugins\x64\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\lib\Unity\Plugins\x86\*.dll&quot; &quot;$(ProjectDir)..\..\unity\Simple\Assets\Plugins\x86\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\lib\Unity\Plugins\*.dll&quot; &quot;$(ProjectDir)..\..\unity\Simple\Assets\Plugins\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\lib\*Bundle.dll&quot; &quot;$(ProjectDir)..\..\unity\Simple\Assets\Plugins\&quot;" />
+  </Target>
+  
+</Project>

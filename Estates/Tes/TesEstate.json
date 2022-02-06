@@ -1,0 +1,151 @@
+﻿{
+  "id": "Tes",
+  "name": "The Elder Scrolls",
+  "studio": "Bethesda Game Studios",
+  "description": "TES formats used by Bethesda",
+  "pakFileType": "GameEstate.Tes.TesPakFile, GameEstate.Tes",
+  "games": {
+    // tes
+    "Morrowind": {
+      "name": "Morrowind",
+      "pak": "game:/Morrowind.bsa#Morrowind",
+      "pak2_": "game:/Morrowind.esm#Morrowind"
+    },
+    "Oblivion": {
+      "name": "Oblivion",
+      "pak": "game:/Oblivion - Meshes.bsa#Oblivion",
+      "pak_": "game:/Oblivion*.bsa#Oblivion",
+      "pak2_": "game:/Oblivion.esm#Oblivion"
+    },
+    "Skyrim": {
+      "name": "Skyrim",
+      "pak": "game:/Skyrim*.bsa#Skyrim",
+      "pak2_": "game:/Skyrim.esm#Skyrim"
+    },
+    "SkyrimSE": {
+      "name": "Skyrim Special Edition",
+      "pak": "game:/Skyrim*.bsa#SkyrimSE",
+      "pak2_": "game:/Skyrim.esm#SkyrimSE"
+    },
+    "SkyrimVR": {
+      "name": "Skyrim VR",
+      "pak": "game:/Skyrim*.bsa#SkyrimVR",
+      "pak2_": "game:/Skyrim.esm#SkyrimVR"
+    },
+    // fallout
+    "Fallout2": {
+      "name": "Fallout 2",
+      "pak": "game:/*.dat#Fallout2"
+    },
+    "Fallout3": {
+      "name": "Fallout 3",
+      "pak": "game:/Fallout*.bsa#Fallout3",
+      "pak2_": "game:/Fallout3.esm#Fallout3"
+    },
+    "FalloutNV": {
+      "name": "Fallout New Vegas",
+      "pak": "game:/Fallout*.bsa#FalloutNV"
+    },
+    "Fallout4": {
+      "name": "Fallout 4",
+      "pak": "game:/Fallout4*.ba2#Fallout4",
+      "pak2_": "game:/Fallout4.esm#Fallout4"
+    },
+    "Fallout4VR": {
+      "name": "Fallout 4 VR",
+      "pak": "game:/Fallout4*.ba2#Fallout4VR",
+      "pak2_": "game:/Fallout4.esm#Fallout4VR"
+    },
+    "Fallout76": {
+      "name": "Fallout 76",
+      "pak": "game:/SeventySix.ba2#Fallout76",
+      "pak2_": "game:/SeventySix.esm#Fallout76"
+    }
+  },
+  "fileManager": {
+    "windows": {
+      "registry": {
+        // tes
+        "Oblivion": {
+          "key": [
+            "Bethesda Softworks/Oblivion",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 22330"
+          ],
+          "assets": "Data"
+        },
+        "Morrowind": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 22320",
+          "assets": "Data Files"
+        },
+        "Skyrim": {
+          "key": [
+            "Bethesda Softworks/Skyrim",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 72850"
+          ],
+          "assets": "Data"
+        },
+        "SkyrimSE": {
+          "key": [
+            "Bethesda Softworks/Skyrim SE",
+            "Bethesda Softworks/Skyrim Special Edition",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 489830"
+          ],
+          "assets": "Data"
+        },
+        "SkyrimVR": {
+          "key": [
+            "Bethesda Softworks/Skyrim VR",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 611670"
+          ],
+          "assets": "Data"
+        },
+        // fallout
+        "Fallout2": {
+          "key": [
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 38410_",
+            "GOG.com/Games/1440151285"
+          ]
+        },
+        "Fallout3": {
+          "key": "Bethesda Softworks/Fallout3",
+          "assets": "Data"
+        },
+        "FalloutNV": {
+          "key": "Bethesda Softworks/falloutnv",
+          "assets": "Data"
+        },
+        "Fallout4": {
+          "key": [
+            "Bethesda Softworks/Fallout4",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 377160"
+          ],
+          "assets": "Data"
+        },
+        "Fallout4VR": {
+          "key": [
+            "Bethesda Softworks/Fallout 4 VR",
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 611660"
+          ],
+          "assets": "Data"
+        },
+        "Fallout76": {
+          "key": [
+            "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 1151340"
+          ],
+          "assets": "Data"
+        }
+      },
+      "direct_": {
+        "Morrowind": {
+          "path": "D:/Program Files (x86)/Steam/steamapps/common/Morrowind",
+          "assets": "Data Files"
+        }
+      }
+    },
+    "ignores": {
+      "Fallout2": {
+        "path": "unins000.dat"
+      }
+    }
+  }
+}

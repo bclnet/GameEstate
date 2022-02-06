@@ -1,0 +1,50 @@
+﻿{
+  "id": "Valve",
+  "name": "Valve",
+  "studio": "",
+  "description": "Valve formats used by Source/Source 2",
+  "pakFileType": "GameEstate.Valve.ValvePakFile, GameEstate.Valve",
+  "games": {
+    "Dota2": {
+      "name": "Dota 2",
+      //"pak": "game:/(core:dota)/*_dir.vpk#Dota2",
+      //"pak": "game:/core/pak01_dir.vpk#Dota2",
+      "pak": "game:/dota/pak01_dir.vpk#Dota2",
+      "pak0": "game:/dota/shaders_pc_dir.vpk#Dota2"
+    },
+    "Left4Dead2": {
+      "name": "Left 4 Dead 2",
+      "pak": "game:/*.vpk#Left4Dead2"
+    },
+    "HL2Alyx": {
+      "name": "Half-Life: Alyx",
+      "pak": "game:/*.vpk#HL2Alyx"
+    },
+    "Portal2": {
+      "name": "Portal 2",
+      "pak": "game:/*.vpk#Portal2"
+    }
+  },
+  "fileManager": {
+    "windows": {
+      "registry": {
+        "Dota2": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 570",
+          "assets": "game"
+        },
+        "Left4Dead2": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 550",
+          "assets": "left4dead2"
+        },
+        "Portal2": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 620",
+          "assets": "portal2"
+        },
+        "HL2Alyx": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 546560",
+          "assets": "game"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Polyfills\ExtensionAttribute.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Estates\Arkane\ArkaneEstate.json" Link="Estates\ArkaneEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Aurora\AuroraEstate.json" Link="Estates\AuroraEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Cry\CryEstate.json" Link="Estates\CryEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Cyanide\CyanideEstate.json" Link="Estates\CyanideEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Origin\OriginEstate.json" Link="Estates\OriginEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Red\RedEstate.json" Link="Estates\RedEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Rsi\RsiEstate.json" Link="Estates\RsiEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Tes\TesEstate.json" Link="Estates\TesEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Ukn\UknEstate.json" Link="Estates\UknEstate.json" />
+    <EmbeddedResource Include="..\..\Estates\Valve\ValveEstate.json" Link="Estates\ValveEstate.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Estates\AC\ACEstate.json" Link="Estates\ACEstate.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Estates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenStack\OpenStack.Graphics\OpenStack.Graphics.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+﻿{
+  "id": "Cry",
+  "name": "Crytek",
+  "studio": "Crytek",
+  "description": "The file formats used in Cry and Lumberyard",
+  "pakFileType": "GameEstate.Cry.CryPakFile, GameEstate.Cry",
+  "games": {
+    "MechWarriorOnline": {
+      "name": "MechWarrior Online",
+      "pak": "game:/*.pak#MechWarriorOnline"
+    }
+  },
+  "fileManager": {
+    "windows": {
+      "registry": {
+        "MechWarriorOnline": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 342200",
+          "assets": "Game"
+        }
+      }
+    }
+  }
+}

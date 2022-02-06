@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<OutputType>Library</OutputType>
+	<TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CarbonGLControl.cs" />
+    <Compile Remove="Platform\MacOS\AglContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CarbonGLControl.cs" />
+    <None Include="Platform\MacOS\AglContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTK.NetStandard" Version="1.0.5.32" />
+  </ItemGroup>
+
+</Project>

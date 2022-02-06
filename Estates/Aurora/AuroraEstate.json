@@ -1,0 +1,43 @@
+﻿{
+  "id": "Aurora",
+  "name": "BioWare Aurora Engine",
+  "studio": "BioWare",
+  "description": "BioWare used the Aurora Engine",
+  "pakFileType": "GameEstate.Aurora.AuroraPakFile, GameEstate.Aurora",
+  "games": {
+    "NWN": {
+      "name": "Neverwinter Nights",
+      "pak": "game:/*.key#NWN"
+    },
+    "NWN2": {
+      "name": "Neverwinter Nights 2",
+      "pak": "game:/*.zip#NWN2"
+    },
+    "Kotor": {
+      "name": "Star Wars: Knights of the Old Republic"
+    }
+  },
+  "fileManager": {
+    "windows": {
+      "registry": {
+        "NWN": {
+          "key": [
+            "GOG.com/Games/1207658890",
+            "BioWare/NWN/Neverwinter"
+          ]
+        },
+        "NWN2": {
+          "key": [
+            "GOG.com/Games/1207659162",
+            "Obsidian/NWN 2/Neverwinter"
+          ],
+          "assets": "Data"
+        },
+        "Kotor": {
+          "key": "GOG.com/Games/111",
+          "assets": "content"
+        }
+      }
+    }
+  }
+}

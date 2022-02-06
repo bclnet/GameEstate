@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Icons\**" />
+    <Compile Remove="Icons_\**" />
+    <EmbeddedResource Remove="Icons\**" />
+    <EmbeddedResource Remove="Icons_\**" />
+    <None Remove="Icons\**" />
+    <None Remove="Icons_\**" />
+    <Page Remove="Icons\**" />
+    <Page Remove="Icons_\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="View\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="View\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenTK.GLControl\OpenTK.GLControl.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\Options - Copy.xaml.cs">
+      <DependentUpon>Options.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
