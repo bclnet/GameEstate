@@ -41,8 +41,7 @@ namespace OpenTK
 
         public IGraphicsContext CreateContext(int major, int minor, GraphicsContextFlags flags) => new GraphicsContext(_mode, WindowInfo, major, minor, flags);
 
-        [SuppressUnmanagedCodeSecurity, DllImport("User32.dll")]
-        static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, int flags);
+        [SuppressUnmanagedCodeSecurity, DllImport("User32.dll")] static extern bool PeekMessage(ref MSG msg, IntPtr hWnd, int messageFilterMin, int messageFilterMax, int flags);
 
         public bool IsIdle => !PeekMessage(ref _msg, IntPtr.Zero, 0, 0, 0);
 

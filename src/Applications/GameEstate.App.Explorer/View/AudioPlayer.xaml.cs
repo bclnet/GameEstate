@@ -88,7 +88,7 @@ namespace GameEstate.Explorer.View
         void Play_Click(object sender, RoutedEventArgs e)
         {
             if (_waveOut.PlaybackState == PlaybackState.Stopped && _waveStream != null) _waveStream.Position = 0;
-            else if (_waveOut.PlaybackState == PlaybackState.Playing) { _waveOut.Pause(); PlayButton.Content = "Play"; }
+            if (_waveOut.PlaybackState == PlaybackState.Playing) { _waveOut.Pause(); PlayButton.Content = "Play"; }
             else { _waveOut.Play(); PlayButton.Content = "Pause"; }
         }
     }

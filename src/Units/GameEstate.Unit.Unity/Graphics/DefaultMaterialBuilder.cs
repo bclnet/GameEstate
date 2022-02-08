@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using ur = UnityEngine.Rendering;
 
-namespace GameEstate.Graphics.MaterialBuilders
+namespace GameEstate.Graphics
 {
     /// <summary>
     /// A material that uses the default shader created for TESUnity.

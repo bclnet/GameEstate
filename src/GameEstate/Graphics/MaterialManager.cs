@@ -18,7 +18,7 @@ namespace GameEstate.Graphics
 
         public ITextureManager<Texture> TextureManager { get; }
 
-        public MaterialManager(EstatePakFile pakFile, TextureManager<Texture> textureManager, AbstractMaterialBuilder<Material, Texture> builder)
+        public MaterialManager(EstatePakFile pakFile, ITextureManager<Texture> textureManager, AbstractMaterialBuilder<Material, Texture> builder)
         {
             _pakFile = pakFile;
             TextureManager = textureManager;

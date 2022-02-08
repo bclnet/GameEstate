@@ -1,8 +1,4 @@
 ﻿using GameEstate.Graphics;
-using GameEstate.Graphics.MaterialBuilders;
-using GameEstate.Graphics.ObjectBuilders;
-using GameEstate.Graphics.ShaderBuilders;
-using GameEstate.Graphics.TextureBuilders;
 using OpenStack.Graphics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,7 +29,7 @@ namespace GameEstate
             //    default: _material = new BumpedDiffuseMaterial(_textureManager); break;
             //}
             _materialManager = new MaterialManager<Material, Texture2D>(source, _textureManager, new BumpedDiffuseMaterialBuilder(_textureManager));
-            _objectManager = new ObjectManager<GameObject, Material, Texture2D>(source, _materialManager, new UnityObjectBuilder(0));
+            //_objectManager = new ObjectManager<GameObject, Material, Texture2D>(source, _materialManager, new UnityObjectBuilder(0));
             _shaderManager = new ShaderManager<Shader>(source, new UnityShaderBuilder());
         }
 

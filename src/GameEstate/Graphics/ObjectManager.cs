@@ -8,12 +8,12 @@ namespace GameEstate.Graphics
     public class ObjectManager<Object, Material, Texture> : IObjectManager<Object, Material, Texture>
     {
         readonly EstatePakFile _pakFile;
-        readonly MaterialManager<Material, Texture> _materialManager;
+        readonly IMaterialManager<Material, Texture> _materialManager;
         readonly AbstractObjectBuilder<Object, Material, Texture> _builder;
         readonly Dictionary<string, Object> _cachedPrefabs = new Dictionary<string, Object>();
         readonly Dictionary<string, Task<object>> _preloadTasks = new Dictionary<string, Task<object>>();
 
-        public ObjectManager(EstatePakFile pakFile, MaterialManager<Material, Texture> materialManager, AbstractObjectBuilder<Object, Material, Texture> builder)
+        public ObjectManager(EstatePakFile pakFile, IMaterialManager<Material, Texture> materialManager, AbstractObjectBuilder<Object, Material, Texture> builder)
         {
             _pakFile = pakFile;
             _materialManager = materialManager;

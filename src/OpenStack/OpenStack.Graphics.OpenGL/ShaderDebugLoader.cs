@@ -1,5 +1,4 @@
 //#define DEBUG_SHADERS
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -7,7 +6,7 @@ namespace OpenStack.Graphics.OpenGL
 {
     public class ShaderDebugLoader : ShaderLoader
     {
-        const string ShaderDirectory = "GameEstate.Graphics.Graphics.OpenGL.Shaders";
+        const string ShaderDirectory = "OpenStack.Graphics.OpenGL.Shaders";
 
         // Map shader names to shader files
         protected override string GetShaderFileByName(string shaderName)
@@ -47,8 +46,7 @@ namespace OpenStack.Graphics.OpenGL
 
 #if DEBUG_SHADERS && DEBUG
         // Reload shaders at runtime
-         static string GetShaderDiskPath(string name)
-            => Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule?.FileName), "../../../../", ShaderDirectory.Replace(".", "/"), name);
+         static string GetShaderDiskPath(string name) => Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule?.FileName), "../../../../", ShaderDirectory.Replace(".", "/"), name);
 #endif
     }
 }

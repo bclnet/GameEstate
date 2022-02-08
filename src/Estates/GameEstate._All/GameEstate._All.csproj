@@ -15,7 +15,7 @@
     <ProjectReference Include="..\GameEstate.Red\GameEstate.Red.csproj" />
     <ProjectReference Include="..\GameEstate.Rsi\GameEstate.Rsi.csproj" />
     <ProjectReference Include="..\GameEstate.Tes\GameEstate.Tes.csproj" />
-    <ProjectReference Include="..\GameEstate.Ukn\GameEstate.Ukn.csproj" />
+    <ProjectReference Include="..\GameEstate.Valve.Unit\GameEstate.Valve.Unit.csproj" />
     <ProjectReference Include="..\GameEstate.Valve\GameEstate.Valve.csproj" />
   </ItemGroup>
 

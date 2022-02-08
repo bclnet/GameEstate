@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameEstate.Graphics.ShaderBuilders
+namespace GameEstate.Graphics
 {
     public class UnityShaderBuilder : AbstractShaderBuilder<Shader>
     {

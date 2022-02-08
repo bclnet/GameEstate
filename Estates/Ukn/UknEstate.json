@@ -3,7 +3,7 @@
   "name": "Unknown",
   "studio": "",
   "description": "Unknown formats",
-  "pakFileType": "GameEstate.Ukn.UknPakFile, GameEstate.Ukn",
+  "pakFileType": "GameEstate.Unknown.UknPakFile, GameEstate._Base",
   "games": {
     "TheCouncil": {
       "name": "The Council",

@@ -18,15 +18,13 @@ namespace OpenTK
             WindowInfo = Utilities.CreateMacOSCarbonWindowInfo(_control.Handle, false, true);
         }
 
-        public IGraphicsContext CreateContext(int major, int minor, GraphicsContextFlags flags) =>
-            new AglContext(_mode, WindowInfo, GraphicsContext.CurrentContext, new GetInt(GetXOffset), new GetInt(GetYOffset));
+        public IGraphicsContext CreateContext(int major, int minor, GraphicsContextFlags flags) => new AglContext(_mode, WindowInfo, GraphicsContext.CurrentContext, new GetInt(GetXOffset), new GetInt(GetYOffset));
 
         int GetXOffset() => _control.Location.X;
 
         int GetYOffset()
         {
-            if (_control.TopLevelControl == null)
-                return _control.Location.Y;
+            if (_control.TopLevelControl == null) return _control.Location.Y;
             var point = _control.PointToScreen(_control.Location);
             var point2 = _control.TopLevelControl.PointToScreen(Point.Empty);
             var num = point.Y - point2.Y;
@@ -35,11 +33,7 @@ namespace OpenTK
 
         public bool IsIdle
         {
-            get
-            {
-                _lastIsIdle = !_lastIsIdle;
-                return _lastIsIdle;
-            }
+            get { _lastIsIdle = !_lastIsIdle; return _lastIsIdle; }
         }
 
         public IWindowInfo WindowInfo { get; }

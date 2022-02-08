@@ -45,10 +45,10 @@
                 <local:GLTextureViewer Source="{Binding Path=Value}" Graphic="{Binding Path=Graphic, RelativeSource={RelativeSource AncestorType={x:Type local:FileContent}}}" Margin="3,3,3,3" />
             </DataTemplate>
             <DataTemplate x:Key="Content_Model" DataType="{x:Type model:ExplorerContentTab}">
-                <!--<local:GLModelViewer Source="{Binding Path=Value}" Graphic="{Binding Path=Graphic, RelativeSource={RelativeSource AncestorType={x:Type local:FileContent}}}" Margin="3,3,3,3" />-->
+                <local:GLModelViewer Source="{Binding Path=Value}" Graphic="{Binding Path=Graphic, RelativeSource={RelativeSource AncestorType={x:Type local:FileContent}}}" Margin="3,3,3,3" />
             </DataTemplate>
             <DataTemplate x:Key="Content_World" DataType="{x:Type model:ExplorerContentTab}">
-                <!--<local:GLModelViewer Source="{Binding Path=Value}" Graphic="{Binding Path=Graphic, RelativeSource={RelativeSource AncestorType={x:Type local:FileContent}}}" Margin="3,3,3,3" />-->
+                <local:GLModelViewer Source="{Binding Path=Value}" Graphic="{Binding Path=Graphic, RelativeSource={RelativeSource AncestorType={x:Type local:FileContent}}}" Margin="3,3,3,3" />
             </DataTemplate>
         </Grid.Resources>
 

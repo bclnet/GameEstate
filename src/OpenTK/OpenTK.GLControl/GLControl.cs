@@ -38,12 +38,9 @@ namespace OpenTK
         public GLControl(GraphicsMode mode) : this(mode, 1, 0, GraphicsContextFlags.Default) { }
         public GLControl(GraphicsMode mode, int major, int minor, GraphicsContextFlags flags)
         {
-            if (mode == null)
-                throw new ArgumentNullException(nameof(mode));
-
             Toolkit.Init(new ToolkitOptions { Backend = PlatformBackend.PreferNative });
 
-            _format = mode;
+            _format = mode ?? throw new ArgumentNullException(nameof(mode));
             _major = major;
             _minor = minor;
             _flags = flags;
@@ -73,15 +70,10 @@ namespace OpenTK
         /// </returns>
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
         {
-            var hwndSource = new HwndSource(new HwndSourceParameters("GL")
-            {
-                WindowStyle = WS_CHILD,
-                ParentWindow = hwndParent.Handle,
-            });
+            var hwndSource = new HwndSource(new HwndSourceParameters("GL") { WindowStyle = WS_CHILD, ParentWindow = hwndParent.Handle });
             //hwndSource.AddHook(WndHook);
             var hwnd = hwndSource.CreateHandleRef();
-            if (!_designMode)
-                AttachHandle(hwnd);
+            if (!_designMode) AttachHandle(hwnd);
             return hwnd;
         }
 
@@ -91,8 +83,7 @@ namespace OpenTK
         /// <param name="hwnd">A structure that contains the window handle.</param>
         protected override void DestroyWindowCore(HandleRef hwnd)
         {
-            if (!_designMode)
-                DestroyHandle(hwnd);
+            if (!_designMode) DestroyHandle(hwnd);
             var hwndSource = (HwndSource)hwnd.Wrapper;
             //hwndSource.RemoveHook(WndHook);
             hwndSource.Dispose();
@@ -118,24 +109,9 @@ namespace OpenTK
             const int WM_MOUSEWHEEL = 0x020a;
             switch (msg)
             {
-                case WM_NCHITTEST:
-                    _changing = 5;
-                    if (!_mouseEntered)
-                    {
-                        OnMouseEnter(null);
-                        _mouseEntered = true;
-                    }
-                    break;
-                case WM_WINDOWPOSCHANGING:
-                    if (_mouseEntered && --_changing < 0)
-                    {
-                        OnMouseLeave(null);
-                        _mouseEntered = false;
-                    }
-                    break;
-                case WM_MOUSEWHEEL:
-                    OnMouseWheel(null);
-                    break;
+                case WM_NCHITTEST: _changing = 5; if (!_mouseEntered) { OnMouseEnter(null); _mouseEntered = true; } break;
+                case WM_WINDOWPOSCHANGING: if (_mouseEntered && --_changing < 0) { OnMouseLeave(null); _mouseEntered = false; } break;
+                case WM_MOUSEWHEEL: OnMouseWheel(null); break;
                 //default: Console.Write($"{msg,5:x}"); break;
             }
             return base.WndProc(hwnd, msg, wParam, lParam, ref handled);
@@ -149,12 +125,7 @@ namespace OpenTK
         /// </value>
         public static bool IsInDesignMode
         {
-            get
-            {
-                if (_isInDesignMode == null)
-                    _isInDesignMode = (bool)DependencyPropertyDescriptor.FromProperty(DesignerProperties.IsInDesignModeProperty, typeof(FrameworkElement)).Metadata.DefaultValue;
-                return _isInDesignMode.Value;
-            }
+            get { if (_isInDesignMode == null) _isInDesignMode = (bool)DependencyPropertyDescriptor.FromProperty(DesignerProperties.IsInDesignModeProperty, typeof(FrameworkElement)).Metadata.DefaultValue; return _isInDesignMode.Value; }
         }
 
         /// <summary>
@@ -204,67 +175,34 @@ namespace OpenTK
 
         protected virtual void AttachHandle(HandleRef hwnd)
         {
-            if (_designMode || _loaded)
-                return;
+            if (_designMode || _loaded) return;
             _loaded = true;
 
-            if (!(_impl is DummyGLControl))
+            if (_impl is not DummyGLControl)
             {
                 _context?.Dispose();
                 _impl?.WindowInfo.Dispose();
 
-                if (_designMode)
-                {
-                    _impl = new DummyGLControl();
-                    _context = _impl.CreateContext(_major, _minor, _flags);
-                    HasValidContext = false;
-                }
+                if (_designMode) { _impl = new DummyGLControl(); _context = _impl.CreateContext(_major, _minor, _flags); HasValidContext = false; }
                 else
                 {
-                    try
-                    {
-                        _impl = new GLControlFactory().CreateGLControl(_format, hwnd.Handle);
-                        _context = _impl.CreateContext(_major, _minor, _flags);
-                        HasValidContext = true;
-                    }
-                    catch (GraphicsModeException)
-                    {
-                        _impl = new DummyGLControl();
-                        _context = _impl.CreateContext(_major, _minor, _flags);
-                        HasValidContext = false;
-                    }
+                    try { _impl = GLControlFactory.CreateGLControl(_format, hwnd.Handle); _context = _impl.CreateContext(_major, _minor, _flags); HasValidContext = true; }
+                    catch (GraphicsModeException) { _impl = new DummyGLControl(); _context = _impl.CreateContext(_major, _minor, _flags); HasValidContext = false; }
                 }
                 MakeCurrent();
 
-                if (HasValidContext)
-                {
-                    _context.LoadAll();
-                    _context.SwapInterval = (bool)GetValue(VSyncProperty) ? 1 : 0;
-                }
+                if (HasValidContext) { _context.LoadAll(); _context.SwapInterval = (bool)GetValue(VSyncProperty) ? 1 : 0; }
             }
 
-            if (_resizeEventSuppressed)
-            {
-                OnRenderSizeChanged(null);
-                _resizeEventSuppressed = false;
-            }
+            if (_resizeEventSuppressed) { OnRenderSizeChanged(null); _resizeEventSuppressed = false; }
         }
 
         protected virtual void DestroyHandle(HandleRef hwnd)
         {
-            if (!(_impl is DummyGLControl))
+            if (_impl is not DummyGLControl)
             {
-                if (_context != null)
-                {
-                    _context.Dispose();
-                    _context = null;
-                }
-
-                if (_impl != null)
-                {
-                    _impl.WindowInfo.Dispose();
-                    _impl = null;
-                }
+                _context?.Dispose(); _context = null;
+                _impl?.WindowInfo.Dispose(); _impl = null;
             }
             _loaded = false;
         }
@@ -288,15 +226,10 @@ namespace OpenTK
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
-            if (!IsHandleCreated)
-                _resizeEventSuppressed = true;
+            if (!IsHandleCreated) _resizeEventSuppressed = true;
             else
             {
-                //if (Configuration.RunningOnMacOS)
-                //{
-                //    var update = new DelayUpdate(PerformContextUpdate);
-                //    base.BeginInvoke((Delegate)update);
-                //} else
+                //if (Configuration.RunningOnMacOS) { var update = new DelayUpdate(PerformContextUpdate); base.BeginInvoke((Delegate)update); } else
                 _context?.Update(_impl.WindowInfo);
                 base.OnRenderSizeChanged(sizeInfo);
             }
@@ -308,8 +241,7 @@ namespace OpenTK
 
         public void SwapBuffers() => _context.SwapBuffers();
 
-        //[Conditional("DEBUG")]
-        //void ValidateContext(string message) => _ = _context.IsCurrent;
+        //[Conditional("DEBUG")] void ValidateContext(string message) => _ = _context.IsCurrent;
 
         public bool HasValidContext { get; set; }
 

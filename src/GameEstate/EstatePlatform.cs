@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace GameEstate
 {
@@ -30,6 +31,26 @@ namespace GameEstate
             public static bool MultiProcessor { get; private set; }
             public static int ProcessorCount { get; private set; }
             public static bool Unix { get; private set; }
+            public static bool VR { get; private set; }
+        }
+
+        public enum PlatformType
+        {
+            Windows,
+            OSX,
+            Linux,
+            Android
+        }
+
+        public static PlatformType GetPlatformType()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) { return PlatformType.Windows; }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { return PlatformType.OSX; }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return true ? PlatformType.Linux : PlatformType.Android;
+            }
+            else throw new ArgumentOutOfRangeException(nameof(RuntimeInformation.IsOSPlatform));
         }
     }
 }

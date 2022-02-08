@@ -2,7 +2,7 @@ using OpenStack.Graphics;
 using System;
 using UnityEngine;
 
-namespace GameEstate.Graphics.TextureBuilders
+namespace GameEstate.Graphics
 {
     public class UnityTextureBuilder : AbstractTextureBuilder<Texture2D>
     {

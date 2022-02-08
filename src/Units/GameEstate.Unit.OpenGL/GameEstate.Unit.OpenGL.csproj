@@ -6,21 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Formats\Valve\**" />
-    <Compile Remove="Graphics\Scenes\Valve\**" />
-    <EmbeddedResource Remove="Formats\Valve\**" />
-    <EmbeddedResource Remove="Graphics\Scenes\Valve\**" />
-    <None Remove="Formats\Valve\**" />
-    <None Remove="Graphics\Scenes\Valve\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\Estates\GameEstate.Valve\GameEstate.Valve.csproj" />
     <ProjectReference Include="..\..\GameEstate\GameEstate.csproj" />
     <ProjectReference Include="..\..\OpenStack\OpenStack.Graphics.OpenGL\OpenStack.Graphics.OpenGL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Formats\" />
   </ItemGroup>
 
 </Project>

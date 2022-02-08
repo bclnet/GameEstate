@@ -1,11 +1,12 @@
-﻿namespace GameEstate.Graphics
+﻿using OpenStack.Graphics;
+
+namespace GameEstate.Graphics
 {
     public abstract class AbstractMaterialBuilder<Material, Texture>
     {
-        protected TextureManager<Texture> _textureManager;
+        protected ITextureManager<Texture> _textureManager;
 
-        public AbstractMaterialBuilder(TextureManager<Texture> textureManager)
-            => _textureManager = textureManager;
+        public AbstractMaterialBuilder(ITextureManager<Texture> textureManager) => _textureManager = textureManager;
 
         public float? NormalGeneratorIntensity = 0.75f;
         public abstract Material DefaultMaterial { get; }

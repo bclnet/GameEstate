@@ -16,14 +16,14 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y &quot;$(TargetDir)GameEstate.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\&quot;&#xD;&#xA;xcopy /Y &quot;$(TargetDir)GameEstate.Unit.Unity.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\&quot;&#xD;&#xA;xcopy /Y &quot;$(TargetDir)GameEstate.Estate.Tes.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\&quot;" />
+    <Exec Command="xcopy /Y &quot;$(TargetDir)GameEstate.dll&quot; &quot;$(ProjectDir)..\..\..\Examples\Unity\Simple\Assets\Plugins\&quot;&#xD;&#xA;xcopy /Y &quot;$(TargetDir)GameEstate.Unit.Unity.dll&quot; &quot;$(ProjectDir)..\..\..\Examples\Unity\Simple\Assets\Plugins\&quot;" />
   </Target>
 
   <Target Name="Plugins">
-    <Exec Command="xcopy /Y &quot;..\..\..\lib\Unity\Plugins\x64\*.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\x64\&quot;" />
-    <Exec Command="xcopy /Y &quot;..\..\..\lib\Unity\Plugins\x86\*.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\x86\&quot;" />
-    <Exec Command="xcopy /Y &quot;..\..\..\lib\Unity\Plugins\*.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\&quot;" />
-    <Exec Command="xcopy /Y &quot;..\..\..\lib\*Bundle.dll&quot; &quot;$(ProjectDir)..\..\..\Unity\Simple\Assets\Plugins\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\..\lib\Unity\Plugins\x64\*.dll&quot; &quot;$(ProjectDir)..\..\..\Examples\Unity\Simple\Assets\Plugins\x64\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\..\lib\Unity\Plugins\x86\*.dll&quot; &quot;$(ProjectDir)..\..\..\Examples\Unity\Simple\Assets\Plugins\x86\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\..\lib\Unity\Plugins\*.dll&quot; &quot;$(ProjectDir)..\..\..\Examples\Unity\Simple\Assets\Plugins\&quot;" />
+    <Exec Command="xcopy /Y &quot;..\..\..\lib\*Bundle.dll&quot; &quot;$(ProjectDir)..\..\..\Examples\Unity\Simple\Assets\Plugins\&quot;" />
   </Target>
   
 </Project>

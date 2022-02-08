@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using ur = UnityEngine.Rendering;
 
-namespace GameEstate.Graphics.MaterialBuilders
+namespace GameEstate.Graphics
 {
     /// <summary>
     /// A material that uses the legacy Bumped Diffuse Shader.
@@ -12,7 +12,7 @@ namespace GameEstate.Graphics.MaterialBuilders
     {
         static readonly Material _defaultMaterial = BuildMaterial();
 
-        public BumpedDiffuseMaterialBuilder(TextureManager<Texture2D> textureManager) : base(textureManager) { }
+        public BumpedDiffuseMaterialBuilder(ITextureManager<Texture2D> textureManager) : base(textureManager) { }
 
         public override Material DefaultMaterial => _defaultMaterial;
 

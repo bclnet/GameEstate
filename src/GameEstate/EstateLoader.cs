@@ -67,13 +67,14 @@ namespace GameEstate
         }
 
         static FileManager CreateFileManager()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) { return new WindowsFileManager(); }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { return new MacOsFileManager(); }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) { return new LinuxFileManager(); }
-            //else if (false) { return new AndroidFileManager(); }
-            else throw new ArgumentOutOfRangeException(nameof(RuntimeInformation.IsOSPlatform));
-        }
+            => EstatePlatform.GetPlatformType() switch
+            {
+                EstatePlatform.PlatformType.Windows => new WindowsFileManager(),
+                EstatePlatform.PlatformType.OSX => new MacOsFileManager(),
+                EstatePlatform.PlatformType.Linux => new LinuxFileManager(),
+                EstatePlatform.PlatformType.Android => new AndroidFileManager(),
+                _ => throw new ArgumentOutOfRangeException(nameof(EstatePlatform.GetPlatformType), EstatePlatform.GetPlatformType().ToString()),
+            };
 
         static EstateGame ParseGame(IDictionary<string, string> locations, string game, JsonElement elem)
         {

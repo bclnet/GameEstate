@@ -1,8 +1,9 @@
-﻿using System;
+﻿using OpenStack.Graphics;
+using System;
 using UnityEngine;
 using ur = UnityEngine.Rendering;
 
-namespace GameEstate.Graphics.MaterialBuilders
+namespace GameEstate.Graphics
 {
     /// <summary>
     /// A material that uses the Unlit Shader.
