@@ -1,9 +1,9 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -38,6 +38,7 @@ namespace GameEstate.AC.Formats.Entity
             PrimarySkillsList = r.ReadC32Array<Skill>(sizeof(uint));
         }
 
+        //: Entity.TemplateCG
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

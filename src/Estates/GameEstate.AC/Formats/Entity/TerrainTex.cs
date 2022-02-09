@@ -32,6 +32,7 @@ namespace GameEstate.AC.Formats.Entity
             DetailTexGID = r.ReadUInt32();
         }
 
+        //: Entity.TerrainTex
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             TexGID = r.ReadUInt32();
         }
 
+        //: Entity.TerrainAlphaMap
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -25,6 +26,7 @@ namespace GameEstate.AC.Formats.Entity
             return nodes;
         }
 
+        //: Entity.TerrainAlphaMap
         public override string ToString() => $"TerrainCode: {TCode}, TextureGID: {TexGID:X8}";
     }
 }

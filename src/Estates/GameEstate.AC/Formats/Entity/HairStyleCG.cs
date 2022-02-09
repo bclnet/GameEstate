@@ -20,6 +20,7 @@ namespace GameEstate.AC.Formats.Entity
             ObjDesc = new ObjDesc(r);
         }
 
+        //: Entity.HairStyleCG
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

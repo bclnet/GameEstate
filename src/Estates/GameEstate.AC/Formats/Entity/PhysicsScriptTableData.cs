@@ -11,10 +11,9 @@ namespace GameEstate.AC.Formats.Entity
         public readonly ScriptAndModData[] Scripts;
 
         public PhysicsScriptTableData(BinaryReader r)
-        {
-            Scripts = r.ReadL32Array(x => new ScriptAndModData(r));
-        }
+            => Scripts = r.ReadL32Array(x => new ScriptAndModData(r));
 
+        //: Entity.PhysicsScriptTableData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

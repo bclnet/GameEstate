@@ -17,12 +17,12 @@ namespace GameEstate.AC.Formats.Entity
         public DayGroup(BinaryReader r)
         {
             ChanceOfOccur = r.ReadSingle();
-            DayName = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            DayName = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
             SkyObjects = r.ReadL32Array(x => new SkyObject(x));
             SkyTime = r.ReadL32Array(x => new SkyTimeOfDay(x));
         }
 
+        //: Entity.DayGroup
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -17,11 +17,13 @@ namespace GameEstate.AC.Formats.Entity
             AmbientSounds = r.ReadL32Array(x => new AmbientSoundDesc(x));
         }
 
+        //: Entity.AmbientSoundTableDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Ambient Sound Table ID: {STBId:X8}"),
-                new ExplorerInfoNode($"Ambient Sounds", items: AmbientSounds.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
+                new ExplorerInfoNode($"Ambient Sounds", items: AmbientSounds.Select((x, i)
+                    => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
             };
             return nodes;
         }

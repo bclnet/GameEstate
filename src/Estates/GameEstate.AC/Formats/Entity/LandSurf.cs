@@ -15,11 +15,11 @@ namespace GameEstate.AC.Formats.Entity
         public LandSurf(BinaryReader r)
         {
             Type = r.ReadUInt32(); // This is always 0
-            if (Type == 1)
-                throw new NotImplementedException();
+            if (Type == 1) throw new FormatException("Type value unknown");
             TexMerge = new TexMerge(r);
         }
 
+        //: Entity.LandSurf
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag) => (TexMerge as IGetExplorerInfo).GetInfoNodes(resource, file, tag);
     }
 }

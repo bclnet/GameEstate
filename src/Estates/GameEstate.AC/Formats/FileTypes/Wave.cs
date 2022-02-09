@@ -12,7 +12,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// I'm not sure of an instance where the server would ever need this data, but it's fun nonetheless and included for completion sake.
     /// </summary>
     [PakFileType(PakFileType.Wave)]
-    public class Wave : AbstractFileType, IGetExplorerInfo
+    public class Wave : FileType, IGetExplorerInfo
     {
         public byte[] Header { get; private set; }
         public byte[] Data { get; private set; }
@@ -26,6 +26,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Data = r.ReadBytes(dataSize);
         }
 
+        //: FileTypes.Sound
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var type = Header[0] == 0x55 ? "MP3" : "WAV";

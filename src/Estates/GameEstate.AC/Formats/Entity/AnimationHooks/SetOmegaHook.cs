@@ -8,8 +8,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly Vector3 Axis;
 
         public SetOmegaHook(BinaryReader r) : base(r)
-        {
-            Axis = r.ReadVector3();
-        }
+            => Axis = r.ReadVector3();
     }
 }

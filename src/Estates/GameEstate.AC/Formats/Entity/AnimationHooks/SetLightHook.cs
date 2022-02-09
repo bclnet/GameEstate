@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly int LightsOn;
 
         public SetLightHook(BinaryReader r) : base(r)
-        {
-            LightsOn = r.ReadInt32();
-        }
+            => LightsOn = r.ReadInt32();
     }
 }

@@ -7,7 +7,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.TabooTable)]
-    public class TabooTable : AbstractFileType, IGetExplorerInfo
+    public class TabooTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E00001E;
 
@@ -28,6 +28,7 @@ namespace GameEstate.AC.Formats.FileTypes
             TabooTableEntries = r.ReadTMany<uint, TabooTableEntry>(sizeof(uint), x=> new TabooTableEntry(x), length);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

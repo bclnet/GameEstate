@@ -11,10 +11,11 @@ namespace GameEstate.AC.Formats.FileTypes
     /// It is essentially a map to a specific texture file (spritemap) that contains all the characters in this font.
     /// </summary>
     [PakFileType(PakFileType.Font)]
-    public class Font : AbstractFileType, IGetExplorerInfo
+    public class Font : FileType, IGetExplorerInfo
     {
         public readonly uint MaxCharHeight;
         public readonly uint MaxCharWidth;
+        //public uint NumCharacters => (uint)CharDescs.Length;
         public readonly FontCharDesc[] CharDescs;
         public readonly uint NumHorizontalBorderPixels;
         public readonly uint NumVerticalBorderPixels;
@@ -35,6 +36,7 @@ namespace GameEstate.AC.Formats.FileTypes
             BackgroundSurfaceDataID = r.ReadUInt32();
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

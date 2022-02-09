@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly uint NoDraw;
 
         public NoDrawHook(BinaryReader r) : base(r)
-        {
-            NoDraw = r.ReadUInt32();
-        }
+            => NoDraw = r.ReadUInt32();
     }
 }

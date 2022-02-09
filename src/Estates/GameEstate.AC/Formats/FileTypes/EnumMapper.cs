@@ -9,7 +9,7 @@ using System.Text;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.EnumMapper)]
-    public class EnumMapper : AbstractFileType, IGetExplorerInfo
+    public class EnumMapper : FileType, IGetExplorerInfo
     {
         public readonly uint BaseEnumMap; // _base_emp_did
         public readonly NumberingType NumberingType;
@@ -23,6 +23,7 @@ namespace GameEstate.AC.Formats.FileTypes
             IdToStringMap = r.ReadC32Many<uint, string>(sizeof(uint), x => x.ReadL8ANSI(Encoding.Default));
         }
 
+        //: FileTypes.EnumMapper
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

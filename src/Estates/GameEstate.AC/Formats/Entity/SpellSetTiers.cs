@@ -10,8 +10,6 @@ namespace GameEstate.AC.Formats.Entity
         public readonly uint[] Spells;
 
         public SpellSetTiers(BinaryReader r)
-        {
-            Spells = r.ReadL32Array<uint>(sizeof(uint));
-        }
+            => Spells = r.ReadL32Array<uint>(sizeof(uint));
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.BadData)]
-    public class BadData : AbstractFileType, IGetExplorerInfo
+    public class BadData : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E00001A;
 
@@ -20,6 +20,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Bad = r.ReadL16Many<uint, uint>(sizeof(uint), x => x.ReadUInt32(), offset: 2);
         }
 
+        //: FileTypes.BadData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

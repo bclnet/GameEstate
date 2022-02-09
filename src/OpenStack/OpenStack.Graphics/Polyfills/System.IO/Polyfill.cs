@@ -338,16 +338,14 @@ namespace System.IO
         {
             var matrix = new Matrix4x4();
             for (var columnIndex = 0; columnIndex < 4; columnIndex++)
-                for (var rowIndex = 0; rowIndex < 4; rowIndex++)
-                    matrix.Set(rowIndex, columnIndex, source.ReadSingle());
+                for (var rowIndex = 0; rowIndex < 4; rowIndex++) matrix.Set(rowIndex, columnIndex, source.ReadSingle());
             return matrix;
         }
         public static Matrix4x4 ReadRowMajorMatrix4x4(this BinaryReader source)
         {
             var matrix = new Matrix4x4();
             for (var rowIndex = 0; rowIndex < 4; rowIndex++)
-                for (var columnIndex = 0; columnIndex < 4; columnIndex++)
-                    matrix.Set(rowIndex, columnIndex, source.ReadSingle());
+                for (var columnIndex = 0; columnIndex < 4; columnIndex++) matrix.Set(rowIndex, columnIndex, source.ReadSingle());
             return matrix;
         }
         public static Quaternion ReadQuaternionWFirst(this BinaryReader source)

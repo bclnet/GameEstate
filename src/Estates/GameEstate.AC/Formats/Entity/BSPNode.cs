@@ -1,10 +1,10 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -45,10 +45,7 @@ namespace GameEstate.AC.Formats.Entity
                 case "BpIN":
                 case "BpnN": NegNode = Factory(r, treeType); break;
                 case "BPIN":
-                case "BPnN":
-                    PosNode = Factory(r, treeType);
-                    NegNode = Factory(r, treeType);
-                    break;
+                case "BPnN": PosNode = Factory(r, treeType); NegNode = Factory(r, treeType); break;
             }
             if (treeType == BSPType.Cell) return;
             Sphere = new Sphere(r);
@@ -56,6 +53,7 @@ namespace GameEstate.AC.Formats.Entity
             InPolys = r.ReadL32Array<ushort>(sizeof(ushort));
         }
 
+        //: Entity.BSPNode
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

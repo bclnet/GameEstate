@@ -15,11 +15,11 @@ namespace GameEstate.AC.Formats.Entity
         public SkyDesc(BinaryReader r)
         {
             TickSize = r.ReadDouble();
-            LightTickSize = r.ReadDouble();
-            r.AlignBoundary();
+            LightTickSize = r.ReadDouble(); r.AlignBoundary();
             DayGroups = r.ReadL32Array(x => new DayGroup(x));
         }
 
+        //: Entity.SkyDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -12,7 +12,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are client_portal.dat files starting with 0x32. 
     /// </summary>
     [PakFileType(PakFileType.ParticleEmitter)]
-    public class ParticleEmitterInfo : AbstractFileType, IGetExplorerInfo
+    public class ParticleEmitterInfo : FileType, IGetExplorerInfo
     {
         public readonly uint Unknown;
         public readonly EmitterType EmitterType;
@@ -50,6 +50,7 @@ namespace GameEstate.AC.Formats.FileTypes
             IsParentLocal = r.ReadInt32();
         }
 
+        //: FileTypes.ParticleEmitterInfo
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

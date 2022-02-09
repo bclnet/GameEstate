@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity
         public readonly SkillFormula Formula;
 
         public Attribute2ndBase(BinaryReader r)
-        {
-            Formula = new SkillFormula(r);
-        }
+            => Formula = new SkillFormula(r);
     }
 }

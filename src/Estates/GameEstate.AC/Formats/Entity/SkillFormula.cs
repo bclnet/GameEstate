@@ -15,10 +15,10 @@ namespace GameEstate.AC.Formats.Entity
         public SkillFormula() { }
         public SkillFormula(PropertyAttribute attr1, PropertyAttribute attr2, uint divisor)
         {
+            X = 1;
+            Z = divisor;
             Attr1 = (uint)attr1;
             Attr2 = (uint)attr2;
-            Z = divisor;
-            X = 1;
         }
         public SkillFormula(BinaryReader r)
         {

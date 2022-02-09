@@ -11,10 +11,9 @@ namespace GameEstate.AC.Formats.Entity
         public readonly SceneType[] SceneTypes;
 
         public SceneDesc(BinaryReader r)
-        {
-            SceneTypes = r.ReadL32Array(x => new SceneType(x));
-        }
+            => SceneTypes = r.ReadL32Array(x => new SceneType(x));
 
+        //: Entity.SceneDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -22,10 +22,11 @@ namespace GameEstate.AC.Formats.Entity
             MaxDist = r.ReadSingle();
         }
 
+        //: Entity.GfxObjInfo
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"Id: {Id:X8}"),
+                new ExplorerInfoNode($"ID: {Id:X8}"),
                 new ExplorerInfoNode($"DegradeMode: {DegradeMode}"),
                 new ExplorerInfoNode($"MinDist: {MinDist}"),
                 new ExplorerInfoNode($"IdealDist: {IdealDist}"),

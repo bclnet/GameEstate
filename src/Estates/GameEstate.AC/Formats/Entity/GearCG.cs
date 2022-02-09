@@ -18,6 +18,7 @@ namespace GameEstate.AC.Formats.Entity
             WeenieDefault = r.ReadUInt32();
         }
 
+        //: Entity.GearCG
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

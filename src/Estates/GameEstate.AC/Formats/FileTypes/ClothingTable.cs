@@ -16,7 +16,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Thanks to Steven Nygard and his work on the Mac program ACDataTools that were used to help debug & verify some of this data.
     /// </remarks>
     [PakFileType(PakFileType.Clothing)]
-    public class ClothingTable : AbstractFileType, IGetExplorerInfo
+    public class ClothingTable : FileType, IGetExplorerInfo
     {
         /// <summary>
         /// Key is the setup model id
@@ -34,6 +34,7 @@ namespace GameEstate.AC.Formats.FileTypes
             ClothingSubPalEffects = r.ReadL16Many<uint, CloSubPalEffect>(sizeof(uint), x => new CloSubPalEffect(x), offset: 2);
         }
 
+        //: FileTypes.ClothingTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

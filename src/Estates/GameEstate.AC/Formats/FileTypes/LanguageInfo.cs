@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Contains some very basic language and formatting rules.
     /// </summary>
     [PakFileType(PakFileType.StringState)]
-    public class LanguageInfo : AbstractFileType, IGetExplorerInfo
+    public class LanguageInfo : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x41000000;
 
@@ -75,8 +75,7 @@ namespace GameEstate.AC.Formats.FileTypes
             IsOneSingular = r.ReadBoolean();
             IsNegativeOneSingular = r.ReadBoolean();
             IsTwoOrMoreSingular = r.ReadBoolean();
-            IsNegativeTwoOrLessSingular = r.ReadBoolean();
-            r.AlignBoundary();
+            IsNegativeTwoOrLessSingular = r.ReadBoolean(); r.AlignBoundary();
 
             TreasurePrefixLetters = UnpackList(r);
             TreasureMiddleLetters = UnpackList(r);
@@ -107,6 +106,7 @@ namespace GameEstate.AC.Formats.FileTypes
             AdditionalFlags = r.ReadUInt32();
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -120,11 +120,7 @@ namespace GameEstate.AC.Formats.FileTypes
         {
             var l = new List<char>();
             var numElements = r.ReadByte();
-            for (var i = 0; i < numElements; i++)
-            {
-                var c = r.ReadUInt16();
-                l.Add((char)c);
-            }
+            for (var i = 0; i < numElements; i++) l.Add((char)r.ReadUInt16());
             return l.ToArray();
         }
     }

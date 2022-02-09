@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly AttackCone AttackCone;
 
         public AttackHook(BinaryReader r) : base(r)
-        {
-            AttackCone = new AttackCone(r);
-        }
+            => AttackCone = new AttackCone(r);
     }
 }

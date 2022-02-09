@@ -1,6 +1,6 @@
+using GameEstate.AC.Formats.Props;
 using GameEstate.Explorer;
 using GameEstate.Formats;
-using GameEstate.AC.Formats.Props;
 using System.Collections.Generic;
 using System.IO;
 
@@ -23,13 +23,14 @@ namespace GameEstate.AC.Formats.Entity
             OtherPortalId = r.ReadUInt16();
         }
 
+        //: Entity.CellPortal
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 Flags != 0 ? new ExplorerInfoNode($"Flags: {Flags}") : null,
-                new ExplorerInfoNode($"PolygonId: {PolygonId}"),
-                OtherCellId != 0 ? new ExplorerInfoNode($"OtherCellId: {OtherCellId:X}") : null,
-                OtherPortalId != 0 ? new ExplorerInfoNode($"OtherPortalId: {OtherPortalId:X}") : null,
+                new ExplorerInfoNode($"Polygon ID: {PolygonId}"),
+                OtherCellId != 0 ? new ExplorerInfoNode($"OtherCell ID: {OtherCellId:X}") : null,
+                OtherPortalId != 0 ? new ExplorerInfoNode($"OtherPortal ID: {OtherPortalId:X}") : null,
             };
             return nodes;
         }

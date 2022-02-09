@@ -16,6 +16,12 @@ namespace GameEstate.AC.Formats.Entity
         public readonly Vector3 Normal;
         public readonly Vec2Duv[] UVs;
 
+        //: Entity+SWVertex
+        public SWVertex(Vector3 origin, Vector3 normal)
+        {
+            Origin = origin;    // ref?
+            Normal = normal;
+        }
         public SWVertex(BinaryReader r)
         {
             var numUVs = r.ReadUInt16();
@@ -24,6 +30,7 @@ namespace GameEstate.AC.Formats.Entity
             UVs = r.ReadTArray(x => new Vec2Duv(x), numUVs);
         }
 
+        //: Entity.Vertex
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

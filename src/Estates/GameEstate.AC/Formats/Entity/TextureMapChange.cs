@@ -19,6 +19,7 @@ namespace GameEstate.AC.Formats.Entity
             NewTexture = r.ReadAsDataIDOfKnownType(0x05000000);
         }
 
+        //: Entity.TextureMapChange
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -29,6 +30,7 @@ namespace GameEstate.AC.Formats.Entity
             return nodes;
         }
 
+        //: Entity.TextureMapChange
         public override string ToString() => $"PartIdx: {PartIndex}, Old Tex: {OldTexture:X8}, New Tex: {NewTexture:X8}";
     }
 }

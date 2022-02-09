@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// They contain, as the name may imply, a set of palettes (0x04 files)
     /// </summary>
     [PakFileType(PakFileType.PaletteSet)]
-    public class PaletteSet : AbstractFileType, IGetExplorerInfo
+    public class PaletteSet : FileType, IGetExplorerInfo
     {
         public uint[] PaletteList;
 
@@ -40,6 +40,7 @@ namespace GameEstate.AC.Formats.FileTypes
             return PaletteList[palIndex];
         }
 
+        //: FileTypes.Palette
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

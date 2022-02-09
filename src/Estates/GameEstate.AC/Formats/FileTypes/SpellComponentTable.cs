@@ -7,7 +7,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.SpellComponentTable)]
-    public class SpellComponentTable : AbstractFileType, IGetExplorerInfo
+    public class SpellComponentTable : FileType, IGetExplorerInfo
     {
         public enum Type
         {
@@ -29,11 +29,11 @@ namespace GameEstate.AC.Formats.FileTypes
         public SpellComponentTable(BinaryReader r)
         {
             Id = r.ReadUInt32();
-            var numComps = r.ReadUInt16(); // Should be 163 or 0xA3
-            r.AlignBoundary();
+            var numComps = r.ReadUInt16(); r.AlignBoundary(); // Should be 163 or 0xA3
             SpellComponents = r.ReadTMany<uint, SpellComponentBase>(sizeof(uint), x => new SpellComponentBase(r), numComps);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

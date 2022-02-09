@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             NumColors = r.ReadUInt32();
         }
 
+        //: Entity.ClothingSubPaletteRange
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -25,6 +26,7 @@ namespace GameEstate.AC.Formats.Entity
             return nodes;
         }
 
+        //: Entity.ClothingSubPaletteRange
         public override string ToString() => $"Offset: {Offset}, NumColors: {NumColors}";
     }
 }

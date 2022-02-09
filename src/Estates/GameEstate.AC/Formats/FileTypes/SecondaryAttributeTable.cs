@@ -7,7 +7,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.SecondaryAttributeTable)]
-    public class SecondaryAttributeTable : AbstractFileType, IGetExplorerInfo
+    public class SecondaryAttributeTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E000003;
 
@@ -23,6 +23,7 @@ namespace GameEstate.AC.Formats.FileTypes
             MaxMana = new Attribute2ndBase(r);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

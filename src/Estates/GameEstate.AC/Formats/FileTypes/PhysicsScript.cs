@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are client_portal.dat files starting with 0x33. 
     /// </summary>
     [PakFileType(PakFileType.PhysicsScript)]
-    public class PhysicsScript : AbstractFileType, IGetExplorerInfo
+    public class PhysicsScript : FileType, IGetExplorerInfo
     {
         public readonly PhysicsScriptData[] ScriptData;
 

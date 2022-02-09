@@ -1,6 +1,6 @@
 namespace GameEstate.AC.Formats.FileTypes
 {
-    public abstract class AbstractFileType
+    public abstract class FileType
     {
         public uint Id;
     }

@@ -9,7 +9,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Reads and stores the XP Tables from the client_portal.dat (file 0x0E000018).
     /// </summary>
     [PakFileType(PakFileType.XpTable)]
-    public class XpTable : AbstractFileType, IGetExplorerInfo
+    public class XpTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E000018;
 
@@ -43,6 +43,7 @@ namespace GameEstate.AC.Formats.FileTypes
             CharacterLevelSkillCreditList = r.ReadTArray<uint>(sizeof(uint), (int)levelCount); //: counts are +1?
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

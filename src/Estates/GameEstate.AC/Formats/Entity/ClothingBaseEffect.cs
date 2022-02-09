@@ -11,10 +11,9 @@ namespace GameEstate.AC.Formats.Entity
         public readonly CloObjectEffect[] CloObjectEffects;
 
         public ClothingBaseEffect(BinaryReader r)
-        {
-            CloObjectEffects = r.ReadL32Array(x => new CloObjectEffect(x));
-        }
+            => CloObjectEffects = r.ReadL32Array(x => new CloObjectEffect(x));
 
+        //: Entity.ClothingBaseEffect
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

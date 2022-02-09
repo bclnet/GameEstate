@@ -8,7 +8,7 @@ using System.Text;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.SpellTable)]
-    public class SpellTable : AbstractFileType, IGetExplorerInfo
+    public class SpellTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E00000E;
 
@@ -25,6 +25,7 @@ namespace GameEstate.AC.Formats.FileTypes
             SpellSet = r.ReadL16Many<uint, SpellSet>(sizeof(uint), x => new SpellSet(x), offset: 2);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

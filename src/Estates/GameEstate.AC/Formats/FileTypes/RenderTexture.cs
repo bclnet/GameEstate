@@ -16,7 +16,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// 0x15000001 = ConsoleInputBackgroundTexture
     /// </summary>
     [PakFileType(PakFileType.RenderTexture)]
-    public class RenderTexture : AbstractFileType, IGetExplorerInfo
+    public class RenderTexture : FileType, IGetExplorerInfo
     {
         public readonly int Unknown;
         public readonly byte UnknownByte;
@@ -30,6 +30,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Textures = r.ReadL32Array<uint>(sizeof(uint));
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

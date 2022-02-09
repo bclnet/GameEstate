@@ -31,6 +31,7 @@ namespace GameEstate.AC.Formats.Entity
             LandHeightTable = r.ReadTArray(x => x.ReadSingle(), 256);
         }
 
+        //: Entity.LandDefs
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

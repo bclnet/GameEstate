@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             ScriptId = r.ReadUInt32();
         }
 
+        //: Entity.ScriptMod
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -25,6 +26,7 @@ namespace GameEstate.AC.Formats.Entity
             return nodes;
         }
 
+        //: Entity.ScriptMod
         public override string ToString() => $"Mod: {Mod}, Script: {ScriptId:X8}";
     }
 }

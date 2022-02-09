@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly uint Id;
 
         public SoundHook(BinaryReader r) : base(r)
-        {
-            Id = r.ReadUInt32();
-        }
+            => Id = r.ReadUInt32();
     }
 }

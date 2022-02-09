@@ -28,10 +28,10 @@ namespace GameEstate.AC.Formats.Entity
             TexVelocityY = r.ReadSingle();
             DefaultGFXObjectId = r.ReadUInt32();
             DefaultPESObjectId = r.ReadUInt32();
-            Properties = r.ReadUInt32();
-            r.AlignBoundary();
+            Properties = r.ReadUInt32(); r.AlignBoundary();
         }
 
+        //: Entity.SkyObject
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

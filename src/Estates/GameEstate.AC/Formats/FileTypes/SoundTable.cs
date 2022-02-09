@@ -13,7 +13,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// They are located in the client_portal.dat and are files starting with 0x20
     /// </summary>
     [PakFileType(PakFileType.SoundTable)]
-    public class SoundTable : AbstractFileType, IGetExplorerInfo
+    public class SoundTable : FileType, IGetExplorerInfo
     {
         public readonly uint Unknown; // As the name implies, not sure what this is
         // Not quite sure what this is for, but it's the same in every file.
@@ -29,6 +29,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Data = r.ReadL16Many<uint, SoundData>(sizeof(uint), x => new SoundData(x), offset: 2);
         }
 
+        //: FileTypes.SoundTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

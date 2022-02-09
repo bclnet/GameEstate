@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are client_portal.dat files starting with 0x34. 
     /// </summary>
     [PakFileType(PakFileType.PhysicsScriptTable)]
-    public class PhysicsScriptTable : AbstractFileType, IGetExplorerInfo
+    public class PhysicsScriptTable : FileType, IGetExplorerInfo
     {
         public readonly Dictionary<uint, PhysicsScriptTableData> ScriptTable;
 
@@ -21,6 +21,7 @@ namespace GameEstate.AC.Formats.FileTypes
             ScriptTable = r.ReadL32Many<uint, PhysicsScriptTableData>(sizeof(uint), x => new PhysicsScriptTableData(x));
         }
 
+        //: FileTypes.PhysicsScriptTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly uint EmitterId;
 
         public DestroyParticleHook(BinaryReader r) : base(r)
-        {
-            EmitterId = r.ReadUInt32();
-        }
+            => EmitterId = r.ReadUInt32();
     }
 }

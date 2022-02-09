@@ -14,7 +14,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are used both on their own for some pre-populated structures in the world (trees, buildings, etc) or make up SetupModel (0x02) objects.
     /// </summary>
     [PakFileType(PakFileType.GraphicsObject)]
-    public class GfxObj : AbstractFileType, IGetExplorerInfo
+    public class GfxObj : FileType, IGetExplorerInfo
     {
         public readonly GfxObjFlags Flags;
         public readonly uint[] Surfaces; // also referred to as m_rgSurfaces in the client
@@ -48,6 +48,7 @@ namespace GameEstate.AC.Formats.FileTypes
             if ((Flags & GfxObjFlags.HasDIDDegrade) != 0) DIDDegrade = r.ReadUInt32();
         }
 
+        //: FileTypes.GfxObj
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

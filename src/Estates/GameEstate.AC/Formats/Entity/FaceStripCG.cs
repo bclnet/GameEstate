@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             ObjDesc = new ObjDesc(r);
         }
 
+        //: Entity.FaceStripCG
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -40,12 +40,12 @@ namespace GameEstate.AC.Formats.Entity
             MinWorldFog = r.ReadSingle();
             MaxWorldFog = r.ReadSingle();
             WorldFogColor = r.ReadUInt32();
-            WorldFog = r.ReadUInt32();
+            WorldFog = r.ReadUInt32(); r.AlignBoundary();
 
-            r.AlignBoundary();
             SkyObjReplace = r.ReadL32Array(x => new SkyObjectReplace(x));
         }
 
+        //: Entity.SkyTimeOfDay
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

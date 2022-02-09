@@ -13,7 +13,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are client_portal.dat files starting with 0x30. 
     /// </summary>
     [PakFileType(PakFileType.CombatTable)]
-    public class CombatManeuverTable : AbstractFileType, IGetExplorerInfo
+    public class CombatManeuverTable : FileType, IGetExplorerInfo
     {
         public readonly CombatManeuver[] CMT;
         public readonly Dictionary<MotionStance, AttackHeights> Stances;
@@ -32,6 +32,7 @@ namespace GameEstate.AC.Formats.FileTypes
             }
         }
 
+        //: FileTypes.CombatTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -42,6 +43,7 @@ namespace GameEstate.AC.Formats.FileTypes
             return nodes;
         }
 
+        //: was:ShowCombatTable
         public override string ToString()
         {
             var b = new StringBuilder();
@@ -54,8 +56,7 @@ namespace GameEstate.AC.Formats.FileTypes
                     foreach (var attackType in attackHeight.Value.Table)
                     {
                         b.AppendLine($"    - {attackType.Key}");
-                        foreach (var motion in attackType.Value)
-                            b.AppendLine($"      - {motion}");
+                        foreach (var motion in attackType.Value) b.AppendLine($"      - {motion}");
                     }
                 }
             }

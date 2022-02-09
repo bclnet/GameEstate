@@ -14,9 +14,9 @@ namespace GameEstate.AC.Formats.FileTypes
     /// They are basically 3D model descriptions.
     /// </summary>
     [PakFileType(PakFileType.Setup)]
-    public class SetupModel : AbstractFileType, IGetExplorerInfo
+    public class SetupModel : FileType, IGetExplorerInfo
     {
-        public static SetupModel Empty = new SetupModel();
+        public static readonly SetupModel Empty = new SetupModel();
         public readonly SetupFlags Flags;
         public readonly bool AllowFreeHeading;
         public readonly bool HasPhysicsBSP;
@@ -78,6 +78,7 @@ namespace GameEstate.AC.Formats.FileTypes
             DefaultScriptTable = r.ReadUInt32();
         }
 
+        //: FileTypes.Setup
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

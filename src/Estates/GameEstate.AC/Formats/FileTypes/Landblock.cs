@@ -21,7 +21,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Very special thanks to David Simpson for his early work on reading the cell.dat. Even bigger thanks for his documentation of it!
     /// </remarks>
     [PakFileType(PakFileType.LandBlock)]
-    public class Landblock : AbstractFileType, IGetExplorerInfo
+    public class Landblock : FileType, IGetExplorerInfo
     {
         /// <summary>
         /// Places in the inland sea, for example, are false. Should denote presence of xxxxFFFE (where xxxx is the cell).
@@ -54,13 +54,14 @@ namespace GameEstate.AC.Formats.FileTypes
         public static ushort GetScenery(ushort terrain) => GetTerrain(terrain, TerrainMask_Scenery, TerrainShift_Scenery);
         public static ushort GetTerrain(ushort terrain, ushort mask, byte shift) => (ushort)((terrain & mask) >> shift);
 
+        //: FileTypes.CellLandblock
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(Landblock)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"HasObjects: {HasObjects}"),
                     new ExplorerInfoNode("Terrain", items: Terrain.Select((x, i) => {
-                        var typename = "TODO"; // DatManager.PortalDat.RegionDesc.TerrainInfo.TerrainTypes[Landblock.GetType(t)].TerrainName;
+                        var typename = "//:TODO"; // DatManager.PortalDat.RegionDesc.TerrainInfo.TerrainTypes[Landblock.GetType(t)].TerrainName;
                         return new ExplorerInfoNode($"{i}: Road: {GetRoad(x)}, Type: {typename}, Scenery: {GetScenery(x)}");
                     })),
                     new ExplorerInfoNode("Heights", items: Height.Select((x, i) => new ExplorerInfoNode($"{i}: {x}"))),

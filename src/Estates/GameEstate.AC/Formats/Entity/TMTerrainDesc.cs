@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             TerrainTex = new TerrainTex(r);
         }
 
+        //: Entity.TMTerrainDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

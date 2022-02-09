@@ -1,8 +1,8 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -11,10 +11,9 @@ namespace GameEstate.AC.Formats.Entity
         public readonly BSPNode RootNode;
 
         public BSPTree(BinaryReader r, BSPType treeType)
-        {
-            RootNode = BSPNode.Factory(r, treeType);
-        }
+            => RootNode = BSPNode.Factory(r, treeType);
 
+        //: Entity.BSPTree
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

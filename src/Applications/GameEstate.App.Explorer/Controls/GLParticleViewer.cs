@@ -19,10 +19,7 @@ namespace GameEstate.Explorer.View
         public GLParticleViewer()
         {
             GLPaint += OnPaint;
-            Unloaded += (a, b) =>
-            {
-                GLPaint -= OnPaint;
-            };
+            Unloaded += (a, b) => { GLPaint -= OnPaint; };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,14 +45,12 @@ namespace GameEstate.Explorer.View
 
         void OnProperty()
         {
-            if (Graphic == null || Source == null)
-                return;
+            if (Graphic == null || Source == null) return;
             var graphic = Graphic as IOpenGLGraphic;
             var source = Source is IParticleSystemInfo z ? z
                 : Source is IRedirected<IParticleSystemInfo> y ? y.Value
                 : null;
-            if (source == null)
-                return;
+            if (source == null) return;
 
             particleGrid = new ParticleGridRenderer(20, 5, graphic);
             Camera.SetViewportSize((int)ActualWidth, (int)ActualHeight);

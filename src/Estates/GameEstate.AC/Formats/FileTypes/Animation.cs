@@ -13,7 +13,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Special thanks to Dan Skorupski for his work on Bael'Zharon's Respite, which helped fill in some of the gaps https://github.com/boardwalk/bzr
     /// </summary>
     [PakFileType(PakFileType.Animation)]
-    public class Animation : AbstractFileType, IGetExplorerInfo
+    public class Animation : FileType, IGetExplorerInfo
     {
         public readonly AnimationFlags Flags;
         public readonly uint NumParts;
@@ -31,6 +31,7 @@ namespace GameEstate.AC.Formats.FileTypes
             PartFrames = r.ReadTArray(x => new AnimationFrame(x, NumParts), (int)NumFrames);
         }
 
+        //: FileTypes.Animation
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

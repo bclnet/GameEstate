@@ -20,6 +20,7 @@ namespace GameEstate.AC.Formats.Entity
             Volume = r.ReadSingle();
         }
 
+        //: Entity.SoundTableData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

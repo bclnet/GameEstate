@@ -12,7 +12,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are basically pre-fab regions for things like the interior of a dungeon.
     /// </summary>
     [PakFileType(PakFileType.Environment)]
-    public class Environment : AbstractFileType, IGetExplorerInfo
+    public class Environment : FileType, IGetExplorerInfo
     {
         public readonly Dictionary<uint, CellStruct> Cells;
 
@@ -22,6 +22,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Cells = r.ReadL32Many<uint, CellStruct>(sizeof(uint), x => new CellStruct(x));
         }
 
+        //: FileTypes.Environment
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

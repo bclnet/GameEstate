@@ -23,6 +23,7 @@ namespace GameEstate.AC.Formats.Entity
             Motion = (MotionCommand)r.ReadUInt32();
         }
 
+        //: Entity.CombatManeuver
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

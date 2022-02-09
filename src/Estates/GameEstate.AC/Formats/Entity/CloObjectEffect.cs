@@ -19,11 +19,12 @@ namespace GameEstate.AC.Formats.Entity
             CloTextureEffects = r.ReadL32Array(x => new CloTextureEffect(x));
         }
 
+        //: Entity.ClothingObjectEffect
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Index: {Index}"),
-                new ExplorerInfoNode($"ModelId: {ModelId:X8}"),
+                new ExplorerInfoNode($"Model ID: {ModelId:X8}"),
                 new ExplorerInfoNode($"Texture Effects", items: CloTextureEffects.Select(x=> new ExplorerInfoNode($"{x}"))),
             };
             return nodes;

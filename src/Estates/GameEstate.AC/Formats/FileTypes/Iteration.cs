@@ -14,7 +14,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// 
     /// Special thanks to the GDLE team for pointing me the right direction on how/where to find this info in the dat files- OptimShi
     /// </summary>
-    public class Iteration : AbstractFileType, IGetExplorerInfo
+    public class Iteration : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0xFFFF0001;
 
@@ -24,8 +24,7 @@ namespace GameEstate.AC.Formats.FileTypes
         public Iteration(BinaryReader r)
         {
             Ints = new[] { r.ReadInt32(), r.ReadInt32() };
-            Sorted = r.ReadBoolean();
-            r.AlignBoundary();
+            Sorted = r.ReadBoolean(); r.AlignBoundary();
         }
 
         public override string ToString()
@@ -36,6 +35,7 @@ namespace GameEstate.AC.Formats.FileTypes
             return b.ToString();
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

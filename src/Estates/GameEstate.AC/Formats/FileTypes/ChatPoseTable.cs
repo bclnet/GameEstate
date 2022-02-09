@@ -8,7 +8,7 @@ using System.Text;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.ChatPoseTable)]
-    public class ChatPoseTable : AbstractFileType, IGetExplorerInfo
+    public class ChatPoseTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E000007;
 
@@ -24,6 +24,7 @@ namespace GameEstate.AC.Formats.FileTypes
             ChatEmoteHash = r.ReadL16Many(x => { var v = x.ReadL16ANSI(Encoding.Default); x.AlignBoundary(); return v; }, x => new ChatEmoteData(x), offset: 2);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -15,15 +15,13 @@ namespace GameEstate.AC.Formats.Entity
 
         public SpellComponentBase(BinaryReader r)
         {
-            Name = r.ReadObfuscatedString();
-            r.AlignBoundary();
+            Name = r.ReadObfuscatedString(); r.AlignBoundary();
             Category = r.ReadUInt32();
             Icon = r.ReadUInt32();
             Type = r.ReadUInt32();
             Gesture = r.ReadUInt32();
             Time = r.ReadSingle();
-            Text = r.ReadObfuscatedString();
-            r.AlignBoundary();
+            Text = r.ReadObfuscatedString(); r.AlignBoundary();
             CDM = r.ReadSingle();
         }
     }

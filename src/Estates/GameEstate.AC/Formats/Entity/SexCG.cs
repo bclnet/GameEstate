@@ -75,7 +75,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var hairstyle = HairStyleList[Convert.ToInt32(hairStyle)];
             // Gear Knights, both Olthoi types have multiple anim part changes.
-            return hairstyle.ObjDesc.AnimPartChanges.Length == 1 ? hairstyle.ObjDesc.AnimPartChanges[0].PartID : (uint?)null;
+            return hairstyle.ObjDesc.AnimPartChanges.Count == 1 ? hairstyle.ObjDesc.AnimPartChanges[0].PartID : (uint?)null;
         }
         public uint GetHairTexture(uint hairStyle) => HairStyleList[Convert.ToInt32(hairStyle)].ObjDesc.TextureChanges[0].NewTexture;
         public uint GetDefaultHairTexture(uint hairStyle) => HairStyleList[Convert.ToInt32(hairStyle)].ObjDesc.TextureChanges[0].OldTexture;
@@ -96,13 +96,14 @@ namespace GameEstate.AC.Formats.Entity
         public uint GetFootwearWeenie(uint footwearStyle) => FootwearList[Convert.ToInt32(footwearStyle)].WeenieDefault;
         public uint GetFootwearClothingTable(uint footwearStyle) => FootwearList[Convert.ToInt32(footwearStyle)].ClothingTable;
 
+        //: Entity.SexCG
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Name: {Name}"),
                 new ExplorerInfoNode($"Scale: {Scale}%"),
                 new ExplorerInfoNode($"Setup: {SetupID:X8}"),
-                new ExplorerInfoNode($"SoundTable: {SoundTable:X8}"),
+                new ExplorerInfoNode($"Sound Table: {SoundTable:X8}"),
                 new ExplorerInfoNode($"Icon: {IconImage:X8}"),
                 new ExplorerInfoNode($"Base Palette: {BasePalette:X8}"),
                 new ExplorerInfoNode($"Skin Palette Set: {SkinPalSet:X8}"),

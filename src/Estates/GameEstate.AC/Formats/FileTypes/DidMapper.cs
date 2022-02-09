@@ -14,7 +14,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// A description of each DidMapper is in DidMapper entry 0x25000000
     /// </summary>
     [PakFileType(PakFileType.DidMapper)]
-    public class DidMapper : AbstractFileType, IGetExplorerInfo
+    public class DidMapper : FileType, IGetExplorerInfo
     {
         // The client/server designation is guessed based on the content in each list.
         // The keys in these two Dictionaries are common. So ClientEnumToId[key] = ClientEnumToName[key].
@@ -41,6 +41,7 @@ namespace GameEstate.AC.Formats.FileTypes
             ServerEnumToName = r.ReadC32Many<uint, string>(sizeof(uint), x => x.ReadL8ANSI(Encoding.Default));
         }
 
+        //: FileTypes.DidMapper
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

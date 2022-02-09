@@ -7,7 +7,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.Texture)]
-    public class Texture : AbstractFileType, IGetExplorerInfo
+    public class Texture : FileType, IGetExplorerInfo
     {
         public readonly int Unknown;
         public readonly int Width;
@@ -37,6 +37,7 @@ namespace GameEstate.AC.Formats.FileTypes
             }
         }
 
+        //: FileTypes.Texture
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -1,11 +1,11 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -27,6 +27,7 @@ namespace GameEstate.AC.Formats.Entity
             }
         }
 
+        //: Entity.BSPLeaf
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

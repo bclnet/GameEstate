@@ -12,7 +12,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// As the name implies this contains surface info for an object. Either texture reference or color and whatever effects applied to it.
     /// </summary>
     [PakFileType(PakFileType.Surface)]
-    public class Surface : AbstractFileType, IGetExplorerInfo
+    public class Surface : FileType, IGetExplorerInfo
     {
         public readonly SurfaceType Type;
         public readonly uint OrigTextureId;
@@ -32,6 +32,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Diffuse = r.ReadSingle();
         }
 
+        //: FileTypes.Surface
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

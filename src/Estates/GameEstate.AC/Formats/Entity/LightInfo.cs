@@ -19,6 +19,7 @@ namespace GameEstate.AC.Formats.Entity
             ConeAngle = r.ReadSingle();
         }
 
+        //: Entity.LightInfo
         public override string ToString() => $"Viewer Space Location: {ViewerSpaceLocation}, Color: {Color}, Intensity: {Intensity}, Falloff: {Falloff}, Cone Angle: {ConeAngle}";
     }
 }

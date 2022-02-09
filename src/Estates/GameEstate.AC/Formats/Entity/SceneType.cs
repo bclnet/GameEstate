@@ -17,6 +17,7 @@ namespace GameEstate.AC.Formats.Entity
             Scenes = r.ReadL32Array<uint>(sizeof(uint));
         }
 
+        //: Entity.SceneType
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

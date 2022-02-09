@@ -31,9 +31,7 @@ namespace GameEstate.AC.Formats.Entity
             // First, we need to split input into separate words
             var words = input.Split(' ');
             foreach (var word in words)
-                foreach (var bannedPattern in BannedPatterns)
-                    if (Regex.IsMatch(word, $"^{bannedPattern.Replace("*", ".*")}$"))
-                        return true;
+                foreach (var bannedPattern in BannedPatterns) if (Regex.IsMatch(word, $"^{bannedPattern.Replace("*", ".*")}$")) return true;
             return false;
         }
     }

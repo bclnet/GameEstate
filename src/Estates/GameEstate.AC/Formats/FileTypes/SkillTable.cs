@@ -8,7 +8,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.SkillTable)]
-    public class SkillTable : AbstractFileType, IGetExplorerInfo
+    public class SkillTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E000004;
 

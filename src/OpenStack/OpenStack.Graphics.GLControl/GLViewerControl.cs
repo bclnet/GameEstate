@@ -17,6 +17,7 @@ namespace OpenStack.Graphics.Controls
     {
         readonly Stopwatch _stopwatch = new Stopwatch();
         static bool _hasCheckedOpenGL;
+        public static bool ShowConsole;
 
         public class RenderEventArgs
         {
@@ -30,7 +31,7 @@ namespace OpenStack.Graphics.Controls
 
         public GLViewerControl()
         {
-            if (!IsInDesignMode) ConsoleManager.Show();
+            if (ShowConsole && !IsInDesignMode) ConsoleManager.Show();
         }
 
         void OnTimerElapsed(object sender, EventArgs e) => Update();

@@ -23,6 +23,7 @@ namespace GameEstate.AC.Formats.Entity
             TerrainDesc = r.ReadL32Array(x => new TMTerrainDesc(x));
         }
 
+        //: Entity.TexMerge
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

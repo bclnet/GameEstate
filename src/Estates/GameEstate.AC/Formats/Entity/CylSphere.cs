@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             Height = r.ReadSingle();
         }
 
+        //: Entity.CylSphere
         public override string ToString() => $"Origin: {Origin}, Radius: {Radius}, Height: {Height}";
     }
 }

@@ -1,8 +1,8 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -25,6 +25,7 @@ namespace GameEstate.AC.Formats.Entity
 
         public bool IsContinuous => BaseChance == 0;
 
+        //: Entity.AmbientSoundDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

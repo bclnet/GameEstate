@@ -24,13 +24,13 @@ namespace GameEstate.AC.Formats.Entity
             ZeroYear = r.ReadUInt32();
             DayLength = r.ReadSingle();
             DaysPerYear = r.ReadUInt32();
-            YearSpec = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            YearSpec = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
             TimesOfDay = r.ReadL32Array(x => new TimeOfDay(x));
             DaysOfTheWeek = r.ReadL32Array(x => { var weekDay = r.ReadL16ANSI(); r.AlignBoundary(); return weekDay; });
             Seasons = r.ReadL32Array(x => new Season(x));
         }
 
+        //: Entity.GameTime
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -46,7 +46,7 @@ namespace GameEstate.AC.Formats.Entity
                     return new ExplorerInfoNode(name, items: items);
                 })),
                 new ExplorerInfoNode("DaysOfWeek", items: DaysOfTheWeek.Select(x => new ExplorerInfoNode($"{x}"))),
-                new ExplorerInfoNode("TimesOfDay", items: TimesOfDay.Select(x => {
+                new ExplorerInfoNode("Seasons", items: Seasons.Select(x => {
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
                     var name = items[1].Name.Replace("Name: ", "");
                     items.RemoveAt(1);

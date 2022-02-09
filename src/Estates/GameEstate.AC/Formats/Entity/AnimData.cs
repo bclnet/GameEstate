@@ -5,6 +5,7 @@ using System.IO;
 
 namespace GameEstate.AC.Formats.Entity
 {
+    //: Entity+AnimData
     public class AnimData : IGetExplorerInfo
     {
         public readonly uint AnimId;
@@ -15,6 +16,14 @@ namespace GameEstate.AC.Formats.Entity
         /// </summary>
         public readonly float Framerate;
 
+        //: Entity+AnimData
+        public AnimData(uint animationId, int lowFrame, int highFrame, float framerate)
+        {
+            AnimId = animationId;
+            LowFrame = lowFrame;
+            HighFrame = highFrame;
+            Framerate = framerate;
+        }
         public AnimData(BinaryReader r)
         {
             AnimId = r.ReadUInt32();
@@ -23,10 +32,11 @@ namespace GameEstate.AC.Formats.Entity
             Framerate = r.ReadSingle();
         }
 
+        //: Entity.AnimData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"AnimId: {AnimId:X8}"),
+                new ExplorerInfoNode($"Anim ID: {AnimId:X8}"),
                 new ExplorerInfoNode($"Low frame: {LowFrame}"),
                 new ExplorerInfoNode($"High frame: {HighFrame}"),
                 new ExplorerInfoNode($"Framerate: {Framerate}"),

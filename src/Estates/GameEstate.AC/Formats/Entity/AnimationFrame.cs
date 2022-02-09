@@ -17,6 +17,7 @@ namespace GameEstate.AC.Formats.Entity
             Hooks = r.ReadL32Array(AnimationHook.Factory);
         }
 
+        //: Entity.AnimationFrame
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

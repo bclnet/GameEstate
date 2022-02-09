@@ -23,6 +23,7 @@ namespace GameEstate.AC.Formats.Entity
             PaletteSet = r.ReadUInt32();
         }
 
+        //: Entity.ClothingSubPalette
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

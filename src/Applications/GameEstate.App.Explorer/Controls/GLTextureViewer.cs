@@ -16,10 +16,7 @@ namespace GameEstate.Explorer.View
         public GLTextureViewer()
         {
             GLPaint += OnPaint;
-            Unloaded += (s, e) =>
-            {
-                GLPaint -= OnPaint;
-            };
+            Unloaded += (s, e) => { GLPaint -= OnPaint; };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

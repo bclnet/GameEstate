@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly uint SoundType;
 
         public SoundTableHook(BinaryReader r) : base(r)
-        {
-            SoundType = r.ReadUInt32();
-        }
+            => SoundType = r.ReadUInt32();
     }
 }

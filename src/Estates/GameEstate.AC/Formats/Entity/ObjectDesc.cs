@@ -30,6 +30,7 @@ namespace GameEstate.AC.Formats.Entity
             WeenieObj = r.ReadUInt32();
         }
 
+        //: Entity.ObjectDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

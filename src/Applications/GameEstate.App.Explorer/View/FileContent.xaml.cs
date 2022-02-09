@@ -53,8 +53,7 @@ namespace GameEstate.Explorer.View
 
         public void OnFileInfo(EstatePakFile pakFile, List<ExplorerInfoNode> infos)
         {
-            if (ContentTabs != null)
-                foreach (var dispose in ContentTabs.Where(x => x.Dispose != null).Select(x => x.Dispose)) dispose.Dispose();
+            if (ContentTabs != null) foreach (var dispose in ContentTabs.Where(x => x.Dispose != null).Select(x => x.Dispose)) dispose.Dispose();
             Graphic = pakFile.Graphic;
             ContentTabs = infos?.Select(x => x.Tag as ExplorerContentTab).Where(x => x != null).ToList();
             ContentTab.SelectedIndex = ContentTabs != null ? 0 : -1;

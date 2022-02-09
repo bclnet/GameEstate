@@ -14,12 +14,7 @@
                 <TextBlock Text="Null" Margin="5,5,5,5" FontFamily="GenericMonospace" />
             </DataTemplate>
             <DataTemplate x:Key="Content_Hex" DataType="{x:Type model:ExplorerContentTab}">
-                <control:HexEditor Margin="5,5,5,5" />
-                <!--<Style.Triggers>
-                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
-                        <Setter Property="Stream" Value="{Binding Path=Value}" />
-                    </DataTrigger>
-                </Style.Triggers>-->
+                <control:HexEditor Margin="5,5,5,5" Stream="{Binding Path=Value}"/>
             </DataTemplate>
             <DataTemplate x:Key="Content_Text" DataType="{x:Type model:ExplorerContentTab}">
                 <ScrollViewer>

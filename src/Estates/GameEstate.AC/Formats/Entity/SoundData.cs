@@ -17,6 +17,7 @@ namespace GameEstate.AC.Formats.Entity
             Unknown = r.ReadUInt32();
         }
 
+        //: Entity.SoundData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

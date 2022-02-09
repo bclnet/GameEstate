@@ -11,10 +11,9 @@ namespace GameEstate.AC.Formats.Entity
         public readonly AmbientSTBDesc[] STBDesc;
 
         public SoundDesc(BinaryReader r)
-        {
-            STBDesc = r.ReadL32Array(x => new AmbientSTBDesc(x));
-        }
+            => STBDesc = r.ReadL32Array(x => new AmbientSTBDesc(x));
 
+        //: Entity.SoundDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

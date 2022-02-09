@@ -17,7 +17,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Very special thanks again to David Simpson for his early work on reading the cell.dat. Even bigger thanks for his documentation of it!
     /// </remarks>
     [PakFileType(PakFileType.LandBlockInfo)]
-    public class LandblockInfo : AbstractFileType, IGetExplorerInfo
+    public class LandblockInfo : FileType, IGetExplorerInfo
     {
         /// <summary>
         /// number of EnvCells in the landblock. This should match up to the unique items in the building stab lists.
@@ -51,6 +51,7 @@ namespace GameEstate.AC.Formats.FileTypes
             if ((PackMask & 1) == 1) RestrictionTables = r.ReadL16Many<uint, uint>(sizeof(uint), x => x.ReadUInt32(), offset: 2);
         }
 
+        //: FileTypes.LandblockInfo
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

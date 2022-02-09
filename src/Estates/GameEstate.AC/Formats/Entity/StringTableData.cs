@@ -25,6 +25,7 @@ namespace GameEstate.AC.Formats.Entity
             Unknown = r.ReadByte();
         }
 
+        //: Entity.StringTableData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

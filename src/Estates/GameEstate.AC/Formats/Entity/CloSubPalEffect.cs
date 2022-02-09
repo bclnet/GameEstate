@@ -20,6 +20,7 @@ namespace GameEstate.AC.Formats.Entity
             CloSubPalettes = r.ReadL32Array(x => new CloSubPalette(x));
         }
 
+        //: Entity.ClothingSubPaletteEffect
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -12,7 +12,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Contains info on what objects to display at what distance to help with render performance (e.g. low-poly very far away, but high-poly when close)
     /// </summary>
     [PakFileType(PakFileType.DegradeInfo)]
-    public class GfxObjDegradeInfo : AbstractFileType, IGetExplorerInfo
+    public class GfxObjDegradeInfo : FileType, IGetExplorerInfo
     {
         public readonly GfxObjInfo[] Degrades;
 
@@ -22,6 +22,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Degrades = r.ReadL32Array(x => new GfxObjInfo(x));
         }
 
+        //: FileTypes.DegradeInfo
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -19,6 +19,7 @@ namespace GameEstate.AC.Formats.Entity
             V = r.ReadSingle();
         }
 
+        //: Entity.UV
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

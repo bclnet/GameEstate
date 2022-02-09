@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// This is the client_portal.dat file starting with 0x13 -- There is only one of these, which is why REGION_ID is a constant.
     /// </summary>
     [PakFileType(PakFileType.Region)]
-    public class RegionDesc : AbstractFileType, IGetExplorerInfo
+    public class RegionDesc : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x13000000;
 
@@ -32,8 +32,8 @@ namespace GameEstate.AC.Formats.FileTypes
             Id = r.ReadUInt32();
             RegionNumber = r.ReadUInt32();
             Version = r.ReadUInt32();
-            RegionName = r.ReadL16ANSI(Encoding.Default); // "Dereth"
-            r.AlignBoundary();
+            RegionName = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary(); // "Dereth"
+
             LandDefs = new LandDefs(r);
             GameTime = new GameTime(r);
             PartsMask = r.ReadUInt32();
@@ -44,6 +44,7 @@ namespace GameEstate.AC.Formats.FileTypes
             if ((PartsMask & 0x0200) != 0) RegionMisc = new RegionMisc(r);
         }
 
+        //: FileTypes.Region
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -14,6 +14,7 @@ namespace GameEstate.AC.Formats.Entity
             AnimFrame = new AnimationFrame(r, numParts);
         }
 
+        //: Entity.PlacementType
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag) => (AnimFrame as IGetExplorerInfo).GetInfoNodes(resource, file, tag);
     }
 }

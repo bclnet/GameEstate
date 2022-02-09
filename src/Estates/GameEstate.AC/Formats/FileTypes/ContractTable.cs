@@ -10,7 +10,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// This is the client_portal.dat file 0x0E00001D
     /// </summary>
     [PakFileType(PakFileType.ContractTable)]
-    public class ContractTable : AbstractFileType, IGetExplorerInfo
+    public class ContractTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E00001D;
 
@@ -22,6 +22,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Contracts = r.ReadL16Many<uint, Contract>(sizeof(uint), x => new Contract(x), offset: 2);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

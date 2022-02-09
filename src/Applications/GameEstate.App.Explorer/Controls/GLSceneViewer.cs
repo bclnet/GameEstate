@@ -46,10 +46,7 @@ namespace GameEstate.Explorer.View
             //AddCheckBox("Show Dynamic Octree", _showDynamicOctree, (v) => _showDynamicOctree = v);
             //AddCheckBox("Lock Cull Frustum", false, (v) => { _lockedCullFrustum = v ? Scene.MainCamera.ViewFrustum.Clone() : null; });
 
-            Unloaded += (a, b) =>
-            {
-                GLPaint -= OnPaint;
-            };
+            Unloaded += (a, b) => { GLPaint -= OnPaint; };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -73,8 +70,7 @@ namespace GameEstate.Explorer.View
 
         void OnProperty()
         {
-            if (Graphic == null || Source == null)
-                return;
+            if (Graphic == null || Source == null) return;
 
             var graphic = Graphic as IOpenGLGraphic;
 

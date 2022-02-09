@@ -8,7 +8,7 @@ using System.Linq;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.StringTable)]
-    public class StringTable : AbstractFileType, IGetExplorerInfo
+    public class StringTable : FileType, IGetExplorerInfo
     {
         public static uint CharacterTitle_FileID = 0x2300000E;
 
@@ -24,6 +24,7 @@ namespace GameEstate.AC.Formats.FileTypes
             StringTableData = r.ReadC32Array(x => new StringTableData(x));
         }
 
+        //: FileTypes.StringTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

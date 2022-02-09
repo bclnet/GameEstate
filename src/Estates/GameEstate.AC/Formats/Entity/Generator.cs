@@ -10,8 +10,7 @@ namespace GameEstate.AC.Formats.Entity
 
         public Generator(BinaryReader r)
         {
-            Name = r.ReadObfuscatedString();
-            r.AlignBoundary();
+            Name = r.ReadObfuscatedString(); r.AlignBoundary();
             Id = r.ReadUInt32();
             Items = r.ReadL32Array(x => new Generator(x));
         }

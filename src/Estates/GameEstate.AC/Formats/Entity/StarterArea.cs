@@ -17,6 +17,7 @@ namespace GameEstate.AC.Formats.Entity
             Locations = r.ReadC32Array(x => new Position(x));
         }
 
+        //: Entity.StarterArea
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

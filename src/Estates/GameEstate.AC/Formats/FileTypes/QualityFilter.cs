@@ -6,7 +6,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.QualityFilter)]
-    public class QualityFilter : AbstractFileType, IGetExplorerInfo
+    public class QualityFilter : FileType, IGetExplorerInfo
     {
         public readonly uint[] IntStatFilter;
         public readonly uint[] Int64StatFilter;
@@ -47,6 +47,7 @@ namespace GameEstate.AC.Formats.FileTypes
             SkillStatFilter = r.ReadTArray<uint>(sizeof(uint), (int)numSkill);
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

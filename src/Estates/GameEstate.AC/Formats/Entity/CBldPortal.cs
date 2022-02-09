@@ -28,16 +28,16 @@ namespace GameEstate.AC.Formats.Entity
             Flags = (PortalFlags)r.ReadUInt16();
             OtherCellId = r.ReadUInt16();
             OtherPortalId = r.ReadUInt16();
-            StabList = r.ReadL16Array<ushort>(sizeof(ushort));
-            r.AlignBoundary();
+            StabList = r.ReadL16Array<ushort>(sizeof(ushort)); r.AlignBoundary();
         }
 
+        //: Entity.BldPortal
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 Flags != 0 ? new ExplorerInfoNode($"Flags: {Flags}") : null,
-                OtherCellId != 0 ? new ExplorerInfoNode($"OtherCellId: {OtherCellId:X}") : null,
-                OtherPortalId != 0 ? new ExplorerInfoNode($"OtherPortalId: {OtherPortalId:X}") : null,
+                OtherCellId != 0 ? new ExplorerInfoNode($"OtherCell ID: {OtherCellId:X}") : null,
+                OtherPortalId != 0 ? new ExplorerInfoNode($"OtherPortal ID: {OtherPortalId:X}") : null,
             };
             return nodes;
         }

@@ -5,17 +5,19 @@ namespace GameEstate.AC.Formats.Entity
 {
     public class Sphere
     {
-        public static Sphere Empty = new Sphere();
-        public readonly Vector3 Origin;
-        public readonly float Radius;
+        public static readonly Sphere Empty = new Sphere();
+        public Vector3 Origin;
+        public float Radius;
 
-        Sphere() { Origin = Vector3.Zero; }
+        //: Base + Entity+Sphere
+        public Sphere() { Origin = Vector3.Zero; }
         public Sphere(BinaryReader r)
         {
             Origin = r.ReadVector3();
             Radius = r.ReadSingle();
         }
 
+        //: Entity.Sphere
         public override string ToString() => $"Origin: {Origin}, Radius: {Radius}";
     }
 }

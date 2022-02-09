@@ -19,11 +19,11 @@ namespace GameEstate.AC.Formats.Entity
         {
             VertexType = r.ReadInt32();
             var numVertices = r.ReadUInt32();
-            if (VertexType == 1)
-                Vertices = r.ReadTMany<ushort, SWVertex>(sizeof(ushort), x => new SWVertex(x), (int)numVertices);
-            else throw new NotImplementedException();
+            if (VertexType == 1) Vertices = r.ReadTMany<ushort, SWVertex>(sizeof(ushort), x => new SWVertex(x), (int)numVertices);
+            else throw new FormatException("VertexType should be 1");
         }
 
+        //: Entity.VertexArray
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

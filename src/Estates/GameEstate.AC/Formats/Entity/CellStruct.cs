@@ -1,10 +1,9 @@
-
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -25,17 +24,16 @@ namespace GameEstate.AC.Formats.Entity
             var numPortals = r.ReadUInt32();
             VertexArray = new CVertexArray(r);
             Polygons = r.ReadTMany<ushort, Polygon>(sizeof(ushort), x => new Polygon(x), (int)numPolygons);
-            Portals = r.ReadTArray<ushort>(sizeof(ushort), (int)numPortals);
-            r.AlignBoundary();
+            Portals = r.ReadTArray<ushort>(sizeof(ushort), (int)numPortals); r.AlignBoundary();
             CellBSP = new BSPTree(r, BSPType.Cell);
             PhysicsPolygons = r.ReadTMany<ushort, Polygon>(sizeof(ushort), x => new Polygon(x), (int)numPhysicsPolygons);
             PhysicsBSP = new BSPTree(r, BSPType.Physics);
             var hasDrawingBSP = r.ReadUInt32();
-            if (hasDrawingBSP != 0)
-                DrawingBSP = new BSPTree(r, BSPType.Drawing);
+            if (hasDrawingBSP != 0) DrawingBSP = new BSPTree(r, BSPType.Drawing);
             r.AlignBoundary();
         }
 
+        //: Entity.CellStruct
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

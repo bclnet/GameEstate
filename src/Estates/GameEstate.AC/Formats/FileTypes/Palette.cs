@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are client_portal.dat files starting with 0x04. 
     /// </summary>
     [PakFileType(PakFileType.Palette)]
-    public class Palette : AbstractFileType, IGetExplorerInfo
+    public class Palette : FileType, IGetExplorerInfo
     {
         /// <summary>
         /// Color data is stored in ARGB format
@@ -24,6 +24,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Colors = r.ReadL32Array<uint>(sizeof(uint));
         }
 
+        //: FileTypes.Palette
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

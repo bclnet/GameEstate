@@ -21,6 +21,7 @@ namespace GameEstate.AC.Formats.Entity
             Frame = new Frame(r);
         }
 
+        //: Entity.Stab
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
@@ -30,6 +31,7 @@ namespace GameEstate.AC.Formats.Entity
             return nodes;
         }
 
+        //: Entity.Stab
         public override string ToString() => $"ID: {Id:X8}, Frame: {Frame}";
     }
 }

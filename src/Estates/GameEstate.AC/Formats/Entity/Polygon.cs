@@ -1,24 +1,26 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
     public class Polygon : IGetExplorerInfo
     {
-        public readonly byte NumPts;
-        public readonly StipplingType Stippling; // Whether it has that textured/bumpiness to it
-        public readonly CullMode SidesType;
-        public readonly short PosSurface;
-        public readonly short NegSurface;
-        public readonly short[] VertexIds;
-        public readonly byte[] PosUVIndices;
-        public readonly byte[] NegUVIndices;
+        public byte NumPts;
+        public StipplingType Stippling; // Whether it has that textured/bumpiness to it
+        public CullMode SidesType;
+        public short PosSurface;
+        public short NegSurface;
+        public short[]  VertexIds;
+        public byte[] PosUVIndices;
+        public byte[] NegUVIndices;
         public SWVertex[] Vertices;
 
+        //: Entity+Polygon
+        public Polygon() { }
         public Polygon(BinaryReader r)
         {
             NumPts = r.ReadByte();
@@ -27,17 +29,12 @@ namespace GameEstate.AC.Formats.Entity
             PosSurface = r.ReadInt16();
             NegSurface = r.ReadInt16();
             VertexIds = r.ReadTArray<short>(sizeof(short), NumPts);
-            if (!Stippling.HasFlag(StipplingType.NoPos))
-                PosUVIndices = r.ReadBytes(NumPts);
-            if (SidesType == CullMode.Clockwise && !Stippling.HasFlag(StipplingType.NoNeg))
-                NegUVIndices = r.ReadBytes(NumPts);
-            if (SidesType == CullMode.None)
-            {
-                NegSurface = PosSurface;
-                NegUVIndices = PosUVIndices;
-            }
+            PosUVIndices = !Stippling.HasFlag(StipplingType.NoPos) ? r.ReadBytes(NumPts) : new byte[0];
+            NegUVIndices = SidesType == CullMode.Clockwise && !Stippling.HasFlag(StipplingType.NoNeg) ? r.ReadBytes(NumPts) : new byte[0];
+            if (SidesType == CullMode.None) { NegSurface = PosSurface; NegUVIndices = PosUVIndices; }
         }
 
+        //: Entity.Polygon
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

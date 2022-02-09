@@ -8,7 +8,7 @@ using GameEstate.Formats;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.CharacterGenerator)]
-    public class CharGen : AbstractFileType, IGetExplorerInfo
+    public class CharGen : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E000002;
 
@@ -18,13 +18,14 @@ namespace GameEstate.AC.Formats.FileTypes
         public CharGen(BinaryReader r)
         {
             Id = r.ReadUInt32();
-            r.Skip(-4);
+            r.Skip(4);
             StarterAreas = r.ReadC32Array(x => new StarterArea(x));
             // HERITAGE GROUPS -- 11 standard player races and 2 Olthoi.
             r.Skip(1); // Not sure what this byte 0x01 is indicating, but we'll skip it because we can.
             HeritageGroups = r.ReadC32Many<uint, HeritageGroupCG>(sizeof(uint), x => new HeritageGroupCG(x));
         }
 
+        //: FileTypes.CharGen
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

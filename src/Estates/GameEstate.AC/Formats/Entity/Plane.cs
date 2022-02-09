@@ -5,9 +5,11 @@ namespace GameEstate.AC.Formats.Entity
 {
     public class Plane
     {
-        public readonly Vector3 N;
-        public readonly float D;
+        public Vector3 N;
+        public float D;
 
+        //: Entity+Plane
+        public Plane() { }
         public Plane(BinaryReader r)
         {
             N = r.ReadVector3();
@@ -16,6 +18,7 @@ namespace GameEstate.AC.Formats.Entity
 
         public System.Numerics.Plane ToNumerics() => new System.Numerics.Plane(N, D);
 
+        //: Entity.Plane
         public override string ToString() => $"Normal: {N} - Distance: {D}";
     }
 }

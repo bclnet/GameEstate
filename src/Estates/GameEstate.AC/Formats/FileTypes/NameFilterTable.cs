@@ -7,7 +7,7 @@ using System.IO;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.NameFilterTable)]
-    public class NameFilterTable : AbstractFileType, IGetExplorerInfo
+    public class NameFilterTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E000020;
 
@@ -17,9 +17,10 @@ namespace GameEstate.AC.Formats.FileTypes
         public NameFilterTable(BinaryReader r)
         {
             Id = r.ReadUInt32();
-            LanguageData = r.ReadL16Many<uint, NameFilterLanguageData>(sizeof(uint), x => new NameFilterLanguageData(x));
+            LanguageData = r.ReadL16Many<uint, NameFilterLanguageData>(sizeof(uint), x => new NameFilterLanguageData(x)); //:TODO different table size
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

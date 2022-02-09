@@ -6,8 +6,7 @@ namespace GameEstate.AC.Formats.Entity
 {
     public class SpellSet
     {
-        // uint key is the total combined item level of all the equipped pieces in the set
-        // client calls this m_PieceCount
+        // uint key is the total combined item level of all the equipped pieces in the set client calls this m_PieceCount
         public readonly SortedDictionary<uint, SpellSetTiers> SpellSetTiers;
         public readonly uint HighestTier;
         public readonly SortedDictionary<uint, SpellSetTiers> SpellSetTiersNoGaps;
@@ -20,10 +19,8 @@ namespace GameEstate.AC.Formats.Entity
             var lastSpellSetTier = default(SpellSetTiers);
             for (var i = 0U; i <= HighestTier; i++)
             {
-                if (SpellSetTiers.TryGetValue(i, out var spellSetTiers))
-                    lastSpellSetTier = spellSetTiers;
-                if (lastSpellSetTier != null)
-                    SpellSetTiersNoGaps.Add(i, lastSpellSetTier);
+                if (SpellSetTiers.TryGetValue(i, out var spellSetTiers)) lastSpellSetTier = spellSetTiers;
+                if (lastSpellSetTier != null) SpellSetTiersNoGaps.Add(i, lastSpellSetTier);
             }
         }
     }

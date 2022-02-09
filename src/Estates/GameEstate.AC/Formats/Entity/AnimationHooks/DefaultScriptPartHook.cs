@@ -7,8 +7,6 @@ namespace GameEstate.AC.Formats.Entity.AnimationHooks
         public readonly uint PartIndex;
 
         public DefaultScriptPartHook(BinaryReader r) : base(r)
-        {
-            PartIndex = r.ReadUInt32();
-        }
+            => PartIndex = r.ReadUInt32();
     }
 }

@@ -50,10 +50,8 @@ namespace GameEstate.AC.Formats.Entity
         }
         public SpellBase(BinaryReader r)
         {
-            Name = r.ReadObfuscatedString();
-            r.AlignBoundary();
-            Desc = r.ReadObfuscatedString();
-            r.AlignBoundary();
+            Name = r.ReadObfuscatedString(); r.AlignBoundary();
+            Desc = r.ReadObfuscatedString(); r.AlignBoundary();
             School = (MagicSchool)r.ReadUInt32();
             Icon = r.ReadUInt32();
             Category = (SpellCategory)r.ReadUInt32();
@@ -75,9 +73,7 @@ namespace GameEstate.AC.Formats.Entity
                     DegradeModifier = r.ReadSingle();
                     DegradeLimit = r.ReadSingle();
                     break;
-                case SpellType.PortalSummon:
-                    PortalLifetime = r.ReadDouble();
-                    break;
+                case SpellType.PortalSummon: PortalLifetime = r.ReadDouble(); break;
             }
 
             // Components : Load them first, then decrypt them. More efficient to hash all at once.
@@ -113,8 +109,7 @@ namespace GameEstate.AC.Formats.Entity
             {
                 var comp = rawComps[i] - key;
                 // This seems to correct issues with certain spells with extended characters.
-                if (comp > HIGHEST_COMP_ID) // highest comp ID is 198 - "Essence of Kemeroi", for Void Spells
-                    comp &= 0xFF;
+                if (comp > HIGHEST_COMP_ID) comp &= 0xFF; // highest comp ID is 198 - "Essence of Kemeroi", for Void Spells
                 comps[i] = comp;
             }
             return comps;
@@ -127,8 +122,7 @@ namespace GameEstate.AC.Formats.Entity
         /// </summary>
         public string GetSpellWords(SpellComponentTable comps)
         {
-            if (_spellWords != null)
-                return _spellWords;
+            if (_spellWords != null) return _spellWords;
             _spellWords = SpellComponentTable.GetSpellWords(comps, Formula);
             return _spellWords;
         }

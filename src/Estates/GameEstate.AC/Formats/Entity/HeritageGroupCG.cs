@@ -1,9 +1,9 @@
-using GameEstate.Explorer;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameEstate.Formats;
 
 namespace GameEstate.AC.Formats.Entity
 {
@@ -37,6 +37,7 @@ namespace GameEstate.AC.Formats.Entity
             Genders = r.ReadC32Many<int, SexCG>(sizeof(int), x => new SexCG(x));
         }
 
+        //: Entity.HeritageGroupCG
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

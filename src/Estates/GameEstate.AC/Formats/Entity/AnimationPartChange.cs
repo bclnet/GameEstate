@@ -5,6 +5,7 @@ using System.IO;
 
 namespace GameEstate.AC.Formats.Entity
 {
+    //: Entity+AnimationPartChange
     public class AnimationPartChange : IGetExplorerInfo
     {
         public readonly byte PartIndex;
@@ -21,15 +22,17 @@ namespace GameEstate.AC.Formats.Entity
             PartID = r.ReadAsDataIDOfKnownType(0x01000000);
         }
 
+        //: Entity.AnimationPartChange
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"PartIdx: {PartIndex}"),
-                new ExplorerInfoNode($"PartID: {PartID:X8}"),
+                new ExplorerInfoNode($"Part Idx: {PartIndex}"),
+                new ExplorerInfoNode($"Part ID: {PartID:X8}"),
             };
             return nodes;
         }
 
+        //: Entity.AnimationPartChange
         public override string ToString() => $"PartIdx: {PartIndex}, PartID: {PartID:X8}";
     }
 }

@@ -11,7 +11,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// These are client_portal.dat files starting with 0x12. 
     /// </summary>
     [PakFileType(PakFileType.Scene)]
-    public class Scene : AbstractFileType, IGetExplorerInfo
+    public class Scene : FileType, IGetExplorerInfo
     {
         public readonly ObjectDesc[] Objects;
 
@@ -21,6 +21,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Objects = r.ReadL32Array(x => new ObjectDesc(x));
         }
 
+        //: FileTypes.Scene
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

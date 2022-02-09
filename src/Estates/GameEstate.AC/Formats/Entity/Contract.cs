@@ -30,31 +30,20 @@ namespace GameEstate.AC.Formats.Entity
         {
             Version = r.ReadUInt32();
             ContractId = r.ReadUInt32();
-            ContractName = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            ContractName = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
 
-            Description = r.ReadL16ANSI(Encoding.Default); ;
-            r.AlignBoundary();
-            DescriptionProgress = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            Description = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            DescriptionProgress = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
 
-            NameNPCStart = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
-            NameNPCEnd = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            NameNPCStart = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            NameNPCEnd = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
 
-            QuestflagStamped = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
-            QuestflagStarted = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
-            QuestflagFinished = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
-            QuestflagProgress = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
-            QuestflagTimer = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
-            QuestflagRepeatTime = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            QuestflagStamped = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            QuestflagStarted = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            QuestflagFinished = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            QuestflagProgress = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            QuestflagTimer = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            QuestflagRepeatTime = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
 
             LocationNPCStart = new Position(r);
             LocationNPCEnd = new Position(r);

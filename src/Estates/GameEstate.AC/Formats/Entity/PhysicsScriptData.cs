@@ -16,6 +16,7 @@ namespace GameEstate.AC.Formats.Entity
             Hook = AnimationHook.Factory(r);
         }
 
+        //: Entity.PhysicsScriptData
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

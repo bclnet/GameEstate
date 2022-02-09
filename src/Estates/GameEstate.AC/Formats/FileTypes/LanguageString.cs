@@ -11,16 +11,17 @@ namespace GameEstate.AC.Formats.FileTypes
     /// This is called a "String" in the client; It has been renamed to avoid conflicts with the generic "String" class.
     /// </summary>
     [PakFileType(PakFileType.String)]
-    public class LanguageString : AbstractFileType, IGetExplorerInfo
+    public class LanguageString : FileType, IGetExplorerInfo
     {
         public string CharBuffer;
 
         public LanguageString(BinaryReader r)
         {
             Id = r.ReadUInt32();
-            CharBuffer = r.ReadC32ANSI(Encoding.Default);
+            CharBuffer = r.ReadC32ANSI(Encoding.Default); //:TODO ?FALLBACK
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

@@ -7,7 +7,7 @@ using System.Linq;
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.SurfaceTexture)]
-    public class SurfaceTexture : AbstractFileType, IGetExplorerInfo
+    public class SurfaceTexture : FileType, IGetExplorerInfo
     {
         public readonly int Unknown;
         public readonly byte UnknownByte;
@@ -21,6 +21,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Textures = r.ReadL32Array<uint>(sizeof(uint));
         }
 
+        //: FileTypes.SurfaceTexture
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

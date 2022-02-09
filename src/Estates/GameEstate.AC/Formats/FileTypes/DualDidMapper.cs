@@ -20,7 +20,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// 27000004 - TradeNotes
     /// </summary>
     [PakFileType(PakFileType.DualDidMapper)]
-    public class DualDidMapper : AbstractFileType, IGetExplorerInfo
+    public class DualDidMapper : FileType, IGetExplorerInfo
     {
         // The client/server designation is guessed based on the content in each list.
         // The keys in these two Dictionaries are common. So ClientEnumToId[key] = ClientEnumToName[key].
@@ -47,6 +47,7 @@ namespace GameEstate.AC.Formats.FileTypes
             ServerEnumToName = r.ReadC32Many<uint, string>(sizeof(uint), x => x.ReadL8ANSI(Encoding.Default));
         }
 
+        //: FileTypes.DualDidMapper
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

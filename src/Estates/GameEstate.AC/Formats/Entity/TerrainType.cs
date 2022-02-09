@@ -15,12 +15,12 @@ namespace GameEstate.AC.Formats.Entity
 
         public TerrainType(BinaryReader r)
         {
-            TerrainName = r.ReadL16ANSI(Encoding.Default);
-            r.AlignBoundary();
+            TerrainName = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
             TerrainColor = r.ReadUInt32();
             SceneTypes = r.ReadL32Array<uint>(sizeof(uint));
         }
 
+        //: Entity.TerrainType
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

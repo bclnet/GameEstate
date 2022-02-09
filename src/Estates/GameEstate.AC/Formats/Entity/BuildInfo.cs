@@ -33,10 +33,11 @@ namespace GameEstate.AC.Formats.Entity
             Portals = r.ReadL32Array(x => new CBldPortal(x));
         }
 
+        //: Entity.BuildInfo
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"ModelId: {ModelId:X8}"),
+                new ExplorerInfoNode($"Model ID: {ModelId:X8}"),
                 new ExplorerInfoNode($"Frame: {Frame}"),
                 new ExplorerInfoNode($"NumLeaves: {NumLeaves}"),
                 new ExplorerInfoNode($"Portals", items: Portals.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),

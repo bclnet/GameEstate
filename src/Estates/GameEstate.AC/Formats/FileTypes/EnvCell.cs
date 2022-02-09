@@ -18,7 +18,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// Very special thanks again to David Simpson for his early work on reading the cell.dat. Even bigger thanks for his documentation of it!
     /// </remarks>
     [PakFileType(PakFileType.EnvCell)]
-    public class EnvCell : AbstractFileType, IGetExplorerInfo
+    public class EnvCell : FileType, IGetExplorerInfo
     {
         public readonly EnvCellFlags Flags;
         public readonly uint[] Surfaces; // 0x08000000 surfaces (which contains degrade/quality info to reference the specific 0x06000000 graphics)
@@ -35,7 +35,7 @@ namespace GameEstate.AC.Formats.FileTypes
         {
             Id = r.ReadUInt32();
             Flags = (EnvCellFlags)r.ReadUInt32();
-            r.BaseStream.Position += 4; // Skip ahead 4 bytes, because this is the CellId. Again. Twice.
+            r.Skip(4); // Skip ahead 4 bytes, because this is the CellId. Again. Twice.
             var numSurfaces = r.ReadByte();
             var numPortals = r.ReadByte(); // Note that "portal" in this context does not refer to the swirly pink/purple thing, its basically connecting cells
             var numStabs = r.ReadUInt16(); // I believe this is what cells can be seen from this one. So the engine knows what else it needs to load/draw.
@@ -50,6 +50,7 @@ namespace GameEstate.AC.Formats.FileTypes
             if ((Flags & EnvCellFlags.HasRestrictionObj) != 0) RestrictionObj = r.ReadUInt32();
         }
 
+        //: FileTypes.EnvCell
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

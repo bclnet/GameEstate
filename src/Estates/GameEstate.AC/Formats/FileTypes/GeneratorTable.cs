@@ -12,7 +12,7 @@ namespace GameEstate.AC.Formats.FileTypes
     /// And thanks alot to Pea as well whos hard work surely helped in the creation of those Tools too.
     /// </summary>
     [PakFileType(PakFileType.ObjectHierarchy)]
-    public class GeneratorTable : AbstractFileType, IGetExplorerInfo
+    public class GeneratorTable : FileType, IGetExplorerInfo
     {
         public const uint FILE_ID = 0x0E00000D;
 
@@ -34,6 +34,7 @@ namespace GameEstate.AC.Formats.FileTypes
             WeenieObjectsItems = Generators.Items[1].Items;
         }
 
+        //: New
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {

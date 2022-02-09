@@ -20,10 +20,11 @@ namespace GameEstate.AC.Formats.Entity
             Frame = new Frame(r);
         }
 
+        //: Entity.Position
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                ObjCellID != 0 ? new ExplorerInfoNode($"ObjCellID: {ObjCellID:X8}") : null,
+                ObjCellID != 0 ? new ExplorerInfoNode($"ObjCell ID: {ObjCellID:X8}") : null,
                 !Frame.Origin.IsZeroEpsilon() ? new ExplorerInfoNode($"Origin: {Frame.Origin}") : null,
                 !Frame.Orientation.IsIdentity ? new ExplorerInfoNode($"Orientation: {Frame.Orientation}") : null,
             };

@@ -24,15 +24,16 @@ namespace GameEstate.AC.Formats.Entity
             ClearMonsterId = r.ReadUInt32();
         }
 
+        //: Entity.RegionMisc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Version: {Version}"),
-                new ExplorerInfoNode($"GameMapID: {GameMapID:X8}"),
-                new ExplorerInfoNode($"AutoTest MapID: {AutotestMapId:X8}"),
-                new ExplorerInfoNode($"AutoTest MapSize: {AutotestMapSize}"),
-                new ExplorerInfoNode($"ClearCellID: {ClearCellId:X8}"),
-                new ExplorerInfoNode($"ClearMonsterID: {ClearMonsterId:X8}"),
+                new ExplorerInfoNode($"GameMap ID: {GameMapID:X8}"),
+                new ExplorerInfoNode($"AutoTest Map ID: {AutotestMapId:X8}"),
+                new ExplorerInfoNode($"AutoTest Map Size: {AutotestMapSize}"),
+                new ExplorerInfoNode($"ClearCell ID: {ClearCellId:X8}"),
+                new ExplorerInfoNode($"ClearMonster ID: {ClearMonsterId:X8}"),
             };
             return nodes;
         }

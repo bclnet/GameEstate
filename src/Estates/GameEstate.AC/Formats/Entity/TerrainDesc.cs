@@ -17,6 +17,7 @@ namespace GameEstate.AC.Formats.Entity
             LandSurfaces = new LandSurf(r);
         }
 
+        //: Entity.TerrainDesc
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
