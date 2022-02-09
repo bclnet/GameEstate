@@ -82,11 +82,9 @@ namespace GameEstate.Formats
         /// </summary>
         public override void Close()
         {
-            foreach (var r in BinaryReaders.Values)
-                r.Dispose();
+            foreach (var r in BinaryReaders.Values)                r.Dispose();
             BinaryReaders.Clear();
-            if (Tag is IDisposable disposableTag)
-                disposableTag.Dispose();
+            if (Tag is IDisposable disposableTag)                disposableTag.Dispose();
             Tag = null;
         }
 
@@ -249,12 +247,10 @@ namespace GameEstate.Formats
         /// <exception cref="NotImplementedException"></exception>
         public override async Task<List<ExplorerInfoNode>> GetExplorerInfoNodesAsync(ExplorerManager manager, ExplorerItemNode item)
         {
-            if (!(item.Tag is FileMetadata file))
-                return null;
+            if (!(item.Tag is FileMetadata file)) return null;
             List<ExplorerInfoNode> nodes = null;
             var obj = await LoadFileObjectAsync<object>(file);
-            if (obj is IGetExplorerInfo info)
-                nodes = info.GetInfoNodes(manager, file);
+            if (obj is IGetExplorerInfo info) nodes = info.GetInfoNodes(manager, file);
             else if (obj is Stream stream)
             {
                 var value = GetStringOrBytes(stream);
@@ -270,10 +266,8 @@ namespace GameEstate.Formats
                         }) }
                     : throw new ArgumentOutOfRangeException(nameof(value), value.GetType().Name);
             }
-            else if (obj is IDisposable disposable)
-                disposable.Dispose();
-            if (nodes == null)
-                return null;
+            else if (obj is IDisposable disposable) disposable.Dispose();
+            if (nodes == null) return null;
             nodes.Add(new ExplorerInfoNode("File", items: new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Path: {file.Path}"),
                 new ExplorerInfoNode($"FileSize: {file.FileSize}"),

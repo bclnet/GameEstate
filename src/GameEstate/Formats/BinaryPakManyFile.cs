@@ -57,16 +57,12 @@ namespace GameEstate.Formats
         /// <exception cref="InvalidOperationException"></exception>
         public override Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null)
         {
-            if (path == null)
-                throw new ArgumentNullException(nameof(path));
-            if (TryLookupPath(path, out var pak, out var nextFilePath))
-                return pak.LoadFileDataAsync(nextFilePath, exception);
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (TryLookupPath(path, out var pak, out var nextFilePath)) return pak.LoadFileDataAsync(nextFilePath, exception);
             var files = FilesByPath[path.Replace('\\', '/')].ToArray();
-            if (files.Length == 1)
-                return LoadFileDataAsync(files[0], exception);
+            if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
             exception?.Invoke(null, $"LoadFileDataAsync: {path} @ {files.Length}"); //CoreDebug.Log($"LoadFileDataAsync: {filePath} @ {files.Length}");
-            if (files.Length == 0)
-                throw new FileNotFoundException(path);
+            if (files.Length == 0) throw new FileNotFoundException(path);
             throw new InvalidOperationException();
         }
 
@@ -81,18 +77,13 @@ namespace GameEstate.Formats
         /// <exception cref="InvalidOperationException"></exception>
         public override Task<T> LoadFileObjectAsync<T>(string path, Action<FileMetadata, string> exception = null)
         {
-            if (path == null)
-                throw new ArgumentNullException(nameof(path));
-            if (TryLookupPath(path, out var pak, out var nextFilePath))
-                return pak.LoadFileObjectAsync<T>(nextFilePath, exception);
-            if (PathFinders.Count > 0)
-                path = FindPath<T>(path);
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (TryLookupPath(path, out var pak, out var nextFilePath)) return pak.LoadFileObjectAsync<T>(nextFilePath, exception);
+            if (PathFinders.Count > 0) path = FindPath<T>(path);
             var files = FilesByPath[path.Replace('\\', '/')].ToArray();
-            if (files.Length == 1)
-                return LoadFileObjectAsync<T>(files[0], exception);
+            if (files.Length == 1) return LoadFileObjectAsync<T>(files[0], exception);
             exception?.Invoke(null, $"LoadFileObjectAsync: {path} @ {files.Length}"); //CoreDebug.Log($"LoadFileObjectAsync: {filePath} @ {files.Length}");
-            if (files.Length == 0)
-                throw new FileNotFoundException(path);
+            if (files.Length == 0) throw new FileNotFoundException(path);
             throw new InvalidOperationException();
         }
 
@@ -108,12 +99,10 @@ namespace GameEstate.Formats
         /// <param name="message">The message.</param>
         public void AddRawFile(FileMetadata file, string message)
         {
-            if (file == null)
-                throw new ArgumentNullException(nameof(file));
+            if (file == null) throw new ArgumentNullException(nameof(file));
             lock (this)
             {
-                if (FilesRawSet == null)
-                    FilesRawSet = new HashSet<string>();
+                if (FilesRawSet == null) FilesRawSet = new HashSet<string>();
                 FilesRawSet.Add(file.Path);
             }
         }
@@ -122,11 +111,7 @@ namespace GameEstate.Formats
         {
             var paths = path.Split(new[] { ':' }, 2);
             pak = paths.Length == 1 ? null : FilesByPath[paths[0].Replace('\\', '/')].FirstOrDefault()?.Pak;
-            if (pak != null)
-            {
-                nextPath = paths[1];
-                return true;
-            }
+            if (pak != null) { nextPath = paths[1]; return true; }
             nextPath = null;
             return false;
         }

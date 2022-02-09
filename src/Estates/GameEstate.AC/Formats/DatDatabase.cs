@@ -3,16 +3,10 @@
 //using System.Collections.Generic;
 //using System.IO;
 
-//using log4net;
-
-//namespace GameEstate.AC.Formats
-
 //namespace GameEstate.AC.Formats.Domain
 //{
 //    public class DatDatabase
 //    {
-//        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 //        private static readonly uint DAT_HEADER_OFFSET = 0x140;
 
 //        public string FilePath { get; }

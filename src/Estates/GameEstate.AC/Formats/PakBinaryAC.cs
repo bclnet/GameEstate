@@ -83,8 +83,8 @@ namespace GameEstate.AC.Formats
 
             public void AddFiles(PakType pakType, IList<FileMetadata> files, string path, int blockSize)
             {
-                var did = 0; Directories.ForEach(d => d.AddFiles(pakType, files, Path.Combine(path, did++.ToString()), blockSize));
-                //Directories.ForEach(d => d.AddFiles(pakType, files, path, blockSize));
+                //var did = 0; Directories.ForEach(d => d.AddFiles(pakType, files, Path.Combine(path, did++.ToString()), blockSize));
+                Directories.ForEach(d => d.AddFiles(pakType, files, path, blockSize));
                 for (var i = 0; i < Header.EntryCount; i++)
                 {
                     var entry = Header.Entries[i];
@@ -183,6 +183,7 @@ namespace GameEstate.AC.Formats
         {
             if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
             if (stage != ReadStage.File) throw new ArgumentOutOfRangeException(nameof(stage), stage.ToString());
+            //if (ACPakManager.CellDat == null) ACPakManager.Initialize(source);
 
             var files = multiSource.Files = new List<FileMetadata>();
             r.Position(DAT_HEADER_OFFSET);
