@@ -21,6 +21,7 @@ namespace GameEstate.AC
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();
+            if (!DatabaseManager.loaded) DatabaseManager.Initialize(this);
         }
     }
 }

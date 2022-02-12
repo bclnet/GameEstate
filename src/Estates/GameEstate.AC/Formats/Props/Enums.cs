@@ -696,59 +696,226 @@ namespace GameEstate.AC.Formats.Props
     /// </summary>
     public enum CharacterOption
     {
-        [CharacterOptions1(CharacterOptions1.AutoRepeatAttacks)] AutoRepeatAttacks = 0x00, // AutoRepeatAttack_PlayerOption
+        /// <summary>
+        /// AutoRepeatAttacks
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.AutoRepeatAttack)] AutoRepeatAttacks = 0x00, // AutoRepeatAttack_PlayerOption
+        /// <summary>
+        /// IgnoreAllegianceRequests
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.IgnoreAllegianceRequests)] IgnoreAllegianceRequests = 0x01, // IgnoreAllegianceRequests_PlayerOption
+        /// <summary>
+        /// IgnoreFellowshipRequests
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.IgnoreFellowshipRequests)] IgnoreFellowshipRequests = 0x02, // IgnoreFellowshipRequests_PlayerOption
-        [CharacterOptions1(CharacterOptions1.IgnoreAllTradeRequests)] IgnoreAllTradeRequests = 0x03, // IgnoreTradeRequests_PlayerOption
+        /// <summary>
+        /// IgnoreAllTradeRequests
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.IgnoreTradeRequests)] IgnoreAllTradeRequests = 0x03, // IgnoreTradeRequests_PlayerOption
+        /// <summary>
+        /// DisableMostWeatherEffects
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.DisableMostWeatherEffects)] DisableMostWeatherEffects = 0x04, // DisableMostWeatherEffects_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AlwaysDaylightOutdoors)] AlwaysDaylightOutdoors = 0x05, // PersistentAtDay_PlayerOption
-        [CharacterOptions1(CharacterOptions1.LetOtherPlayersGiveYouItems)] LetOtherPlayersGiveYouItems = 0x06, // AllowGive_PlayerOption
-        [CharacterOptions1(CharacterOptions1.KeepCombatTargetsInView)] KeepCombatTargetsInView = 0x07, // ViewCombatTarget_PlayerOption
-        [CharacterOptions1(CharacterOptions1.Display3dTooltips)] Display3dTooltips = 0x08, // ShowTooltips_PlayerOption
-        [CharacterOptions1(CharacterOptions1.AttemptToDeceiveOtherPlayers)] AttemptToDeceiveOtherPlayers = 0x09, // UseDeception_PlayerOption
-        [CharacterOptions1(CharacterOptions1.RunAsDefaultMovement)] RunAsDefaultMovement = 0x0A, // ToggleRun_PlayerOption
-        [CharacterOptions1(CharacterOptions1.StayInChatModeAfterSendingMessage)] StayInChatModeAfterSendingMessage = 0x0B, // StayInChatMode_PlayerOption
-        [CharacterOptions1(CharacterOptions1.AdvancedCombatInterface)] AdvancedCombatInterface = 0x0C, // AdvancedCombatUI_PlayerOption
+        /// <summary>
+        /// AlwaysDaylightOutdoors
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.PersistentAtDay)] AlwaysDaylightOutdoors = 0x05, // PersistentAtDay_PlayerOption
+        /// <summary>
+        /// LetOtherPlayersGiveYouItems
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.AllowGive)] LetOtherPlayersGiveYouItems = 0x06, // AllowGive_PlayerOption
+        /// <summary>
+        /// KeepCombatTargetsInView
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.ViewCombatTarget)] KeepCombatTargetsInView = 0x07, // ViewCombatTarget_PlayerOption
+        /// <summary>
+        /// Display3dTooltips
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.ShowTooltips)] Display3dTooltips = 0x08, // ShowTooltips_PlayerOption
+        /// <summary>
+        /// AttemptToDeceiveOtherPlayers
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.UseDeception)] AttemptToDeceiveOtherPlayers = 0x09, // UseDeception_PlayerOption
+        /// <summary>
+        /// RunAsDefaultMovement
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.ToggleRun)] RunAsDefaultMovement = 0x0A, // ToggleRun_PlayerOption
+        /// <summary>
+        /// StayInChatModeAfterSendingMessage
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.StayInChatMode)] StayInChatModeAfterSendingMessage = 0x0B, // StayInChatMode_PlayerOption
+        /// <summary>
+        /// AdvancedCombatInterface
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.AdvancedCombatUI)] AdvancedCombatInterface = 0x0C, // AdvancedCombatUI_PlayerOption
+        /// <summary>
+        /// AutoTarget
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.AutoTarget)] AutoTarget = 0x0D, // AutoTarget_PlayerOption
+        /// <summary>
+        /// VividTargetingIndicator
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.VividTargetingIndicator)] VividTargetingIndicator = 0x0E, // VividTargetingIndicator_PlayerOption
-        [CharacterOptions1(CharacterOptions1.ShareFellowshipExpAndLuminance)] ShareFellowshipExpAndLuminance = 0x0F, // FellowshipShareXP_PlayerOption
-        [CharacterOptions1(CharacterOptions1.AcceptCorpseLootingPermissions)] AcceptCorpseLootingPermissions = 0x10, // AcceptLootPermits_PlayerOption
-        [CharacterOptions1(CharacterOptions1.ShareFellowshipLoot)] ShareFellowshipLoot = 0x11, // FellowshipShareLoot_PlayerOption
-        [CharacterOptions1(CharacterOptions1.AutomaticallyAcceptFellowshipRequests)] AutomaticallyAcceptFellowshipRequests = 0x12, // FellowshipAutoAcceptRequests_PlayerOption
+        /// <summary>
+        /// ShareFellowshipExpAndLuminance
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.FellowshipShareXP)] ShareFellowshipExpAndLuminance = 0x0F, // FellowshipShareXP_PlayerOption
+        /// <summary>
+        /// AcceptCorpseLootingPermissions
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.AcceptLootPermits)] AcceptCorpseLootingPermissions = 0x10, // AcceptLootPermits_PlayerOption
+        /// <summary>
+        /// ShareFellowshipLoot
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.FellowshipShareLoot)] ShareFellowshipLoot = 0x11, // FellowshipShareLoot_PlayerOption
+        /// <summary>
+        /// AutomaticallyAcceptFellowshipRequests
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.AutoAcceptFellowRequest)] AutomaticallyAcceptFellowshipRequests = 0x12, // FellowshipAutoAcceptRequests_PlayerOption
+        /// <summary>
+        /// SideBySideVitals
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.SideBySideVitals)] SideBySideVitals = 0x13, // SideBySideVitals_PlayerOption
-        [CharacterOptions1(CharacterOptions1.ShowCoordinatesByTheRadar)] ShowCoordinatesByTheRadar = 0x14, // CoordinatesOnRadar_PlayerOption
-        [CharacterOptions1(CharacterOptions1.DisplaySpellDurations)] DisplaySpellDurations = 0x15, // SpellDuration_PlayerOption
+        /// <summary>
+        /// ShowCoordinatesByTheRadar
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.CoordinatesOnRadar)] ShowCoordinatesByTheRadar = 0x14, // CoordinatesOnRadar_PlayerOption
+        /// <summary>
+        /// DisplaySpellDurations
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.SpellDuration)] DisplaySpellDurations = 0x15, // SpellDuration_PlayerOption
+        /// <summary>
+        /// DisableHouseRestrictionEffects
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.DisableHouseRestrictionEffects)] DisableHouseRestrictionEffects = 0x16, // DisableHouseRestrictionEffects_PlayerOption
-        [CharacterOptions1(CharacterOptions1.DragItemToPlayerOpensTrade)] DragItemToPlayerOpensTrade = 0x17, // DragItemOnPlayerOpensSecureTrade_PlayerOption
-        [CharacterOptions1(CharacterOptions1.ShowAllegianceLogons)] ShowAllegianceLogons = 0x18, // DisplayAllegianceLogonNotifications_PlayerOption
+        /// <summary>
+        /// DragItemToPlayerOpensTrade
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.DragItemOnPlayerOpensSecureTrade)] DragItemToPlayerOpensTrade = 0x17, // DragItemOnPlayerOpensSecureTrade_PlayerOption
+        /// <summary>
+        /// ShowAllegianceLogons
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.DisplayAllegianceLogonNotifications)] ShowAllegianceLogons = 0x18, // DisplayAllegianceLogonNotifications_PlayerOption
+        /// <summary>
+        /// UseChargeAttack
+        /// </summary>
         [CharacterOptions1(CharacterOptions1.UseChargeAttack)] UseChargeAttack = 0x19, // UseChargeAttack_PlayerOption
-        [CharacterOptions1(CharacterOptions1.UseCraftingChanceOfSuccessDialog)] UseCraftingChanceOfSuccessDialog = 0x1A, // UseCraftSuccessDialog_PlayerOption
-        [CharacterOptions1(CharacterOptions1.ListenToAllegianceChat)] ListenToAllegianceChat = 0x1B, // HearAllegianceChat_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AllowOthersToSeeYourDateOfBirth)] AllowOthersToSeeYourDateOfBirth = 0x1C, // DisplayDateOfBirth_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AllowOthersToSeeYourAge)] AllowOthersToSeeYourAge = 0x1D, // DisplayAge_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AllowOthersToSeeYourChessRank)] AllowOthersToSeeYourChessRank = 0x1E, // DisplayChessRank_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AllowOthersToSeeYourFishingSkill)] AllowOthersToSeeYourFishingSkill = 0x1F, // DisplayFishingSkill_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AllowOthersToSeeYourNumberOfDeaths)] AllowOthersToSeeYourNumberOfDeaths = 0x20, // DisplayNumberDeaths_PlayerOption
-        [CharacterOptions2(CharacterOptions2.DisplayTimestamps)] DisplayTimestamps = 0x21, // DisplayTimeStamps_PlayerOption
-        [CharacterOptions2(CharacterOptions2.SalvageMultipleMaterialsAtOnce)] SalvageMultipleMaterialsAtOnce = 0x22, // SalvageMultiple_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ListenToGeneralChat)] ListenToGeneralChat = 0x23, // HearGeneralChat_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ListenToTradeChat)] ListenToTradeChat = 0x24, // HearTradeChat_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ListenToLFGChat)] ListenToLFGChat = 0x25, // HearLFGChat_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ListenToRoleplayChat)] ListenToRoleplayChat = 0x26, // HearRoleplayChat_PlayerOption
+        /// <summary>
+        /// UseCraftingChanceOfSuccessDialog
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.UseCraftSuccessDialog)] UseCraftingChanceOfSuccessDialog = 0x1A, // UseCraftSuccessDialog_PlayerOption
+        /// <summary>
+        /// ListenToAllegianceChat
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.HearAllegianceChat)] ListenToAllegianceChat = 0x1B, // HearAllegianceChat_PlayerOption
+        /// <summary>
+        /// AllowOthersToSeeYourDateOfBirth
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.DisplayDateOfBirth)] AllowOthersToSeeYourDateOfBirth = 0x1C, // DisplayDateOfBirth_PlayerOption
+        /// <summary>
+        /// AllowOthersToSeeYourAge
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.DisplayAge)] AllowOthersToSeeYourAge = 0x1D, // DisplayAge_PlayerOption
+        /// <summary>
+        /// AllowOthersToSeeYourChessRank
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.DisplayChessRank)] AllowOthersToSeeYourChessRank = 0x1E, // DisplayChessRank_PlayerOption
+        /// <summary>
+        /// AllowOthersToSeeYourFishingSkill
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.DisplayFishingSkill)] AllowOthersToSeeYourFishingSkill = 0x1F, // DisplayFishingSkill_PlayerOption
+        /// <summary>
+        /// AllowOthersToSeeYourNumberOfDeaths
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.DisplayNumberDeaths)] AllowOthersToSeeYourNumberOfDeaths = 0x20, // DisplayNumberDeaths_PlayerOption
+        /// <summary>
+        /// DisplayTimestamps
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.TimeStamp)] DisplayTimestamps = 0x21, // DisplayTimeStamps_PlayerOption
+        /// <summary>
+        /// SalvageMultipleMaterialsAtOnce
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.SalvageMultiple)] SalvageMultipleMaterialsAtOnce = 0x22, // SalvageMultiple_PlayerOption
+        /// <summary>
+        /// ListenToGeneralChat
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.HearGeneralChat)] ListenToGeneralChat = 0x23, // HearGeneralChat_PlayerOption
+        /// <summary>
+        /// ListenToTradeChat
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.HearTradeChat)] ListenToTradeChat = 0x24, // HearTradeChat_PlayerOption
+        /// <summary>
+        /// ListenToLFGChat
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.HearLFGChat)] ListenToLFGChat = 0x25, // HearLFGChat_PlayerOption
+        /// <summary>
+        /// ListenToRoleplayChat
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.HearRoleplayChat)] ListenToRoleplayChat = 0x26, // HearRoleplayChat_PlayerOption
+        /// <summary>
+        /// AppearOffline
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.AppearOffline)] AppearOffline = 0x27, // AppearOffline_PlayerOption
-        [CharacterOptions2(CharacterOptions2.AllowOthersToSeeYourNumberOfTitles)] AllowOthersToSeeYourNumberOfTitles = 0x28, // DisplayNumberCharacterTitles_PlayerOption
-        [CharacterOptions2(CharacterOptions2.UseMainPackAsDefaultForPickingUpItems)] UseMainPackAsDefaultForPickingUpItems = 0x29, // MainPackPreferred_PlayerOption
+        /// <summary>
+        /// AllowOthersToSeeYourNumberOfTitles
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.DisplayNumberCharacterTitles)] AllowOthersToSeeYourNumberOfTitles = 0x28, // DisplayNumberCharacterTitles_PlayerOption
+        /// <summary>
+        /// UseMainPackAsDefaultForPickingUpItems
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.MainPackPreferred)] UseMainPackAsDefaultForPickingUpItems = 0x29, // MainPackPreferred_PlayerOption
+        /// <summary>
+        /// LeadMissileTargets
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.LeadMissileTargets)] LeadMissileTargets = 0x2A, // LeadMissileTargets_PlayerOption
+        /// <summary>
+        /// UseFastMissiles
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.UseFastMissiles)] UseFastMissiles = 0x2B, // UseFastMissiles_PlayerOption
+        /// <summary>
+        /// FilterLanguage
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.FilterLanguage)] FilterLanguage = 0x2C, // FilterLanguage_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ConfirmUseOfRareGems)] ConfirmUseOfRareGems = 0x2D, // ConfirmVolatileRareUse_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ListenToSocietyChat)] ListenToSocietyChat = 0x2E, // HearSocietyChat_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ShowYourHelmOrHeadGear)] ShowYourHelmOrHeadGear = 0x2F, // ShowHelm_PlayerOption
+        /// <summary>
+        /// ConfirmUseOfRareGems
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.ConfirmVolatileRareUse)] ConfirmUseOfRareGems = 0x2D, // ConfirmVolatileRareUse_PlayerOption
+        /// <summary>
+        /// ListenToSocietyChat
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.HearSocietyChat)] ListenToSocietyChat = 0x2E, // HearSocietyChat_PlayerOption
+        /// <summary>
+        /// ShowYourHelmOrHeadGear
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.ShowHelm)] ShowYourHelmOrHeadGear = 0x2F, // ShowHelm_PlayerOption
+        /// <summary>
+        /// DisableDistanceFog
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.DisableDistanceFog)] DisableDistanceFog = 0x30, // DisableDistanceFog_PlayerOption
+        /// <summary>
+        /// UseMouseTurning
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.UseMouseTurning)] UseMouseTurning = 0x31, // UseMouseTurning_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ShowYourCloak)] ShowYourCloak = 0x32, // ShowCloak_PlayerOption
+        /// <summary>
+        /// ShowYourCloak
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.ShowCloak)] ShowYourCloak = 0x32, // ShowCloak_PlayerOption
+        /// <summary>
+        /// LockUI
+        /// </summary>
         [CharacterOptions2(CharacterOptions2.LockUI)] LockUI = 0x33, // LockUI_PlayerOption
-        [CharacterOptions2(CharacterOptions2.ListenToPKDeathMessages)] ListenToPKDeathMessages = 0x34, // HearPKDeath_PlayerOption
+        /// <summary>
+        /// ListenToPKDeathMessages
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.HearPKDeath)] ListenToPKDeathMessages = 0x34, // HearPKDeath_PlayerOption
+        /// <summary>
+        /// CharacterOptions1Default
+        /// </summary>
+        [CharacterOptions1(CharacterOptions1.Default)] CharacterOptions1Default = 0x35,
+        /// <summary>
+        /// CharacterOptions2Default
+        /// </summary>
+        [CharacterOptions2(CharacterOptions2.Default)] CharacterOptions2Default = 0x36
     }
 
     partial class EnumExtensions
@@ -798,37 +965,39 @@ namespace GameEstate.AC.Formats.Props
     public enum CharacterOptions1 : uint
     {
         NotUsed1 = 0x00000001,
-        AutoRepeatAttacks = 0x00000002,
+        AutoRepeatAttack = 0x00000002,
         IgnoreAllegianceRequests = 0x00000004,
         IgnoreFellowshipRequests = 0x00000008,
         NotUsed2 = 0x00000010,
         NotUsed3 = 0x00000020,
-        LetOtherPlayersGiveYouItems = 0x00000040,
-        KeepCombatTargetsInView = 0x00000080,
-        Display3dTooltips = 0x00000100,
-        AttemptToDeceiveOtherPlayers = 0x00000200,
-        RunAsDefaultMovement = 0x00000400,
-        StayInChatModeAfterSendingMessage = 0x00000800,
-        AdvancedCombatInterface = 0x00001000,
+        AllowGive = 0x00000040,
+        ViewCombatTarget = 0x00000080,
+        ShowTooltips = 0x00000100,
+        UseDeception = 0x00000200,
+        ToggleRun = 0x00000400,
+        StayInChatMode = 0x00000800,
+        AdvancedCombatUI = 0x00001000,
         AutoTarget = 0x00002000,
         NotUsed4 = 0x00004000,
         VividTargetingIndicator = 0x00008000,
         DisableMostWeatherEffects = 0x00010000,
-        IgnoreAllTradeRequests = 0x00020000,
-        ShareFellowshipExpAndLuminance = 0x00040000,
-        AcceptCorpseLootingPermissions = 0x00080000,
-        ShareFellowshipLoot = 0x00100000,
+        IgnoreTradeRequests = 0x00020000,
+        FellowshipShareXP = 0x00040000,
+        AcceptLootPermits = 0x00080000,
+        FellowshipShareLoot = 0x00100000,
         SideBySideVitals = 0x00200000,
-        ShowCoordinatesByTheRadar = 0x00400000,
-        DisplaySpellDurations = 0x00800000,
+        CoordinatesOnRadar = 0x00400000,
+        SpellDuration = 0x00800000,
         NotUsed5 = 0x01000000,
         DisableHouseRestrictionEffects = 0x02000000,
-        DragItemToPlayerOpensTrade = 0x04000000,
-        ShowAllegianceLogons = 0x08000000,
+        DragItemOnPlayerOpensSecureTrade = 0x04000000,
+        DisplayAllegianceLogonNotifications = 0x08000000,
         UseChargeAttack = 0x10000000,
-        AutomaticallyAcceptFellowshipRequests = 0x20000000,
-        ListenToAllegianceChat = 0x40000000,
-        UseCraftingChanceOfSuccessDialog = 0x80000000
+        AutoAcceptFellowRequest = 0x20000000,
+        HearAllegianceChat = 0x40000000,
+        UseCraftSuccessDialog = 0x80000000,
+
+        Default = AutoRepeatAttack | IgnoreFellowshipRequests | AllowGive | ShowTooltips | ToggleRun | AutoTarget | VividTargetingIndicator | FellowshipShareXP | CoordinatesOnRadar | SpellDuration | UseChargeAttack | HearAllegianceChat // 1355064650
     }
 
     /// <summary>
@@ -839,38 +1008,40 @@ namespace GameEstate.AC.Formats.Props
     [Flags]
     public enum CharacterOptions2 : uint
     {
-        AlwaysDaylightOutdoors = 0x00000001,
-        AllowOthersToSeeYourDateOfBirth = 0x00000002,
-        AllowOthersToSeeYourChessRank = 0x00000004,
-        AllowOthersToSeeYourFishingSkill = 0x00000008,
-        AllowOthersToSeeYourNumberOfDeaths = 0x00000010,
-        AllowOthersToSeeYourAge = 0x00000020,
-        DisplayTimestamps = 0x00000040,
-        SalvageMultipleMaterialsAtOnce = 0x00000080,
-        ListenToGeneralChat = 0x00000100,
-        ListenToTradeChat = 0x00000200,
-        ListenToLFGChat = 0x00000400,
-        ListenToRoleplayChat = 0x00000800,
+        PersistentAtDay = 0x00000001,
+        DisplayDateOfBirth = 0x00000002,
+        DisplayChessRank = 0x00000004,
+        DisplayFishingSkill = 0x00000008,
+        DisplayNumberDeaths = 0x00000010,
+        DisplayAge = 0x00000020,
+        TimeStamp = 0x00000040,
+        SalvageMultiple = 0x00000080,
+        HearGeneralChat = 0x00000100,
+        HearTradeChat = 0x00000200,
+        HearLFGChat = 0x00000400,
+        HearRoleplayChat = 0x00000800,
         AppearOffline = 0x00001000,
-        AllowOthersToSeeYourNumberOfTitles = 0x00002000,
-        UseMainPackAsDefaultForPickingUpItems = 0x00004000,
+        DisplayNumberCharacterTitles = 0x00002000,
+        MainPackPreferred = 0x00004000,
         LeadMissileTargets = 0x00008000,
         UseFastMissiles = 0x00010000,
         FilterLanguage = 0x00020000,
-        ConfirmUseOfRareGems = 0x00040000,
-        ListenToSocietyChat = 0x00080000,
-        ShowYourHelmOrHeadGear = 0x00100000,
+        ConfirmVolatileRareUse = 0x00040000,
+        HearSocietyChat = 0x00080000,
+        ShowHelm = 0x00100000,
         DisableDistanceFog = 0x00200000,
         UseMouseTurning = 0x00400000, // Not sure how to verify this in client, but this is what aclogview extracted from PDB.
-        ShowYourCloak = 0x00800000,
+        ShowCloak = 0x00800000,
         LockUI = 0x01000000,
-        ListenToPKDeathMessages = 0x02000000,
+        HearPKDeath = 0x02000000,
         NotUsed1 = 0x04000000,
         NotUsed2 = 0x08000000,
         NotUsed3 = 0x10000000,
         NotUsed4 = 0x20000000,
         NotUsed5 = 0x40000000,
-        NotUsed6 = 0x80000000
+        NotUsed6 = 0x80000000,
+
+        Default = HearGeneralChat | HearTradeChat | HearLFGChat | LeadMissileTargets | ConfirmVolatileRareUse | ShowHelm | ShowCloak // 9733888
     }
 
     public enum CharacterTitle : uint
@@ -2350,7 +2521,7 @@ namespace GameEstate.AC.Formats.Props
     {
         None = 0x00,
         Melee = 0x01,
-        Missle = 0x02,
+        Missile = 0x02,
         Ammo = 0x03,
         Shield = 0x04,
         TwoHanded = 0x05
@@ -2738,7 +2909,7 @@ namespace GameEstate.AC.Formats.Props
 
     /// <summary>
     /// Used during Calculation of Damage
-    /// This data is sent in the priority field of the iilst (equiped items) portion of the player description event F7B0 - 0013 Og II
+    /// This data is sent in the priority field of the list (equipped items) portion of the player description event F7B0 - 0013 Og II
     /// </summary>
     /// 
     [Flags]
@@ -2776,7 +2947,9 @@ namespace GameEstate.AC.Formats.Props
 
         // exclude abdomen for searching
         UnderwearShirt = CoverageMask.UnderwearChest | CoverageMask.UnderwearUpperArms | CoverageMask.UnderwearLowerArms,
-        UnderwearPants = CoverageMask.UnderwearUpperLegs | CoverageMask.UnderwearLowerLegs
+        UnderwearPants = CoverageMask.UnderwearUpperLegs | CoverageMask.UnderwearLowerLegs,
+
+        Extremities = CoverageMask.Head | CoverageMask.Hands | CoverageMask.Feet,
     }
 
     public enum CreatureType : uint
@@ -2911,7 +3084,11 @@ namespace GameEstate.AC.Formats.Props
         Stamina = 0x100,
         Mana = 0x200,
         Nether = 0x400,
-        Base = 0x10000000
+        Base = 0x10000000,
+
+        // helpers
+        Physical = Slash | Pierce | Bludgeon,
+        Elemental = Cold | Fire | Acid | Electric,
     }
 
     partial class EnumExtensions
@@ -2938,11 +3115,19 @@ namespace GameEstate.AC.Formats.Props
         public static bool IsMultiDamage(this DamageType damageType)
             => Polyfill.EnumHasMultiple((uint)damageType);
 
-        public static DamageType SelectDamageType(this DamageType damageType)
+        public static DamageType SelectDamageType(this DamageType damageType, float? powerLevel = null)
         {
-            var damageTypes = damageType.GetFlags();
-            var rng = ThreadSafeRandom.Next(1, damageTypes.Count - 1);
-            return (DamageType)damageTypes[rng];
+            if (powerLevel == null)
+            {
+                // select random damage type
+                var damageTypes = damageType.GetFlags();
+                var rng = ThreadSafeRandom.Next(1, damageTypes.Count - 1);
+                return (DamageType)damageTypes[rng];
+            }
+
+            var playerTypes = powerLevel < 0.33f ? damageType & DamageType.Physical : damageType & ~DamageType.Physical;
+            if (playerTypes == DamageType.Undef) playerTypes = damageType;
+            return playerTypes.SelectDamageType();
         }
     }
 
@@ -2991,6 +3176,19 @@ namespace GameEstate.AC.Formats.Props
         All,
         Positive,
         Negative
+    }
+
+    public enum EffectArgumentType
+    {
+        Invalid,
+        Double,
+        Int,
+        Quality,
+        Random,
+        Variable,
+
+        // added
+        Int64
     }
 
     public enum EmitterType
@@ -3177,7 +3375,10 @@ namespace GameEstate.AC.Formats.Props
         SetFloatStat = 118,
         AddContract = 119,
         RemoveContract = 120,
-        InqContractsFull = 121
+        InqContractsFull = 121,
+
+        // Unknown Id Emotes & Custom Emotes
+        Enlightenment = 9001
     }
 
     [Flags]
@@ -3382,12 +3583,12 @@ namespace GameEstate.AC.Formats.Props
         CloakArcaneLore = 50,
         CloakArmorTinkering = 51,
         CloakAssessPerson = 52,
-        CloakAxe = 53,
-        CloakBow = 54,
+        CloakLightWeapons = 53,
+        CloakMissileWeapons = 54,
         CloakCooking = 55,
         CloakCreatureEnchantment = 56,
         CloakCrossbow = 57,
-        CloakDagger = 58,
+        CloakFinesseWeapons = 58,
         CloakDeception = 59,
         CloakFletching = 60,
         CloakHealing = 61,
@@ -3405,7 +3606,7 @@ namespace GameEstate.AC.Formats.Props
         CloakSalvaging = 73,
         CloakSpear = 74,
         CloakStaff = 75,
-        CloakSword = 76,
+        CloakHeavyWeapons = 76,
         CloakThrownWeapon = 77,
         CloakTwoHandedCombat = 78,
         CloakUnarmedCombat = 79,
@@ -3468,12 +3669,9 @@ namespace GameEstate.AC.Formats.Props
         PurpleSocietyBand = 135,
         BlueSocietyBand = 136,
         GauntletGarb = 137,
-        // Possibly Paragon Missile Weapons
-        UNKNOWN_138 = 138,
-        // Possibly Paragon Casters
-        UNKNOWN_139 = 139,
-        // Possibly Paragon Melee Weapons
-        UNKNOWN_140 = 140,
+        ParagonMissile = 138,
+        ParagonCaster = 139,
+        ParagonMelee = 140,
     }
 
     [Flags]
@@ -3496,6 +3694,29 @@ namespace GameEstate.AC.Formats.Props
         AdminRaiseXP = 0x10,  // ApplyToVitae
         AdminRaiseSkillXP = 0x10,  // ApplyToVitae
         ReceivedFromAllegiance = 0x0,
+    }
+
+    [Flags]
+    public enum FactionBits
+    {
+        None = 0x0,
+        CelestialHand = 0x1,
+        EldrytchWeb = 0x2,
+        RadiantBlood = 0x4,
+
+        // helper
+        ValidFactions = CelestialHand | EldrytchWeb | RadiantBlood
+    }
+
+    partial class EnumExtensions
+    {
+        /// <summary>
+        /// Will add a space infront of capital letter words in a string
+        /// </summary>
+        /// <param name="factionBits"></param>
+        /// <returns>string with spaces infront of capital letters</returns>
+        public static string ToSentence(this FactionBits factionBits)
+            => new string(factionBits.ToString().ToCharArray().SelectMany((c, i) => i > 0 && char.IsUpper(c) ? new char[] { ' ', c } : new char[] { c }).ToArray());
     }
 
     public enum FellowUpdateType
@@ -3574,6 +3795,15 @@ namespace GameEstate.AC.Formats.Props
         HasDIDDegrade = 0x8
     }
 
+    [Flags]
+    public enum HARBitfield
+    {
+        Undef = 0x0,
+        OpenHouse = 0x1,
+        AllegianceGuests = 0x2,
+        AllegianceStorage = 0x4
+    }
+
     public enum HeritageGroup
     {
         Invalid = 0,
@@ -3597,6 +3827,27 @@ namespace GameEstate.AC.Formats.Props
         Invalid = 0x0,
         None = 0x1,
         Run = 0x2
+    }
+
+    public enum HookGroupType
+    {
+        Undef = 0x0,
+        NoisemakingItems = 0x1,
+        TestItems = 0x2,
+        PortalItems = 0x4,
+        WritableItems = 0x8,
+        SpellCastingItems = 0x10,
+        SpellTeachingItems = 0x20
+    }
+
+    partial class EnumExtensions
+    {
+        /// <summary>
+        /// Will add a space infront of capital letter words in a string
+        /// </summary>
+        /// <returns>string with spaces infront of capital letters</returns>
+        public static string ToSentence(this HookGroupType hookGroupType)
+            => new string(hookGroupType.ToString().ToCharArray().SelectMany((c, i) => i > 0 && char.IsUpper(c) ? new char[] { ' ', c } : new char[] { c }).ToArray());
     }
 
     [Flags]
@@ -3789,11 +4040,13 @@ namespace GameEstate.AC.Formats.Props
         Unknown = 0x00000000,
         Ceramic = 0x00000001,
         Porcelain = 0x00000002,
+        Cloth = 0x00000003,
         Linen = 0x00000004,
         Satin = 0x00000005,
         Silk = 0x00000006,
         Velvet = 0x00000007,
         Wool = 0x00000008,
+        Gem = 0x00000009,
         Agate = 0x0000000A,
         Amber = 0x0000000B,
         Amethyst = 0x0000000C,
@@ -3840,6 +4093,7 @@ namespace GameEstate.AC.Formats.Props
         ArmoredilloHide = 0x00000035,
         GromnieHide = 0x00000036,
         ReedSharkHide = 0x00000037,
+        Metal = 0x00000038,
         Brass = 0x00000039,
         Bronze = 0x0000003A,
         Copper = 0x0000003B,
@@ -3848,12 +4102,14 @@ namespace GameEstate.AC.Formats.Props
         Pyreal = 0x0000003E,
         Silver = 0x0000003F,
         Steel = 0x00000040,
+        Stone = 0x00000041,
         Alabaster = 0x00000042,
         Granite = 0x00000043,
         Marble = 0x00000044,
         Obsidian = 0x00000045,
         Sandstone = 0x00000046,
         Serpentine = 0x00000047,
+        Wood = 0x00000048,
         Ebony = 0x00000049,
         Mahogany = 0x0000004A,
         Oak = 0x0000004B,
@@ -4587,6 +4843,25 @@ namespace GameEstate.AC.Formats.Props
         Base = Icon | ItemWorkmanship | LongDesc | Name | ResistItemAppraisal | Setup | ShortDesc | Value,
     }
 
+    public enum MutationEffectType
+    {
+        Assign,
+        Add,
+        Subtract,
+        Multiply,
+        Divide,
+        AtLeastAdd,
+        AtMostSubtract,
+        AddMultiply,
+        AddDivide,
+        SubtractMultiply,
+        SubtractDivide,
+        AssignAdd,
+        AssignSubtract,
+        AssignMultiply,
+        AssignDivide
+    }
+
     public enum NumberingType : byte
     {
         Undefined = 0x0,
@@ -5080,7 +5355,7 @@ namespace GameEstate.AC.Formats.Props
     public enum PortalBitmask
     {
         Undef = 0x00,
-        NotPassable = 0x00,
+        //NotPassable = 0x00,
         Unrestricted = 0x01,
         NoPk = 0x02,
         NoPKLite = 0x04,
@@ -5100,6 +5375,31 @@ namespace GameEstate.AC.Formats.Props
     {
         ExactMatch = 0x1,
         PortalSide = 0x2
+    }
+
+    public enum PortalLinkType
+    {
+        Undef,
+        LinkedLifestone,
+        LinkedPortalOne,
+        LinkedPortalTwo
+    }
+
+    public enum PortalRecallType
+    {
+        Undef,
+        LastLifestone,
+        LinkedLifestone,
+        LastPortal,
+        LinkedPortalOne,
+        LinkedPortalTwo
+    }
+
+    public enum PortalSummonType
+    {
+        Undef,
+        LinkedPortalOne,
+        LinkedPortalTwo
     }
 
     [Flags]
@@ -5645,16 +5945,17 @@ namespace GameEstate.AC.Formats.Props
             Skill.LifeMagic,
             Skill.VoidMagic,
             Skill.DualWield,
-            Skill.Recklessness,
-            Skill.DirtyFighting,
-            Skill.SneakAttack
+            //Skill.Recklessness, // not in client
+            //Skill.DirtyFighting, // not in client
+            //Skill.SneakAttack // not in client
         };
 
         public static HashSet<Skill> DefenseSkills = new HashSet<Skill>()
         {
             Skill.MeleeDefense,
             Skill.MissileDefense,
-            Skill.MagicDefense
+            Skill.MagicDefense,
+            Skill.Shield
         };
     }
 
@@ -6980,54 +7281,54 @@ namespace GameEstate.AC.Formats.Props
         MagicYieldSelf4,
         MagicYieldSelf5,
         MagicYieldSelf6,
-        AxeMasteryOther1,
-        AxeMasteryOther2,
-        AxeMasteryOther3,
-        AxeMasteryOther4,
-        AxeMasteryOther5,
-        AxeMasteryOther6,
-        AxeMasterySelf1,
-        AxeMasterySelf2,
-        AxeMasterySelf3,
-        AxeMasterySelf4,
-        AxeMasterySelf5,
-        AxeMasterySelf6,
-        AxeIneptitudeOther1,
-        AxeIneptitudeOther2,
-        AxeIneptitudeOther3,
-        AxeIneptitudeOther4,
-        AxeIneptitudeOther5,
-        AxeIneptitudeOther6,
-        AxeIneptitudeSelf1,
-        AxeIneptitudeSelf2,
-        AxeIneptitudeSelf3,
-        AxeIneptitudeSelf4,
-        AxeIneptitudeSelf5,
-        AxeIneptitudeSelf6,
-        DaggerMasteryOther1,
-        DaggerMasteryOther2,
-        DaggerMasteryOther3,
-        DaggerMasteryOther4,
-        DaggerMasteryOther5,
-        DaggerMasteryOther6,
-        DaggerMasterySelf1,
-        DaggerMasterySelf2,
-        DaggerMasterySelf3,
-        DaggerMasterySelf4,
-        DaggerMasterySelf5,
-        DaggerMasterySelf6,
-        DaggerIneptitudeOther1,
-        DaggerIneptitudeOther2,
-        DaggerIneptitudeOther3,
-        DaggerIneptitudeOther4,
-        DaggerIneptitudeOther5,
-        DaggerIneptitudeOther6,
-        DaggerIneptitudeSelf1,
-        DaggerIneptitudeSelf2,
-        DaggerIneptitudeSelf3,
-        DaggerIneptitudeSelf4,
-        DaggerIneptitudeSelf5,
-        DaggerIneptitudeSelf6,
+        LightWeaponsMasteryOther1,      // AxeMasteryOther1
+        LightWeaponsMasteryOther2,      // AxeMasteryOther2
+        LightWeaponsMasteryOther3,      // AxeMasteryOther3
+        LightWeaponsMasteryOther4,      // AxeMasteryOther4
+        LightWeaponsMasteryOther5,      // AxeMasteryOther5
+        LightWeaponsMasteryOther6,      // AxeMasteryOther6
+        LightWeaponsMasterySelf1,       // AxeMasterySelf1
+        LightWeaponsMasterySelf2,       // AxeMasterySelf2
+        LightWeaponsMasterySelf3,       // AxeMasterySelf3
+        LightWeaponsMasterySelf4,       // AxeMasterySelf4
+        LightWeaponsMasterySelf5,       // AxeMasterySelf5
+        LightWeaponsMasterySelf6,       // AxeMasterySelf6
+        LightWeaponsIneptitudeOther1,   // AxeIneptitudeOther1
+        LightWeaponsIneptitudeOther2,   // AxeIneptitudeOther2
+        LightWeaponsIneptitudeOther3,   // AxeIneptitudeOther3
+        LightWeaponsIneptitudeOther4,   // AxeIneptitudeOther4
+        LightWeaponsIneptitudeOther5,   // AxeIneptitudeOther5
+        LightWeaponsIneptitudeOther6,   // AxeIneptitudeOther6
+        LightWeaponsIneptitudeSelf1,    // AxeIneptitudeSelf1
+        LightWeaponsIneptitudeSelf2,    // AxeIneptitudeSelf2
+        LightWeaponsIneptitudeSelf3,    // AxeIneptitudeSelf3
+        LightWeaponsIneptitudeSelf4,    // AxeIneptitudeSelf4
+        LightWeaponsIneptitudeSelf5,    // AxeIneptitudeSelf5
+        LightWeaponsIneptitudeSelf6,    // AxeIneptitudeSelf6
+        FinesseWeaponsMasteryOther1,    // DaggerMasteryOther1
+        FinesseWeaponsMasteryOther2,    // DaggerMasteryOther2
+        FinesseWeaponsMasteryOther3,    // DaggerMasteryOther3
+        FinesseWeaponsMasteryOther4,    // DaggerMasteryOther4
+        FinesseWeaponsMasteryOther5,    // DaggerMasteryOther5
+        FinesseWeaponsMasteryOther6,    // DaggerMasteryOther6
+        FinesseWeaponsMasterySelf1,     // DaggerMasterySelf1
+        FinesseWeaponsMasterySelf2,     // DaggerMasterySelf2
+        FinesseWeaponsMasterySelf3,     // DaggerMasterySelf3
+        FinesseWeaponsMasterySelf4,     // DaggerMasterySelf4
+        FinesseWeaponsMasterySelf5,     // DaggerMasterySelf5
+        FinesseWeaponsMasterySelf6,     // DaggerMasterySelf6
+        FinesseWeaponsIneptitudeOther1, // DaggerIneptitudeOther1
+        FinesseWeaponsIneptitudeOther2, // DaggerIneptitudeOther2
+        FinesseWeaponsIneptitudeOther3, // DaggerIneptitudeOther3
+        FinesseWeaponsIneptitudeOther4, // DaggerIneptitudeOther4
+        FinesseWeaponsIneptitudeOther5, // DaggerIneptitudeOther5
+        FinesseWeaponsIneptitudeOther6, // DaggerIneptitudeOther6
+        FinesseWeaponsIneptitudeSelf1,  // DaggerIneptitudeSelf1
+        FinesseWeaponsIneptitudeSelf2,  // DaggerIneptitudeSelf2
+        FinesseWeaponsIneptitudeSelf3,  // DaggerIneptitudeSelf3
+        FinesseWeaponsIneptitudeSelf4,  // DaggerIneptitudeSelf4
+        FinesseWeaponsIneptitudeSelf5,  // DaggerIneptitudeSelf5
+        FinesseWeaponsIneptitudeSelf6,  // DaggerIneptitudeSelf6
         MaceMasteryOther1,
         MaceMasteryOther2,
         MaceMasteryOther3,
@@ -7100,31 +7401,31 @@ namespace GameEstate.AC.Formats.Props
         StaffIneptitudeSelf4,
         StaffIneptitudeSelf5,
         StaffIneptitudeSelf6,
-        SwordMasteryOther1,
-        SwordMasteryOther2,
-        SwordMasteryOther3,
-        SwordMasteryOther4,
-        SwordMasteryOther5,
-        SwordMasteryOther6,
-        SwordMasterySelf1,
-        SwordMasterySelf2,
-        SwordMasterySelf3,
-        SwordMasterySelf4,
-        SwordMasterySelf5,
-        SwordMasterySelf6,
-        SwordIneptitudeOther1,
-        SwordIneptitudeOther2,
-        SwordIneptitudeOther3,
-        SwordIneptitudeOther4,
-        SwordIneptitudeOther5,
-        SwordIneptitudeOther6,
-        SwordIneptitudeSelf1,
-        SwordIneptitudeSelf2,
-        SwordIneptitudeSelf3,
-        SwordIneptitudeSelf4,
-        UNKNOWN__GUESSEDNAME434, // NOTE: Missing 1
-        SwordIneptitudeSelf5,
-        SwordIneptitudeSelf6,
+        HeavyWeaponsMasteryOther1,      // SwordMasteryOther1
+        HeavyWeaponsMasteryOther2,      // SwordMasteryOther2
+        HeavyWeaponsMasteryOther3,      // SwordMasteryOther3
+        HeavyWeaponsMasteryOther4,      // SwordMasteryOther4
+        HeavyWeaponsMasteryOther5,      // SwordMasteryOther5
+        HeavyWeaponsMasteryOther6,      // SwordMasteryOther6
+        HeavyWeaponsMasterySelf1,       // SwordMasterySelf1
+        HeavyWeaponsMasterySelf2,       // SwordMasterySelf2
+        HeavyWeaponsMasterySelf3,       // SwordMasterySelf3
+        HeavyWeaponsMasterySelf4,       // SwordMasterySelf4
+        HeavyWeaponsMasterySelf5,       // SwordMasterySelf5
+        HeavyWeaponsMasterySelf6,       // SwordMasterySelf6
+        HeavyWeaponsIneptitudeOther1,   // SwordIneptitudeOther1
+        HeavyWeaponsIneptitudeOther2,   // SwordIneptitudeOther2
+        HeavyWeaponsIneptitudeOther3,   // SwordIneptitudeOther3
+        HeavyWeaponsIneptitudeOther4,   // SwordIneptitudeOther4
+        HeavyWeaponsIneptitudeOther5,   // SwordIneptitudeOther5
+        HeavyWeaponsIneptitudeOther6,   // SwordIneptitudeOther6
+        HeavyWeaponsIneptitudeSelf1,    // SwordIneptitudeSelf1
+        HeavyWeaponsIneptitudeSelf2,    // SwordIneptitudeSelf2
+        HeavyWeaponsIneptitudeSelf3,    // SwordIneptitudeSelf3
+        HeavyWeaponsIneptitudeSelf4,    // SwordIneptitudeSelf4
+        UNKNOWN__GUESSEDNAME434,        // NOTE: Missing 1
+        HeavyWeaponsIneptitudeSelf5,    // SwordIneptitudeSelf5
+        HeavyWeaponsIneptitudeSelf6,    // SwordIneptitudeSelf6
         UnarmedCombatMasteryOther1,
         UnarmedCombatMasteryOther2,
         UnarmedCombatMasteryOther3,
@@ -7149,30 +7450,30 @@ namespace GameEstate.AC.Formats.Props
         UnarmedCombatIneptitudeSelf4,
         UnarmedCombatIneptitudeSelf5,
         UnarmedCombatIneptitudeSelf6,
-        BowMasteryOther1,
-        BowMasteryOther2,
-        BowMasteryOther3,
-        BowMasteryOther4,
-        BowMasteryOther5,
-        BowMasteryOther6,
-        BowMasterySelf1,
-        BowMasterySelf2,
-        BowMasterySelf3,
-        BowMasterySelf4,
-        BowMasterySelf5,
-        BowMasterySelf6,
-        BowIneptitudeOther1,
-        BowIneptitudeOther2,
-        BowIneptitudeOther3,
-        BowIneptitudeOther4,
-        BowIneptitudeOther5,
-        BowIneptitudeOther6,
-        BowIneptitudeSelf1,
-        BowIneptitudeSelf2,
-        BowIneptitudeSelf3,
-        BowIneptitudeSelf4,
-        BowIneptitudeSelf5,
-        BowIneptitudeSelf6,
+        MissileWeaponsMasteryOther1,        // BowMasteryOther1
+        MissileWeaponsMasteryOther2,        // BowMasteryOther2
+        MissileWeaponsMasteryOther3,        // BowMasteryOther3
+        MissileWeaponsMasteryOther4,        // BowMasteryOther4
+        MissileWeaponsMasteryOther5,        // BowMasteryOther5
+        MissileWeaponsMasteryOther6,        // BowMasteryOther6
+        MissileWeaponsMasterySelf1,         // BowMasterySelf1
+        MissileWeaponsMasterySelf2,         // BowMasterySelf2
+        MissileWeaponsMasterySelf3,         // BowMasterySelf3
+        MissileWeaponsMasterySelf4,         // BowMasterySelf4
+        MissileWeaponsMasterySelf5,         // BowMasterySelf5
+        MissileWeaponsMasterySelf6,         // BowMasterySelf6
+        MissileWeaponsIneptitudeOther1,     // BowIneptitudeOther1
+        MissileWeaponsIneptitudeOther2,     // BowIneptitudeOther2
+        MissileWeaponsIneptitudeOther3,     // BowIneptitudeOther3
+        MissileWeaponsIneptitudeOther4,     // BowIneptitudeOther4
+        MissileWeaponsIneptitudeOther5,     // BowIneptitudeOther5
+        MissileWeaponsIneptitudeOther6,     // BowIneptitudeOther6
+        MissileWeaponsIneptitudeSelf1,      // BowIneptitudeSelf1
+        MissileWeaponsIneptitudeSelf2,      // BowIneptitudeSelf2
+        MissileWeaponsIneptitudeSelf3,      // BowIneptitudeSelf3
+        MissileWeaponsIneptitudeSelf4,      // BowIneptitudeSelf4
+        MissileWeaponsIneptitudeSelf5,      // BowIneptitudeSelf5
+        MissileWeaponsIneptitudeSelf6,      // BowIneptitudeSelf6
         CrossbowMasteryOther1,
         CrossbowMasteryOther2,
         CrossbowMasteryOther3,
@@ -8888,14 +9189,14 @@ namespace GameEstate.AC.Formats.Props
         ArmorExpertiseSelf7,
         ArmorIgnoranceOther7,
         ArmorIgnoranceSelf7,
-        AxeIneptitudeOther7,
-        AxeIneptitudeSelf7,
-        AxeMasteryOther7,
-        AxeMasterySelf7,
-        BowIneptitudeOther7,
-        BowIneptitudeSelf7,
-        BowMasteryOther7,
-        BowMasterySelf7,
+        LightWeaponsIneptitudeOther7,       // AxeIneptitudeOther7
+        LightWeaponsIneptitudeSelf7,        // AxeIneptitudeSelf7
+        LightWeaponsMasteryOther7,          // AxeMasteryOther7
+        LightWeaponsMasterySelf7,           // AxeMasterySelf7
+        MissileWeaponsIneptitudeOther7,     // BowIneptitudeOther7
+        MissileWeaponsIneptitudeSelf7,      // BowIneptitudeSelf7
+        MissileWeaponsMasteryOther7,        // BowMasteryOther7
+        MissileWeaponsMasterySelf7,         // BowMasterySelf7
         CookingIneptitudeOther7,
         CookingIneptitudeSelf7,
         CookingMasteryOther7,
@@ -8908,10 +9209,10 @@ namespace GameEstate.AC.Formats.Props
         CrossbowIneptitudeSelf7,
         CrossbowMasteryOther7,
         CrossbowMasterySelf7,
-        DaggerIneptitudeOther7,
-        DaggerIneptitudeSelf7,
-        DaggerMasteryOther7,
-        DaggerMasterySelf7,
+        FinesseWeaponsIneptitudeOther7,     // DaggerIneptitudeOther7
+        FinesseWeaponsIneptitudeSelf7,      // DaggerIneptitudeSelf7
+        FinesseWeaponsMasteryOther7,        // DaggerMasteryOther7
+        FinesseWeaponsMasterySelf7,         // DaggerMasterySelf7
         DeceptionIneptitudeOther7,
         DeceptionIneptitudeSelf7,
         DeceptionMasteryOther7,
@@ -8994,10 +9295,10 @@ namespace GameEstate.AC.Formats.Props
         StaffIneptitudeSelf7,
         StaffMasteryOther7,
         StaffMasterySelf7,
-        SwordIneptitudeOther7,
-        SwordIneptitudeSelf7,
-        SwordMasteryOther7,
-        SwordMasterySelf7,
+        HeavyWeaponsIneptitudeOther7,       // SwordIneptitudeOther7
+        HeavyWeaponsIneptitudeSelf7,        // SwordIneptitudeSelf7
+        HeavyWeaponsMasteryOther7,          // SwordMasteryOther7
+        HeavyWeaponsMasterySelf7,           // SwordMasterySelf7
         ThrownWeaponIneptitudeOther7,
         ThrownWeaponIneptitudeSelf7,
         ThrownWeaponMasteryOther7,
@@ -9192,12 +9493,12 @@ namespace GameEstate.AC.Formats.Props
         CANTRIPALCHEMICALPROWESS2,
         CANTRIPARCANEPROWESS2,
         CANTRIPARMOREXPERTISE2,
-        CANTRIPAXEAPTITUDE2,
-        CANTRIPBOWAPTITUDE2,
+        CANTRIPLIGHTWEAPONSAPTITUDE2,       // CANTRIPAXEAPTITUDE2
+        CANTRIPMISSILEWEAPONSAPTITUDE2,     // CANTRIPBOWAPTITUDE2
         CANTRIPCOOKINGPROWESS2,
         CANTRIPCREATUREENCHANTMENTAPTITUDE2,
         CANTRIPCROSSBOWAPTITUDE2,
-        CANTRIPDAGGERAPTITUDE2,
+        CANTRIPFINESSEWEAPONSAPTITUDE2,     // CANTRIPDAGGERAPTITUDE2
         CANTRIPDECEPTIONPROWESS2,
         CANTRIPFEALTY2,
         CANTRIPFLETCHINGPROWESS2,
@@ -9219,7 +9520,7 @@ namespace GameEstate.AC.Formats.Props
         CANTRIPSPEARAPTITUDE2,
         CANTRIPSPRINT2,
         CANTRIPSTAFFAPTITUDE2,
-        CANTRIPSWORDAPTITUDE2,
+        CANTRIPHEAVYWEAPONSAPTITUDE2,       // CANTRIPSWORDAPTITUDE2
         CANTRIPTHROWNAPTITUDE2,
         CANTRIPUNARMEDAPTITUDE2,
         CANTRIPWARMAGICAPTITUDE2,
@@ -9227,12 +9528,12 @@ namespace GameEstate.AC.Formats.Props
         CANTRIPALCHEMICALPROWESS1,
         CANTRIPARCANEPROWESS1,
         CANTRIPARMOREXPERTISE1,
-        CANTRIPAXEAPTITUDE1,
-        CANTRIPBOWAPTITUDE1,
+        CANTRIPLIGHTWEAPONSAPTITUDE1,       // CANTRIPAXEAPTITUDE1
+        CANTRIPMISSILEWEAPONSAPTITUDE1,     // CANTRIPBOWAPTITUDE1
         CANTRIPCOOKINGPROWESS1,
         CANTRIPCREATUREENCHANTMENTAPTITUDE1,
         CANTRIPCROSSBOWAPTITUDE1,
-        CANTRIPDAGGERAPTITUDE1,
+        CANTRIPFINESSEWEAPONSAPTITUDE1,     // CANTRIPDAGGERAPTITUDE1
         CANTRIPDECEPTIONPROWESS1,
         CANTRIPFEALTY1,
         CANTRIPFLETCHINGPROWESS1,
@@ -9254,7 +9555,7 @@ namespace GameEstate.AC.Formats.Props
         CANTRIPSPEARAPTITUDE1,
         CANTRIPSPRINT1,
         CANTRIPSTAFFAPTITUDE1,
-        CANTRIPSWORDAPTITUDE1,
+        CANTRIPHEAVYWEAPONSAPTITUDE1,       // CANTRIPSWORDAPTITUDE1
         CANTRIPTHROWNAPTITUDE1,
         CANTRIPUNARMEDAPTITUDE1,
         CANTRIPWARMAGICAPTITUDE1,
@@ -11203,14 +11504,14 @@ namespace GameEstate.AC.Formats.Props
         ArmorExpertiseSelf8,
         ArmorIgnoranceOther8,
         ArmorIgnoranceSelf8,
-        AxeIneptitudeOther8,
-        AxeIneptitudeSelf8,
-        AxeMasteryOther8,
-        AxeMasterySelf8,
-        BowIneptitudeOther8,
-        BowIneptitudeSelf8,
-        BowMasteryOther8,
-        BowMasterySelf8,
+        LightWeaponsIneptitudeOther8,       // AxeIneptitudeOther8
+        LightWeaponsIneptitudeSelf8,        // AxeIneptitudeSelf8
+        LightWeaponsMasteryOther8,          // AxeMasteryOther8
+        LightWeaponsMasterySelf8,           // AxeMasterySelf8
+        MissileWeaponsIneptitudeOther8,     // BowIneptitudeOther8
+        MissileWeaponsIneptitudeSelf8,      // BowIneptitudeSelf8
+        MissileWeaponsMasteryOther8,        // BowMasteryOther8
+        MissileWeaponsMasterySelf8,         // BowMasterySelf8
         CookingIneptitudeOther8,
         CookingIneptitudeSelf8,
         CookingMasteryOther8,
@@ -11223,10 +11524,10 @@ namespace GameEstate.AC.Formats.Props
         CrossbowIneptitudeSelf8,
         CrossbowMasteryOther8,
         CrossbowMasterySelf8,
-        DaggerIneptitudeOther8,
-        DaggerIneptitudeSelf8,
-        DaggerMasteryOther8,
-        DaggerMasterySelf8,
+        FinesseWeaponsIneptitudeOther8,     // DaggerIneptitudeOther8
+        FinesseWeaponsIneptitudeSelf8,      // DaggerIneptitudeSelf8
+        FinesseWeaponsMasteryOther8,        // DaggerMasteryOther8
+        FinesseWeaponsMasterySelf8,         // DaggerMasterySelf8
         DeceptionIneptitudeOther8,
         DeceptionIneptitudeSelf8,
         DeceptionMasteryOther8,
@@ -11309,10 +11610,10 @@ namespace GameEstate.AC.Formats.Props
         StaffIneptitudeSelf8,
         StaffMasteryOther8,
         StaffMasterySelf8,
-        SwordIneptitudeOther8,
-        SwordIneptitudeSelf8,
-        SwordMasteryOther8,
-        SwordMasterySelf8,
+        HeavyWeaponsIneptitudeOther8,       // SwordIneptitudeOther8
+        HeavyWeaponsIneptitudeSelf8,        // SwordIneptitudeSelf8
+        HeavyWeaponsMasteryOther8,          // SwordMasteryOther8
+        HeavyWeaponsMasterySelf8,           // SwordMasterySelf8
         ThrownWeaponIneptitudeOther8,
         ThrownWeaponIneptitudeSelf8,
         ThrownWeaponMasteryOther8,
@@ -11374,12 +11675,12 @@ namespace GameEstate.AC.Formats.Props
         CANTRIPALCHEMICALPROWESS3,
         CANTRIPARCANEPROWESS3,
         CANTRIPARMOREXPERTISE3,
-        CANTRIPAXEAPTITUDE3,
-        CANTRIPBOWAPTITUDE3,
+        CANTRIPLIGHTWEAPONSAPTITUDE3,       // CANTRIPAXEAPTITUDE3
+        CANTRIPMISSILEWEAPONSAPTITUDE3,     // CANTRIPBOWAPTITUDE3
         CANTRIPCOOKINGPROWESS3,
         CANTRIPCREATUREENCHANTMENTAPTITUDE3,
         CANTRIPCROSSBOWAPTITUDE3,
-        CANTRIPDAGGERAPTITUDE3,
+        CANTRIPFINESSEWEAPONSAPTITUDE3,     // CANTRIPDAGGERAPTITUDE3
         CANTRIPFEALTY3,
         CANTRIPFLETCHINGPROWESS3,
         CANTRIPHEALINGPROWESS3,
@@ -12731,11 +13032,11 @@ namespace GameEstate.AC.Formats.Props
         CantripAlchemicalProwess4,
         CantripArcaneProwess4,
         CantripArmorExpertise4,
-        CantripAxeAptitude4,
-        CantripBowAptitude4,
+        CantripLightWeaponsAptitude4,       // CantripAxeAptitude4
+        CantripMissileWeaponsAptitude4,     // CantripBowAptitude4
         CantripCookingProwess4,
         CantripCreatureEnchantmentAptitude4,
-        CantripDaggerAptitude4,
+        CantripFinesseWeaponsAptitude4,     // CantripDaggerAptitude4
         CantripDeceptionProwess4,
         CantripDirtyFightingProwess4,
         CantripDualWieldAptitude4,
@@ -12760,7 +13061,7 @@ namespace GameEstate.AC.Formats.Props
         CantripShieldAptitude4,
         CantripSneakAttackProwess4,
         CantripSprint4,
-        CantripSwordAptitude4,
+        CantripHeavyWeaponsAptitude4,       // CantripSwordAptitude4
         CantripTwoHandedAptitude4,
         CantripVoidMagicAptitude4,
         CantripWarMagicAptitude4,
@@ -13252,6 +13553,28 @@ namespace GameEstate.AC.Formats.Props
         ThrownShieldCombat = 0x13c,  // 139 in PY16
     }
 
+    public enum StatType
+    {
+        Undef = 0,
+        Int = 1,
+        Float = 2,
+        Position = 3,
+        Skill = 4,
+        String = 5,
+        DataID = 6,
+        InstanceID = 7,
+        DID = 6,
+        IID = 7,
+        Attribute = 8,
+        Attribute2nd = 9,
+        BodyDamageValue = 10,
+        BodyDamageVariance = 11,
+        BodyArmorValue = 12,
+        Bool = 13,
+        Int64 = 14,
+        NumStatTypes = 15
+    }
+
     public enum StipplingType
     {
         None = 0x0,
@@ -13402,7 +13725,8 @@ namespace GameEstate.AC.Formats.Props
         Provoke = 8,  // used in conjunction with 32
         Unknown2 = 16, // unused?
         Target = 32, // only target original attacker
-        Retaliate = 64  // only attack after attacked
+        Retaliate = 64, // only attack after attacked
+        Monster = 128 // only attack other monsters
     }
 
     public enum TradeSide
@@ -13422,6 +13746,78 @@ namespace GameEstate.AC.Formats.Props
         CasterDestination = 0x4,
         TargetDestination = 0x8
     }
+
+    public enum TreasureClass
+    {
+        // retail
+        Undef,
+        Pyreal,
+        Gem,
+        Jewelry,
+        ArtObject,
+        Weapon,
+        Armor,
+        Clothing,
+        Scroll,
+        Caster,
+        ManaStone,
+        Consumable,
+        HealKit,
+        Lockpick,
+        SpellComponent,
+
+        /*LeatherArmor,
+        StuddedLeatherArmor,
+        ChainMailArmor,
+        CovenantArmor,
+        PlateMailArmor,
+        HeritageLowArmor,
+        HeritageHighArmor,
+
+        SwordWeapon,
+        MaceWeapon,
+        AxeWeapon,
+        SpearWeapon,
+        UnarmedWeapon,
+        StaffWeapon,
+        DaggerWeapon,
+        BowWeapon,
+        CrossbowWeapon,
+        AtlatlWeapon,*/
+
+        // introduced 08-2008 - balance of power
+        SocietyArmor,
+        SocietyBreastplate,
+        SocietyGauntlets,
+        SocietyGirth,
+        SocietyGreaves,
+        SocietyHelm,
+        SocietyPauldrons,
+        SocietyTassets,
+        SocietyVambraces,
+        SocietySollerets,
+
+        // introduced 10-2011 - cloak of darkness
+        Cloak,
+
+        // from analysis of magloot corpse logs, these appeared to be top-level items
+        // PetDevices appeared to only be in the non-magical item tables
+        // if a creature didn't drop non-magical items, there were no traces of it dropping a PetDevice
+        // similarly, if a creature didn't drop non-magical or mundane items,
+        // it was still found to drop EncapsulatedSpirit
+
+        // introduced 02-2013 - balance of power
+        PetDevice,
+        EncapsulatedSpirit,
+    }
+
+    public enum TreasureType
+    {
+        Undef,
+        Item,
+        MagicItem,
+        MundaneItem,
+    };
 
     [Flags]
     public enum UIEffects : uint

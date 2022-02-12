@@ -82,9 +82,9 @@ namespace GameEstate.Formats
         /// </summary>
         public override void Close()
         {
-            foreach (var r in BinaryReaders.Values)                r.Dispose();
+            foreach (var r in BinaryReaders.Values) r.Dispose();
             BinaryReaders.Clear();
-            if (Tag is IDisposable disposableTag)                disposableTag.Dispose();
+            if (Tag is IDisposable disposableTag) disposableTag.Dispose();
             Tag = null;
         }
 
@@ -96,6 +96,19 @@ namespace GameEstate.Formats
         ///   <c>true</c> if the specified file path contains file; otherwise, <c>false</c>.
         /// </returns>
         public override bool Contains(string path) => throw new NotSupportedException();
+        /// <summary>
+        /// Determines whether the pak contains the specified file path.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified file path contains file; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Contains(int fileId) => throw new NotSupportedException();
+
+        /// <summary>Gets the count.</summary>
+        /// <value>The count.</value>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public override int Count => throw new NotSupportedException();
 
         // string or bytes
         /// <summary>
@@ -133,6 +146,15 @@ namespace GameEstate.Formats
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
         public override Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+        /// <summary>
+        /// Loads the file data asynchronous.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
 
         /// <summary>
         /// Loads the object asynchronous.
@@ -143,6 +165,15 @@ namespace GameEstate.Formats
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
         public override Task<T> LoadFileObjectAsync<T>(string path, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
 
         /// <summary>
         /// Loads the file data asynchronous.

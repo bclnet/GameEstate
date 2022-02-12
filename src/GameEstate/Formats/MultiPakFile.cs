@@ -35,9 +35,7 @@ namespace GameEstate.Formats
         /// </summary>
         public override void Close()
         {
-            if (PakFiles != null)
-                foreach (var pakFile in PakFiles)
-                    pakFile.Close();
+            if (PakFiles != null) foreach (var pakFile in PakFiles) pakFile.Close();
         }
 
         /// <summary>
@@ -48,6 +46,25 @@ namespace GameEstate.Formats
         ///   <c>true</c> if the specified file path contains file; otherwise, <c>false</c>.
         /// </returns>
         public override bool Contains(string filePath) => PakFiles.Any(x => x.Valid && x.Contains(filePath));
+        /// <summary>
+        /// Determines whether the specified fileId contains file.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified file path contains file; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Contains(int fileId) => PakFiles.Any(x => x.Valid && x.Contains(fileId));
+
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
+        public override int Count
+        {
+            get { var count = 0; foreach (var pakFile in PakFiles) count += pakFile.Count; return count; }
+        }
 
         /// <summary>
         /// Loads the file data asynchronous.
@@ -59,6 +76,16 @@ namespace GameEstate.Formats
         public override Task<Stream> LoadFileDataAsync(string filePath, Action<FileMetadata, string> exception) =>
             (PakFiles.FirstOrDefault(x => x.Valid && x.Contains(filePath)) ?? throw new FileNotFoundException($"Could not find file \"{filePath}\"."))
             .LoadFileDataAsync(filePath, exception);
+        /// <summary>
+        /// Loads the file data asynchronous.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        /// <exception cref="System.IO.FileNotFoundException">Could not find file \"{filePath}\".</exception>
+        public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception) =>
+            (PakFiles.FirstOrDefault(x => x.Valid && x.Contains(fileId)) ?? throw new FileNotFoundException($"Could not find file \"{fileId}\"."))
+            .LoadFileDataAsync(fileId, exception);
 
         /// <summary>
         /// Loads the object asynchronous.
@@ -71,6 +98,17 @@ namespace GameEstate.Formats
         public override Task<T> LoadFileObjectAsync<T>(string filePath, Action<FileMetadata, string> exception) =>
             (PakFiles.FirstOrDefault(x => x.Valid && x.Contains(filePath)) ?? throw new FileNotFoundException($"Could not find file \"{filePath}\"."))
             .LoadFileObjectAsync<T>(filePath, exception);
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException">Could not find file \"{filePath}\".</exception>
+        public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception) =>
+            (PakFiles.FirstOrDefault(x => x.Valid && x.Contains(fileId)) ?? throw new FileNotFoundException($"Could not find file \"{fileId}\"."))
+            .LoadFileObjectAsync<T>(fileId, exception);
 
         #region Explorer
 

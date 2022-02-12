@@ -13,6 +13,7 @@ namespace GameEstate.Formats
         public override bool Valid => Files != null;
         public IList<FileMetadata> Files;
         public HashSet<string> FilesRawSet;
+        public ILookup<int, FileMetadata> FilesById { get; private set; }
         public ILookup<string, FileMetadata> FilesByPath { get; private set; }
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace GameEstate.Formats
         {
             Files = null;
             FilesRawSet = null;
+            FilesById = null;
             FilesByPath = null;
             base.Close();
         }
@@ -46,6 +48,19 @@ namespace GameEstate.Formats
         public override bool Contains(string path) => TryLookupPath(path ?? throw new ArgumentNullException(nameof(path)), out var pak, out var nextPath)
             ? pak.Contains(nextPath)
             : FilesByPath.Contains(path.Replace('\\', '/'));
+        /// <summary>
+        /// Determines whether this instance contains the object.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified file path contains file; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">FileId not supported</exception>
+        public override bool Contains(int fileId) => FilesById.Contains(fileId);
+
+        /// <summary>Gets the count.</summary>
+        /// <value>The count.</value>
+        public override int Count => FilesByPath.Count;
 
         /// <summary>
         /// Loads the file data asynchronous.
@@ -61,8 +76,24 @@ namespace GameEstate.Formats
             if (TryLookupPath(path, out var pak, out var nextFilePath)) return pak.LoadFileDataAsync(nextFilePath, exception);
             var files = FilesByPath[path.Replace('\\', '/')].ToArray();
             if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
-            exception?.Invoke(null, $"LoadFileDataAsync: {path} @ {files.Length}"); //CoreDebug.Log($"LoadFileDataAsync: {filePath} @ {files.Length}");
+            exception?.Invoke(null, $"LoadFileDataAsync: {path} @ {files.Length}"); //Log($"LoadFileDataAsync: {filePath} @ {files.Length}");
             if (files.Length == 0) throw new FileNotFoundException(path);
+            throw new InvalidOperationException();
+        }
+        /// <summary>
+        /// Loads the file data asynchronous.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null)
+        {
+            var files = FilesById[fileId].ToArray();
+            if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
+            exception?.Invoke(null, $"LoadFileDataAsync: {fileId} @ {files.Length}"); //Log($"LoadFileDataAsync: {fileId} @ {files.Length}");
+            if (files.Length == 0) throw new FileNotFoundException($"{fileId}");
             throw new InvalidOperationException();
         }
 
@@ -82,15 +113,37 @@ namespace GameEstate.Formats
             if (PathFinders.Count > 0) path = FindPath<T>(path);
             var files = FilesByPath[path.Replace('\\', '/')].ToArray();
             if (files.Length == 1) return LoadFileObjectAsync<T>(files[0], exception);
-            exception?.Invoke(null, $"LoadFileObjectAsync: {path} @ {files.Length}"); //CoreDebug.Log($"LoadFileObjectAsync: {filePath} @ {files.Length}");
+            exception?.Invoke(null, $"LoadFileObjectAsync: {path} @ {files.Length}"); //Log($"LoadFileObjectAsync: {filePath} @ {files.Length}");
             if (files.Length == 0) throw new FileNotFoundException(path);
+            throw new InvalidOperationException();
+        }
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null)
+        {
+            var files = FilesById[fileId].ToArray();
+            if (files.Length == 1) return LoadFileObjectAsync<T>(files[0], exception);
+            exception?.Invoke(null, $"LoadFileObjectAsync: {fileId} @ {files.Length}"); //Log($"LoadFileObjectAsync: {fileId} @ {files.Length}");
+            if (files.Length == 0) throw new FileNotFoundException($"{fileId}");
             throw new InvalidOperationException();
         }
 
         /// <summary>
         /// Processes this instance.
         /// </summary>
-        public override void Process() { FilesByPath = Files?.Where(x => x != null).ToLookup(x => x.Path, StringComparer.OrdinalIgnoreCase); base.Process(); }
+        public override void Process()
+        {
+            FilesById = Files?.Where(x => x != null).ToLookup(x => x.Id);
+            FilesByPath = Files?.Where(x => x != null).ToLookup(x => x.Path, StringComparer.OrdinalIgnoreCase);
+            base.Process();
+        }
 
         /// <summary>
         /// Adds the raw file.

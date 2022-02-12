@@ -91,8 +91,9 @@ namespace GameEstate.AC.Formats
                     var fileName = PakFileTypeHelper.GetFileName(entry.ObjectId, pakType, 0, out var type);
                     files.Add(new FileMetadata
                     {
+                        Id = (int)entry.ObjectId,
                         Path = Path.Combine(path, fileName),
-                        ObjectFactory = ObjectFactory(pakType, type),
+                        ObjectFactory = ObjectFactory(entry.ObjectId, pakType, type),
                         Position = entry.FileOffset,
                         FileSize = entry.FileSize,
                         Digest = blockSize,
@@ -105,10 +106,11 @@ namespace GameEstate.AC.Formats
         #endregion
 
         // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(PakType pakType, PakFileType? type)
+        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(uint objectId, PakType pakType, PakFileType? type)
         {
             if (type == null) return null;
-            return type.Value switch
+            else if (objectId == Iteration.FILE_ID) return (r, m) => Task.FromResult((object)new Iteration(r));
+            else return type.Value switch
             {
                 PakFileType.LandBlock => (r, m) => Task.FromResult((object)new Landblock(r)),
                 PakFileType.LandBlockInfo => (r, m) => Task.FromResult((object)new LandblockInfo(r)),
@@ -183,7 +185,6 @@ namespace GameEstate.AC.Formats
         {
             if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
             if (stage != ReadStage.File) throw new ArgumentOutOfRangeException(nameof(stage), stage.ToString());
-            //if (ACPakManager.CellDat == null) ACPakManager.Initialize(source);
 
             var files = multiSource.Files = new List<FileMetadata>();
             r.Position(DAT_HEADER_OFFSET);

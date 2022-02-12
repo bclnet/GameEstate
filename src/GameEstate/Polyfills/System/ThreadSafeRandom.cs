@@ -15,11 +15,11 @@ namespace System
         static readonly ThreadLocal<Random> random = new ThreadLocal<Random>(() => new Random());
 
         /// <summary>
-        /// Returns a random floating-point number between min and max, inclusive
+        /// Returns a random floating-point number that is greater than or equal to 'min', and less than 'max'.
         /// </summary>
-        /// <param name="min">The minimum possible value to return</param>
-        /// <param name="max">The maximum possible value to return</param>
-        public static float Next(float min, float max) => (float)(random.Value.NextDouble() * (max - min) + min);
+        /// <param name="min">The value returned will be greater than or equal to 'min'</param>
+        /// <param name="max">The value returned will be less than 'max'</param>
+        public static double Next(float min, float max) => random.Value.NextDouble() * (max - min) + min; // for ranges other than 1, (max - upper bound) will be scaled by the range
 
         /// <summary>
         /// Returns a random integer between min and max, inclusive

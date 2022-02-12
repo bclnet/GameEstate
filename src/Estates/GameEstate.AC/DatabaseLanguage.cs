@@ -1,5 +1,4 @@
 using GameEstate.AC.Formats.FileTypes;
-using GameEstate.Formats;
 
 namespace GameEstate.AC
 {
@@ -7,7 +6,7 @@ namespace GameEstate.AC
     {
         public DatabaseLanguage(EstatePakFile pakFile) : base(pakFile)
         {
-            CharacterTitles = ReadFile<StringTable>(StringTable.CharacterTitle_FileID);
+            CharacterTitles = GetFile<StringTable>(StringTable.CharacterTitle_FileID);
         }
 
         public StringTable CharacterTitles { get; }

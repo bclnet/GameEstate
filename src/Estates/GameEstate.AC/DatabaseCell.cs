@@ -1,5 +1,3 @@
-using GameEstate.Formats;
-
 namespace GameEstate.AC
 {
     public class DatabaseCell : Database
@@ -7,8 +5,6 @@ namespace GameEstate.AC
         public DatabaseCell(EstatePakFile pakFile) : base(pakFile)
         {
         }
-
-        //public CellPakBinaryAC(string filename, bool keepOpen = false) : base(filename, keepOpen) { }
 
         //public void ExtractLandblockContents(string path)
         //{
@@ -27,6 +23,5 @@ namespace GameEstate.AC
         //        File.WriteAllBytes(thisFile, dr.Buffer);
         //    }
         //}
-
     }
 }

@@ -59,6 +59,23 @@ namespace GameEstate
         public abstract bool Contains(string path);
 
         /// <summary>
+        /// Determines whether this instance contains the object.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <returns>
+        ///   <c>true</c> if [contains] [the specified file path]; otherwise, <c>false</c>.
+        /// </returns>
+        public abstract bool Contains(int fileId);
+
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
+        public abstract int Count { get; }
+
+        /// <summary>
         /// Finds the texture.
         /// </summary>
         /// <param name="path">The texture path.</param>
@@ -77,6 +94,13 @@ namespace GameEstate
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public abstract Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null);
+        /// <summary>
+        /// Loads the file data asynchronous.
+        /// </summary>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public abstract Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null);
 
         /// <summary>
         /// Loads the object asynchronous.
@@ -86,6 +110,14 @@ namespace GameEstate
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public abstract Task<T> LoadFileObjectAsync<T>(string path, Action<FileMetadata, string> exception = null);
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public abstract Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null);
 
         /// <summary>
         /// Gets the graphic.

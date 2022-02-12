@@ -74,7 +74,7 @@ namespace GameEstate.AC.Formats.FileTypes
             if (attackFrameCache.TryGetValue(attackFrameParams, out var attackFrames))
                 return attackFrames;
 
-            var motionTable = ACPakManager.Portal.ReadFile<MotionTable>(motionTableId);
+            var motionTable = DatabaseManager.Portal.GetFile<MotionTable>(motionTableId);
 
             var animData = GetAnimData(stance, motion, GetDefaultMotion(stance));
 
@@ -83,7 +83,7 @@ namespace GameEstate.AC.Formats.FileTypes
             var totalFrames = 0;
             foreach (var anim in animData)
             {
-                var animation = ACPakManager.Portal.ReadFile<Animation>(anim.AnimId);
+                var animation = DatabaseManager.Portal.GetFile<Animation>(anim.AnimId);
                 foreach (var frame in animation.PartFrames)
                 {
                     foreach (var hook in frame.Hooks) if (hook is AttackHook attackHook) { frameNums.Add(totalFrames); attackHooks.Add(attackHook); }
@@ -125,7 +125,7 @@ namespace GameEstate.AC.Formats.FileTypes
         {
             var highFrame = anim.HighFrame;
             // get the maximum # of animation frames
-            var animation = ACPakManager.Portal.ReadFile<Animation>(anim.AnimId);
+            var animation = DatabaseManager.Portal.GetFile<Animation>(anim.AnimId);
             if (anim.HighFrame == -1) highFrame = (int)animation.NumFrames;
             if (highFrame > animation.NumFrames)
             {
@@ -163,7 +163,7 @@ namespace GameEstate.AC.Formats.FileTypes
                         // check if the animation is set to play the whole thing, in which case we need to get the numbers of frames in the raw animation
                         if ((anim.LowFrame == 0) && (anim.HighFrame == -1))
                         {
-                            var animation = ACPakManager.Portal.ReadFile<Animation>(anim.AnimId);
+                            var animation = DatabaseManager.Portal.GetFile<Animation>(anim.AnimId);
                             numFrames = animation.NumFrames;
                             if (animation.PosFrames.Length > 0)
                             {

@@ -324,7 +324,7 @@ namespace GameEstate.AC.Formats.Props
         RecallsDisabled = 107,
         RareUsesTimer = 108,
         ActdPreorderReceivedItems = 109,
-        Afk = 110,
+        [Ephemeral] Afk = 110,
         IsGagged = 111,
         ProcSpellSelfTargeted = 112,
         IsAllegianceGagged = 113,
@@ -338,18 +338,23 @@ namespace GameEstate.AC.Formats.Props
         EquipmentSetAddLevel = 121,
         BarberActive = 122,
         TopLayerPriority = 123,
-        NoHeldItemShown = 124,
-        LoginAtLifestone = 125,
+        [SendOnLogin] NoHeldItemShown = 124,
+        [SendOnLogin] LoginAtLifestone = 125,
         OlthoiPk = 126,
         [SendOnLogin] Account15Days = 127,
         HadNoVitae = 128,
-        NoOlthoiTalk = 129,
+        [SendOnLogin] NoOlthoiTalk = 129,
         AutowieldLeft = 130,
         // custom
         [ServerOnly] LinkedPortalOneSummon = 9001,
         [ServerOnly] LinkedPortalTwoSummon = 9002,
         [ServerOnly] HouseEvicted = 9003,
         [ServerOnly] UntrainedSkills = 9004,
+        [Ephemeral, ServerOnly] IsEnvoy = 9005,
+        [ServerOnly] UnspecializedSkills = 9006,
+        [ServerOnly] FreeSkillResetRenewed = 9007,
+        [ServerOnly] FreeAttributeResetRenewed = 9008,
+        [ServerOnly] SkillTemplesTimerReset = 9009,
     }
 
     public enum PropertyDataId : ushort
@@ -433,8 +438,77 @@ namespace GameEstate.AC.Formats.Props
         [ServerOnly] PCAPRecordedTimestamp8 = 8028,
         [ServerOnly] PCAPRecordedTimestamp9 = 8029,
         [ServerOnly] PCAPRecordedMaxVelocityEstimated = 8030,
+        [ServerOnly] PCAPPhysicsDIDDataTemplatedFrom = 8044,
         //[ServerOnly] HairTexture = 9001,
         //[ServerOnly] DefaultHairTexture = 9002,
+    }
+
+    partial class PropertyExtensions
+    {
+        public static string GetValueEnumName(this PropertyDataId property, uint value)
+        {
+            switch (property)
+            {
+                case PropertyDataId.ActivationAnimation:
+                case PropertyDataId.InitMotion:
+                case PropertyDataId.UseTargetAnimation:
+                case PropertyDataId.UseTargetFailureAnimation:
+                case PropertyDataId.UseTargetSuccessAnimation:
+                case PropertyDataId.UseUserAnimation: return Enum.GetName(typeof(MotionCommand), value);
+                case PropertyDataId.PhysicsScript:
+                case PropertyDataId.RestrictionEffect: return Enum.GetName(typeof(PlayScript), value);
+                case PropertyDataId.ActivationSound:
+                case PropertyDataId.UseSound: return Enum.GetName(typeof(Sound), value);
+                case PropertyDataId.WieldedTreasureType:
+                case PropertyDataId.DeathTreasureType: /*todo*/ return null;
+                case PropertyDataId.Spell:
+                case PropertyDataId.DeathSpell:
+                case PropertyDataId.ProcSpell:
+                case PropertyDataId.RedSurgeSpell:
+                case PropertyDataId.BlueSurgeSpell:
+                case PropertyDataId.YellowSurgeSpell: return Enum.GetName(typeof(SpellId), value);
+                case PropertyDataId.ItemSkillLimit:
+                case PropertyDataId.ItemSpecializedOnly: return System.Enum.GetName(typeof(Skill), value);
+                case PropertyDataId.PCAPRecordedParentLocation: return Enum.GetName(typeof(ParentLocation), value);
+                case PropertyDataId.PCAPRecordedDefaultScript: return System.Enum.GetName(typeof(MotionCommand), value);
+                default: return null;
+            }
+        }
+
+        public static bool IsHexData(this PropertyDataId property)
+        {
+            switch (property)
+            {
+                case PropertyDataId.AccountHouseId:
+                case PropertyDataId.AlternateCurrency:
+                case PropertyDataId.AugmentationCreateItem:
+                case PropertyDataId.AugmentationEffect:
+                case PropertyDataId.BlueSurgeSpell:
+                case PropertyDataId.DeathSpell:
+                case PropertyDataId.DeathTreasureType:
+                case PropertyDataId.HouseId:
+                case PropertyDataId.ItemSkillLimit:
+                case PropertyDataId.ItemSpecializedOnly:
+                case PropertyDataId.LastPortal:
+                case PropertyDataId.LinkedPortalOne:
+                case PropertyDataId.LinkedPortalTwo:
+                case PropertyDataId.OlthoiDeathTreasureType:
+                case PropertyDataId.OriginalPortal:
+                case PropertyDataId.PhysicsScript:
+                case PropertyDataId.ProcSpell:
+                case PropertyDataId.RedSurgeSpell:
+                case PropertyDataId.RestrictionEffect:
+                case PropertyDataId.Spell:
+                case PropertyDataId.SpellComponent:
+                case PropertyDataId.UseCreateItem:
+                case PropertyDataId.UseSound:
+                case PropertyDataId.VendorsClassId:
+                case PropertyDataId.WieldedTreasureType:
+                case PropertyDataId.YellowSurgeSpell:
+                case PropertyDataId x when x >= PropertyDataId.PCAPRecordedWeenieHeader: return false;
+                default: return true;
+            }
+        }
     }
 
     public enum PropertyFloat : ushort
@@ -492,7 +566,7 @@ namespace GameEstate.AC.Formats.Props
         MinimumTimeSincePk = 50,
         DeprecatedHousekeepingPriority = 51,
         AbuseLoggingTimestamp = 52,
-        LastPortalTeleportTimestamp = 53,
+        [Ephemeral] LastPortalTeleportTimestamp = 53,
         UseRadius = 54,
         HomeRadius = 55,
         ReleasedTimestamp = 56,
@@ -515,7 +589,7 @@ namespace GameEstate.AC.Formats.Props
         ResistStaminaBoost = 73,
         ResistManaDrain = 74,
         ResistManaBoost = 75,
-        [Ephemeral] Translucency = 76,
+        Translucency = 76,
         PhysicsScriptIntensity = 77,
         Friction = 78,
         Elasticity = 79,
@@ -826,13 +900,13 @@ namespace GameEstate.AC.Formats.Props
         ScoreConfigNum = 137,
         ScoreNumScores = 138,
         [SendOnLogin] DeathLevel = 139,
-        AiOptions = 140,
-        OpenToEveryone = 141,
-        GeneratorTimeType = 142,
-        GeneratorStartTime = 143,
-        GeneratorEndTime = 144,
-        GeneratorEndDestructionType = 145,
-        XpOverride = 146,
+        [ServerOnly] AiOptions = 140,
+        [ServerOnly] OpenToEveryone = 141,
+        [ServerOnly] GeneratorTimeType = 142,
+        [ServerOnly] GeneratorStartTime = 143,
+        [ServerOnly] GeneratorEndTime = 144,
+        [ServerOnly] GeneratorEndDestructionType = 145,
+        [ServerOnly] XpOverride = 146,
         NumCrashAndTurns = 147,
         ComponentWarningThreshold = 148,
         HouseStatus = 149,
@@ -847,8 +921,8 @@ namespace GameEstate.AC.Formats.Props
         WieldRequirements = 158,
         WieldSkillType = 159,
         WieldDifficulty = 160,
-        HouseMaxHooksUsable = 161,
-        HouseCurrentHooksUsable = 162,
+        [ServerOnly] HouseMaxHooksUsable = 161,
+        [ServerOnly, Ephemeral] HouseCurrentHooksUsable = 162,
         AllegianceMinLevel = 163,
         AllegianceMaxLevel = 164,
         HouseRelinkHookCount = 165,
@@ -883,7 +957,7 @@ namespace GameEstate.AC.Formats.Props
         DeathTimestamp = 194,
         PkTimestamp = 195,
         VictimTimestamp = 196,
-        HookGroup = 197,
+        [ServerOnly] HookGroup = 197,
         AllegianceSwearTimestamp = 198,
         [SendOnLogin] HousePurchaseTimestamp = 199,
         RedirectableEquippedArmorCount = 200,
@@ -968,15 +1042,15 @@ namespace GameEstate.AC.Formats.Props
         WieldDifficulty4 = 278,
         Unique = 279,
         SharedCooldown = 280,
-        Faction1Bits = 281,
+        [SendOnLogin] Faction1Bits = 281,
         Faction2Bits = 282,
         Faction3Bits = 283,
         Hatred1Bits = 284,
         Hatred2Bits = 285,
         Hatred3Bits = 286,
-        SocietyRankCelhan = 287,
-        SocietyRankEldweb = 288,
-        SocietyRankRadblo = 289,
+        [SendOnLogin] SocietyRankCelhan = 287,
+        [SendOnLogin] SocietyRankEldweb = 288,
+        [SendOnLogin] SocietyRankRadblo = 289,
         HearLocalSignals = 290,
         HearLocalSignalsRadius = 291,
         Cleaving = 292,
@@ -1116,6 +1190,103 @@ namespace GameEstate.AC.Formats.Props
         [ServerOnly] InventoryOrder = 9015,
     }
 
+    partial class PropertyExtensions
+    {
+        public static string GetValueEnumName(this PropertyInt property, int value)
+        {
+            switch (property)
+            {
+                case PropertyInt.ActivationResponse: return Enum.GetName(typeof(ActivationResponse), value);
+                case PropertyInt.AetheriaBitfield: return Enum.GetName(typeof(AetheriaBitfield), value);
+                case PropertyInt.AttackHeight: return Enum.GetName(typeof(AttackHeight), value);
+                case PropertyInt.AttackType: return Enum.GetName(typeof(AttackType), value);
+                case PropertyInt.Attuned: return Enum.GetName(typeof(AttunedStatus), value);
+                case PropertyInt.AmmoType: return Enum.GetName(typeof(AmmoType), value);
+                case PropertyInt.Bonded: return Enum.GetName(typeof(BondedStatus), value);
+                case PropertyInt.ChannelsActive:
+                case PropertyInt.ChannelsAllowed: return Enum.GetName(typeof(Channel), value);
+                case PropertyInt.CombatMode: return Enum.GetName(typeof(CombatMode), value);
+                case PropertyInt.DefaultCombatStyle:
+                case PropertyInt.AiAllowedCombatStyle: return Enum.GetName(typeof(CombatStyle), value);
+                case PropertyInt.CombatUse: return Enum.GetName(typeof(CombatUse), value);
+                case PropertyInt.ClothingPriority: return Enum.GetName(typeof(CoverageMask), value);
+                case PropertyInt.CreatureType:
+                case PropertyInt.SlayerCreatureType:
+                case PropertyInt.FoeType:
+                case PropertyInt.FriendType: return Enum.GetName(typeof(CreatureType), value);
+                case PropertyInt.DamageType:
+                case PropertyInt.ResistanceModifierType: return Enum.GetName(typeof(DamageType), value);
+                case PropertyInt.CurrentWieldedLocation:
+                case PropertyInt.ValidLocations: return Enum.GetName(typeof(EquipMask), value);
+                case PropertyInt.EquipmentSetId: return Enum.GetName(typeof(EquipmentSet), value);
+                case PropertyInt.Gender: return Enum.GetName(typeof(Gender), value);
+                case PropertyInt.GeneratorDestructionType:
+                case PropertyInt.GeneratorEndDestructionType: return Enum.GetName(typeof(GeneratorDestruct), value);
+                case PropertyInt.GeneratorTimeType: return Enum.GetName(typeof(GeneratorTimeType), value);
+                case PropertyInt.GeneratorType: return Enum.GetName(typeof(GeneratorType), value);
+                case PropertyInt.HeritageGroup:
+                case PropertyInt.HeritageSpecificArmor: return Enum.GetName(typeof(HeritageGroup), value);
+                case PropertyInt.HookType: return Enum.GetName(typeof(HookType), value);
+                case PropertyInt.HouseType: return Enum.GetName(typeof(HouseType), value);
+                case PropertyInt.ImbuedEffect:
+                case PropertyInt.ImbuedEffect2:
+                case PropertyInt.ImbuedEffect3:
+                case PropertyInt.ImbuedEffect4:
+                case PropertyInt.ImbuedEffect5: return Enum.GetName(typeof(ImbuedEffectType), value);
+                case PropertyInt.HookItemType:
+                case PropertyInt.ItemType:
+                case PropertyInt.MerchandiseItemTypes:
+                case PropertyInt.TargetType: return Enum.GetName(typeof(ItemType), value);
+                case PropertyInt.ItemXpStyle: return Enum.GetName(typeof(ItemXpStyle), value);
+                case PropertyInt.MaterialType: return Enum.GetName(typeof(MaterialType), value);
+                case PropertyInt.PaletteTemplate: return Enum.GetName(typeof(PaletteTemplate), value);
+                case PropertyInt.PhysicsState: return Enum.GetName(typeof(PhysicsState), value);
+                case PropertyInt.HookPlacement:
+                case PropertyInt.Placement:
+                case PropertyInt.PCAPRecordedPlacement: return Enum.GetName(typeof(Placement), value);
+                case PropertyInt.PortalBitmask: return Enum.GetName(typeof(PortalBitmask), value);
+                case PropertyInt.PlayerKillerStatus: return Enum.GetName(typeof(PlayerKillerStatus), value);
+                case PropertyInt.BoosterEnum: return Enum.GetName(typeof(PropertyAttribute2nd), value);
+                case PropertyInt.ShowableOnRadar: return Enum.GetName(typeof(RadarBehavior), value);
+                case PropertyInt.RadarBlipColor: return Enum.GetName(typeof(RadarColor), value);
+                case PropertyInt.WeaponSkill:
+                case PropertyInt.WieldSkillType:
+                case PropertyInt.WieldSkillType2:
+                case PropertyInt.WieldSkillType3:
+                case PropertyInt.WieldSkillType4:
+                case PropertyInt.AppraisalItemSkill: return Enum.GetName(typeof(Skill), value);
+                case PropertyInt.AccountRequirements: return Enum.GetName(typeof(SubscriptionStatus), value);
+                case PropertyInt.SummoningMastery: return Enum.GetName(typeof(SummoningMastery), value);
+                case PropertyInt.UiEffects: return Enum.GetName(typeof(UIEffects), value);
+                case PropertyInt.ItemUseable: return Enum.GetName(typeof(Usable), value);
+                case PropertyInt.WeaponType: return Enum.GetName(typeof(WeaponType), value);
+                case PropertyInt.WieldRequirements:
+                case PropertyInt.WieldRequirements2:
+                case PropertyInt.WieldRequirements3:
+                case PropertyInt.WieldRequirements4: return Enum.GetName(typeof(WieldRequirement), value);
+                case PropertyInt.GeneratorStartTime:
+                case PropertyInt.GeneratorEndTime: return DateTimeOffset.FromUnixTimeSeconds(value).DateTime.ToString(CultureInfo.InvariantCulture);
+                case PropertyInt.ArmorType: return Enum.GetName(typeof(ArmorType), value);
+                case PropertyInt.ParentLocation: return Enum.GetName(typeof(ParentLocation), value);
+                case PropertyInt.PlacementPosition: return Enum.GetName(typeof(Placement), value);
+                case PropertyInt.HouseStatus: return Enum.GetName(typeof(HouseStatus), value);
+                case PropertyInt.UseCreatesContractId: return Enum.GetName(typeof(ContractId), value);
+                case PropertyInt.Faction1Bits:
+                case PropertyInt.Faction2Bits:
+                case PropertyInt.Faction3Bits:
+                case PropertyInt.Hatred1Bits:
+                case PropertyInt.Hatred2Bits:
+                case PropertyInt.Hatred3Bits: return Enum.GetName(typeof(FactionBits), value);
+                case PropertyInt.UseRequiresSkill:
+                case PropertyInt.UseRequiresSkillSpec:
+                case PropertyInt.SkillToBeAltered: return Enum.GetName(typeof(Skill), value);
+                case PropertyInt.HookGroup: return Enum.GetName(typeof(HookGroupType), value);
+                //case PropertyInt.TypeOfAlteration: return Enum.GetName(typeof(SkillAlterationType), value);
+                default: return null;
+            }
+        }
+    }
+
     public enum PropertyInt64 : ushort
     {
         Undef = 0,
@@ -1185,7 +1356,7 @@ namespace GameEstate.AC.Formats.Props
         DateOfBirth = 43,
         ThirdPartyApi = 44,
         KillQuest = 45,
-        Afk = 46,
+        [Ephemeral] Afk = 46,
         AllegianceName = 47,
         AugmentationAddQuest = 48,
         KillQuest2 = 49,
