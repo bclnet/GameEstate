@@ -84,11 +84,13 @@ namespace GameEstate.AC.Formats.FileTypes
             if (!attackHeights.Table.TryGetValue(attackHeight, out var attackTypes)) return Invalid;
             if (!attackTypes.Table.TryGetValue(attackType, out var maneuvers)) return Invalid;
 
+#if false
             //if (maneuvers.Count == 1)
-            //return maneuvers[0];
+                //return maneuvers[0];
 
             /*Console.WriteLine($"CombatManeuverTable({Id:X8}).GetMotion({stance}, {attackHeight}, {attackType}) - found {maneuvers.Count} maneuvers");
-            foreach (var maneuver in maneuvers) Console.WriteLine(maneuver);*/
+            foreach (var maneuver in maneuvers)
+                Console.WriteLine(maneuver);*/
 
             // CombatManeuverTable(30000000).GetMotion(SwordCombat, Medium, Slash) - found 2 maneuvers
             // SlashMed
@@ -101,14 +103,16 @@ namespace GameEstate.AC.Formats.FileTypes
 
                 if (maneuver == prevMotion)
                 {
-                    if (i < maneuvers.Count - 1) return maneuvers[i + 1];
-                    else return maneuvers[0];
+                    if (i < maneuvers.Count - 1)
+                        return maneuvers[i + 1];
+                    else
+                        return maneuvers[0];
                 }
             }
             return maneuvers[0];*/
+#endif
 
-            // if the CMT contains > 1 entries for this lookup, return both
-            // the code determines which motion to use based on the power bar
+            // if the CMT contains > 1 entries for this lookup, return both the code determines which motion to use based on the power bar
             return maneuvers;
         }
     }

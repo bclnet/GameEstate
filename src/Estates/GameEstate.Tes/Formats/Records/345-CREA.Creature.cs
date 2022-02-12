@@ -176,7 +176,7 @@ namespace GameEstate.Tes.Formats.Records
                 Y = r.ReadSingle();
                 Z = r.ReadSingle();
                 Duration = r.ReadInt16();
-                Id = r.ReadANSI(32, ASCIIFormat.ZeroPadded);
+                Id = r.ReadZPaddedString(32);
                 Unknown = r.ReadInt16();
             }
         }
@@ -188,7 +188,7 @@ namespace GameEstate.Tes.Formats.Records
 
             public AI_AField(BinaryReader r, int dataSize)
             {
-                Name = r.ReadANSI(32, ASCIIFormat.ZeroPadded);
+                Name = r.ReadZPaddedString(32);
                 Unknown = r.ReadByte();
             }
         }
@@ -231,7 +231,7 @@ namespace GameEstate.Tes.Formats.Records
                     case "AI_A": AI_A = new AI_AField(r, dataSize); return true;
                     case "XSCL": XSCL = r.ReadT<FLTVField>(dataSize); return true;
                     case "CNAM": CNAM = r.ReadSTRV(dataSize); return true;
-                    case "NPCS": NPCSs.Add(r.ReadSTRV(dataSize, ASCIIFormat.ZeroPadded)); return true;
+                    case "NPCS": NPCSs.Add(r.ReadSTRV_ZPad(dataSize)); return true;
                     default: return false;
                 }
             return false;

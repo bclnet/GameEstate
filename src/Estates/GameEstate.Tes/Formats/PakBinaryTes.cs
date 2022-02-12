@@ -286,7 +286,7 @@ namespace GameEstate.Tes.Formats
                 if (header.NameTableOffset > 0)
                 {
                     r.Position((long)header.NameTableOffset);
-                    var path = r.ReadL16ANSI().Replace('\\', '/');
+                    var path = r.ReadL16String().Replace('\\', '/');
                     foreach (var file in files)
                     {
                         file.Path = path;
@@ -389,7 +389,7 @@ namespace GameEstate.Tes.Formats
                 multiSource.Files = files = new FileMetadata[r.ReadInt32()];
                 for (var i = 0; i < files.Length; i++)
                 {
-                    var path = r.ReadL32ANSI().TrimStart('\\');
+                    var path = r.ReadL32String().TrimStart('\\');
                     files[i] = new FileMetadata
                     {
                         Path = path,

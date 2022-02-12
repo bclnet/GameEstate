@@ -281,7 +281,7 @@ namespace GameEstate.AC.Formats
         /// <summary>
         /// This is in the Language dat (client_local_English.dat)
         /// </summary>
-        [PakType(PakType.Portal), PakFileExtension("uil"), PakFileIdRange(0x21000000, 0x21FFFFFF)] UILayout = 35, // DB_TYPE_UI_LAYOUT
+        [PakType(PakType.Language), PakFileExtension("uil"), PakFileIdRange(0x21000000, 0x21FFFFFF)] UILayout = 35, // DB_TYPE_UI_LAYOUT
 
         /// <summary>
         /// indexed as "emp" in the client
@@ -291,7 +291,7 @@ namespace GameEstate.AC.Formats
         /// <summary>
         /// This is in the Language dat (client_local_English.dat)
         /// </summary>
-        [PakType(PakType.Portal), PakFileExtension("stt"), PakFileIdRange(0x23000000, 0x24FFFFFF)] StringTable = 37, // DB_TYPE_STRING_TABLE 
+        [PakType(PakType.Language), PakFileExtension("stt"), PakFileIdRange(0x23000000, 0x24FFFFFF)] StringTable = 37, // DB_TYPE_STRING_TABLE 
 
         /// <summary>
         /// indexed as "emp/idmap" in the client
@@ -335,14 +335,14 @@ namespace GameEstate.AC.Formats
         /// This is located in the Language dat (client_local_English.dat)
         /// "stringtable" in the client
         /// </summary>
-        [PakType(PakType.Portal), PakFileExtension("sti"), PakFileIdRange(0x41000000, 0x41FFFFFF)] StringState = 48, // DB_TYPE_STRING_STATE
+        [PakType(PakType.Language), PakFileExtension("sti"), PakFileIdRange(0x41000000, 0x41FFFFFF)] StringState = 48, // DB_TYPE_STRING_STATE
 
         [PakType(PakType.Portal), PakFileExtension(typeof(PakFileTypeHelper), "DbPropertyExtensionLookup"), PakFileIdRange(0x78000000, 0x7FFFFFFF)] DbProperties = 49, // DB_TYPE_DBPROPERTIES
 
         /// <summary>
         /// indexed as "mesh" in the client
         /// </summary>
-        [PakType(PakType.Portal), PakFileExtension("rendermesh"), PakFileIdRange(0x19000000, 0x19FFFFFF)] RenderMesh = 50, // DB_TYPE_RENDER_MESH
+        [PakType(PakType.Portal), PakFileExtension("rendermesh"), PakFileIdRange(0x19000000, 0x19FFFFFF)] RenderMesh = 67, // DB_TYPE_RENDER_MESH
 
         // the following special files are called out in a different section of the decompiled client:
         [PakType(PakType.Portal), PakFileIdRange(0x0E000001, 0x0E000001)] WeenieDefaults = 97, // DB_TYPE_WEENIE_DEF

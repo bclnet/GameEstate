@@ -7,30 +7,30 @@ namespace GameEstate.AC
 {
     public static class ACPakManager
     {
-        private static int count;
+        // Retail Iteration versions
+        const int ITERATION_CELL = 982;
+        const int ITERATION_PORTAL = 2072;
+        const int ITERATION_HIRES = 497;
+        const int ITERATION_LANGUAGE = 994;
 
-        // End of retail Iteration versions.
-        private static int ITERATION_CELL = 982;
-        private static int ITERATION_PORTAL = 2072;
-        private static int ITERATION_HIRES = 497;
-        private static int ITERATION_LANGUAGE = 994;
+        static int count;
 
-        public static CellPakFile CellDat { get; private set; }
-        public static PortalPakFile PortalDat { get; private set; }
-        public static DatPakFile HighResDat { get; private set; }
-        public static LanguagePakFile LanguageDat { get; private set; }
+        public static DatabaseCell Cell { get; private set; }
+        public static DatabasePortal Portal { get; private set; }
+        public static Database HighRes { get; private set; }
+        public static DatabaseLanguage Language { get; private set; }
 
         public static void Initialize(BinaryPakFile source, bool loadCell = true)
         {
-            if (CellDat != null) return;
+            if (Cell != null) return;
 
             if (loadCell)
                 try
                 {
-                    CellDat = new CellPakFile(source.Estate.OpenPakFile(new Uri("game:/client_cell_1.dat#AC")));
-                    //count = CellDat.Files.Count;
-                    //Log($"Successfully opened {datFile} file, containing {count} records, iteration {CellDat.Iteration}");
-                    //if (CellDat.Iteration != ITERATION_CELL) Log($"{datFile} iteration does not match expected end-of-retail version of {ITERATION_CELL}.");
+                    Cell = new DatabaseCell(source.Estate.OpenPakFile(new Uri("game:/client_cell_1.dat#AC")));
+                    //count = Cell.Files.Count;
+                    //Log($"Successfully opened {datFile} file, containing {count} records, iteration {Cell.Iteration}");
+                    //if (Cell.Iteration != ITERATION_CELL) Log($"{datFile} iteration does not match expected end-of-retail version of {ITERATION_CELL}.");
                 }
                 catch (FileNotFoundException ex)
                 {
@@ -40,7 +40,7 @@ namespace GameEstate.AC
 
             try
             {
-                PortalDat = new PortalPakFile(source.Estate.OpenPakFile(new Uri("game:/client_portal.dat#AC")));
+                Portal = new DatabasePortal(source.Estate.OpenPakFile(new Uri("game:/client_portal.dat#AC")));
                 //PortalDat.SkillTable.AddRetiredSkills();
                 //count = PortalDat.AllFiles.Count;
                 //Log($"Successfully opened {datFile} file, containing {count} records, iteration {PortalDat.Iteration}");
@@ -65,7 +65,7 @@ namespace GameEstate.AC
 
             try
             {
-                LanguageDat = new LanguagePakFile(source.Estate.OpenPakFile(new Uri("game:/client_local_English.dat#AC")));
+                Language = new DatabaseLanguage(source.Estate.OpenPakFile(new Uri("game:/client_local_English.dat#AC")));
                 //count = LanguageDat.AllFiles.Count;
                 //Log($"Successfully opened {datFile} file, containing {count} records, iteration {LanguageDat.Iteration}");
                 //if (LanguageDat.Iteration != ITERATION_LANGUAGE) Log($"{datFile} iteration does not match expected end-of-retail version of {ITERATION_LANGUAGE}.");

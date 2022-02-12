@@ -7,8 +7,6 @@ namespace System.IO
 {
     public static class Polyfill
     {
-        public enum ASCIIFormat { PossiblyNullTerminated, ZeroPadded, ZeroTerminated }
-
         #region Stream
 
         //public static byte[] ReadAllBytes(this Stream stream)
@@ -88,7 +86,7 @@ namespace System.IO
             if (resetPosition) destination.Position = 0;
         }
 
-        public static byte[] ReadAbsoluteBytes(this BinaryReader source, long position, int count)
+        public static byte[] ReadBytesAt(this BinaryReader source, long position, int count)
         {
             var last = source.BaseStream.Position;
             source.BaseStream.Position = position;
@@ -126,8 +124,12 @@ namespace System.IO
         }
 
         public static Guid ReadGuid(this BinaryReader source) => new Guid(source.ReadBytes(16));
+        public static byte[] ReadL32Bytes(this BinaryReader source) => source.ReadBytes((int)source.ReadUInt32());
+
+        #region String
 
         public static string ReadString(this BinaryReader source, int length) => new string(source.ReadChars(length));
+        //public static string ReadString(this BinaryReader source, int length, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(length)); //: collision maybe
         public static string ReadZString(this BinaryReader source, char endChar = '\0', StringBuilder builder = null)
         {
             var b = builder ?? new StringBuilder();
@@ -159,33 +161,34 @@ namespace System.IO
             return Encoding.GetEncoding(1252).GetString(thestring);
         }
 
-        public static byte[] ReadL32Bytes(this BinaryReader source) => source.ReadBytes((int)source.ReadUInt32());
-
-        public static string ReadL8ANSI(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(source.ReadByte()));
-        public static string ReadL16ANSI(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(source.ReadUInt16()));
-        public static string ReadL16ANSI(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes(source.ReadUInt16()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
-        public static string ReadL32ANSI(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes((int)source.ReadUInt32()));
-        public static string ReadL32ANSI(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes((int)source.ReadUInt32()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
-        public static string ReadC32ANSI(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes((int)source.ReadCompressedUInt32()));
-        public static string ReadC32ANSI(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes((int)source.ReadCompressedUInt32()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
-        public static string ReadANSI(this BinaryReader source, int length, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(length));
-        public static string ReadANSI(this BinaryReader source, int length, ASCIIFormat format, Encoding encoding = null)
+        public static string ReadL8String(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(source.ReadByte()));
+        public static string ReadL16String(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(source.ReadUInt16()));
+        public static string ReadL16String(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes(source.ReadUInt16()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
+        public static string ReadL32String(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes((int)source.ReadUInt32()));
+        public static string ReadL32String(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes((int)source.ReadUInt32()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
+        public static string ReadC32String(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes((int)source.ReadCompressedUInt32()));
+        public static string ReadC32String(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes((int)source.ReadCompressedUInt32()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
+       
+        public static string ReadZOptionedString(this BinaryReader source, int length, Encoding encoding = null)
         {
             var buf = source.ReadBytes(length);
             int i;
-            switch (format)
-            {
-                case ASCIIFormat.PossiblyNullTerminated:
-                    i = buf[^1] != 0 ? buf.Length : buf.Length - 1;
-                    return (encoding ?? Encoding.ASCII).GetString(buf, 0, i);
-                case ASCIIFormat.ZeroPadded:
-                    for (i = buf.Length - 1; i >= 0 && buf[i] == 0; i--) { }
-                    return (encoding ?? Encoding.ASCII).GetString(buf, 0, i + 1);
-                case ASCIIFormat.ZeroTerminated:
-                    for (i = 0; i < buf.Length && buf[i] != 0; i++) { }
-                    return (encoding ?? Encoding.ASCII).GetString(buf, 0, i);
-                default: throw new ArgumentOutOfRangeException(nameof(format), format.ToString());
-            }
+            i = buf[^1] != 0 ? buf.Length : buf.Length - 1;
+            return (encoding ?? Encoding.ASCII).GetString(buf, 0, i);
+        }
+        public static string ReadZPaddedString(this BinaryReader source, int length, Encoding encoding = null)
+        {
+            var buf = source.ReadBytes(length);
+            int i;
+            for (i = buf.Length - 1; i >= 0 && buf[i] == 0; i--) { }
+            return (encoding ?? Encoding.ASCII).GetString(buf, 0, i + 1);
+        }
+        public static string ReadZTermatedString(this BinaryReader source, int length, Encoding encoding = null)
+        {
+            var buf = source.ReadBytes(length);
+            int i;
+            for (i = 0; i < buf.Length && buf[i] != 0; i++) { }
+            return (encoding ?? Encoding.ASCII).GetString(buf, 0, i);
         }
 
         public static string ReadZEncoding(this BinaryReader source, Encoding encoding)
@@ -253,6 +256,8 @@ namespace System.IO
             }
             return list.ToArray();
         }
+
+        #endregion
 
         public static T ReadT<T>(this BinaryReader source, int sizeOf) => UnsafeX.MarshalT<T>(source.ReadBytes(sizeOf));
 

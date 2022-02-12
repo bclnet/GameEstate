@@ -7,7 +7,7 @@ using System.Text;
 namespace GameEstate.AC.Formats.FileTypes
 {
     /// <summary>
-    /// These are client_local_English.dat files starting with 0x31.
+    /// These are client_portal.dat files starting with 0x31.
     /// This is called a "String" in the client; It has been renamed to avoid conflicts with the generic "String" class.
     /// </summary>
     [PakFileType(PakFileType.String)]
@@ -18,7 +18,7 @@ namespace GameEstate.AC.Formats.FileTypes
         public LanguageString(BinaryReader r)
         {
             Id = r.ReadUInt32();
-            CharBuffer = r.ReadC32ANSI(Encoding.Default); //:TODO ?FALLBACK
+            CharBuffer = r.ReadC32String(Encoding.Default); //:TODO ?FALLBACK
         }
 
         //: New

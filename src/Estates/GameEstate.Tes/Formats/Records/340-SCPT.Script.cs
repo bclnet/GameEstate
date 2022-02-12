@@ -36,16 +36,16 @@ namespace GameEstate.Tes.Formats.Records
                 {
                     Index = r.ReadByte();
                     Type = r.ReadByte();
-                    FunctionId = r.ReadANSI(2);
+                    FunctionId = r.ReadString(2);
                     CompareOp = (byte)(r.ReadByte() << 1);
-                    Name = r.ReadANSI(dataSize - 5);
+                    Name = r.ReadString(dataSize - 5);
                     ComparisonValue = Parameter1 = Parameter2 = 0;
                     return;
                 }
                 CompareOp = r.ReadByte();
                 r.Skip(3); // Unused
                 ComparisonValue = r.ReadSingle();
-                FunctionId = r.ReadANSI(4);
+                FunctionId = r.ReadString(4);
                 Parameter1 = r.ReadInt32();
                 Parameter2 = r.ReadInt32();
                 if (dataSize != 24)
@@ -69,7 +69,7 @@ namespace GameEstate.Tes.Formats.Records
 
             public SCHDField(BinaryReader r, int dataSize)
             {
-                Name = r.ReadANSI(32, ASCIIFormat.ZeroPadded);
+                Name = r.ReadZPaddedString(32);
                 NumShorts = r.ReadInt32();
                 NumLongs = r.ReadInt32();
                 NumFloats = r.ReadInt32();
@@ -121,7 +121,7 @@ namespace GameEstate.Tes.Formats.Records
                 // SCVRField
                 VariableName = null;
             }
-            public void SCVRField(BinaryReader r, int dataSize) => VariableName = r.ReadANSI(dataSize, ASCIIFormat.PossiblyNullTerminated);
+            public void SCVRField(BinaryReader r, int dataSize) => VariableName = r.ReadZOptionedString(dataSize);
         }
 
         public override string ToString() => $"SCPT: {EDID.Value ?? SCHD.Name}";

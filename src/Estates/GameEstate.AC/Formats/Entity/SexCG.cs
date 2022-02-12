@@ -77,8 +77,18 @@ namespace GameEstate.AC.Formats.Entity
             // Gear Knights, both Olthoi types have multiple anim part changes.
             return hairstyle.ObjDesc.AnimPartChanges.Count == 1 ? hairstyle.ObjDesc.AnimPartChanges[0].PartID : (uint?)null;
         }
-        public uint GetHairTexture(uint hairStyle) => HairStyleList[Convert.ToInt32(hairStyle)].ObjDesc.TextureChanges[0].NewTexture;
-        public uint GetDefaultHairTexture(uint hairStyle) => HairStyleList[Convert.ToInt32(hairStyle)].ObjDesc.TextureChanges[0].OldTexture;
+        public uint? GetHairTexture(uint hairStyle)
+        {
+            var hairstyle = HairStyleList[Convert.ToInt32(hairStyle)];
+            // OlthoiAcid has no TextureChanges
+            return hairstyle.ObjDesc.TextureChanges.Count > 0 ? (uint?)hairstyle.ObjDesc.TextureChanges[0].NewTexture : null;
+        }
+        public uint? GetDefaultHairTexture(uint hairStyle)
+        {
+            var hairstyle = HairStyleList[Convert.ToInt32(hairStyle)];
+            // OlthoiAcid has no TextureChanges
+            return hairstyle.ObjDesc.TextureChanges.Count > 0 ? (uint?)hairstyle.ObjDesc.TextureChanges[0].OldTexture : null;
+        }
 
         // Headgear
         public uint GetHeadgearWeenie(uint headgearStyle) => HeadgearList[Convert.ToInt32(headgearStyle)].WeenieDefault;

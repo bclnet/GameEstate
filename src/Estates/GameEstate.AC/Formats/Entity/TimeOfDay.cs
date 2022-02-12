@@ -16,7 +16,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             Start = r.ReadSingle();
             IsNight = r.ReadUInt32() == 1;
-            Name = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            Name = r.ReadL16String(Encoding.Default); r.AlignBoundary();
         }
 
         //: Entity.TimeOfDay

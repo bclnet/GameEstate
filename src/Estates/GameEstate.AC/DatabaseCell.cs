@@ -2,9 +2,9 @@ using GameEstate.Formats;
 
 namespace GameEstate.AC
 {
-    public class CellPakFile
+    public class DatabaseCell : Database
     {
-        public CellPakFile(EstatePakFile pakFile)
+        public DatabaseCell(EstatePakFile pakFile) : base(pakFile)
         {
         }
 

@@ -77,7 +77,7 @@ namespace GameEstate.Tes.Formats
         public Header(BinaryReader r, TesFormat format, Header parent)
         {
             Parent = parent;
-            Type = r.ReadANSI(4);
+            Type = r.ReadString(4);
             if (Type == "GRUP")
             {
                 DataSize = (uint)(r.ReadUInt32() - (format == TesFormat.TES4 ? 20 : 24));

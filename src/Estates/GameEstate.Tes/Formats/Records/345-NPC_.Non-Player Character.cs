@@ -152,7 +152,7 @@ namespace GameEstate.Tes.Formats.Records
                 case "NPDT": NPDT = new NPDTField(r, dataSize); return true;
                 case "FLAG": FLAG = r.ReadINTV(dataSize); return true;
                 case "NPCO": NPCOs.Add(new CNTOField(r, dataSize, format)); return true;
-                case "NPCS": NPCSs.Add(r.ReadSTRV(dataSize, ASCIIFormat.ZeroPadded)); return true;
+                case "NPCS": NPCSs.Add(r.ReadSTRV_ZPad(dataSize)); return true;
                 case "AIDT": AIDT = new CREARecord.AIDTField(r, dataSize); return true;
                 case "AI_W": AI_W = new CREARecord.AI_WField(r, dataSize); return true;
                 case "AI_T": AI_T = new CREARecord.AI_TField(r, dataSize); return true;

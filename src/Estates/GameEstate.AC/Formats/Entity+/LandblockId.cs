@@ -28,7 +28,29 @@ namespace GameEstate.AC.Formats.Entity
         public byte LandcellX => Convert.ToByte((Landcell >> 3) & 0x7);
         public byte LandcellY => Convert.ToByte(Landcell & 0x7);
 
-        public MapScope MapScope => (MapScope)((Raw & 0x0F00) >> 8);
+#if false
+        // not sure where this logic came from, i don't think MapScope.IndoorsSmall and MapScope.IndoorsLarge was a thing?
+        //public MapScope MapScope => (MapScope)((Raw & 0x0F00) >> 8);
+
+        // just nuking this now, keeping this code here for reference
+        /*public MapScope MapScope
+        {
+            // TODO: port the updated version of Position and Landblock from Instancing branch, get rid of this MapScope thing..
+            get
+            {
+                var cell = Raw & 0xFFFF;
+
+                if (cell < 0x100)
+                    return MapScope.Outdoors;
+                else if (cell < 0x200)
+                    return MapScope.IndoorsSmall;
+                else
+                    return MapScope.IndoorsLarge;
+            }
+        }*/
+#endif
+
+        public bool Indoors => (Raw & 0xFFFF) >= 0x100;
 
         public static bool operator ==(LandblockId c1, LandblockId c2) => c1.Landblock == c2.Landblock;
         public static bool operator !=(LandblockId c1, LandblockId c2) => c1.Landblock != c2.Landblock;

@@ -41,6 +41,8 @@ namespace GameEstate.AC.Formats.FileTypes
         public readonly uint DefaultSoundTable;
         public readonly uint DefaultScriptTable;
 
+        public bool HasMissileFlightPlacement => PlacementFrames.ContainsKey((int)Placement.MissileFlight);
+
         SetupModel()
         {
             SortingSphere = Sphere.Empty;

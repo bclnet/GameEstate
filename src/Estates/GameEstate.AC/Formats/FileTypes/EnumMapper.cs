@@ -20,7 +20,7 @@ namespace GameEstate.AC.Formats.FileTypes
             Id = r.ReadUInt32();
             BaseEnumMap = r.ReadUInt32();
             NumberingType = (NumberingType)r.ReadByte();
-            IdToStringMap = r.ReadC32Many<uint, string>(sizeof(uint), x => x.ReadL8ANSI(Encoding.Default));
+            IdToStringMap = r.ReadC32Many<uint, string>(sizeof(uint), x => x.ReadL8String(Encoding.Default));
         }
 
         //: FileTypes.EnumMapper

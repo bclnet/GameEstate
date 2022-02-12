@@ -10,8 +10,8 @@ namespace GameEstate.AC.Formats.Entity
 
         public ChatEmoteData(BinaryReader r)
         {
-            MyEmote = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
-            OtherEmote = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            MyEmote = r.ReadL16String(Encoding.Default); r.AlignBoundary();
+            OtherEmote = r.ReadL16String(Encoding.Default); r.AlignBoundary();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace GameEstate.AC.Formats.Entity
         public Season(BinaryReader r)
         {
             StartDate = r.ReadUInt32();
-            Name = r.ReadL16ANSI(Encoding.Default); r.AlignBoundary();
+            Name = r.ReadL16String(Encoding.Default); r.AlignBoundary();
         }
 
         //: Entity.Season

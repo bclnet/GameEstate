@@ -80,8 +80,8 @@ namespace GameEstate.Tes.Formats.Records
                 ResponseNumber = r.ReadByte();
                 r.Skip(3); // Unused
             }
-            public void NAM1Field(BinaryReader r, int dataSize) => ResponseText = r.ReadANSI(dataSize, ASCIIFormat.PossiblyNullTerminated);
-            public void NAM2Field(BinaryReader r, int dataSize) => ActorNotes = r.ReadANSI(dataSize, ASCIIFormat.PossiblyNullTerminated);
+            public void NAM1Field(BinaryReader r, int dataSize) => ResponseText = r.ReadZOptionedString(dataSize);
+            public void NAM2Field(BinaryReader r, int dataSize) => ActorNotes = r.ReadZOptionedString(dataSize);
         }
 
         public class TES4Group

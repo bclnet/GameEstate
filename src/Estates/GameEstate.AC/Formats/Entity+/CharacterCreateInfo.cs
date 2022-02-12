@@ -7,7 +7,7 @@ namespace GameEstate.AC.Formats.Entity
 {
     public class CharacterCreateInfo
     {
-        public uint Heritage { get; set; }
+        public HeritageGroup Heritage { get; set; }
         public uint Gender { get; set; }
 
         public Appearance Appearance { get; private set; } = new Appearance();
@@ -35,8 +35,8 @@ namespace GameEstate.AC.Formats.Entity
 
         public CharacterCreateInfo(BinaryReader r)
         {
-            r.Skip(4);   // Unknown constant (1)
-            Heritage = r.ReadUInt32();
+            r.Skip(4); // Unknown constant (1)
+            Heritage = (HeritageGroup)r.ReadUInt32();
             Gender = r.ReadUInt32();
             Appearance = new Appearance(r);
             TemplateOption = r.ReadInt32();
@@ -49,7 +49,7 @@ namespace GameEstate.AC.Formats.Entity
             CharacterSlot = r.ReadUInt32();
             ClassId = r.ReadUInt32();
             SkillAdvancementClasses = r.ReadL32Array(x => (SkillAdvancementClass)x.ReadUInt32()).ToList();
-            Name = r.ReadL16ANSI();
+            Name = r.ReadL16String();
             StartArea = r.ReadUInt32();
             IsAdmin = r.ReadUInt32() == 1;
             IsSentinel = r.ReadUInt32() == 1;
