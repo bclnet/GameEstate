@@ -56,13 +56,13 @@ namespace GameEstate.AC.Formats.FileTypes
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(EnvCell)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     Flags != 0 ? new ExplorerInfoNode($"Flags: {Flags}") : null,
-                    new ExplorerInfoNode("Surfaces", items: Surfaces.Select(x => new ExplorerInfoNode($"{x:X8}"))),
-                    new ExplorerInfoNode($"Environment: {EnvironmentId:X8}"),
+                    new ExplorerInfoNode("Surfaces", items: Surfaces.Select(x => new ExplorerInfoNode($"{x:X8}", clickable: true))),
+                    new ExplorerInfoNode($"Environment: {EnvironmentId:X8}", clickable: true),
                     CellStructure != 0 ? new ExplorerInfoNode($"CellStructure: {CellStructure}") : null,
                     new ExplorerInfoNode($"Position: {Position}"),
                     CellPortals.Length > 0 ? new ExplorerInfoNode("CellPortals", items: CellPortals.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))) : null,
                     StaticObjects.Length > 0 ? new ExplorerInfoNode("StaticObjects", items: StaticObjects.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))) : null,
-                    RestrictionObj != 0 ? new ExplorerInfoNode($"RestrictionObj: {RestrictionObj:X8}") : null,
+                    RestrictionObj != 0 ? new ExplorerInfoNode($"RestrictionObj: {RestrictionObj:X8}", clickable: true) : null,
                 })
             };
             return nodes;

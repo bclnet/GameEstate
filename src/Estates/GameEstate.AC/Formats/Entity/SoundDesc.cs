@@ -21,7 +21,7 @@ namespace GameEstate.AC.Formats.Entity
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
                     var name = items[0].Name.Replace("Ambient Sound Table ID: ", "");
                     items.RemoveAt(0);
-                    return new ExplorerInfoNode($"{i}: {name}", items: items);
+                    return new ExplorerInfoNode($"{i}: {name}", items: items, clickable: true);
                 })),
             };
             return nodes;

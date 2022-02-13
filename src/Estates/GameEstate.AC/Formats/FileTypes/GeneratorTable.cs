@@ -3,6 +3,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
@@ -34,11 +35,14 @@ namespace GameEstate.AC.Formats.FileTypes
             WeenieObjectsItems = Generators.Items[1].Items;
         }
 
-        //: New
+        //: FileTypes.GeneratorTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(GeneratorTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
+                    new ExplorerInfoNode("Generators", items: (Generators as IGetExplorerInfo).GetInfoNodes(tag: tag)),
+                    new ExplorerInfoNode("PlayDayItems", items: PlayDayItems.Select(x => new ExplorerInfoNode(x.Id != 0 ? $"{x.Id} - {x.Name}" : $"{x.Name}", items: (x as IGetExplorerInfo).GetInfoNodes(tag: tag)))),
+                    new ExplorerInfoNode("WeenieObjectsItems", items: WeenieObjectsItems.Select(x => new ExplorerInfoNode(x.Id != 0 ? $"{x.Id} - {x.Name}" : $"{x.Name}", items: (x as IGetExplorerInfo).GetInfoNodes(tag: tag)))),
                 })
             };
             return nodes;

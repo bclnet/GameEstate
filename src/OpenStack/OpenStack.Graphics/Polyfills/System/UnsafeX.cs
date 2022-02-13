@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -73,13 +74,15 @@ namespace System
 
         public static unsafe T[] MarshalTArray<T>(byte[] bytes, int offset, int count)
         {
-            var result = new T[count];
+            var typeOfT = typeof(T);
+            var isEnum = typeOfT.IsEnum;
+            var result = isEnum ? Array.CreateInstance(typeOfT.GetEnumUnderlyingType(), count) : new T[count];
             fixed (byte* src = bytes)
             {
                 var hresult = GCHandle.Alloc(result, GCHandleType.Pinned);
                 Memcpy(hresult.AddrOfPinnedObject(), new IntPtr(src + offset), (uint)bytes.Length);
                 hresult.Free();
-                return result;
+                return isEnum ? result.Cast<T>().ToArray() : (T[])result;
             }
         }
 

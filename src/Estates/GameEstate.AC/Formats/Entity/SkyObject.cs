@@ -41,8 +41,8 @@ namespace GameEstate.AC.Formats.Entity
                 EndAngle != 0 ? new ExplorerInfoNode($"EndAngle: {EndAngle}") : null,
                 TexVelocityX != 0 ? new ExplorerInfoNode($"TexVelocityX: {TexVelocityX}") : null,
                 TexVelocityY != 0 ? new ExplorerInfoNode($"TexVelocityY: {TexVelocityY}") : null,
-                DefaultGFXObjectId != 0 ? new ExplorerInfoNode($"DefaultGFXObjectId: {DefaultGFXObjectId:X8}") : null,
-                DefaultPESObjectId != 0 ? new ExplorerInfoNode($"DefaultPESObjectId: {DefaultPESObjectId:X8}") : null,
+                DefaultGFXObjectId != 0 ? new ExplorerInfoNode($"DefaultGFXObjectId: {DefaultGFXObjectId:X8}", clickable: true) : null,
+                DefaultPESObjectId != 0 ? new ExplorerInfoNode($"DefaultPESObjectId: {DefaultPESObjectId:X8}", clickable: true) : null,
                 Properties != 0 ? new ExplorerInfoNode($"Properties: {Properties:X}") : null,
             };
             return nodes;

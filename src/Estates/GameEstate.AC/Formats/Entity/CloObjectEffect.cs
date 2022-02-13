@@ -24,8 +24,8 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Index: {Index}"),
-                new ExplorerInfoNode($"Model ID: {ModelId:X8}"),
-                new ExplorerInfoNode($"Texture Effects", items: CloTextureEffects.Select(x=> new ExplorerInfoNode($"{x}"))),
+                new ExplorerInfoNode($"Model ID: {ModelId:X8}", clickable: true),
+                new ExplorerInfoNode($"Texture Effects", items: CloTextureEffects.Select(x=> new ExplorerInfoNode($"{x}", clickable: true))),
             };
             return nodes;
         }

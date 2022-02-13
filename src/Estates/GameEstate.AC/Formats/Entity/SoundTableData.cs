@@ -24,7 +24,7 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"Sound ID: {SoundId:X8}"),
+                new ExplorerInfoNode($"Sound ID: {SoundId:X8}", clickable: true),
                 new ExplorerInfoNode($"Priority: {Priority}"),
                 new ExplorerInfoNode($"Probability: {Probability}"),
                 new ExplorerInfoNode($"Volume: {Volume}"),

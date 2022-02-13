@@ -30,7 +30,7 @@ namespace GameEstate.AC.Formats.Entity
                 Ranges.Length == 1
                     ? new ExplorerInfoNode($"Range: {Ranges[0]}")
                     : new ExplorerInfoNode($"SubPalette Ranges", items: Ranges.Select(x => new ExplorerInfoNode($"{x}"))),
-                new ExplorerInfoNode($"Palette Set: {PaletteSet:X8}"),
+                new ExplorerInfoNode($"Palette Set: {PaletteSet:X8}", clickable: true),
             };
             return nodes;
         }

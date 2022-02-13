@@ -39,8 +39,8 @@ namespace GameEstate.AC.Formats.FileTypes
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(ClothingTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                    new ExplorerInfoNode("Base Effects", items: ClothingBaseEffects.Select(x => new ExplorerInfoNode($"{x.Key:X8}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
-                    new ExplorerInfoNode("SubPalette Effects", items: ClothingSubPalEffects.Select(x => new ExplorerInfoNode($"{x.Key:D2}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
+                    new ExplorerInfoNode("Base Effects", items: ClothingBaseEffects.Select(x => new ExplorerInfoNode($"{x.Key:X8}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(), clickable: true))),
+                    new ExplorerInfoNode("SubPalette Effects", items: ClothingSubPalEffects.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode($"{x.Key} - {(PaletteTemplate)x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
                 })
             };
             return nodes;

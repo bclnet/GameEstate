@@ -17,7 +17,7 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode("ScriptMods", items: Scripts.Select(x=>new ExplorerInfoNode($"{x}"))),
+                new ExplorerInfoNode("ScriptMods", items: Scripts.Select(x=>new ExplorerInfoNode($"{x}", clickable: true))),
             };
             return nodes;
         }

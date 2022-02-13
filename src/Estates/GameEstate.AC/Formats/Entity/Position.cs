@@ -24,7 +24,7 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                ObjCellID != 0 ? new ExplorerInfoNode($"ObjCell ID: {ObjCellID:X8}") : null,
+                ObjCellID != 0 ? new ExplorerInfoNode($"ObjCell ID: {ObjCellID:X8}", clickable: true) : null,
                 !Frame.Origin.IsZeroEpsilon() ? new ExplorerInfoNode($"Origin: {Frame.Origin}") : null,
                 !Frame.Orientation.IsIdentity ? new ExplorerInfoNode($"Orientation: {Frame.Orientation}") : null,
             };

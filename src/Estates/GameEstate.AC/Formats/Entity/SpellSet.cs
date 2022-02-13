@@ -1,10 +1,12 @@
+using GameEstate.Explorer;
+using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace GameEstate.AC.Formats.Entity
 {
-    public class SpellSet
+    public class SpellSet : IGetExplorerInfo
     {
         // uint key is the total combined item level of all the equipped pieces in the set client calls this m_PieceCount
         public readonly SortedDictionary<uint, SpellSetTiers> SpellSetTiers;
@@ -22,6 +24,16 @@ namespace GameEstate.AC.Formats.Entity
                 if (SpellSetTiers.TryGetValue(i, out var spellSetTiers)) lastSpellSetTier = spellSetTiers;
                 if (lastSpellSetTier != null) SpellSetTiersNoGaps.Add(i, lastSpellSetTier);
             }
+        }
+
+        //: Entity.SpellSet
+        List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
+        {
+            var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode("SpellSetTiers", items: SpellSetTiers.Select(x => new ExplorerInfoNode($"{x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
+                new ExplorerInfoNode($"HighestTier: {HighestTier}"),
+            };
+            return nodes;
         }
     }
 }

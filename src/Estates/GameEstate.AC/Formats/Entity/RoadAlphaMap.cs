@@ -21,7 +21,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"RoadCode: {RCode}"),
-                new ExplorerInfoNode($"RoadTexGID: {RoadTexGID:X8}"),
+                new ExplorerInfoNode($"RoadTexGID: {RoadTexGID:X8}", clickable: true),
             };
             return nodes;
         }

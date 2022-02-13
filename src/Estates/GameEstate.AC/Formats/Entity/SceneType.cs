@@ -22,7 +22,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"SceneTableIdx: {StbIndex}"),
-                new ExplorerInfoNode("Scenes", items: Scenes.Select(x => new ExplorerInfoNode($"{x:X8}"))),
+                new ExplorerInfoNode("Scenes", items: Scenes.Select(x => new ExplorerInfoNode($"{x:X8}", clickable: true))),
             };
             return nodes;
         }

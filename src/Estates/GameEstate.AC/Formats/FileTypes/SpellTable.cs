@@ -1,8 +1,10 @@
 using GameEstate.AC.Formats.Entity;
+using GameEstate.AC.Formats.Props;
 using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace GameEstate.AC.Formats.FileTypes
@@ -25,11 +27,13 @@ namespace GameEstate.AC.Formats.FileTypes
             SpellSet = r.ReadL16Many<uint, SpellSet>(sizeof(uint), x => new SpellSet(x), offset: 2);
         }
 
-        //: New
+        //: FileTypes.SpellTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(SpellTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
+                    new ExplorerInfoNode("Spells", items: Spells.Select(x => new ExplorerInfoNode($"{x.Key}: {x.Value.Name}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(tag: tag)))),
+                    new ExplorerInfoNode("Spell Sets", items: SpellSet.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode($"{x.Key}: {(EquipmentSet)x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(tag: tag)))),
                 })
             };
             return nodes;

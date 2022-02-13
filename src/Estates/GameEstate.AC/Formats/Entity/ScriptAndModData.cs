@@ -21,7 +21,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{Mod}"),
-                new ExplorerInfoNode($"{ScriptId:X8}"),
+                new ExplorerInfoNode($"{ScriptId:X8}", clickable: true),
             };
             return nodes;
         }

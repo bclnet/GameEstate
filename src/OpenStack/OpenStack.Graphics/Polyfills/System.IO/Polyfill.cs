@@ -155,6 +155,7 @@ namespace System.IO
         public static string ReadObfuscatedString(this BinaryReader source)
         {
             var stringlength = source.ReadUInt16();
+            if (stringlength == 0) return string.Empty;
             var thestring = source.ReadBytes(stringlength);
             // flip the bytes in the string to undo the obfuscation: i.e. 0xAB => 0xBA
             for (var i = 0; i < stringlength; i++) thestring[i] = (byte)((thestring[i] >> 4) | (thestring[i] << 4));
@@ -168,7 +169,7 @@ namespace System.IO
         public static string ReadL32String(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes((int)source.ReadUInt32()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
         public static string ReadC32String(this BinaryReader source, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes((int)source.ReadCompressedUInt32()));
         public static string ReadC32String(this BinaryReader source, bool nullTerminated, Encoding encoding = null) { var bytes = source.ReadBytes((int)source.ReadCompressedUInt32()); var newLength = bytes.Length - 1; return (encoding ?? Encoding.ASCII).GetString(bytes, 0, nullTerminated && bytes[newLength] == 0 ? newLength : bytes.Length); }
-       
+
         public static string ReadZOptionedString(this BinaryReader source, int length, Encoding encoding = null)
         {
             var buf = source.ReadBytes(length);
@@ -259,22 +260,25 @@ namespace System.IO
 
         #endregion
 
-        public static T ReadT<T>(this BinaryReader source, int sizeOf) => UnsafeX.MarshalT<T>(source.ReadBytes(sizeOf));
+        public static T ReadT<T>(this BinaryReader source, int sizeOf) where T : struct => UnsafeX.MarshalT<T>(source.ReadBytes(sizeOf));
 
-        public static T[] ReadL16Array<T>(this BinaryReader source, int sizeOf) => ReadTArray<T>(source, sizeOf, source.ReadUInt16());
-        public static T[] ReadL32Array<T>(this BinaryReader source, int sizeOf) => ReadTArray<T>(source, sizeOf, (int)source.ReadUInt32());
-        public static T[] ReadC32Array<T>(this BinaryReader source, int sizeOf) => ReadTArray<T>(source, sizeOf, (int)source.ReadCompressedUInt32());
-        public static T[] ReadTArray<T>(this BinaryReader source, int sizeOf, int count) => UnsafeX.MarshalTArray<T>(source.ReadBytes(count * sizeOf), 0, count);
+        public static T[] ReadL8Array<T>(this BinaryReader source, int sizeOf) where T : struct => ReadTArray<T>(source, sizeOf, source.ReadByte());
+        public static T[] ReadL16Array<T>(this BinaryReader source, int sizeOf) where T : struct => ReadTArray<T>(source, sizeOf, source.ReadUInt16());
+        public static T[] ReadL32Array<T>(this BinaryReader source, int sizeOf) where T : struct => ReadTArray<T>(source, sizeOf, (int)source.ReadUInt32());
+        public static T[] ReadC32Array<T>(this BinaryReader source, int sizeOf) where T : struct => ReadTArray<T>(source, sizeOf, (int)source.ReadCompressedUInt32());
+        public static T[] ReadTArray<T>(this BinaryReader source, int sizeOf, int count) where T : struct => count > 0 ? UnsafeX.MarshalTArray<T>(source.ReadBytes(count * sizeOf), 0, count) : new T[0];
 
+        public static T[] ReadL8Array<T>(this BinaryReader source, Func<BinaryReader, T> factory) => ReadTArray(source, factory, source.ReadByte());
         public static T[] ReadL16Array<T>(this BinaryReader source, Func<BinaryReader, T> factory) => ReadTArray(source, factory, source.ReadUInt16());
         public static T[] ReadL32Array<T>(this BinaryReader source, Func<BinaryReader, T> factory) => ReadTArray(source, factory, (int)source.ReadUInt32());
         public static T[] ReadC32Array<T>(this BinaryReader source, Func<BinaryReader, T> factory) => ReadTArray(source, factory, (int)source.ReadCompressedUInt32());
         public static T[] ReadTArray<T>(this BinaryReader source, Func<BinaryReader, T> factory, int count) { var list = new T[count]; for (var i = 0; i < list.Length; i++) list[i] = factory(source); return list; }
 
-        public static Dictionary<TKey, TValue> ReadL16Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, source.ReadUInt16(), offset);
-        public static Dictionary<TKey, TValue> ReadL32Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadUInt32(), offset);
-        public static Dictionary<TKey, TValue> ReadC32Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadCompressedUInt32(), offset);
-        public static Dictionary<TKey, TValue> ReadTMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int count, int offset = 0)
+        public static Dictionary<TKey, TValue> ReadL8Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, source.ReadByte(), offset);
+        public static Dictionary<TKey, TValue> ReadL16Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, source.ReadUInt16(), offset);
+        public static Dictionary<TKey, TValue> ReadL32Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadUInt32(), offset);
+        public static Dictionary<TKey, TValue> ReadC32Many<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadCompressedUInt32(), offset);
+        public static Dictionary<TKey, TValue> ReadTMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int count, int offset = 0) where TKey : struct
         {
             if (offset != 0) source.Skip(offset);
             var set = new Dictionary<TKey, TValue>();
@@ -282,6 +286,7 @@ namespace System.IO
             return set;
         }
 
+        public static Dictionary<TKey, TValue> ReadL8Many<TKey, TValue>(this BinaryReader source, Func<BinaryReader, TKey> keyFactory, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keyFactory, valueFactory, source.ReadByte(), offset);
         public static Dictionary<TKey, TValue> ReadL16Many<TKey, TValue>(this BinaryReader source, Func<BinaryReader, TKey> keyFactory, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keyFactory, valueFactory, source.ReadUInt16(), offset);
         public static Dictionary<TKey, TValue> ReadL32Many<TKey, TValue>(this BinaryReader source, Func<BinaryReader, TKey> keyFactory, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keyFactory, valueFactory, (int)source.ReadUInt32(), offset);
         public static Dictionary<TKey, TValue> ReadC32Many<TKey, TValue>(this BinaryReader source, Func<BinaryReader, TKey> keyFactory, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTMany<TKey, TValue>(source, keyFactory, valueFactory, (int)source.ReadCompressedUInt32(), offset);
@@ -293,10 +298,10 @@ namespace System.IO
             return set;
         }
 
-        public static SortedDictionary<TKey, TValue> ReadL16SortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTSortedMany<TKey, TValue>(source, keySizeOf, valueFactory, source.ReadUInt16(), offset);
-        public static SortedDictionary<TKey, TValue> ReadL32SortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTSortedMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadUInt32(), offset);
-        public static SortedDictionary<TKey, TValue> ReadC32SortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) => ReadTSortedMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadCompressedUInt32(), offset);
-        public static SortedDictionary<TKey, TValue> ReadTSortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int count, int offset = 0)
+        public static SortedDictionary<TKey, TValue> ReadL16SortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTSortedMany<TKey, TValue>(source, keySizeOf, valueFactory, source.ReadUInt16(), offset);
+        public static SortedDictionary<TKey, TValue> ReadL32SortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTSortedMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadUInt32(), offset);
+        public static SortedDictionary<TKey, TValue> ReadC32SortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int offset = 0) where TKey : struct => ReadTSortedMany<TKey, TValue>(source, keySizeOf, valueFactory, (int)source.ReadCompressedUInt32(), offset);
+        public static SortedDictionary<TKey, TValue> ReadTSortedMany<TKey, TValue>(this BinaryReader source, int keySizeOf, Func<BinaryReader, TValue> valueFactory, int count, int offset = 0) where TKey : struct
         {
             if (offset != 0) source.Skip(offset);
             var set = new SortedDictionary<TKey, TValue>();

@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\DIDTables.txt" />
+    <None Remove="Data\DIDTable.txt" />
+    <None Remove="Data\LocationTable.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Data\DIDTables.txt" />
+    <EmbeddedResource Include="Data\DIDTable.txt" />
+    <EmbeddedResource Include="Data\LocationTable.txt" />
   </ItemGroup>
 
   <ItemGroup>

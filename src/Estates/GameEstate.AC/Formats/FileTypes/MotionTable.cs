@@ -35,17 +35,27 @@ namespace GameEstate.AC.Formats.FileTypes
         //: FileTypes.MotionTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
+            static string GetLabel(uint combined)
+            {
+                var stanceKey = (ushort)(combined >> 16);
+                var motionKey = (ushort)combined;
+                if (RawToInterpreted.TryGetValue(stanceKey, out var stance) && RawToInterpreted.TryGetValue(motionKey, out var motion)) return $"{stance} - {motion}";
+                else if (Enum.IsDefined(typeof(MotionCommand), combined)) return $"{(MotionCommand)combined}";
+                else return $"{combined:X8}";
+            }
+
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(MotionTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"Default style: {(MotionCommand)DefaultStyle}"),
-                    new ExplorerInfoNode("Style defaults", items: StyleDefaults.Select(x => new ExplorerInfoNode($"{(MotionCommand)x.Key}: {(MotionCommand)x.Value}"))),
-                    new ExplorerInfoNode("Cycles", items: Cycles.Select(x => new ExplorerInfoNode($"{x.Key:X8}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
-                    new ExplorerInfoNode("Modifiers", items: Modifiers.Select(x => new ExplorerInfoNode($"{x.Key:X8}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
-                    new ExplorerInfoNode("Links", items: Links.Select(x => new ExplorerInfoNode($"{x.Key:X8}", items: x.Value.Select(y => new ExplorerInfoNode($"{y.Key}", items: (y.Value as IGetExplorerInfo).GetInfoNodes()))))),
+                    new ExplorerInfoNode("Style defaults", items: StyleDefaults.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode($"{(MotionCommand)x.Key}: {(MotionCommand)x.Value}"))),
+                    new ExplorerInfoNode("Cycles", items: Cycles.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode(GetLabel(x.Key), items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
+                    new ExplorerInfoNode("Modifiers", items: Modifiers.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode(GetLabel(x.Key), items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
+                    new ExplorerInfoNode("Links", items: Links.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode(GetLabel(x.Key), items: x.Value.OrderBy(i => i.Key).Select(y => new ExplorerInfoNode(GetLabel(y.Key), items: (y.Value as IGetExplorerInfo).GetInfoNodes()))))),
                 })
             };
             return nodes;
         }
+
 
         /// <summary>
         /// Gets the default style for the requested MotionStance
@@ -216,10 +226,22 @@ namespace GameEstate.AC.Formats.FileTypes
             var commands = new HashSet<MotionCommand>();
             foreach (var cycle in Cycles.Keys)
             {
-                if (stance != MotionStance.Invalid && (cycle >> 16) != ((uint)stance & 0xFFFF)) continue;
+                if ((cycle >> 16) != ((uint)stance & 0xFFFF)) continue;
                 var rawCommand = (ushort)(cycle & 0xFFFF);
                 var motionCommand = RawToInterpreted[rawCommand];
                 if (!commands.Contains(motionCommand)) commands.Add(motionCommand);
+            }
+            foreach (var kvp in Links)
+            {
+                var stanceMotion = kvp.Key;
+                var links = kvp.Value;
+                if ((stanceMotion >> 16) != ((uint)stance & 0xFFFF)) continue;
+                foreach (var link in links.Keys)
+                {
+                    var rawCommand = (ushort)(link & 0xFFFF);
+                    var motionCommand = RawToInterpreted[rawCommand];
+                    if (!commands.Contains(motionCommand)) commands.Add(motionCommand);
+                }
             }
             return commands.ToArray();
         }

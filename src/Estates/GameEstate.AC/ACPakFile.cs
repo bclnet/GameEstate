@@ -1,6 +1,7 @@
 ﻿using GameEstate.AC.Formats;
 using GameEstate.Explorer;
 using GameEstate.Formats;
+using System.Text;
 
 namespace GameEstate.AC
 {
@@ -10,6 +11,8 @@ namespace GameEstate.AC
     /// <seealso cref="GameEstate.Core.BinaryPakFile" />
     public class ACPakFile : BinaryPakManyFile
     {
+        static ACPakFile() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ACPakFile" /> class.
         /// </summary>

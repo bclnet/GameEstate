@@ -17,9 +17,9 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode("Object Effects", items: CloObjectEffects.Select(x => {
+                new ExplorerInfoNode("Object Effects", items: CloObjectEffects.OrderBy(i => i.Index).Select(x => {
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
-                    var name = items[0].Name.Replace("Idx: ", "");
+                    var name = items[0].Name;
                     items.RemoveAt(0);
                     return new ExplorerInfoNode(name, items: items);
                 })),

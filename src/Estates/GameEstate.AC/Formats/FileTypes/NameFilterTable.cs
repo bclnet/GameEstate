@@ -3,6 +3,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
@@ -17,15 +18,16 @@ namespace GameEstate.AC.Formats.FileTypes
         public NameFilterTable(BinaryReader r)
         {
             Id = r.ReadUInt32();
-            LanguageData = r.ReadL16Many<uint, NameFilterLanguageData>(sizeof(uint), x => new NameFilterLanguageData(x)); //:TODO different table size
+            LanguageData = r.ReadL8Many<uint, NameFilterLanguageData>(sizeof(uint), x => new NameFilterLanguageData(x), offset: 1);
         }
 
-        //: New
+        //: FileTypes.GeneratorTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"{nameof(NameFilterTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                })
+                new ExplorerInfoNode($"{nameof(NameFilterTable)}: {Id:X8}", items: LanguageData.Select(
+                    x => new ExplorerInfoNode($"{x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(tag: tag))
+                ))
             };
             return nodes;
         }

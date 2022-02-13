@@ -28,7 +28,7 @@ namespace GameEstate.AC.Formats.FileTypes
                 new ExplorerInfoNode($"{nameof(SurfaceTexture)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"Unknown: {Unknown}"),
                     new ExplorerInfoNode($"UnknownByte: {UnknownByte}"),
-                    new ExplorerInfoNode("Textures", items: Textures.Select(x => new ExplorerInfoNode($"{x:X8}"))),
+                    new ExplorerInfoNode("Textures", items: Textures.Select(x => new ExplorerInfoNode($"{x:X8}", clickable: true))),
                 })
             };
             return nodes;

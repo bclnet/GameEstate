@@ -21,7 +21,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"TerrainCode: {TCode}"),
-                new ExplorerInfoNode($"TextureGID: {TexGID:X8}"),
+                new ExplorerInfoNode($"TextureGID: {TexGID:X8}", clickable: true),
             };
             return nodes;
         }

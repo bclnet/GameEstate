@@ -37,15 +37,15 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                PaletteID != 0 ? new ExplorerInfoNode($"Palette ID: {PaletteID:X8}") : null,
+                PaletteID != 0 ? new ExplorerInfoNode($"Palette ID: {PaletteID:X8}", clickable: true) : null,
                 SubPalettes.Count > 0 ? new ExplorerInfoNode("SubPalettes", items: SubPalettes.Select(x => {
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
                     var name = items[0].Name;
                     items.RemoveAt(0);
                     return new ExplorerInfoNode(name, items: items);
                 })) : null,
-                TextureChanges.Count > 0 ? new ExplorerInfoNode("Texture Changes", items: TextureChanges.Select(x => new ExplorerInfoNode($"{x}"))) : null,
-                AnimPartChanges.Count > 0 ? new ExplorerInfoNode("AnimPart Changes", items: AnimPartChanges.Select(x => new ExplorerInfoNode($"{x}"))) : null,
+                TextureChanges.Count > 0 ? new ExplorerInfoNode("Texture Changes", items: TextureChanges.Select(x => new ExplorerInfoNode($"{x}", clickable: true))) : null,
+                AnimPartChanges.Count > 0 ? new ExplorerInfoNode("AnimPart Changes", items: AnimPartChanges.Select(x => new ExplorerInfoNode($"{x}", clickable: true))) : null,
             };
             return nodes;
         }

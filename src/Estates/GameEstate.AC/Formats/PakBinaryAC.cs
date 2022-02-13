@@ -108,8 +108,8 @@ namespace GameEstate.AC.Formats
         // object factory
         static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(uint objectId, PakType pakType, PakFileType? type)
         {
-            if (type == null) return null;
-            else if (objectId == Iteration.FILE_ID) return (r, m) => Task.FromResult((object)new Iteration(r));
+            if (objectId == Iteration.FILE_ID) return (r, m) => Task.FromResult((object)new Iteration(r)); 
+            else if (type == null) return null;
             else return type.Value switch
             {
                 PakFileType.LandBlock => (r, m) => Task.FromResult((object)new Landblock(r)),

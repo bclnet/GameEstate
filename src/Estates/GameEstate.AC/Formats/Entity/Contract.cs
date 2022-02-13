@@ -1,9 +1,12 @@
+using GameEstate.Explorer;
+using GameEstate.Formats;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace GameEstate.AC.Formats.Entity
 {
-    public class Contract
+    public class Contract : IGetExplorerInfo
     {
         public readonly uint Version;
         public readonly uint ContractId;
@@ -48,6 +51,30 @@ namespace GameEstate.AC.Formats.Entity
             LocationNPCStart = new Position(r);
             LocationNPCEnd = new Position(r);
             LocationQuestArea = new Position(r);
+        }
+
+        //: Entity.Contract
+        List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
+        {
+            var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode($"ContractId: {ContractId}"),
+                new ExplorerInfoNode($"ContractName: {ContractName}"),
+                new ExplorerInfoNode($"Version: {Version}"),
+                new ExplorerInfoNode($"Description: {Description}"),
+                new ExplorerInfoNode($"DescriptionProgress: {DescriptionProgress}"),
+                new ExplorerInfoNode($"NameNPCStart: {NameNPCStart}"),
+                new ExplorerInfoNode($"NameNPCEnd: {NameNPCEnd}"),
+                new ExplorerInfoNode($"QuestflagStamped: {QuestflagStamped}"),
+                new ExplorerInfoNode($"QuestflagStarted: {QuestflagStarted}"),
+                new ExplorerInfoNode($"QuestflagFinished: {QuestflagFinished}"),
+                new ExplorerInfoNode($"QuestflagProgress: {QuestflagProgress}"),
+                new ExplorerInfoNode($"QuestflagTimer: {QuestflagTimer}"),
+                new ExplorerInfoNode($"QuestflagRepeatTime: {QuestflagRepeatTime}"),
+                new ExplorerInfoNode("LocationNPCStart", items: (LocationNPCStart as IGetExplorerInfo).GetInfoNodes(tag: tag)),
+                new ExplorerInfoNode("LocationNPCEnd", items: (LocationNPCEnd as IGetExplorerInfo).GetInfoNodes(tag: tag)),
+                new ExplorerInfoNode("LocationQuestArea", items: (LocationQuestArea as IGetExplorerInfo).GetInfoNodes(tag: tag)),
+            };
+            return nodes;
         }
     }
 }

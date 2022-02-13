@@ -3,6 +3,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
@@ -22,12 +23,13 @@ namespace GameEstate.AC.Formats.FileTypes
             Contracts = r.ReadL16Many<uint, Contract>(sizeof(uint), x => new Contract(x), offset: 2);
         }
 
-        //: New
+        //: FileTypes.ContractTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"{nameof(ContractTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                })
+                new ExplorerInfoNode($"{nameof(ContractTable)}: {Id:X8}", items: Contracts.Select(
+                    x => new ExplorerInfoNode($"{x.Key} - {x.Value.ContractName}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(tag: tag))
+                ))
             };
             return nodes;
         }

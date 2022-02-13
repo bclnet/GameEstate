@@ -24,12 +24,12 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"Icon: {Icon:X8}"),
+                new ExplorerInfoNode($"Icon: {Icon:X8}", clickable: true),
                 new ExplorerInfoNode("SubPalettes", items: CloSubPalettes.Select(x => {
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
                     var name = items[1].Name.Replace("Palette Set: ", "");
                     items.RemoveAt(1);
-                    return new ExplorerInfoNode(name, items: items);
+                    return new ExplorerInfoNode(name, items: items, clickable: true);
                 })),
             };
             return nodes;

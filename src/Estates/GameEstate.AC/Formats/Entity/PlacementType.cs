@@ -10,9 +10,7 @@ namespace GameEstate.AC.Formats.Entity
         public readonly AnimationFrame AnimFrame;
 
         public PlacementType(BinaryReader r, uint numParts)
-        {
-            AnimFrame = new AnimationFrame(r, numParts);
-        }
+           =>  AnimFrame = new AnimationFrame(r, numParts);
 
         //: Entity.PlacementType
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag) => (AnimFrame as IGetExplorerInfo).GetInfoNodes(resource, file, tag);

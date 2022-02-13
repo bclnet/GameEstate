@@ -3,6 +3,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
@@ -25,15 +26,16 @@ namespace GameEstate.AC.Formats.FileTypes
             // I was unable to find the unpack code in the client. If someone can point me to it, I can make sure we match what the client is doing. - Mag
             r.ReadByte();
             var length = r.ReadByte();
-            TabooTableEntries = r.ReadTMany<uint, TabooTableEntry>(sizeof(uint), x=> new TabooTableEntry(x), length);
+            TabooTableEntries = r.ReadTMany<uint, TabooTableEntry>(sizeof(uint), x => new TabooTableEntry(x), length);
         }
 
-        //: New
+        //: FileTypes.TabooTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"{nameof(TabooTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                })
+                new ExplorerInfoNode($"{nameof(TabooTable)}: {Id:X8}", items: TabooTableEntries.OrderBy(i => i.Key).Select(
+                    x => new ExplorerInfoNode($"{x.Key:X8}", items: x.Value.BannedPatterns.Select(y => new ExplorerInfoNode($"{y}")))
+                ))
             };
             return nodes;
         }

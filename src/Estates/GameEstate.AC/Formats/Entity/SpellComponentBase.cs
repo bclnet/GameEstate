@@ -1,8 +1,13 @@
+using GameEstate.AC.Formats.FileTypes;
+using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GameEstate.AC.Formats.Entity
 {
-    public class SpellComponentBase
+    public class SpellComponentBase : IGetExplorerInfo
     {
         public readonly string Name;
         public readonly uint Category;
@@ -23,6 +28,22 @@ namespace GameEstate.AC.Formats.Entity
             Time = r.ReadSingle();
             Text = r.ReadObfuscatedString(); r.AlignBoundary();
             CDM = r.ReadSingle();
+        }
+
+        //: Entity.SpellComponentBase
+        List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
+        {
+            var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode($"Name: {Name}"),
+                new ExplorerInfoNode($"Category: {Category}"),
+                new ExplorerInfoNode($"Icon: {Icon:X8}", clickable: true),
+                new ExplorerInfoNode($"Type: {(SpellComponentTable.Type)Type}"),
+                Gesture != 0x80000000 ? new ExplorerInfoNode($"Gesture: {(MotionCommand)Gesture}") : null,
+                new ExplorerInfoNode($"Time: {Time}"),
+                !string.IsNullOrEmpty(Text) ? new ExplorerInfoNode($"Text: {Text}") : null,
+                new ExplorerInfoNode($"CDM: {CDM}"),
+            };
+            return nodes;
         }
     }
 }

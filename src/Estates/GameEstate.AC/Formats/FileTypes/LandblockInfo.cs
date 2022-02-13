@@ -54,14 +54,16 @@ namespace GameEstate.AC.Formats.FileTypes
         //: FileTypes.LandblockInfo
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
+            var landblock = Id & 0xFFFF0000;
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(LandblockInfo)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"NumCells: {NumCells}"),
+                    NumCells > 0 ? new ExplorerInfoNode("Objects", items: Enumerable.Range(0, (int)NumCells).Select(i => new ExplorerInfoNode($"{landblock + 0x100 + i:X8}", clickable: true))) : null,
                     Objects.Length > 0 ? new ExplorerInfoNode("Objects", items: Objects.Select(x => {
                         var items = (x as IGetExplorerInfo).GetInfoNodes();
-                        var name = items[0].Name.Replace("Id: ", "");
+                        var name = items[0].Name.Replace("ID: ", "");
                         items.RemoveAt(0);
-                        return new ExplorerInfoNode(name, items: items);
+                        return new ExplorerInfoNode(name, items: items, clickable: true);
                     })) : null,
                     //PackMask != 0 ? new ExplorerInfoNode($"PackMask: {PackMask}") : null,
                     Buildings.Length > 0 ? new ExplorerInfoNode("Buildings", items: Buildings.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))) : null,

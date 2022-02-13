@@ -54,14 +54,14 @@ namespace GameEstate.AC.Formats.FileTypes
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Model", Name = "Model", Value = this }),
                 new ExplorerInfoNode($"{nameof(GfxObj)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                    new ExplorerInfoNode($"Surfaces", items: Surfaces.Select(x => new ExplorerInfoNode($"{x:X8}"))),
+                    new ExplorerInfoNode($"Surfaces", items: Surfaces.Select(x => new ExplorerInfoNode($"{x:X8}", clickable: true))),
                     new ExplorerInfoNode($"VertexArray", items: (VertexArray as IGetExplorerInfo).GetInfoNodes(resource, file)),
                     Flags.HasFlag(GfxObjFlags.HasPhysics) ? new ExplorerInfoNode($"PhysicsPolygons", items: PhysicsPolygons.Select(x => new ExplorerInfoNode($"{x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))) : null,
                     Flags.HasFlag(GfxObjFlags.HasPhysics) ? new ExplorerInfoNode($"PhysicsBSP", items: (PhysicsBSP as IGetExplorerInfo).GetInfoNodes(tag: BSPType.Physics).First().Items) : null,
                     new ExplorerInfoNode($"SortCenter: {SortCenter}"),
                     Flags.HasFlag(GfxObjFlags.HasDrawing) ? new ExplorerInfoNode($"Polygons", items: Polygons.Select(x => new ExplorerInfoNode($"{x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))) : null,
                     Flags.HasFlag(GfxObjFlags.HasDrawing) ? new ExplorerInfoNode($"DrawingBSP", items: (DrawingBSP as IGetExplorerInfo).GetInfoNodes(tag: BSPType.Drawing).First().Items) : null,
-                    Flags.HasFlag(GfxObjFlags.HasDIDDegrade) ? new ExplorerInfoNode($"DIDDegrade: {DIDDegrade:X8}") : null,
+                    Flags.HasFlag(GfxObjFlags.HasDIDDegrade) ? new ExplorerInfoNode($"DIDDegrade: {DIDDegrade:X8}", clickable: true) : null,
                 })
             };
             return nodes;

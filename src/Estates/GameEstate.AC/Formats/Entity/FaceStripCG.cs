@@ -20,7 +20,7 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                IconImage != 0 ? new ExplorerInfoNode($"Icon: {IconImage:X8}") : null,
+                IconImage != 0 ? new ExplorerInfoNode($"Icon: {IconImage:X8}", clickable: true) : null,
                 new ExplorerInfoNode("ObjDesc", items: (ObjDesc as IGetExplorerInfo).GetInfoNodes()),
             };
             return nodes;

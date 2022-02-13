@@ -91,6 +91,8 @@ namespace GameEstate.Explorer.View
             var selected = (Estate)Estate.SelectedItem;
             EstateGames = selected?.Games.Values;
             EstateGame.SelectedIndex = 0;
+
+            OnReady();
         }
 
         void EstateGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -137,6 +139,9 @@ namespace GameEstate.Explorer.View
                 Pak3Uri = new UriBuilder(file) { Fragment = selected?.Game ?? "Unknown" }.Uri;
             }
         }
+
+        void OnReady()
+            => Open_Click(null, null);
 
         void Cancel_Click(object sender, RoutedEventArgs e)
             => Close();

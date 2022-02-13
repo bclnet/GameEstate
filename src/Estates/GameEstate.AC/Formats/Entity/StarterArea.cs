@@ -26,7 +26,7 @@ namespace GameEstate.AC.Formats.Entity
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
                     var name = items[0].Name.Replace("ObjCellID: ", "");
                     items.RemoveAt(0);
-                    return new ExplorerInfoNode(name, items: items);
+                    return new ExplorerInfoNode(name, items: items, clickable: true);
                 })),
             };
             return nodes;

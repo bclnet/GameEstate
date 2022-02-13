@@ -22,7 +22,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Frames", items: Frames.Select(x => new ExplorerInfoNode($"{x}"))),
-                Hooks.Length > 0 ? new ExplorerInfoNode($"Hooks", items: Hooks.Select(x => new ExplorerInfoNode($"{x}"))) : null,
+                ExplorerInfoNode.WrapWithGroup(Hooks, "Hooks", Hooks.Select(x => new ExplorerInfoNode($"HookType: {x.HookType}", items: (AnimationHook.Factory(x) as IGetExplorerInfo).GetInfoNodes(tag: tag)))),
             };
             return nodes;
         }

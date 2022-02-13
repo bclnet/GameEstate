@@ -22,17 +22,17 @@ namespace GameEstate.AC.Formats.Entity
             PartID = r.ReadAsDataIDOfKnownType(0x01000000);
         }
 
-        //: Entity.AnimationPartChange
+        //: Entity.AnimPartChange
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Part Idx: {PartIndex}"),
-                new ExplorerInfoNode($"Part ID: {PartID:X8}"),
+                new ExplorerInfoNode($"Part ID: {PartID:X8}", clickable: true),
             };
             return nodes;
         }
 
-        //: Entity.AnimationPartChange
+        //: Entity.AnimPartChange
         public override string ToString() => $"PartIdx: {PartIndex}, PartID: {PartID:X8}";
     }
 }

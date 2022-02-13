@@ -43,7 +43,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Name: {Name}"),
-                new ExplorerInfoNode($"Icon: {IconImage:X8}"),
+                new ExplorerInfoNode($"Icon: {IconImage:X8}", clickable: true),
                 new ExplorerInfoNode($"Title: {Title}"),
                 new ExplorerInfoNode($"Strength: {Strength}"),
                 new ExplorerInfoNode($"Endurance: {Endurance}"),

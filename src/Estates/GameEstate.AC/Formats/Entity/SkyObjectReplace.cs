@@ -29,7 +29,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Obj Idx: {ObjectIndex}"),
-                GFXObjId != 0 ? new ExplorerInfoNode($"GfxObj ID: {GFXObjId:X8}") : null,
+                GFXObjId != 0 ? new ExplorerInfoNode($"GfxObj ID: {GFXObjId:X8}", clickable: true) : null,
                 Rotate != 0 ? new ExplorerInfoNode($"Rotate: {Rotate}") : null,
                 Transparent != 0 ? new ExplorerInfoNode($"Transparent: {Transparent}") : null,
                 Luminosity != 0 ? new ExplorerInfoNode($"Luminosity: {Luminosity}") : null,

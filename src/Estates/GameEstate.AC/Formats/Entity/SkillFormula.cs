@@ -1,9 +1,12 @@
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GameEstate.AC.Formats.Entity
 {
-    public class SkillFormula
+    public class SkillFormula : IGetExplorerInfo
     {
         public readonly uint W;
         public readonly uint X;
@@ -28,6 +31,20 @@ namespace GameEstate.AC.Formats.Entity
             Z = r.ReadUInt32();
             Attr1 = r.ReadUInt32();
             Attr2 = r.ReadUInt32();
+        }
+
+        //: Entity.SkillFormula
+        List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
+        {
+            var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode($"Attr1: {(PropertyAttribute)Attr1}"),
+                new ExplorerInfoNode($"Attr2: {(PropertyAttribute)Attr2}"),
+                new ExplorerInfoNode($"W: {W}"),
+                new ExplorerInfoNode($"X: {X}"),
+                new ExplorerInfoNode($"Y: {Y}"),
+                new ExplorerInfoNode($"Z (divisor): {Z}"),
+            };
+            return nodes;
         }
     }
 }

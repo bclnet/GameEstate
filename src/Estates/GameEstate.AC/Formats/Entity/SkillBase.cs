@@ -1,9 +1,13 @@
+using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace GameEstate.AC.Formats.Entity
 {
-    public class SkillBase
+    public class SkillBase : IGetExplorerInfo
     {
         public readonly string Description;
         public readonly string Name;
@@ -43,6 +47,26 @@ namespace GameEstate.AC.Formats.Entity
             UpperBound = r.ReadDouble();
             LowerBound = r.ReadDouble();
             LearnMod = r.ReadDouble();
+        }
+
+        //: Entity.SkillBase
+        List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
+        {
+            var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode($"Name: {Name}"),
+                new ExplorerInfoNode($"Description: {Description}"),
+                new ExplorerInfoNode($"Icon: {IconId:X8}", clickable: true),
+                new ExplorerInfoNode($"TrainedCost: {TrainedCost}"),
+                new ExplorerInfoNode($"SpecializedCost: {SpecializedCost}"),
+                new ExplorerInfoNode($"Category: {(SpellCategory)Category}"),
+                new ExplorerInfoNode($"CharGenUse: {ChargenUse}"),
+                new ExplorerInfoNode($"MinLevel: {MinLevel}"),
+                new ExplorerInfoNode("SkillFormula", items: (Formula as IGetExplorerInfo).GetInfoNodes()),
+                new ExplorerInfoNode($"UpperBound: {UpperBound}"),
+                new ExplorerInfoNode($"LowerBound: {LowerBound}"),
+                new ExplorerInfoNode($"LearnMod: {LearnMod}"),
+            };
+            return nodes;
         }
     }
 }

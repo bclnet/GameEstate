@@ -1,10 +1,14 @@
 using GameEstate.AC.Formats.FileTypes;
 using GameEstate.AC.Formats.Props;
+using GameEstate.Explorer;
+using GameEstate.Formats;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.Entity
 {
-    public class SpellBase
+    public class SpellBase : IGetExplorerInfo
     {
         public readonly string Name;
         public readonly string Desc;
@@ -125,6 +129,42 @@ namespace GameEstate.AC.Formats.Entity
             if (_spellWords != null) return _spellWords;
             _spellWords = SpellComponentTable.GetSpellWords(comps, Formula);
             return _spellWords;
+        }
+
+        //: Entity.SpellBase
+        List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
+        {
+            var componentTable = DatabaseManager.Portal.SpellComponentTable;
+            var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode($"Name: {Name}"),
+                new ExplorerInfoNode($"Description: {Desc}"),
+                new ExplorerInfoNode($"School: {School}"),
+                new ExplorerInfoNode($"Icon: {Icon:X8}", clickable: true),
+                new ExplorerInfoNode($"Category: {Category}"),
+                new ExplorerInfoNode($"Flags: {(SpellFlags)Bitfield}"),
+                new ExplorerInfoNode($"BaseMana: {BaseMana}"),
+                new ExplorerInfoNode($"BaseRangeConstant: {BaseRangeConstant}"),
+                new ExplorerInfoNode($"BaseRangeMod: {BaseRangeMod}"),
+                new ExplorerInfoNode($"Power: {Power}"),
+                new ExplorerInfoNode($"SpellEconomyMod: {SpellEconomyMod}"),
+                new ExplorerInfoNode($"FormulaVersion: {FormulaVersion}"),
+                new ExplorerInfoNode($"ComponentLoss: {ComponentLoss}"),
+                new ExplorerInfoNode($"MetaSpellType: {MetaSpellType}"),
+                new ExplorerInfoNode($"MetaSpellId: {MetaSpellId}"),
+                new ExplorerInfoNode($"Duration: {Duration}"),
+                new ExplorerInfoNode($"DegradeModifier: {DegradeModifier}"),
+                new ExplorerInfoNode($"DegradeLimit: {DegradeLimit}"),
+                new ExplorerInfoNode("Formula", items: Formula.Select(x => new ExplorerInfoNode($"{x}: {componentTable.SpellComponents[x].Name}"))),
+                new ExplorerInfoNode($"CasterEffect: {(PlayScript)CasterEffect}"),
+                new ExplorerInfoNode($"TargetEffect: {(PlayScript)TargetEffect}"),
+                new ExplorerInfoNode($"FizzleEffect: {(PlayScript)FizzleEffect}"),
+                new ExplorerInfoNode($"RecoveryInterval: {RecoveryInterval}"),
+                new ExplorerInfoNode($"RecoveryAmount: {RecoveryAmount}"),
+                new ExplorerInfoNode($"DisplayOrder: {DisplayOrder}"),
+                new ExplorerInfoNode($"NonComponentTargetType: {(ItemType)NonComponentTargetType}"),
+                new ExplorerInfoNode($"ManaMod: {ManaMod}"),
+            };
+            return nodes;
         }
     }
 }

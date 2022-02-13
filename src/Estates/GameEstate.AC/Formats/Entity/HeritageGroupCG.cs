@@ -33,7 +33,7 @@ namespace GameEstate.AC.Formats.Entity
             SecondaryStartAreas = r.ReadC32Array<int>(sizeof(int));
             Skills = r.ReadC32Array(x => new SkillCG(x));
             Templates = r.ReadC32Array(x => new TemplateCG(x));
-            r.BaseStream.Position++; // 0x01 byte here. Not sure what/why, so skip it!
+            r.Skip(1); // 0x01 byte here. Not sure what/why, so skip it!
             Genders = r.ReadC32Many<int, SexCG>(sizeof(int), x => new SexCG(x));
         }
 
@@ -42,9 +42,9 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Name: {Name}"),
-                new ExplorerInfoNode($"Icon: {IconImage:X8}"),
-                new ExplorerInfoNode($"Setup: {SetupID:X8}"),
-                new ExplorerInfoNode($"Environment: {EnvironmentSetupID:X8}"),
+                new ExplorerInfoNode($"Icon: {IconImage:X8}", clickable: true),
+                new ExplorerInfoNode($"Setup: {SetupID:X8}", clickable: true),
+                new ExplorerInfoNode($"Environment: {EnvironmentSetupID:X8}", clickable: true),
                 new ExplorerInfoNode($"Attribute Credits: {AttributeCredits}"),
                 new ExplorerInfoNode($"Skill Credits: {SkillCredits}"),
                 new ExplorerInfoNode($"Primary Start Areas: {string.Join(",", PrimaryStartAreas)}"),

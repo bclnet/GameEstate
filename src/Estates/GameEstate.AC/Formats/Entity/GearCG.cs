@@ -23,8 +23,8 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Name: {Name}"),
-                new ExplorerInfoNode($"Clothing Table: {ClothingTable:X8}"),
-                new ExplorerInfoNode($"Weenie Default: {WeenieDefault:X8}"),
+                new ExplorerInfoNode($"Clothing Table: {ClothingTable:X8}", clickable: true),
+                new ExplorerInfoNode($"Weenie Default: {WeenieDefault}"),
             };
             return nodes;
         }

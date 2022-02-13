@@ -24,8 +24,8 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"PartIdx: {PartIndex}"),
-                new ExplorerInfoNode($"Old Texture: {OldTexture:X8}"),
-                new ExplorerInfoNode($"New Texture: {NewTexture:X8}"),
+                new ExplorerInfoNode($"Old Texture: {OldTexture:X8}", clickable: true),
+                new ExplorerInfoNode($"New Texture: {NewTexture:X8}", clickable: true),
             };
             return nodes;
         }

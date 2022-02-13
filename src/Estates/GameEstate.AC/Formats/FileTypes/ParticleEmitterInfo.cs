@@ -57,7 +57,8 @@ namespace GameEstate.AC.Formats.FileTypes
                 new ExplorerInfoNode($"{nameof(ParticleEmitterInfo)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"EmitterType: {EmitterType}"),
                     new ExplorerInfoNode($"ParticleType: {ParticleType}"),
-                    new ExplorerInfoNode($"GfxObjId: {GfxObjId:X8} HWGfxObjId: {HwGfxObjId:X8}"),
+                    new ExplorerInfoNode($"GfxObjId: {GfxObjId:X8}", clickable: true),
+                    new ExplorerInfoNode($"HWGfxObjId: {HwGfxObjId:X8}", clickable: true),
                     new ExplorerInfoNode($"Birthrate: {Birthrate}"),
                     new ExplorerInfoNode($"MaxParticles: {MaxParticles} InitialParticles: {InitialParticles} TotalParticles: {TotalParticles}"),
                     new ExplorerInfoNode($"TotalSeconds: {TotalSeconds}"),

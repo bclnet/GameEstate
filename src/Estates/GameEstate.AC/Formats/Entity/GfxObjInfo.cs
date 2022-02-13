@@ -26,7 +26,7 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"ID: {Id:X8}"),
+                new ExplorerInfoNode($"ID: {Id:X8}", clickable: true),
                 new ExplorerInfoNode($"DegradeMode: {DegradeMode}"),
                 new ExplorerInfoNode($"MinDist: {MinDist}"),
                 new ExplorerInfoNode($"IdealDist: {IdealDist}"),

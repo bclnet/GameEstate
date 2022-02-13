@@ -3,6 +3,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using OpenStack.Graphics;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace GameEstate.AC.Formats.FileTypes
@@ -35,17 +36,16 @@ namespace GameEstate.AC.Formats.FileTypes
         //: FileTypes.Surface
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
+            var hasSurface = Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap);
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(Surface)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"Type: {Type}"),
-                    Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap)
-                        ? new ExplorerInfoNode($"Texture ID: {OrigTextureId:X8}", items: new List<ExplorerInfoNode> {
-                            OrigPaletteId != 0 ? new ExplorerInfoNode($"Palette ID: {OrigPaletteId:X8}") : null,
-                        })
-                        : new ExplorerInfoNode($"Color: {new GXColor(ColorValue, GXColor.Format.ARGB32)}"),
-                    Translucency != 0f ? new ExplorerInfoNode($"Translucency: {Translucency}") : null,
-                    Luminosity != 0f ? new ExplorerInfoNode($"Luminosity: {Luminosity}") : null,
-                    Diffuse != 1f ? new ExplorerInfoNode($"Diffuse: {Diffuse}") : null,
+                    hasSurface ? new ExplorerInfoNode($"Surface Texture: {OrigTextureId:X8}", clickable: true) : null,
+                    hasSurface && OrigPaletteId != 0 ? new ExplorerInfoNode($"Palette ID: {OrigPaletteId:X8}", clickable: true) : null,
+                    !hasSurface ? new ExplorerInfoNode($"Color: {ColorX.ToRGBA(ColorValue)}") : null,
+                    /*Translucency != 0f ?*/ new ExplorerInfoNode($"Translucency: {Translucency}") /*: null*/,
+                    /*Luminosity != 0f ?*/ new ExplorerInfoNode($"Luminosity: {Luminosity}") /*: null*/,
+                    /*Diffuse != 1f ?*/ new ExplorerInfoNode($"Diffuse: {Diffuse}") /*: null*/,
                 })
             };
             return nodes;

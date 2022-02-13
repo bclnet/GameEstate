@@ -28,8 +28,9 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"BaseTextureSize: {BaseTexSize}"),
-                new ExplorerInfoNode("SideTerrainMap", items: SideTerrainMaps.Select(x => new ExplorerInfoNode($"{x}"))),
-                new ExplorerInfoNode("RoadAlphaMap", items: RoadMaps.Select(x => new ExplorerInfoNode($"{x}"))),
+                new ExplorerInfoNode("CornerTerrainMaps", items: CornerTerrainMaps.Select(x => new ExplorerInfoNode($"{x}", clickable: true))),
+                new ExplorerInfoNode("SideTerrainMap", items: SideTerrainMaps.Select(x => new ExplorerInfoNode($"{x}", clickable: true))),
+                new ExplorerInfoNode("RoadAlphaMap", items: RoadMaps.Select(x => new ExplorerInfoNode($"{x}", clickable: true))),
                 new ExplorerInfoNode("TMTerrainDesc", items: TerrainDesc.Select(x => {
                     var items = (x as IGetExplorerInfo).GetInfoNodes();
                     var name = items[0].Name.Replace("TerrainType: ", "");

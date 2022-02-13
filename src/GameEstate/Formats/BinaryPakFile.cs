@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
 {
@@ -216,6 +217,7 @@ namespace GameEstate.Formats
                     : value is IRedirected<T> y ? y.Value
                     : throw new InvalidCastException();
             }
+            //catch (Exception e) { Log(e.Message); throw; }
             finally { if (task != null && !(value != null && value is IDisposable)) r.Dispose(); }
         }
 

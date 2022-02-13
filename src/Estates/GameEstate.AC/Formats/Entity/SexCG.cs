@@ -1,3 +1,4 @@
+using GameEstate.AC.Formats.Props;
 using GameEstate.Explorer;
 using GameEstate.Formats;
 using System;
@@ -112,18 +113,18 @@ namespace GameEstate.AC.Formats.Entity
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Name: {Name}"),
                 new ExplorerInfoNode($"Scale: {Scale}%"),
-                new ExplorerInfoNode($"Setup: {SetupID:X8}"),
-                new ExplorerInfoNode($"Sound Table: {SoundTable:X8}"),
-                new ExplorerInfoNode($"Icon: {IconImage:X8}"),
-                new ExplorerInfoNode($"Base Palette: {BasePalette:X8}"),
-                new ExplorerInfoNode($"Skin Palette Set: {SkinPalSet:X8}"),
-                new ExplorerInfoNode($"Physics Table: {PhysicsTable:X8}"),
-                new ExplorerInfoNode($"Motion Table: {MotionTable:X8}"),
-                new ExplorerInfoNode($"Combat Table: {CombatTable:X8}"),
+                new ExplorerInfoNode($"Setup: {SetupID:X8}", clickable: true),
+                new ExplorerInfoNode($"Sound Table: {SoundTable:X8}", clickable: true),
+                new ExplorerInfoNode($"Icon: {IconImage:X8}", clickable: true),
+                new ExplorerInfoNode($"Base Palette: {BasePalette:X8}", clickable: true),
+                new ExplorerInfoNode($"Skin Palette Set: {SkinPalSet:X8}", clickable: true),
+                new ExplorerInfoNode($"Physics Table: {PhysicsTable:X8}", clickable: true),
+                new ExplorerInfoNode($"Motion Table: {MotionTable:X8}", clickable: true),
+                new ExplorerInfoNode($"Combat Table: {CombatTable:X8}", clickable: true),
                 new ExplorerInfoNode("ObjDesc", items: (BaseObjDesc as IGetExplorerInfo).GetInfoNodes()),
-                new ExplorerInfoNode("Hair Colors", items: HairColorList.Select(x => new ExplorerInfoNode($"{x:X8}"))),
+                new ExplorerInfoNode("Hair Colors", items: HairColorList.Select(x => new ExplorerInfoNode($"{x:X8}", clickable: true))),
                 new ExplorerInfoNode("Hair Styles", items: HairStyleList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
-                new ExplorerInfoNode("Eye Colors", items: EyeColorList.Select(x => new ExplorerInfoNode($"{x:X8}"))),
+                new ExplorerInfoNode("Eye Colors", items: EyeColorList.Select(x => new ExplorerInfoNode($"{x:X8}", clickable: true))),
                 new ExplorerInfoNode("Eye Strips", items: EyeStripList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
                 new ExplorerInfoNode("Nose Strips", items: NoseStripList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
                 new ExplorerInfoNode("Mouth Strips", items: MouthStripList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
@@ -131,7 +132,7 @@ namespace GameEstate.AC.Formats.Entity
                 new ExplorerInfoNode("Shirt", items: ShirtList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
                 new ExplorerInfoNode("Pants", items: PantsList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
                 new ExplorerInfoNode("Footwear", items: FootwearList.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
-                new ExplorerInfoNode($"Clothing Colors: {string.Join(",", ClothingColorsList)}"),
+                new ExplorerInfoNode("Clothing Colors", items: ClothingColorsList.OrderBy(i => i).Select(x => new ExplorerInfoNode($"{x} - {(PaletteTemplate)x}"))),
             };
             return nodes;
         }

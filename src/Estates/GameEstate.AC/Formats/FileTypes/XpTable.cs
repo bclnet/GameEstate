@@ -2,6 +2,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
@@ -43,11 +44,17 @@ namespace GameEstate.AC.Formats.FileTypes
             CharacterLevelSkillCreditList = r.ReadTArray<uint>(sizeof(uint), (int)levelCount); //: counts are +1?
         }
 
-        //: New
+        //: FileTypes.XpTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(XpTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
+                    new ExplorerInfoNode("AttributeXpList", items: AttributeXpList.Select((x, i) => new ExplorerInfoNode($"{i}: {x:N0}"))),
+                    new ExplorerInfoNode("VitalXpList", items: VitalXpList.Select((x, i) => new ExplorerInfoNode($"{i}: {x:N0}"))),
+                    new ExplorerInfoNode("TrainedSkillXpList", items: TrainedSkillXpList.Select((x, i) => new ExplorerInfoNode($"{i}: {x:N0}"))),
+                    new ExplorerInfoNode("SpecializedSkillXpList", items: SpecializedSkillXpList.Select((x, i) => new ExplorerInfoNode($"{i}: {x:N0}"))),
+                    new ExplorerInfoNode("CharacterLevelXpList", items: CharacterLevelXPList.Select((x, i) => new ExplorerInfoNode($"{i}: {x:N0}"))),
+                    new ExplorerInfoNode("CharacterLevelSkillCreditList", items: CharacterLevelSkillCreditList.Select((x, i) => new ExplorerInfoNode($"{i}: {x:N0}"))),
                 })
             };
             return nodes;

@@ -21,7 +21,7 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"StartTime: {StartTime}"),
-                new ExplorerInfoNode($"{Hook}"),
+                new ExplorerInfoNode($"Hook:", items: (Hook as IGetExplorerInfo).GetInfoNodes(tag:tag)),
             };
             return nodes;
         }

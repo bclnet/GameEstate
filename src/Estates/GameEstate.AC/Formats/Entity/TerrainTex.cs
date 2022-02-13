@@ -36,7 +36,7 @@ namespace GameEstate.AC.Formats.Entity
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"TexGID: {TexGID:X8}"),
+                new ExplorerInfoNode($"TexGID: {TexGID:X8}", clickable: true),
                 new ExplorerInfoNode($"TexTiling: {TexTiling}"),
                 new ExplorerInfoNode($"MaxVertBrightness: {MaxVertBright}"),
                 new ExplorerInfoNode($"MinVertBrightness: {MinVertBright}"),
@@ -45,7 +45,7 @@ namespace GameEstate.AC.Formats.Entity
                 new ExplorerInfoNode($"MaxVertHue: {MaxVertHue}"),
                 new ExplorerInfoNode($"MinVertHue: {MinVertHue}"),
                 new ExplorerInfoNode($"DetailTexTiling: {DetailTexTiling}"),
-                new ExplorerInfoNode($"DetailTexGID: {DetailTexGID:X8}"),
+                new ExplorerInfoNode($"DetailTexGID: {DetailTexGID:X8}", clickable: true),
             };
             return nodes;
         }

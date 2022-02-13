@@ -3,6 +3,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
@@ -33,12 +34,13 @@ namespace GameEstate.AC.Formats.FileTypes
             SpellComponents = r.ReadTMany<uint, SpellComponentBase>(sizeof(uint), x => new SpellComponentBase(r), numComps);
         }
 
-        //: New
+        //: FileTypes.SpellComponentTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"{nameof(SpellComponentTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                })
+                new ExplorerInfoNode($"{nameof(SpellComponentTable)}: {Id:X8}", items: SpellComponents.Select(
+                    x => new ExplorerInfoNode($"{x.Key} - {x.Value.Name}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(tag: tag))
+                ))
             };
             return nodes;
         }

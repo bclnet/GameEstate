@@ -23,11 +23,14 @@ namespace GameEstate.AC.Formats.FileTypes
             MaxMana = new Attribute2ndBase(r);
         }
 
-        //: New
+        //: FileTypes.SecondaryAttributeTable
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(SecondaryAttributeTable)}: {Id:X8}", items: new List<ExplorerInfoNode> {
+                    new ExplorerInfoNode("Health", items: (MaxHealth.Formula as IGetExplorerInfo).GetInfoNodes(tag: tag)),
+                    new ExplorerInfoNode("Stamina", items: (MaxStamina.Formula as IGetExplorerInfo).GetInfoNodes(tag: tag)),
+                    new ExplorerInfoNode("Mana", items: (MaxMana.Formula as IGetExplorerInfo).GetInfoNodes(tag: tag)),
                 })
             };
             return nodes;

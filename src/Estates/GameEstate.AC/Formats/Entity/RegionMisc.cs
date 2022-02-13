@@ -29,11 +29,11 @@ namespace GameEstate.AC.Formats.Entity
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Version: {Version}"),
-                new ExplorerInfoNode($"GameMap ID: {GameMapID:X8}"),
-                new ExplorerInfoNode($"AutoTest Map ID: {AutotestMapId:X8}"),
+                new ExplorerInfoNode($"GameMap ID: {GameMapID:X8}", clickable: true),
+                new ExplorerInfoNode($"AutoTest Map ID: {AutotestMapId:X8}", clickable: true),
                 new ExplorerInfoNode($"AutoTest Map Size: {AutotestMapSize}"),
-                new ExplorerInfoNode($"ClearCell ID: {ClearCellId:X8}"),
-                new ExplorerInfoNode($"ClearMonster ID: {ClearMonsterId:X8}"),
+                new ExplorerInfoNode($"ClearCell ID: {ClearCellId:X8}", clickable: true),
+                new ExplorerInfoNode($"ClearMonster ID: {ClearMonsterId:X8}", clickable: true),
             };
             return nodes;
         }

@@ -57,13 +57,11 @@ namespace GameEstate.AC.Formats.FileTypes
         //: FileTypes.CellLandblock
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
+            var terrainTypes = DatabaseManager.Portal.RegionDesc.TerrainInfo.TerrainTypes;
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(Landblock)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"HasObjects: {HasObjects}"),
-                    new ExplorerInfoNode("Terrain", items: Terrain.Select((x, i) => {
-                        var typename = "//:TODO"; // DatManager.PortalDat.RegionDesc.TerrainInfo.TerrainTypes[Landblock.GetType(t)].TerrainName;
-                        return new ExplorerInfoNode($"{i}: Road: {GetRoad(x)}, Type: {typename}, Scenery: {GetScenery(x)}");
-                    })),
+                    new ExplorerInfoNode("Terrain", items: Terrain.Select((x, i) => new ExplorerInfoNode($"{i}: Road: {GetRoad(x)}, Type: {terrainTypes[GetType(x)].TerrainName}, Scenery: {GetScenery(x)}"))),
                     new ExplorerInfoNode("Heights", items: Height.Select((x, i) => new ExplorerInfoNode($"{i}: {x}"))),
                 })
             };

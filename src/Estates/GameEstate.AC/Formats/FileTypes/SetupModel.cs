@@ -86,12 +86,12 @@ namespace GameEstate.AC.Formats.FileTypes
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(SetupModel)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     Flags != 0 ? new ExplorerInfoNode($"Flags: {Flags}") : null,
-                    new ExplorerInfoNode("Parts", items: Parts.Select(x => new ExplorerInfoNode($"{x:X8}"))),
+                    new ExplorerInfoNode("Parts", items: Parts.Select((x, i) => new ExplorerInfoNode($"{i} - {x:X8}", clickable: true))),
                     Flags.HasFlag(SetupFlags.HasParent) ? new ExplorerInfoNode("Parents", items: ParentIndex.Select(x => new ExplorerInfoNode($"{x:X8}"))) : null,
                     Flags.HasFlag(SetupFlags.HasDefaultScale) ? new ExplorerInfoNode("Default Scales", items: DefaultScale.Select(x => new ExplorerInfoNode($"{x}"))) : null,
-                    HoldingLocations.Count > 0 ? new ExplorerInfoNode("Holding Locations", items: HoldingLocations.Select(x => new ExplorerInfoNode($"{x.Key}: {x.Value}"))) : null,
+                    HoldingLocations.Count > 0 ? new ExplorerInfoNode("Holding Locations", items: HoldingLocations.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode($"{x.Key} - {(ParentLocation)x.Key} - {x.Value}"))) : null,
                     ConnectionPoints.Count > 0 ? new ExplorerInfoNode("Connection Points", items: ConnectionPoints.Select(x => new ExplorerInfoNode($"{x.Key}: {x.Value}"))) : null,
-                    new ExplorerInfoNode("Placement frames", items: PlacementFrames.Select(x => new ExplorerInfoNode($"{x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
+                    new ExplorerInfoNode("Placement frames", items: PlacementFrames.OrderBy(i => i.Key).Select(x => new ExplorerInfoNode($"{x.Key} - {(Placement)x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes()))),
                     CylSpheres.Length > 0 ? new ExplorerInfoNode("CylSpheres", items: CylSpheres.Select(x => new ExplorerInfoNode($"{x}"))) : null,
                     Spheres.Length > 0 ? new ExplorerInfoNode("Spheres", items: Spheres.Select(x => new ExplorerInfoNode($"{x}"))) : null,
                     new ExplorerInfoNode($"Height: {Height}"),
@@ -100,12 +100,12 @@ namespace GameEstate.AC.Formats.FileTypes
                     new ExplorerInfoNode($"Step Down Height: {StepDownHeight}"),
                     new ExplorerInfoNode($"Sorting Sphere: {SortingSphere}"),
                     new ExplorerInfoNode($"Selection Sphere: {SelectionSphere}"),
-                    Lights.Count > 0 ? new ExplorerInfoNode($"Lights", items: Lights.Select(x => new ExplorerInfoNode($"{x.Key}: {x.Value}"))) : null,
-                    DefaultAnimation != 0 ? new ExplorerInfoNode($"Default Animation: {DefaultAnimation:X8}") : null,
-                    DefaultScript != 0 ? new ExplorerInfoNode($"Default Script: {DefaultScript:X8}") : null,
-                    DefaultMotionTable != 0 ? new ExplorerInfoNode($"Default Motion Table: {DefaultMotionTable:X8}") : null,
-                    DefaultSoundTable != 0 ? new ExplorerInfoNode($"Default Sound Table: {DefaultSoundTable:X8}") : null,
-                    DefaultScriptTable != 0 ? new ExplorerInfoNode($"Default Script Table: {DefaultScriptTable:X8}") : null,
+                    Lights.Count > 0 ? new ExplorerInfoNode($"Lights", items: Lights.Select(x => new ExplorerInfoNode($"{x.Key}", items: (x.Value as IGetExplorerInfo).GetInfoNodes(tag: tag)))) : null,
+                    DefaultAnimation != 0 ? new ExplorerInfoNode($"Default Animation: {DefaultAnimation:X8}", clickable: true) : null,
+                    DefaultScript != 0 ? new ExplorerInfoNode($"Default Script: {DefaultScript:X8}", clickable: true) : null,
+                    DefaultMotionTable != 0 ? new ExplorerInfoNode($"Default Motion Table: {DefaultMotionTable:X8}", clickable: true) : null,
+                    DefaultSoundTable != 0 ? new ExplorerInfoNode($"Default Sound Table: {DefaultSoundTable:X8}", clickable: true) : null,
+                    DefaultScriptTable != 0 ? new ExplorerInfoNode($"Default Script Table: {DefaultScriptTable:X8}", clickable: true) : null,
                 })
             };
             return nodes;

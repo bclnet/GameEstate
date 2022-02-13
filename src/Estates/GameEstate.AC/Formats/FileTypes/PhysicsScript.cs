@@ -21,11 +21,12 @@ namespace GameEstate.AC.Formats.FileTypes
             ScriptData = r.ReadL32Array(x => new PhysicsScriptData(x));
         }
 
+        //: FileTypes.PhysicsScript
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"{nameof(PhysicsScript)}: {Id:X8}", items: new List<ExplorerInfoNode> {
-                    new ExplorerInfoNode("Scripts", items: ScriptData.Select((x, i) => new ExplorerInfoNode($"{i}", items: (x as IGetExplorerInfo).GetInfoNodes()))),
+                    new ExplorerInfoNode("Scripts", items: ScriptData.Select(x => new ExplorerInfoNode($"HookType: {x.Hook.HookType}, StartTime: {x.StartTime}", items: (AnimationHook.Factory(x.Hook) as IGetExplorerInfo).GetInfoNodes(tag: tag)))),
                 })
             };
             return nodes;
