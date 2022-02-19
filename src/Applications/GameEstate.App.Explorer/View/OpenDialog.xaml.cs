@@ -141,7 +141,9 @@ namespace GameEstate.Explorer.View
         }
 
         void OnReady()
-            => Open_Click(null, null);
+        { 
+            //Open_Click(null, null);
+        }
 
         void Cancel_Click(object sender, RoutedEventArgs e)
             => Close();

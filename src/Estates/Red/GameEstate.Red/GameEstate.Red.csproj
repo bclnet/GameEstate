@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameEstate.Red.Resource\GameEstate.Red.Resource.csproj" />
+    <ProjectReference Include="..\..\GameEstate.Base\GameEstate.Base.csproj" />
+  </ItemGroup>
+
+</Project>

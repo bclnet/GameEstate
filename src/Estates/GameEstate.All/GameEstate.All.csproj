@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameEstate\GameEstate.csproj" />
+    <ProjectReference Include="..\AC\GameEstate.AC.Platform\GameEstate.AC.Platform.csproj" />
+    <ProjectReference Include="..\AC\GameEstate.AC\GameEstate.AC.csproj" />
+    <ProjectReference Include="..\Arkane\GameEstate.Arkane.Platform\GameEstate.Arkane.Platform.csproj" />
+    <ProjectReference Include="..\Arkane\GameEstate.Arkane\GameEstate.Arkane.csproj" />
+    <ProjectReference Include="..\Aurora\GameEstate.Aurora.Platform\GameEstate.Aurora.Platform.csproj" />
+    <ProjectReference Include="..\Aurora\GameEstate.Aurora\GameEstate.Aurora.csproj" />
+    <ProjectReference Include="..\Cry\GameEstate.Cry.Platform\GameEstate.Cry.Platform.csproj" />
+    <ProjectReference Include="..\Cry\GameEstate.Cry\GameEstate.Cry.csproj" />
+    <ProjectReference Include="..\Cyanide\GameEstate.Cyanide.Platform\GameEstate.Cyanide.Platform.csproj" />
+    <ProjectReference Include="..\Cyanide\GameEstate.Cyanide\GameEstate.Cyanide.csproj" />
+    <ProjectReference Include="..\Origin\GameEstate.Origin.Platform\GameEstate.Origin.Platform.csproj" />
+    <ProjectReference Include="..\Origin\GameEstate.Origin\GameEstate.Origin.csproj" />
+    <ProjectReference Include="..\Red\GameEstate.Red.Resource\GameEstate.Red.Resource.csproj" />
+    <ProjectReference Include="..\Red\GameEstate.Red\GameEstate.Red.csproj" />
+    <ProjectReference Include="..\Rsi\GameEstate.Rsi.Platform\GameEstate.Rsi.Platform.csproj" />
+    <ProjectReference Include="..\Rsi\GameEstate.Rsi\GameEstate.Rsi.csproj" />
+    <ProjectReference Include="..\Tes\GameEstate.Tes.Platform\GameEstate.Tes.Platform.csproj" />
+    <ProjectReference Include="..\Tes\GameEstate.Tes\GameEstate.Tes.csproj" />
+    <ProjectReference Include="..\Valve\GameEstate.Valve.Platform\GameEstate.Valve.Platform.csproj" />
+    <ProjectReference Include="..\Valve\GameEstate.Valve\GameEstate.Valve.csproj" />
+  </ItemGroup>
+
+</Project>

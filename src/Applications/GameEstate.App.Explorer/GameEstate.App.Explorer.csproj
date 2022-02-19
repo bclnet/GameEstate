@@ -111,10 +111,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Estates\GameEstate._All\GameEstate._All.csproj" />
-    <ProjectReference Include="..\..\GameEstate\GameEstate.csproj" />
+    <ProjectReference Include="..\..\Estates\GameEstate.All\GameEstate.All.csproj" />
     <ProjectReference Include="..\..\OpenStack\OpenStack.Graphics.GLControl\OpenStack.Graphics.GLControl.csproj" />
-    <ProjectReference Include="..\..\Units\GameEstate.Unit.OpenGL\GameEstate.Unit.OpenGL.csproj" />
+    <ProjectReference Include="..\..\Platforms\GameEstate.Platform.OpenGL\GameEstate.Platform.OpenGL.csproj" />
   </ItemGroup>
 
 </Project>

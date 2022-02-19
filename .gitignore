@@ -27,3 +27,4 @@ bin/
 obj/
 Temp/
 ipch/
+TestResults/

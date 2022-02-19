@@ -13,7 +13,7 @@ namespace GameEstate.Formats
         public override bool Valid => Files != null;
         public IList<FileMetadata> Files;
         public HashSet<string> FilesRawSet;
-        public ILookup<int, FileMetadata> FilesById { get; private set; }
+        public IDictionary<int, FileMetadata> FilesById { get; private set; }
         public ILookup<string, FileMetadata> FilesByPath { get; private set; }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace GameEstate.Formats
         ///   <c>true</c> if the specified file path contains file; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref="System.InvalidOperationException">FileId not supported</exception>
-        public override bool Contains(int fileId) => FilesById.Contains(fileId);
+        public override bool Contains(int fileId) => FilesById.ContainsKey(fileId);
 
         /// <summary>Gets the count.</summary>
         /// <value>The count.</value>
@@ -77,8 +77,7 @@ namespace GameEstate.Formats
             var files = FilesByPath[path.Replace('\\', '/')].ToArray();
             if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
             exception?.Invoke(null, $"LoadFileDataAsync: {path} @ {files.Length}"); //Log($"LoadFileDataAsync: {filePath} @ {files.Length}");
-            if (files.Length == 0) throw new FileNotFoundException(path);
-            throw new InvalidOperationException();
+            throw files.Length == 0 ? (Exception)new FileNotFoundException(path) : new InvalidOperationException();
         }
         /// <summary>
         /// Loads the file data asynchronous.
@@ -90,11 +89,10 @@ namespace GameEstate.Formats
         /// <exception cref="InvalidOperationException"></exception>
         public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null)
         {
-            var files = FilesById[fileId].ToArray();
-            if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
-            exception?.Invoke(null, $"LoadFileDataAsync: {fileId} @ {files.Length}"); //Log($"LoadFileDataAsync: {fileId} @ {files.Length}");
-            if (files.Length == 0) throw new FileNotFoundException($"{fileId}");
-            throw new InvalidOperationException();
+            var file = FilesById[fileId];
+            if (file != null) return LoadFileDataAsync(file, exception);
+            exception?.Invoke(null, $"LoadFileDataAsync: {fileId}"); //Log($"LoadFileDataAsync: {fileId} @ {files.Length}");
+            throw file != null ? (Exception)new FileNotFoundException($"{fileId}") : new InvalidOperationException();
         }
 
         /// <summary>
@@ -128,10 +126,10 @@ namespace GameEstate.Formats
         /// <exception cref="InvalidOperationException"></exception>
         public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null)
         {
-            var files = FilesById[fileId].ToArray();
-            if (files.Length == 1) return LoadFileObjectAsync<T>(files[0], exception);
-            exception?.Invoke(null, $"LoadFileObjectAsync: {fileId} @ {files.Length}"); //Log($"LoadFileObjectAsync: {fileId} @ {files.Length}");
-            if (files.Length == 0) throw new FileNotFoundException($"{fileId}");
+            var file = FilesById[fileId];
+            if (file != null) return LoadFileObjectAsync<T>(file, exception);
+            exception?.Invoke(null, $"LoadFileObjectAsync: {fileId}"); //Log($"LoadFileObjectAsync: {fileId} @ {files.Length}");
+            if (file != null) throw new FileNotFoundException($"{fileId}");
             throw new InvalidOperationException();
         }
 
@@ -140,7 +138,7 @@ namespace GameEstate.Formats
         /// </summary>
         public override void Process()
         {
-            FilesById = Files?.Where(x => x != null).ToLookup(x => x.Id);
+            //FilesById = Files?.Where(x => x != null).ToDictionary(x => x.Id);
             FilesByPath = Files?.Where(x => x != null).ToLookup(x => x.Path, StringComparer.OrdinalIgnoreCase);
             base.Process();
         }

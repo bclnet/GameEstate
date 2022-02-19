@@ -30,14 +30,14 @@ Game Estate is an open-source, cross-platform solution for delivering game asset
 ### Uniform Resource Location (url)
     TBD
 
-## [Applications](Applications/Readme.md)
+## [Applications](docs/Applications/Readme.md)
 Multiple applicates are included in GameEstate to make it easier to work with the game assets.
 
-## [Context](Context/Readme.md)
+## [Context](docs/Context/Readme.md)
 Estate Context
 
-## [Estates](Estates/Readme.md)
+## [Estates](docs/Estates/Readme.md)
 Estates are the primary grouping mechanism for interacting with the asset services.
 
-## [Units](Units/Readme.md)
+## [Units](docs/Units/Readme.md)
 Units provide the interface to each platform.
