@@ -39,5 +39,5 @@ Estate Context
 ## [Estates](Estates/Readme.md)
 Estates are the primary grouping mechanism for interacting with the asset services.
 
-## [Units](Units/Readme.md)
-Units provide the interface to each platform.
+## [Platforms](Platforms/Readme.md)
+Platforms provide the interface to each platform.
