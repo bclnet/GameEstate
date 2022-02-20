@@ -13,7 +13,7 @@ namespace GameEstate.Formats
     {
         public BinaryDds() { }
         public BinaryDds(BinaryReader r) => Read(r);
-        public static Task<object> Factory(BinaryReader r, FileMetadata f) => Task.FromResult((object)new BinaryDds(r));
+        public static Task<object> Factory(BinaryReader r, FileMetadata f, EstatePakFile s) => Task.FromResult((object)new BinaryDds(r));
 
         public DDS_HEADER Header;
         public DDS_HEADER_DXT10? HeaderDXT10;

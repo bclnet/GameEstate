@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
 {
@@ -12,7 +13,7 @@ namespace GameEstate.Formats
     /// <seealso cref="GameEstate.Formats._Packages.PakBinary" />
     public abstract class AbstractPakBinaryZip2 : PakBinary
     {
-        protected abstract Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(FileMetadata source, BinaryPakFile pak);
+        protected abstract Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(FileMetadata source);
 
         public override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -31,7 +32,7 @@ namespace GameEstate.Formats
                     FileSize = entry.Length,
                     Tag = entry
                 };
-                metadata.ObjectFactory = GetObjectFactory(source, metadata);
+                metadata.ObjectFactory = GetObjectFactory(metadata);
                 files.Add(metadata);
             }
             return Task.CompletedTask;
@@ -44,12 +45,12 @@ namespace GameEstate.Formats
             try
             {
                 using var input = entry.Open();
-                if (!input.CanRead) { exception?.Invoke(file, $"Unable to read stream."); return Task.FromResult(System.IO.Stream.Null); }
+                if (!input.CanRead) { Log($"Unable to read stream for file: {file.Path}"); exception?.Invoke(file, $"Unable to read stream for file: {file.Path}"); return Task.FromResult(System.IO.Stream.Null); }
                 var s = new MemoryStream();
                 input.CopyTo(s);
                 return Task.FromResult((Stream)s);
             }
-            catch (Exception e) { exception?.Invoke(file, $"Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }
+            catch (Exception e) { Log($"{file.Path} - Exception: {e.Message}"); exception?.Invoke(file, $"{file.Path} - Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }
         }
     }
 }

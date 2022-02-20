@@ -207,7 +207,7 @@ namespace GameEstate.Formats
             Task<object> task = null;
             try
             {
-                task = file.ObjectFactory(r, file);
+                task = file.ObjectFactory(r, file, this);
                 if (task == null)
                     return type == typeof(Stream) || type == typeof(object)
                         ? (T)(object)stream
@@ -217,7 +217,11 @@ namespace GameEstate.Formats
                     : value is IRedirected<T> y ? y.Value
                     : throw new InvalidCastException();
             }
-            //catch (Exception e) { Log(e.Message); throw; }
+            catch (Exception e)
+            {
+                Log(e.Message);
+                throw e;
+            }
             finally { if (task != null && !(value != null && value is IDisposable)) r.Dispose(); }
         }
 

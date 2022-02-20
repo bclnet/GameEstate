@@ -13,7 +13,7 @@ namespace GameEstate.Aurora.Formats
     {
         public BinaryGff() { }
         public BinaryGff(BinaryReader r) => Read(r);
-        public static Task<object> Factory(BinaryReader r, FileMetadata f) => Task.FromResult((object)new BinaryGff(r));
+        public static Task<object> Factory(BinaryReader r, FileMetadata f, EstatePakFile s) => Task.FromResult((object)new BinaryGff(r));
 
         public enum DataType : uint
         {

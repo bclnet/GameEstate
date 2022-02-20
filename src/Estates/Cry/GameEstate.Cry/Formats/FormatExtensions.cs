@@ -11,19 +11,14 @@ namespace GameEstate.Cry.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(this FileMetadata source)
-        {
-            switch (Path.GetExtension(source.Path).ToLowerInvariant())
+        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source)
+            => Path.GetExtension(source.Path).ToLowerInvariant() switch
             {
-                case ".dds": return BinaryDds.Factory;
-                case ".soc":
-                case ".cgf":
-                case ".cga":
-                case ".chr":
-                case ".skin":
-                case ".anim": return (r, f) => CryFile.Factory(pak, r, f);
-                default: return null;
-            }
-        }
+                ".dds" => BinaryDds.Factory,
+                var x when x == ".soc" || x == ".cgf" || x == ".cga" || x == ".chr" || x == ".skin" || x == ".anim" => CryFile.Factory,
+                _ => null,
+            };
     }
 }
+
+//

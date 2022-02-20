@@ -16,7 +16,7 @@ namespace GameEstate.Aurora
         public class PakBinaryAuroraZip : AbstractPakBinaryZip2
         {
             public static readonly PakBinary Instance = new PakBinaryAuroraZip();
-            protected override Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(FileMetadata source) => null;
+            protected override Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(FileMetadata source) => null;
         }
 
         /// <summary>

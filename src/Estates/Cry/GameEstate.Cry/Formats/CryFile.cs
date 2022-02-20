@@ -12,10 +12,10 @@ namespace GameEstate.Cry.Formats
 {
     public partial class CryFile
     {
-        public static Task<object> Factory(EstatePakFile pak, BinaryReader r, FileMetadata metadata)
+        public static Task<object> Factory(BinaryReader r, FileMetadata m, EstatePakFile s)
         {
-            var file = new CryFile(metadata.Path);
-            file.LoadFromPak(pak, r, metadata);
+            var file = new CryFile(m.Path);
+            file.LoadFromPak(r.BaseStream, m, s);
             return Task.FromResult((object)file);
         }
 
@@ -55,9 +55,9 @@ namespace GameEstate.Cry.Formats
             LoadAsync(null, files, FindMaterialFromFile, path => Task.FromResult<(string, Stream)>((path, File.Open(path, FileMode.Open)))).Wait();
         }
 
-        public void LoadFromPak(EstatePakFile pak, BinaryReader r, FileMetadata metadata)
+        public void LoadFromPak(Stream stream, FileMetadata metadata, EstatePakFile pak)
         {
-            var files = new List<(string, Stream)> { (InputFile, r.BaseStream) };
+            var files = new List<(string, Stream)> { (InputFile, stream) };
             var mFilePath = Path.ChangeExtension(InputFile, $"{Path.GetExtension(InputFile)}m");
             if (pak.Contains(mFilePath))
             {

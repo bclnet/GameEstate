@@ -17,6 +17,6 @@ namespace GameEstate.Rsi.Formats
         
         PakBinaryRsi() : base(P4kKey) { }
 
-        protected override Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(FileMetadata source) => source.GetObjectFactory();
+        protected override Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(FileMetadata source) => source.GetObjectFactory();
     }
 }

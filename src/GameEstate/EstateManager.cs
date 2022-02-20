@@ -16,7 +16,7 @@ namespace GameEstate
 
         public static DefaultOptions AppDefaultOptions = new DefaultOptions
         {
-            Estate = "Aurora",
+            Estate = "Rsi",
 
             //Estate = "AC",
             GameId = null,

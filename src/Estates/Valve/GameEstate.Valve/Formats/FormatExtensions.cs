@@ -12,9 +12,9 @@ namespace GameEstate.Valve.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(this FileMetadata source)
+        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source)
         {
-            Task<object> BinaryPakFactory(BinaryReader r, FileMetadata f)
+            Task<object> BinaryPakFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
             {
                 if (r.BaseStream.Length < 6) return null;
                 var input = r.Peek(z => z.ReadBytes(6));

@@ -11,7 +11,7 @@ namespace GameEstate.Arkane.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(this FileMetadata source)
+        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source)
             => Path.GetExtension(source.Path).ToLowerInvariant() switch
             {
                 ".dds" => BinaryDds.Factory,

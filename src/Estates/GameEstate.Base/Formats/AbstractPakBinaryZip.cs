@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
 {
@@ -12,11 +14,13 @@ namespace GameEstate.Formats
     /// <seealso cref="GameEstate.Formats._Packages.PakBinary" />
     public abstract class AbstractPakBinaryZip : PakBinary
     {
+        PropertyInfo ZipFile_KeyInfo = typeof(ZipFile).GetProperty("Key", BindingFlags.NonPublic | BindingFlags.Instance);
+
         public AbstractPakBinaryZip(byte[] key = null) => Key = key;
 
         readonly byte[] Key;
 
-        protected abstract Func<BinaryReader, FileMetadata, Task<object>> GetObjectFactory(FileMetadata source);
+        protected abstract Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(FileMetadata source);
 
         public override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -26,7 +30,7 @@ namespace GameEstate.Formats
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
             var pak = (ZipFile)(source.Tag = new ZipFile(r.BaseStream));
-            pak.KeysRequired += (sender, e) => e.Key = Key;
+            //ZipFile_KeyInfo.SetValue(pak, Key);
             foreach (ZipEntry entry in pak)
             {
                 var metadata = new FileMetadata
@@ -69,12 +73,12 @@ namespace GameEstate.Formats
             try
             {
                 using var input = pak.GetInputStream(entry);
-                if (!input.CanRead) { exception?.Invoke(file, $"Unable to read stream."); return Task.FromResult(System.IO.Stream.Null); }
+                if (!input.CanRead) { Log($"Unable to read stream for file: {file.Path}"); exception?.Invoke(file, $"Unable to read stream for file: {file.Path}"); return Task.FromResult(System.IO.Stream.Null); }
                 var s = new MemoryStream();
                 input.CopyTo(s);
                 return Task.FromResult((Stream)s);
             }
-            catch (Exception e) { exception?.Invoke(file, $"Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }
+            catch (Exception e) { Log($"{file.Path} - Exception: {e.Message}"); exception?.Invoke(file, $"{file.Path} - Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }
         }
 
         public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception = null)

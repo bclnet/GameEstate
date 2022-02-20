@@ -46,20 +46,21 @@ namespace GameEstate.AC
         public async Task UnpackCellDatFiles_NoExceptions()
         {
             var dat = new Database(cell);
-            foreach (var (key, value) in dat.Source.FilesById.Select(x => KeyValuePair.Create(x.Key, x.First())))
+            var source = dat.Source;
+            foreach (var (key, metadata) in source.FilesById.Select(x => KeyValuePair.Create(x.Key, x.First())))
             {
                 if ((uint)key == Iteration.FILE_ID) continue;
-                if (value.FileSize == 0) continue; // DatFileType.LandBlock files can be empty
+                if (metadata.FileSize == 0) continue; // DatFileType.LandBlock files can be empty
 
-                var fileType = value.GetFileType(PakType.Cell).fileType;
-                Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{value.Id:X8}, FileSize: {value.FileSize}");
+                var fileType = metadata.GetFileType(PakType.Cell).fileType;
+                Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{metadata.Id:X8}, FileSize: {metadata.FileSize}");
 
-                var factory = value.ObjectFactory;
+                var factory = metadata.ObjectFactory;
                 if (factory == null) throw new Exception($"Class for fileType: {fileType} does not implement an ObjectFactory.");
 
-                using var r = new BinaryReader(await dat.Source.LoadFileDataAsync(value));
-                await factory(r, value);
-                if (r.Position() != value.FileSize) throw new Exception($"Failed to parse all bytes for fileType: {fileType}, ObjectId: 0x{value.Id:X8}. Bytes parsed: {r.Position()} of {value.FileSize}");
+                using var r = new BinaryReader(await source.LoadFileDataAsync(metadata));
+                await factory(r, metadata, source);
+                if (r.Position() != metadata.FileSize) throw new Exception($"Failed to parse all bytes for fileType: {fileType}, ObjectId: 0x{metadata.Id:X8}. Bytes parsed: {r.Position()} of {metadata.FileSize}");
             }
         }
 
@@ -67,12 +68,13 @@ namespace GameEstate.AC
         public async Task UnpackPortalDatFiles_NoExceptions()
         {
             var dat = new Database(portal);
-            foreach (var (key, value) in dat.Source.FilesById.Select(x => KeyValuePair.Create(x.Key, x.First())))
+            var source = dat.Source;
+            foreach (var (key, metadata) in source.FilesById.Select(x => KeyValuePair.Create(x.Key, x.First())))
             {
                 if ((uint)key == Iteration.FILE_ID) continue;
 
-                var fileType = value.GetFileType(PakType.Portal).fileType;
-                Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{value.Id:X8}, FileSize: {value.FileSize}");
+                var fileType = metadata.GetFileType(PakType.Portal).fileType;
+                Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{metadata.Id:X8}, FileSize: {metadata.FileSize}");
 
                 // These file types aren't converted yet
                 if (fileType == PakFileType.KeyMap) continue;
@@ -83,12 +85,12 @@ namespace GameEstate.AC
                 if (fileType == PakFileType.MasterProperty) continue;
                 if (fileType == PakFileType.DbProperties) continue;
 
-                var factory = value.ObjectFactory;
+                var factory = metadata.ObjectFactory;
                 if (factory == null) throw new Exception($"Class for fileType: {fileType} does not implement an ObjectFactory.");
 
-                using var r = new BinaryReader(await dat.Source.LoadFileDataAsync(value));
-                await factory(r, value);
-                if (r.Position() != value.FileSize) throw new Exception($"Failed to parse all bytes for fileType: {fileType}, ObjectId: 0x{value.Id:X8}. Bytes parsed: {r.Position()} of {value.FileSize}");
+                using var r = new BinaryReader(await source.LoadFileDataAsync(metadata));
+                await factory(r, metadata, source);
+                if (r.Position() != metadata.FileSize) throw new Exception($"Failed to parse all bytes for fileType: {fileType}, ObjectId: 0x{metadata.Id:X8}. Bytes parsed: {r.Position()} of {metadata.FileSize}");
             }
         }
 
@@ -96,23 +98,24 @@ namespace GameEstate.AC
         public async Task UnpackLocalEnglishDatFiles_NoExceptions()
         {
             var dat = new Database(localEnglish);
-            foreach (var (key, value) in dat.Source.FilesById.Select(x => KeyValuePair.Create(x.Key, x.First())))
+            var source = dat.Source;
+            foreach (var (key, metadata) in source.FilesById.Select(x => KeyValuePair.Create(x.Key, x.First())))
             {
                 if ((uint)key == Iteration.FILE_ID) continue;
 
-                var fileType = value.GetFileType(PakType.Language).fileType;
+                var fileType = metadata.GetFileType(PakType.Language).fileType;
 
-                Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{value.Id:X8}, FileSize: {value.FileSize}");
+                Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{metadata.Id:X8}, FileSize: {metadata.FileSize}");
 
                 // These file types aren't converted yet
                 if (fileType == PakFileType.UILayout) continue;
 
-                var factory = value.ObjectFactory;
+                var factory = metadata.ObjectFactory;
                 if (factory == null) throw new Exception($"Class for fileType: {fileType} does not implement an ObjectFactory.");
 
-                using var r = new BinaryReader(await dat.Source.LoadFileDataAsync(value));
-                await factory(r, value);
-                if (r.Position() != value.FileSize) throw new Exception($"Failed to parse all bytes for fileType: {fileType}, ObjectId: 0x{value.Id:X8}. Bytes parsed: {r.Position()} of {value.FileSize}");
+                using var r = new BinaryReader(await source.LoadFileDataAsync(metadata));
+                await factory(r, metadata, source);
+                if (r.Position() != metadata.FileSize) throw new Exception($"Failed to parse all bytes for fileType: {fileType}, ObjectId: 0x{metadata.Id:X8}. Bytes parsed: {r.Position()} of {metadata.FileSize}");
             }
         }
 
