@@ -1,5 +1,6 @@
-﻿using GameEstate.Tes.Formats.Records;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+﻿using GameEstate.Formats;
+using GameEstate.Tes.Formats.Records;
+//using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,7 +90,7 @@ namespace GameEstate.Tes.Formats
                 return;
             }
             DataSize = r.ReadUInt32();
-            if (format == TesFormat.TES3)  r.ReadUInt32(); // Unknown
+            if (format == TesFormat.TES3) r.ReadUInt32(); // Unknown
             Flags = (HeaderFlags)r.ReadUInt32();
             if (format == TesFormat.TES3) { Position = r.Position(); return; }
             // tes4
@@ -309,23 +310,14 @@ namespace GameEstate.Tes.Formats
         void ReadRecord(BinaryReader r, Record record, bool compressed)
         {
             //Console.WriteLine($"Recd: {record.Header.Type}");
-            if (!compressed)
-            {
-                record.Read(r, _filePath, _format);
-                return;
-            }
+            if (!compressed) { record.Read(r, _filePath, _format); return; }
             var newDataSize = r.ReadUInt32();
-            var data = r.ReadBytes((int)record.Header.DataSize - 4);
-            var newData = new byte[newDataSize];
-            using (var s = new MemoryStream(data))
-            using (var gs = new InflaterInputStream(s))
-                gs.Read(newData, 0, newData.Length);
+            var newData = r.DecompressZlib_2((int)record.Header.DataSize - 4, (int)newDataSize);
             // read record
             record.Header.Position = 0;
             record.Header.DataSize = newDataSize;
             using (var s = new MemoryStream(newData))
-            using (var r2 = new BinaryReader(s))
-                record.Read(r2, _filePath, _format);
+            using (var r2 = new BinaryReader(s)) record.Read(r2, _filePath, _format);
         }
     }
 }

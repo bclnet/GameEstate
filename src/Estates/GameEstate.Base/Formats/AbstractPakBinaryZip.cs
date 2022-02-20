@@ -14,7 +14,7 @@ namespace GameEstate.Formats
     /// <seealso cref="GameEstate.Formats._Packages.PakBinary" />
     public abstract class AbstractPakBinaryZip : PakBinary
     {
-        PropertyInfo ZipFile_KeyInfo = typeof(ZipFile).GetProperty("Key", BindingFlags.NonPublic | BindingFlags.Instance);
+        static readonly PropertyInfo ZipFile_KeyInfo = typeof(ZipFile).GetProperty("Key", BindingFlags.NonPublic | BindingFlags.Instance);
 
         public AbstractPakBinaryZip(byte[] key = null) => Key = key;
 
@@ -29,8 +29,8 @@ namespace GameEstate.Formats
 
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
-            var pak = (ZipFile)(source.Tag = new ZipFile(r.BaseStream));
-            //ZipFile_KeyInfo.SetValue(pak, Key);
+            var pak = (ZipFile)(source.Tag = new ZipFile(r.BaseStream)); // { Key = Key });
+            ZipFile_KeyInfo.SetValue(pak, Key);
             foreach (ZipEntry entry in pak)
             {
                 var metadata = new FileMetadata

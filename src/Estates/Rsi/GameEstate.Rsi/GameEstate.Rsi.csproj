@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Polyfills\**" />
+    <EmbeddedResource Remove="Polyfills\**" />
+    <None Remove="Polyfills\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Cry\GameEstate.Cry\GameEstate.Cry.csproj" />
     <ProjectReference Include="..\..\GameEstate.Base\GameEstate.Base.csproj" />
   </ItemGroup>

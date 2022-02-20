@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -20,9 +20,6 @@
   <ItemGroup>
     <PackageReference Include="K4os.Compression.LZ4" Version="1.2.16" />
     <PackageReference Include="SharpZipLib" Version="1.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\GameEstate\GameEstate.csproj" />
   </ItemGroup>
 
