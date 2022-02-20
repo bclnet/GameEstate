@@ -3,6 +3,7 @@
   "name": "BioWare Aurora Engine",
   "studio": "BioWare",
   "description": "BioWare used the Aurora Engine",
+  "estateType": "GameEstate.Aurora.AuroraEstate, GameEstate.Aurora",
   "pakFileType": "GameEstate.Aurora.AuroraPakFile, GameEstate.Aurora",
   "games": {
     "NWN": {

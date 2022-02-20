@@ -7,7 +7,7 @@ namespace GameEstate.Rsi
     /// <summary>
     /// RsiPakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class RsiPakFile : BinaryPakManyFile
     {
         /// <summary>

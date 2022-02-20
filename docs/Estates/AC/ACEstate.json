@@ -3,6 +3,7 @@
   "name": "Asheron's Call",
   "studio": "",
   "description": "The file formats used in Asheron's Call",
+  "estateType": "GameEstate.AC.ACEstate, GameEstate.AC",
   "pakFileType": "GameEstate.AC.ACPakFile, GameEstate.AC",
   "games": {
     "AC": {

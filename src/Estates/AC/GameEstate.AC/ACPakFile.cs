@@ -8,7 +8,7 @@ namespace GameEstate.AC
     /// <summary>
     /// ACPakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class ACPakFile : BinaryPakManyFile
     {
         static ACPakFile() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -22,9 +22,9 @@ namespace GameEstate.AC
         /// <param name="tag">The tag.</param>
         public ACPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryAC.Instance, tag)
         {
+            Options = PakManyOptions.FilesById;
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();
-            if (!DatabaseManager.loaded) DatabaseManager.Initialize(this);
         }
     }
 }

@@ -61,7 +61,7 @@ namespace System.IO
         public static long Position(this BinaryReader source) => source.BaseStream.Position;
         public static void Position(this BinaryReader source, long position) => source.BaseStream.Position = position;
         public static long Position(this BinaryReader source, long position, int align) { if (position % 4 != 0) position += 4 - (position % 4); source.BaseStream.Position = position; return position; }
-        public static void Seek(this BinaryReader source, long offset, SeekOrigin origin) => source.BaseStream.Seek(offset, origin);
+        public static void Seek(this BinaryReader source, long offset, SeekOrigin origin = SeekOrigin.Begin) => source.BaseStream.Seek(offset, origin);
         public static void Skip(this BinaryReader source, long count) => source.BaseStream.Position += count; //source.BaseStream.Seek(count, SeekOrigin.Current);
 
         public static void Peek(this BinaryReader source, Action<BinaryReader> action, int offset = 0)

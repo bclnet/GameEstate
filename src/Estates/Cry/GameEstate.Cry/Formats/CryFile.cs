@@ -1,5 +1,6 @@
 ﻿using GameEstate.Cry.Formats.Core;
 using GameEstate.Cry.Formats.Core.Chunks;
+using GameEstate.Formats;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,13 @@ namespace GameEstate.Cry.Formats
 {
     public partial class CryFile
     {
+        public static Task<object> Factory(EstatePakFile pak, BinaryReader r, FileMetadata metadata)
+        {
+            var file = new CryFile(metadata.Path);
+            file.LoadFromPak(pak, r, metadata);
+            return Task.FromResult((object)file);
+        }
+
         /// <summary>
         /// File extensions processed by CryEngine
         /// </summary>
@@ -44,10 +52,22 @@ namespace GameEstate.Cry.Formats
                 Log($"Found geometry file {Path.GetFileName(mFilePath)}");
                 files.Add((mFilePath, File.Open(mFilePath, FileMode.Open))); // Add to list of files to process
             }
-            LoadAsync(files, FindMaterialFromFile, path => Task.FromResult<(string, Stream)>((path, File.Open(path, FileMode.Open)))).Wait();
+            LoadAsync(null, files, FindMaterialFromFile, path => Task.FromResult<(string, Stream)>((path, File.Open(path, FileMode.Open)))).Wait();
         }
 
-        static string FindMaterialFromFile(string materialPath, string fileName, string cleanName)
+        public void LoadFromPak(EstatePakFile pak, BinaryReader r, FileMetadata metadata)
+        {
+            var files = new List<(string, Stream)> { (InputFile, r.BaseStream) };
+            var mFilePath = Path.ChangeExtension(InputFile, $"{Path.GetExtension(InputFile)}m");
+            if (pak.Contains(mFilePath))
+            {
+                Log($"Found geometry file {Path.GetFileName(mFilePath)}");
+                files.Add((mFilePath, pak.LoadFileDataAsync(mFilePath).Result)); // Add to list of files to process
+            }
+            LoadAsync(pak, files, FindMaterialFromPak, path => Task.FromResult<(string, Stream)>((path, pak.LoadFileDataAsync(path).Result))).Wait();
+        }
+
+        static string FindMaterialFromFile(EstatePakFile pak, string materialPath, string fileName, string cleanName)
         {
             // First try relative to file being processed
             if (Path.GetExtension(materialPath) != ".mtl") materialPath = Path.ChangeExtension(materialPath, "mtl");
@@ -64,16 +84,32 @@ namespace GameEstate.Cry.Formats
             return File.Exists(materialPath) ? materialPath : null;
         }
 
-        public async Task LoadAsync(IEnumerable<(string, Stream)> files, Func<string, string, string, string> getMaterialPath, Func<string, Task<(string, Stream)>> getFileAsync)
+        static string FindMaterialFromPak(EstatePakFile pak, string materialPath, string fileName, string cleanName)
+        {
+            // First try relative to file being processed
+            if (Path.GetExtension(materialPath) != ".mtl") materialPath = Path.ChangeExtension(materialPath, "mtl");
+            // Then try just the last part of the chunk, relative to the file being processed
+            if (!pak.Contains(materialPath)) materialPath = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileName(cleanName));
+            if (Path.GetExtension(materialPath) != ".mtl") materialPath = Path.ChangeExtension(materialPath, "mtl");
+            // Then try relative to the ObjectDir
+            if (!pak.Contains(materialPath)) materialPath = Path.Combine("Data", cleanName);
+            if (Path.GetExtension(materialPath) != ".mtl") materialPath = Path.ChangeExtension(materialPath, "mtl");
+            // Then try just the fileName.mtl
+            if (!pak.Contains(materialPath)) materialPath = fileName;
+            if (Path.GetExtension(materialPath) != ".mtl") materialPath = Path.ChangeExtension(materialPath, "mtl");
+            // TODO: Try more paths
+            return pak.Contains(materialPath) ? materialPath : null;
+        }
+
+        public async Task LoadAsync(EstatePakFile pak, IEnumerable<(string, Stream)> files, Func<EstatePakFile, string, string, string, string> getMaterialPath, Func<string, Task<(string, Stream)>> getFileAsync)
         {
             Models = new List<Model> { };
             foreach (var file in files)
             {
                 // Each file (.cga and .cgam if applicable) will have its own RootNode.  This can cause problems.  .cga files with a .cgam files won't have geometry for the one root node.
                 var model = new Model(file);
-                if (RootNode == null)
-                    RootNode = model.RootNode; // This makes the assumption that we read the .cga file before the .cgam file.
-                Bones = Bones ?? model.Bones;
+                if (RootNode == null) RootNode = model.RootNode; // This makes the assumption that we read the .cga file before the .cgam file.
+                Bones ??= model.Bones;
                 Models.Add(model);
             }
             SkinningInfo = ConsolidateSkinningInfo();
@@ -84,8 +120,7 @@ namespace GameEstate.Cry.Formats
             foreach (ChunkMtlName mtlChunk in Models.SelectMany(a => a.ChunkMap.Values).Where(c => c.ChunkType == ChunkTypeEnum.MtlName))
             {
                 // Don't process child or collision materials for now
-                if (mtlChunk.MatType == MtlNameTypeEnum.Child || mtlChunk.MatType == MtlNameTypeEnum.Unknown1)
-                    continue;
+                if (mtlChunk.MatType == MtlNameTypeEnum.Child || mtlChunk.MatType == MtlNameTypeEnum.Unknown1) continue;
                 // The Replace part is for SC files that point to a _core material file that doesn't exist.
                 var cleanName = mtlChunk.Name.Replace("_core", string.Empty);
                 //
@@ -97,9 +132,7 @@ namespace GameEstate.Cry.Formats
                     // info for hitboxes, but not needed.
                     // TODO:  This isn't right.  Fix it.
                     var charsToClean = cleanName.ToCharArray().Intersect(Path.GetInvalidFileNameChars()).ToArray();
-                    if (charsToClean.Length > 0)
-                        foreach (char character in charsToClean)
-                            cleanName = cleanName.Replace(character.ToString(), string.Empty);
+                    if (charsToClean.Length > 0) foreach (char character in charsToClean) cleanName = cleanName.Replace(character.ToString(), string.Empty);
                     materialFilePath = Path.Combine(Path.GetDirectoryName(fileName), cleanName);
                 }
                 else if (mtlChunk.Name.Contains("/") || mtlChunk.Name.Contains("\\"))
@@ -117,21 +150,18 @@ namespace GameEstate.Cry.Formats
                 else
                 {
                     var charsToClean = cleanName.ToCharArray().Intersect(Path.GetInvalidFileNameChars()).ToArray();
-                    if (charsToClean.Length > 0)
-                        foreach (var character in charsToClean)
-                            cleanName = cleanName.Replace(character.ToString(), string.Empty);
+                    if (charsToClean.Length > 0) foreach (var character in charsToClean) cleanName = cleanName.Replace(character.ToString(), string.Empty);
                     materialFilePath = Path.Combine(Path.GetDirectoryName(fileName), cleanName);
                 }
                 // Populate CryEngine_Core.Material
-                var materialPath = getMaterialPath(materialFilePath, fileName, cleanName);
+                var materialPath = getMaterialPath(pak, materialFilePath, fileName, cleanName);
                 var material = materialPath != null ? Material.FromFile(await getFileAsync(materialPath)) : null;
                 if (material != null)
                 {
                     Log($"Located material file {Path.GetFileName(materialPath)}");
                     Materials = FlattenMaterials(material).Where(m => m.Textures != null).ToArray();
                     // only one material, so it's a material file with no submaterials.  Check and set the name
-                    if (Materials.Length == 1)
-                        Materials[0].Name = RootNode.Name;
+                    if (Materials.Length == 1) Materials[0].Name = RootNode.Name;
                     return; // Early return - we have the material map
                 }
                 else Log($"Unable to locate material file {mtlChunk.Name}.mtl");
@@ -185,8 +215,7 @@ namespace GameEstate.Cry.Formats
         {
             get
             {
-                if (_chunks == null)
-                    _chunks = Models.SelectMany(m => m.ChunkMap.Values).ToArray();
+                if (_chunks == null) _chunks = Models.SelectMany(m => m.ChunkMap.Values).ToArray();
                 return _chunks;
             }
         }
@@ -211,8 +240,7 @@ namespace GameEstate.Cry.Formats
                             if (_nodeMap.ContainsKey(node.Name))
                             {
                                 var parentNode = _nodeMap[node.Name].ParentNode;
-                                if (parentNode != null)
-                                    parentNode = _nodeMap[parentNode.Name];
+                                if (parentNode != null) parentNode = _nodeMap[parentNode.Name];
                                 node.ParentNode = parentNode;
                             }
                             _nodeMap[node.Name] = node;    // TODO:  fix this.  The node name can conflict.
@@ -233,18 +261,13 @@ namespace GameEstate.Cry.Formats
             if (material != null)
             {
                 yield return material;
-                if (material.SubMaterials != null)
-                    foreach (var subMaterial in material.SubMaterials.SelectMany(m => FlattenMaterials(m)))
-                        yield return subMaterial;
+                if (material.SubMaterials != null) foreach (var subMaterial in material.SubMaterials.SelectMany(m => FlattenMaterials(m))) yield return subMaterial;
             }
         }
 
         public IEnumerable<string> GetTexturePaths()
         {
-            foreach (var texture in Materials.SelectMany(x => x.Textures))
-                if (!string.IsNullOrEmpty(texture.File))
-                    yield return $@"Data\{texture.File}";
-
+            foreach (var texture in Materials.SelectMany(x => x.Textures)) if (!string.IsNullOrEmpty(texture.File)) yield return $@"Data\{texture.File}";
         }
     }
 }

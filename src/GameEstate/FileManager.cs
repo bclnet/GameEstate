@@ -29,13 +29,13 @@ namespace GameEstate
         /// <value>
         ///   <c>true</c> if this instance is data present; otherwise, <c>false</c>.
         /// </value>
-        public bool FoundGames
-            => Locations.Count != 0;
+        public bool HasPaths
+            => Paths.Count != 0;
 
         /// <summary>
         /// The locations
         /// </summary>
-        public IDictionary<string, string> Locations = new Dictionary<string, string>();
+        public IDictionary<string, string> Paths = new Dictionary<string, string>();
 
         /// <summary>
         /// The ignores
@@ -61,7 +61,7 @@ namespace GameEstate
             var game = estate.GetGame(fragment);
             var r = new Estate.Resource { Game = game.id };
             // file-scheme
-            if (string.Equals(uri.Scheme, "game", StringComparison.OrdinalIgnoreCase)) r.Paths = GetGameFilePaths(r.Game, uri.LocalPath[1..]) ?? throw new InvalidOperationException($"No {game.id} resources match.");
+            if (string.Equals(uri.Scheme, "game", StringComparison.OrdinalIgnoreCase)) r.Paths = FindGameFilePaths(r.Game, uri.LocalPath[1..]) ?? throw new InvalidOperationException($"No {game.id} resources match.");
             // file-scheme
             else if (uri.IsFile) r.Paths = GetLocalFilePaths(uri.LocalPath, out r.StreamPak) ?? throw new InvalidOperationException($"No {game.id} resources match.");
             // network-scheme
@@ -77,14 +77,14 @@ namespace GameEstate
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">pathOrPattern</exception>
         /// <exception cref="ArgumentOutOfRangeException">pathOrPattern</exception>
-        string[] GetGameFilePaths(string game, string pathOrPattern)
+        public string[] FindGameFilePaths(string game, string pathOrPattern)
         {
             if (pathOrPattern == null) throw new ArgumentNullException(nameof(pathOrPattern));
             var searchPattern = Path.GetFileName(pathOrPattern);
             // folder
             if (string.IsNullOrEmpty(searchPattern)) throw new ArgumentOutOfRangeException(nameof(pathOrPattern), pathOrPattern);
             // file
-            return Locations.TryGetValue(game, out var path)
+            return Paths.TryGetValue(game, out var path)
                 ? ExpandAndSearchPaths(Ignores.TryGetValue(game, out var ignores) ? ignores : null, path, pathOrPattern).ToArray()
                 : null;
         }
@@ -202,7 +202,7 @@ namespace GameEstate
             if (path == null || !Directory.Exists(path = PathWithSpecialFolders(path))) return false;
             path = Path.GetFullPath(path);
             path = prop.Value.TryGetProperty("assets", out var z2) ? Path.Combine(path, z2.GetString()) : path;
-            if (Directory.Exists(path)) { this.Locations.Add(prop.Name, path.Replace('/', '\\')); return true; }
+            if (Directory.Exists(path)) { this.Paths.Add(prop.Name, path.Replace('/', '\\')); return true; }
             return false;
         }
 

@@ -87,8 +87,7 @@ namespace GameEstate.Aurora.Formats
             public uint Id => (FileId & 0xFFF00000) >> 20; // BIF index
         }
 
-        static Dictionary<int, string> BIFF_FileTypes_Cache;
-        Dictionary<int, string> BIFF_FileTypes => BIFF_FileTypes_Cache ?? (BIFF_FileTypes_Cache = new Dictionary<int, string> {
+        static readonly Dictionary<int, string> BIFF_FileTypes = new Dictionary<int, string> {
             {0x0000, "res"}, // Misc. GFF resources
             {0x0001, "bmp"}, // Microsoft Windows Bitmap
             {0x0002, "mve"},
@@ -216,20 +215,9 @@ namespace GameEstate.Aurora.Formats
             {0x270D, "erf"}, // Encapsulated Resource Format
             {0x270E, "bif"},
             {0x270F, "key"},
-        });
+        };
 
         #endregion
-
-        // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(string path)
-        {
-            switch (Path.GetExtension(path).ToLowerInvariant())
-            {
-                case ".dds": return BinaryDds.Factory;
-                case ".dlg": case ".qdb": case ".qst": return BinaryGff.Factory;
-                default: return null;
-            }
-        }
 
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -284,22 +272,22 @@ namespace GameEstate.Aurora.Formats
                 multiSource.Files = files2 = new List<FileMetadata>();
 
                 // files
-                var fileTypes = BIFF_FileTypes;
                 r.Position(header.FilesOffset);
                 var headerFiles = r.ReadTArray<BIFF_HeaderFile>(sizeof(BIFF_HeaderFile), (int)header.NumFiles);
                 for (var i = 0; i < header.NumFiles; i++)
                 {
                     var headerFile = headerFiles[i];
-                    if (headerFile.Id > i)
-                        continue;
-                    var path = $"{(keys.TryGetValue(headerFile.Id, out var key) ? key : $"{i}")}{(fileTypes.TryGetValue((int)headerFile.FileType, out var z) ? $".{z}" : string.Empty)}".Replace('\\', '/');
-                    files2.Add(new FileMetadata
+                    if (headerFile.Id > i) continue;
+                    var path = $"{(keys.TryGetValue(headerFile.Id, out var key) ? key : $"{i}")}{(BIFF_FileTypes.TryGetValue((int)headerFile.FileType, out var z) ? $".{z}" : string.Empty)}".Replace('\\', '/');
+                    var metadata = new FileMetadata
                     {
+                        Id = (int)headerFile.Id,
                         Path = path,
-                        ObjectFactory = ObjectFactory(path),
                         FileSize = headerFile.FileSize,
                         Position = headerFile.Offset,
-                    });
+                    };
+                    metadata.ObjectFactory = metadata.GetObjectFactory();
+                    files2.Add(metadata);
                 }
             }
             else throw new FormatException($"Unknown File Type {magic}");

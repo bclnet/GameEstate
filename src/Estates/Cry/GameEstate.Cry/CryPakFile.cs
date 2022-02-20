@@ -1,4 +1,5 @@
-﻿using GameEstate.Explorer;
+﻿using GameEstate.Cry.Formats;
+using GameEstate.Explorer;
 using GameEstate.Formats;
 
 namespace GameEstate.Cry
@@ -6,7 +7,7 @@ namespace GameEstate.Cry
     /// <summary>
     /// CryPakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class CryPakFile : BinaryPakManyFile
     {
         /// <summary>
@@ -16,7 +17,7 @@ namespace GameEstate.Cry
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public CryPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryZip2.Instance, tag)
+        public CryPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryCry.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();

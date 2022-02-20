@@ -10,7 +10,7 @@ namespace GameEstate.Tes
     /// <summary>
     /// TesPakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class TesPakFile : BinaryPakManyFile
     {
         /// <summary>

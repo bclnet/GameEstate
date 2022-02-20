@@ -207,18 +207,6 @@ namespace GameEstate.Tes.Formats
 
         #endregion
 
-        // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(string path)
-        {
-            Task<object> NiFactory(BinaryReader r, FileMetadata f) { var file = new NiFile(Path.GetFileNameWithoutExtension(f.Path)); file.Read(r); return Task.FromResult((object)file); }
-            return Path.GetExtension(path).ToLowerInvariant() switch
-            {
-                ".dds" => BinaryDds.Factory,
-                ".nif" => NiFactory,
-                _ => null,
-            };
-        }
-
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
             if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
@@ -279,6 +267,7 @@ namespace GameEstate.Tes.Formats
                             Position = (long)headerGNMF.Offset,
                             Tag = headerTextureChunks,
                         };
+
                     }
                 else throw new ArgumentOutOfRangeException(nameof(header.Type), header.Type.ToString());
 
@@ -290,7 +279,7 @@ namespace GameEstate.Tes.Formats
                     foreach (var file in files)
                     {
                         file.Path = path;
-                        file.ObjectFactory = ObjectFactory(path);
+                        file.ObjectFactory = file.GetObjectFactory();
                     }
                 }
             }
@@ -336,9 +325,8 @@ namespace GameEstate.Tes.Formats
                 var b = new StringBuilder();
                 foreach (var file in files)
                 {
-                    var path = $"{file.Path}/{r.ReadZString(builder: b)}";
-                    file.Path = path;
-                    file.ObjectFactory = ObjectFactory(path);
+                    file.Path = $"{file.Path}/{r.ReadZString(builder: b)}";
+                    file.ObjectFactory = file.GetObjectFactory();
                 }
             }
 
@@ -370,9 +358,9 @@ namespace GameEstate.Tes.Formats
                 for (var i = 0; i < files.Length; i++)
                 {
                     r.Position(filenamesPosition + filenameOffsets[i]);
-                    var path = r.ReadZASCII(1000, buf).Replace('\\', '/');
-                    files[i].Path = path;
-                    files[i].ObjectFactory = ObjectFactory(path);
+                    var file = files[i];
+                    file.Path = r.ReadZASCII(1000, buf).Replace('\\', '/');
+                    file.ObjectFactory = file.GetObjectFactory();
                 }
             }
 
@@ -389,16 +377,15 @@ namespace GameEstate.Tes.Formats
                 multiSource.Files = files = new FileMetadata[r.ReadInt32()];
                 for (var i = 0; i < files.Length; i++)
                 {
-                    var path = r.ReadL32String().TrimStart('\\');
-                    files[i] = new FileMetadata
+                    var metadata = files[i] = new FileMetadata
                     {
-                        Path = path,
-                        ObjectFactory = ObjectFactory(path),
+                        Path = r.ReadL32String().TrimStart('\\'),
                         Compressed = r.ReadByte(),
                         FileSize = r.ReadUInt32(),
                         PackedSize = r.ReadUInt32(),
                         Position = r.ReadUInt32(),
                     };
+                    metadata.ObjectFactory = metadata.GetObjectFactory();
                 }
             }
             else throw new InvalidOperationException("BAD MAGIC");
@@ -423,7 +410,7 @@ namespace GameEstate.Tes.Formats
                 // General BA2 Format
                 if (file.FileInfo == null)
                     fileData = file.Compressed != 0
-                        ? new MemoryStream(r.DecompressZlib_old((int)file.PackedSize, (int)file.FileSize))
+                        ? new MemoryStream(r.DecompressZlib_2((int)file.PackedSize, (int)file.FileSize))
                         : new MemoryStream(r.ReadBytes((int)file.FileSize));
                 // Texture BA2 Format
                 else if (file.FileInfo is F4_HeaderTexture tex)
@@ -565,7 +552,7 @@ namespace GameEstate.Tes.Formats
                         {
                             var chunk = chunks[i];
                             r.Position((long)chunk.Offset);
-                            if (chunk.PackedSize != 0) s.WriteBytes(r.DecompressZlib_old((int)file.PackedSize, (int)file.FileSize));
+                            if (chunk.PackedSize != 0) s.WriteBytes(r.DecompressZlib_2((int)file.PackedSize, (int)file.FileSize));
                             else s.WriteBytes(r, (int)file.FileSize);
                         }
                         s.Position = 0;
@@ -604,7 +591,7 @@ namespace GameEstate.Tes.Formats
                     var newFileSize = (int)r.ReadUInt32(); fileSize -= 4;
                     fileData = source.Version == SSE_BSAHEADER_VERSION
                         ? new MemoryStream(r.DecompressLz4(fileSize, newFileSize))
-                        : new MemoryStream(r.DecompressZlib_old(fileSize, newFileSize));
+                        : new MemoryStream(r.DecompressZlib_2(fileSize, newFileSize));
                 }
             }
             else throw new InvalidOperationException("BAD MAGIC");

@@ -12,6 +12,14 @@ namespace System
         public const float PiOver6 = 0.5235988f;
 
 
+        #region Safe
+
+        public static double Safe(double value) => value == double.NegativeInfinity
+            ? double.MinValue
+            : value == double.PositiveInfinity ? double.MaxValue : value == double.NaN ? 0 : value;
+
+        #endregion
+
         #region Clamp
 
         public static int Clamp(int value, int min, int max)

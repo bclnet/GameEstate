@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace GameEstate
@@ -52,5 +53,8 @@ namespace GameEstate
             }
             else throw new ArgumentOutOfRangeException(nameof(RuntimeInformation.IsOSPlatform));
         }
+
+        public static bool InTestHost
+            => AppDomain.CurrentDomain.GetAssemblies().Any(x => x.FullName.StartsWith("testhost,"));
     }
 }

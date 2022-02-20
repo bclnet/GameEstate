@@ -20,14 +20,6 @@ namespace GameEstate.Arkane.Formats
                 => Open();
         }
 
-        // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(string path)
-            => Path.GetExtension(path).ToLowerInvariant() switch
-            {
-                ".dds" => BinaryDds.Factory,
-                _ => null,
-            };
-
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
             if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
@@ -63,7 +55,7 @@ namespace GameEstate.Arkane.Formats
 
             var pathFile = Path.GetFileName(source.FilePath);
             var pathDir = Path.GetDirectoryName(source.FilePath);
-            var resourcePath = Path.Combine(pathDir, $"{pathFile.Substring(0, pathFile.Length - 6)}.resources");
+            var resourcePath = Path.Combine(pathDir, $"{pathFile[0..^6]}.resources");
             if (!File.Exists(resourcePath))
                 throw new ArgumentOutOfRangeException("Unable to find resources extension");
             var sharedResourcePath = new[] {
@@ -94,17 +86,17 @@ namespace GameEstate.Arkane.Formats
                 var flags2 = MathX.Reverse(r.ReadUInt16());
                 var useSharedResources = (flags & 32) != 0 && flags2 == 0x8000;
                 var newPath = !useSharedResources ? resourcePath : sharedResourcePath;
-                files[i] = new FileMetadata
+                var metadata = files[i] = new FileMetadata
                 {
                     Id = (int)id,
                     Path = path,
-                    ObjectFactory = ObjectFactory(path),
                     Compressed = fileSize != packedSize ? 1 : 0,
                     FileSize = fileSize,
                     PackedSize = packedSize,
                     Position = (long)position,
                     Tag = (newPath, tag1, tag2),
                 };
+                metadata.ObjectFactory = metadata.GetObjectFactory();
             }
             return Task.CompletedTask;
         }

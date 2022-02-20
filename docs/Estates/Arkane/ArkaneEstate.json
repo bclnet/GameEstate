@@ -3,11 +3,13 @@
   "name": "Arkane Studios",
   "studio": "Arkane Studios",
   "description": "The file formats used in the Void engine",
+  "estateType": "GameEstate.Arkane.ArkaneEstate, GameEstate.Arkane",
   "pakFileType": "GameEstate.Arkane.ArkanePakFile, GameEstate.Arkane",
   "games": {
     "Dishonored2": {
       "name": "Dishonored 2",
-      "pak": "game:/game1.index#Dishonored2"
+      "pak": "game:/game1.index#Dishonored2",
+      "pak_": "game:/*.index#Dishonored2"
     }
   },
   "fileManager": {

@@ -7,11 +7,8 @@
 
   <ItemGroup>
     <Compile Remove="Formats\Collada\**" />
-    <Compile Remove="Formats\Wavefront\**" />
     <EmbeddedResource Remove="Formats\Collada\**" />
-    <EmbeddedResource Remove="Formats\Wavefront\**" />
     <None Remove="Formats\Collada\**" />
-    <None Remove="Formats\Wavefront\**" />
   </ItemGroup>
 
   <ItemGroup>

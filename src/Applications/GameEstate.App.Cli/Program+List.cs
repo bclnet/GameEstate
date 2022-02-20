@@ -36,7 +36,7 @@ namespace GameEstate.App.Cli
             {
                 var estateGames = string.Join(", ", estate.Games.Values);
                 Console.WriteLine($"{estate.Name}\n{estate.Description}\nGames: {estateGames}\n");
-                var locations = estate.FileManager.Locations;
+                var locations = estate.FileManager.Paths;
                 if (locations.Count == 0)
                 {
                     Console.WriteLine("No games found.");

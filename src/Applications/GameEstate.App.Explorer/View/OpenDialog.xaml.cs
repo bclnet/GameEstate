@@ -26,7 +26,12 @@ namespace GameEstate.Explorer.View
         {
             InitializeComponent();
             DataContext = this;
-            if (!string.IsNullOrEmpty(EstateManager.DefaultEstateKey)) Estate.SelectedIndex = EstateManager.Estates.Keys.ToList().IndexOf(EstateManager.DefaultEstateKey);
+            if (!string.IsNullOrEmpty(Config.DefaultEstate))
+            {
+                var estates = EstateManager.Estates;
+                Estate.SelectedIndex = estates.Keys.ToList().IndexOf(Config.DefaultEstate);
+                if (!string.IsNullOrEmpty(Config.DefaultGameId)) EstateGame.SelectedIndex = estates[Config.DefaultEstate].Games.Keys.ToList().IndexOf(Config.DefaultGameId);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -98,7 +103,7 @@ namespace GameEstate.Explorer.View
         void EstateGame_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selected = (Estate.EstateGame)EstateGame.SelectedItem;
-            PakUris = selected?.DefaultPaks;
+            PakUris = selected?.Paks;
         }
 
         void PakUriFile_Click(object sender, RoutedEventArgs e)
@@ -140,11 +145,6 @@ namespace GameEstate.Explorer.View
             }
         }
 
-        void OnReady()
-        { 
-            //Open_Click(null, null);
-        }
-
         void Cancel_Click(object sender, RoutedEventArgs e)
             => Close();
 
@@ -152,6 +152,11 @@ namespace GameEstate.Explorer.View
         {
             DialogResult = true;
             Close();
+        }
+
+        void OnReady()
+        {
+            if (Config.ForceOpen) Open_Click(null, null);
         }
     }
 }

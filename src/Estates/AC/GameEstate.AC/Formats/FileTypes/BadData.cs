@@ -24,7 +24,8 @@ namespace GameEstate.AC.Formats.FileTypes
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"{nameof(BadData)}: {Id:X8}", items: Bad.Keys.OrderBy(x => x).Select(x => new ExplorerInfoNode($"{x}")))
+                new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Text", Name = "Bad Data", Value = string.Join(", ", Bad.Keys.OrderBy(x => x)) }),
+                new ExplorerInfoNode($"{nameof(TabooTable)}: {Id:X8}")
             };
             return nodes;
         }

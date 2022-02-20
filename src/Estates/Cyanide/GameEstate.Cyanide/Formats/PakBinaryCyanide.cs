@@ -33,22 +33,10 @@ namespace GameEstate.Cyanide.Formats
 
         #endregion
 
-        // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(string path)
-        {
-            switch (Path.GetExtension(path).ToLowerInvariant())
-            {
-                case ".dds": return BinaryDds.Factory;
-                default: return null;
-            }
-        }
-
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
-            if (!(source is BinaryPakManyFile multiSource))
-                throw new NotSupportedException();
-            if (stage != ReadStage.File)
-                throw new ArgumentOutOfRangeException(nameof(stage), stage.ToString());
+            if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
+            if (stage != ReadStage.File) throw new ArgumentOutOfRangeException(nameof(stage), stage.ToString());
 
             var magic = source.Magic = r.ReadUInt32();
             if (magic != CPK_MAGIC) throw new FormatException($"Unknown File Type {magic}");
@@ -59,14 +47,13 @@ namespace GameEstate.Cyanide.Formats
             for (var i = 0; i < files.Count; i++)
             {
                 var headerFile = headerFiles[i];
-                var path = UnsafeX.ReadZASCII(headerFile.FileName, 512).Replace('\\', '/');
-                files[i] = new FileMetadata
+                var metadata = files[i] = new FileMetadata
                 {
-                    Path = path,
-                    ObjectFactory = ObjectFactory(path),
+                    Path = UnsafeX.ReadZASCII(headerFile.FileName, 512).Replace('\\', '/'),
                     FileSize = headerFile.FileSize,
                     Position = (long)headerFile.Offset,
                 };
+                metadata.ObjectFactory = metadata.GetObjectFactory();
             }
             return Task.CompletedTask;
         }

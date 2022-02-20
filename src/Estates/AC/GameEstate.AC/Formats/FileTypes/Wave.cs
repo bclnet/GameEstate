@@ -31,6 +31,7 @@ namespace GameEstate.AC.Formats.FileTypes
         {
             var type = Header[0] == 0x55 ? "MP3" : "WAV";
             var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode(null, new ExplorerContentTab { Type = "AudioPlayer", Name = "Sound", Value = null, Tag = type }),
                 new ExplorerInfoNode($"{nameof(Wave)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"Type: {type}"),
                     new ExplorerInfoNode($"Header Size: {Header.Length}"),

@@ -9,7 +9,7 @@ namespace GameEstate.Valve
     /// <summary>
     /// ValvePakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class ValvePakFile : BinaryPakManyFile
     {
         /// <summary>

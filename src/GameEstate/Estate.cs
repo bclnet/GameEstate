@@ -12,6 +12,7 @@ namespace GameEstate
     {
         static unsafe Estate()
         {
+            if (EstatePlatform.InTestHost) EstatePlatform.Startups.Add(TestPlatform.Startup);
             foreach (var startup in EstatePlatform.Startups) if (startup()) return;
             EstatePlatform.Platform = EstatePlatform.PlatformUnknown;
             EstatePlatform.GraphicFactory = source => throw new Exception("No GraphicFactory");
@@ -24,6 +25,11 @@ namespace GameEstate
         /// Touches this instance.
         /// </summary>
         public static void Bootstrap() { }
+
+        /// <summary>
+        /// Ensures this instance.
+        /// </summary>
+        public virtual Estate Ensure() => this;
 
         public enum PakMultiType
         {
@@ -71,14 +77,24 @@ namespace GameEstate
             /// </summary>
             public string Name { get; set; }
             /// <summary>
-            /// The default paks
+            /// The paks
             /// </summary>
-            public IList<Uri> DefaultPaks { get; set; }
+            public IList<Uri> Paks { get; set; }
+            /// <summary>
+            /// The dats
+            /// </summary>
+            public IList<Uri> Dats { get; set; }
             /// <summary>
             /// The has location
             /// </summary>
             public bool Found { get; set; }
 
+            /// <summary>
+            /// Gets the name of the displayed.
+            /// </summary>
+            /// <value>
+            /// The name of the displayed.
+            /// </value>
             public string DisplayedName => $"{Name}{(Found ? " - found" : null)}";
         }
 

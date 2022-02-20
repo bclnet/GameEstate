@@ -3,6 +3,7 @@
   "name": "Crytek",
   "studio": "Crytek",
   "description": "The file formats used in Cry and Lumberyard",
+  "estateType": "GameEstate.Cry.CryEstate, GameEstate.Cry",
   "pakFileType": "GameEstate.Cry.CryPakFile, GameEstate.Cry",
   "games": {
     "MechWarriorOnline": {

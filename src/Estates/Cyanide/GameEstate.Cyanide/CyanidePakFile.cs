@@ -7,11 +7,11 @@ namespace GameEstate.Cyanide
     /// <summary>
     /// CyanidePakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class CyanidePakFile : BinaryPakManyFile
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UknPakFile" /> class.
+        /// Initializes a new instance of the <see cref="CyanidePakFile" /> class.
         /// </summary>
         /// <param name="estate">The estate.</param>
         /// <param name="game">The game.</param>

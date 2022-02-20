@@ -43,12 +43,13 @@ namespace GameEstate.Origin.Formats
             for (var i = 0; i < files.Count; i++)
             {
                 var headerFile = headerFiles[i];
-                files[i] = new FileMetadata
+                var metadata = files[i] = new FileMetadata
                 {
                     Path = $"{prefix}/{i}",
                     FileSize = headerFile.FileSize,
                     Position = headerFile.Position,
                 };
+                metadata.ObjectFactory = metadata.GetObjectFactory();
             }
             return Task.CompletedTask;
         }

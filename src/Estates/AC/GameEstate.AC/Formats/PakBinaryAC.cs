@@ -1,11 +1,9 @@
-﻿using GameEstate.AC.Formats.FileTypes;
-using GameEstate.Formats;
+﻿using GameEstate.Formats;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Environment = GameEstate.AC.Formats.FileTypes.Environment;
 
 namespace GameEstate.AC.Formats
 {
@@ -81,105 +79,29 @@ namespace GameEstate.AC.Formats
                 if (Header.Branches[0] != 0) for (var i = 0; i < Header.EntryCount + 1; i++) Directories.Add(new Directory(r, Header.Branches[i], blockSize));
             }
 
-            public void AddFiles(PakType pakType, IList<FileMetadata> files, string path, int blockSize)
+            public void AddFiles(BinaryReader r, PakType pakType, IList<FileMetadata> files, string path, int blockSize)
             {
                 //var did = 0; Directories.ForEach(d => d.AddFiles(pakType, files, Path.Combine(path, did++.ToString()), blockSize));
-                Directories.ForEach(d => d.AddFiles(pakType, files, path, blockSize));
+                Directories.ForEach(d => d.AddFiles(r, pakType, files, path, blockSize));
                 for (var i = 0; i < Header.EntryCount; i++)
                 {
                     var entry = Header.Entries[i];
-                    var fileName = PakFileTypeHelper.GetFileName(entry.ObjectId, pakType, 0, out var type);
-                    files.Add(new FileMetadata
+                    var metadata = new FileMetadata
                     {
                         Id = (int)entry.ObjectId,
-                        Path = Path.Combine(path, fileName),
-                        ObjectFactory = ObjectFactory(entry.ObjectId, pakType, type),
                         Position = entry.FileOffset,
                         FileSize = entry.FileSize,
                         Digest = blockSize,
                         Tag = entry,
-                    });
+                    };
+                    metadata.Path = Path.Combine(path, metadata.GetPath(r, pakType, out var type));
+                    metadata.ObjectFactory = metadata.GetObjectFactory(pakType, type);
+                    files.Add(metadata);
                 }
             }
         }
 
         #endregion
-
-        // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(uint objectId, PakType pakType, PakFileType? type)
-        {
-            if (objectId == Iteration.FILE_ID) return (r, m) => Task.FromResult((object)new Iteration(r)); 
-            else if (type == null) return null;
-            else return type.Value switch
-            {
-                PakFileType.LandBlock => (r, m) => Task.FromResult((object)new Landblock(r)),
-                PakFileType.LandBlockInfo => (r, m) => Task.FromResult((object)new LandblockInfo(r)),
-                PakFileType.EnvCell => (r, m) => Task.FromResult((object)new EnvCell(r)),
-                //PakFileType.LandBlockObjects => null;
-                //PakFileType.Instantiation => null;
-                PakFileType.GraphicsObject => (r, m) => Task.FromResult((object)new GfxObj(r)),
-                PakFileType.Setup => (r, m) => Task.FromResult((object)new SetupModel(r)),
-                PakFileType.Animation => (r, m) => Task.FromResult((object)new Animation(r)),
-                //PakFileType.AnimationHook => null;
-                PakFileType.Palette => (r, m) => Task.FromResult((object)new Palette(r)),
-                PakFileType.SurfaceTexture => (r, m) => Task.FromResult((object)new SurfaceTexture(r)),
-                PakFileType.Texture => (r, m) => Task.FromResult((object)new Texture(r)),
-                PakFileType.Surface => (r, m) => Task.FromResult((object)new Surface(r)),
-                PakFileType.MotionTable => (r, m) => Task.FromResult((object)new MotionTable(r)),
-                PakFileType.Wave => (r, m) => Task.FromResult((object)new Wave(r)),
-                PakFileType.Environment => (r, m) => Task.FromResult((object)new Environment(r)),
-                PakFileType.ChatPoseTable => (r, m) => Task.FromResult((object)new ChatPoseTable(r)),
-                PakFileType.ObjectHierarchy => (r, m) => Task.FromResult((object)new GeneratorTable(r)), //: Name wayoff
-                PakFileType.BadData => (r, m) => Task.FromResult((object)new BadData(r)),
-                PakFileType.TabooTable => (r, m) => Task.FromResult((object)new TabooTable(r)),
-                PakFileType.FileToId => null,
-                PakFileType.NameFilterTable => (r, m) => Task.FromResult((object)new NameFilterTable(r)),
-                PakFileType.MonitoredProperties => null,
-                PakFileType.PaletteSet => (r, m) => Task.FromResult((object)new PaletteSet(r)),
-                PakFileType.Clothing => (r, m) => Task.FromResult((object)new ClothingTable(r)),
-                PakFileType.DegradeInfo => (r, m) => Task.FromResult((object)new GfxObjDegradeInfo(r)),
-                PakFileType.Scene => (r, m) => Task.FromResult((object)new Scene(r)),
-                PakFileType.Region => (r, m) => Task.FromResult((object)new RegionDesc(r)),
-                PakFileType.KeyMap => null,
-                PakFileType.RenderTexture => (r, m) => Task.FromResult((object)new RenderTexture(r)),
-                PakFileType.RenderMaterial => null,
-                PakFileType.MaterialModifier => null,
-                PakFileType.MaterialInstance => null,
-                PakFileType.SoundTable => (r, m) => Task.FromResult((object)new SoundTable(r)),
-                PakFileType.UILayout => null,
-                PakFileType.EnumMapper => (r, m) => Task.FromResult((object)new EnumMapper(r)),
-                PakFileType.StringTable => (r, m) => Task.FromResult((object)new StringTable(r)),
-                PakFileType.DidMapper => (r, m) => Task.FromResult((object)new DidMapper(r)),
-                PakFileType.ActionMap => null,
-                PakFileType.DualDidMapper => (r, m) => Task.FromResult((object)new DualDidMapper(r)),
-                PakFileType.String => (r, m) => Task.FromResult((object)new LanguageString(r)), //: Name wayoff
-                PakFileType.ParticleEmitter => (r, m) => Task.FromResult((object)new ParticleEmitterInfo(r)),
-                PakFileType.PhysicsScript => (r, m) => Task.FromResult((object)new PhysicsScript(r)),
-                PakFileType.PhysicsScriptTable => (r, m) => Task.FromResult((object)new PhysicsScriptTable(r)),
-                PakFileType.MasterProperty => null,
-                PakFileType.Font => (r, m) => Task.FromResult((object)new Font(r)),
-                PakFileType.FontLocal => null,
-                PakFileType.StringState => (r, m) => Task.FromResult((object)new LanguageInfo(r)), //: Name wayoff
-                PakFileType.DbProperties => null,
-                PakFileType.RenderMesh => null,
-                PakFileType.WeenieDefaults => null,
-                PakFileType.CharacterGenerator => (r, m) => Task.FromResult((object)new CharGen(r)),
-                PakFileType.SecondaryAttributeTable => (r, m) => Task.FromResult((object)new SecondaryAttributeTable(r)),
-                PakFileType.SkillTable => (r, m) => Task.FromResult((object)new SkillTable(r)),
-                PakFileType.SpellTable => (r, m) => Task.FromResult((object)new SpellTable(r)),
-                PakFileType.SpellComponentTable => (r, m) => Task.FromResult((object)new SpellComponentTable(r)),
-                PakFileType.TreasureTable => null,
-                PakFileType.CraftTable => null,
-                PakFileType.XpTable => (r, m) => Task.FromResult((object)new XpTable(r)),
-                PakFileType.Quests => null,
-                PakFileType.GameEventTable => null,
-                PakFileType.QualityFilter => (r, m) => Task.FromResult((object)new QualityFilter(r)),
-                PakFileType.CombatTable => (r, m) => Task.FromResult((object)new CombatManeuverTable(r)),
-                PakFileType.ItemMutation => null,
-                PakFileType.ContractTable => (r, m) => Task.FromResult((object)new ContractTable(r)),
-                _ => null,
-            };
-        }
 
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -190,7 +112,7 @@ namespace GameEstate.AC.Formats
             r.Position(DAT_HEADER_OFFSET);
             var header = r.ReadT<Header>(sizeof(Header));
             var directory = new Directory(r, header.BTree, (int)header.BlockSize);
-            directory.AddFiles(header.DataSet, files, string.Empty, (int)header.BlockSize);
+            directory.AddFiles(r, header.DataSet, files, string.Empty, (int)header.BlockSize);
             return Task.CompletedTask;
         }
 

@@ -7,17 +7,8 @@ using System.Threading.Tasks;
 
 namespace GameEstate.AC.Builders
 {
-    public class MapImageBuilder
+    public class MapImageBuilder : IDisposable
     {
-        const int LANDSIZE = 2041; // each landblock is 9x9 points, with the edge points being shared between neighbor landblocks. 255 * 8 + 1, the extra 1 is for the last edge.
-
-        // The following constants change how the lighting works.  It is easy to wash out the bright whites of the snow, so be careful.
-        const float COLORCORRECTION = 0.7f; // Increasing COLORCORRECTION makes the base color more prominant.
-        const float LIGHTCORRECTION = 2.25f; // Increasing LIGHTCORRECTION increases the contrast between steep and flat slopes.
-        const float AMBIENTLIGHT = 0.25f; // Increasing AMBIENTLIGHT makes everyting brighter.
-
-        public DirectBitmap MapImage { get; set; }
-
         class LandData
         {
             public ushort Type { get; set; }
@@ -26,13 +17,15 @@ namespace GameEstate.AC.Builders
             public bool Blocked { get; set; }   // Can't walk on
         }
 
+        const int LANDSIZE = 2041; // each landblock is 9x9 points, with the edge points being shared between neighbor landblocks. 255 * 8 + 1, the extra 1 is for the last edge.
+        // The following constants change how the lighting works.  It is easy to wash out the bright whites of the snow, so be careful.
+        const float COLORCORRECTION = 0.7f; // Increasing COLORCORRECTION makes the base color more prominant.
+        const float LIGHTCORRECTION = 2.25f; // Increasing LIGHTCORRECTION increases the contrast between steep and flat slopes.
+        const float AMBIENTLIGHT = 0.25f; // Increasing AMBIENTLIGHT makes everyting brighter.
         LandData[,] land { get; set; } = new LandData[LANDSIZE, LANDSIZE];
-
-        public int FoundLandblocks { get; set; }
 
         public MapImageBuilder()
         {
-            FoundLandblocks = 0;
             for (var x = 0; x < LANDSIZE; x++) for (var y = 0; y < LANDSIZE; y++) land[x, y] = new LandData();
 
             var cell = DatabaseManager.Cell;
@@ -58,12 +51,15 @@ namespace GameEstate.AC.Builders
                             land[startY - y, startX + x].Blocked = !(itex < 16 || itex > 20);
                         }
                     }
-                    FoundLandblocks++;
                 }
             });
 
             CreateMap();
         }
+
+        public void Dispose() => MapImage.Dispose();
+
+        public DirectBitmap MapImage { get; set; }
 
         void CreateMap()
         {

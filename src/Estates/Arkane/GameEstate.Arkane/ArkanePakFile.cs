@@ -7,7 +7,7 @@ namespace GameEstate.Arkane
     /// <summary>
     /// ArkanePakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class ArkanePakFile : BinaryPakManyFile
     {
         /// <summary>
@@ -19,6 +19,7 @@ namespace GameEstate.Arkane
         /// <param name="tag">The tag.</param>
         public ArkanePakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryArkane.Instance, tag)
         {
+            Options = PakManyOptions.FilesById;
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();
         }

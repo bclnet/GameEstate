@@ -5,7 +5,24 @@ namespace GameEstate
 {
     public class EstateManager
     {
-        public static string DefaultEstateKey = "AC";
+        public class DefaultOptions
+        {
+            public string Estate { get; set; }
+            public string GameId { get; set; }
+            public string ForcePath { get; set; }
+            public bool ForceOpen { get; set; }
+
+        }
+
+        public static DefaultOptions AppDefaultOptions = new DefaultOptions
+        {
+            Estate = "Aurora",
+
+            //Estate = "AC",
+            GameId = null,
+            //ForcePath = "TabooTable/0E00001E.taboo",
+            ForceOpen = true,
+        };
 
         static EstateManager()
             => EstateLoader.Bootstrap();

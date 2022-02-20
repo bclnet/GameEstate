@@ -95,8 +95,7 @@ namespace GameEstate.Red.Formats
             public uint Id => (Flags & 0xFFF00000) >> 20; // BIF index
         }
 
-        static Dictionary<int, string> BIFF_FileTypes_Cache;
-        Dictionary<int, string> BIFF_FileTypes => BIFF_FileTypes_Cache ?? (BIFF_FileTypes_Cache = new Dictionary<int, string> {
+        static readonly Dictionary<int, string> BIFF_FileTypes = new Dictionary<int, string> {
             {0x0000, "res"}, // Misc. GFF resources
             {0x0001, "bmp"}, // Microsoft Windows Bitmap
             {0x0002, "mve"},
@@ -224,7 +223,7 @@ namespace GameEstate.Red.Formats
             {0x270D, "erf"}, // Encapsulated Resource Format
             {0x270E, "bif"},
             {0x270F, "key"},
-        });
+        };
 
         #endregion
 
@@ -433,18 +432,6 @@ namespace GameEstate.Red.Formats
         // https://forums.cdprojektred.com/index.php?threads/modding-the-witcher-3-a-collection-of-tools-you-need.64557/
         // https://github.com/rfuzzo/CP77Tools
 
-        // object factory
-        static Func<BinaryReader, FileMetadata, Task<object>> ObjectFactory(string path)
-        {
-            switch (Path.GetExtension(path).ToLowerInvariant())
-            {
-                case ".dds": return BinaryDds.Factory;
-                // witcher 1
-                //case ".dlg": case ".qdb": case ".qst": return BinaryGff.Factory;
-                default: return null;
-            }
-        }
-
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
             if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
@@ -507,14 +494,15 @@ namespace GameEstate.Red.Formats
                             var headerFile = headerFiles[i];
                             // Curiously the last resource entry of djinni.bif seem to be missing
                             if (headerFile.FileId > i) continue;
-                            var path = $"{(keys.TryGetValue((bifId, headerFile.FileId), out var key) ? key : $"{i}")}{(fileTypes.TryGetValue(headerFile.FileType, out var z) ? $".{z}" : string.Empty)}".Replace('\\', '/');
-                            files2.Add(new FileMetadata
+                            var path = $"{(keys.TryGetValue((bifId, headerFile.FileId), out var key) ? key : $"{i}")}{(BIFF_FileTypes.TryGetValue(headerFile.FileType, out var z) ? $".{z}" : string.Empty)}".Replace('\\', '/');
+                            var metadata = new FileMetadata
                             {
                                 Path = path,
-                                ObjectFactory = ObjectFactory(path),
                                 FileSize = headerFile.FileSize,
                                 Position = headerFile.FileOffset,
-                            });
+                            };
+                            metadata.ObjectFactory = metadata.GetObjectFactory();
+                            files2.Add(metadata);
                         }
                     }
                     return Task.CompletedTask;
@@ -540,16 +528,15 @@ namespace GameEstate.Red.Formats
                                 path = Encoding.ASCII.GetString(pathBytes, 0, pathBytes[nameBytesLength] == 0 ? nameBytesLength : pathBytes.Length);
                             }
                             var headerFile = r.ReadT<DZIP_HeaderFile>(sizeof(DZIP_HeaderFile));
-                            var newPath = path.Replace('\\', '/');
-                            files[i] = new FileMetadata
+                            var metadata = files[i] = new FileMetadata
                             {
-                                Path = newPath,
-                                ObjectFactory = ObjectFactory(newPath),
+                                Path = path.Replace('\\', '/'),
                                 Compressed = 1,
                                 PackedSize = (long)headerFile.PackedSize,
                                 FileSize = (long)headerFile.FileSize,
                                 Position = (long)headerFile.Position,
                             };
+                            metadata.ObjectFactory = metadata.GetObjectFactory();
                             // build digest
                             if (!string.IsNullOrEmpty(path))
                             {
@@ -583,16 +570,15 @@ namespace GameEstate.Red.Formats
                         for (var i = 0; i < header.NumFiles; i++)
                         {
                             var headerFile = headerFiles[i];
-                            var path = UnsafeX.ReadZASCII(headerFile.Name, 0x100).Replace('\\', '/');
-                            files[i] = new FileMetadata
+                            var metadata = files[i] = new FileMetadata
                             {
-                                Path = path,
-                                ObjectFactory = ObjectFactory(path),
+                                Path = UnsafeX.ReadZASCII(headerFile.Name, 0x100).Replace('\\', '/'),
                                 Compressed = (int)headerFile.Compressed,
                                 FileSize = headerFile.FileSize,
                                 PackedSize = headerFile.PackedSize,
                                 Position = headerFile.FilePosition,
                             };
+                            metadata.ObjectFactory = metadata.GetObjectFactory();
                         }
                     }
                     return Task.CompletedTask;
@@ -616,13 +602,13 @@ namespace GameEstate.Red.Formats
                             var hash = headerFile.NameHash64;
                             if (nameHashs.Contains(hash)) { Console.WriteLine($"File already added in Archive {source.FilePath}: hash {hash}, idx {i}"); continue; }
                             nameHashs.Add(hash);
-                            var path = hashLookup.TryGetValue(hash, out var z) ? z.Replace('\\', '/') : $"{hash:X2}.bin";
-                            files2.Add(new FileMetadata
+                            var metadata = new FileMetadata
                             {
-                                Path = path,
-                                ObjectFactory = ObjectFactory(path),
+                                Path = hashLookup.TryGetValue(hash, out var z) ? z.Replace('\\', '/') : $"{hash:X2}.bin",
                                 Tag = (headerFile.FirstDataSector, headerFile.NextDataSector, headerOffsets),
-                            });
+                            };
+                            metadata.ObjectFactory = metadata.GetObjectFactory();
+                            files2.Add(metadata);
                         }
                     }
                     return Task.CompletedTask;
@@ -653,7 +639,8 @@ namespace GameEstate.Red.Formats
                             // file block
                             var headerFiles = r.ReadTArray<CACHE_TEX_HeaderFile>(sizeof(CACHE_TEX_HeaderFile), (int)header.NumFiles);
                             for (var i = 0; i < header.NumFiles; i++)
-                                files[i] = new FileMetadata
+                            {
+                                var metadata = files[i] = new FileMetadata
                                 {
                                     Path = filePaths[i].Replace('\\', '/'),
                                     Position = headerFiles[i].StartOffset,
@@ -661,6 +648,8 @@ namespace GameEstate.Red.Formats
                                     FileSize = headerFiles[i].FileSize,
                                     Tag = headerFiles[i],
                                 };
+                                metadata.ObjectFactory = metadata.GetObjectFactory();
+                            }
                         }
                         else if (magic == CS3W_MAGIC)
                         {
@@ -731,7 +720,7 @@ namespace GameEstate.Red.Formats
                             for (var i = 0; i < blocks; i++)
                             {
                                 r.Position(positions[i]);
-                                var bytesRead = r.DecompressLzfChunk((int)(positions[i + 1] - positions[i + 0]), buffer);
+                                var bytesRead = r.DecompressLzf((int)(positions[i + 1] - positions[i + 0]), buffer);
                                 if (i + 1 < blocks && bytesRead != buffer.Length) throw new FormatException();
                                 s.Write(buffer, 0, bytesRead);
                                 bytesLeft -= bytesRead;
@@ -748,7 +737,7 @@ namespace GameEstate.Red.Formats
                         switch (file.Compressed)
                         {
                             case 0: break; // no compression
-                            case 1: fileData = new MemoryStream(r.DecompressZlib_old((int)file.PackedSize, (int)newFileSize)); break;
+                            case 1: fileData = new MemoryStream(r.DecompressZlib_2((int)file.PackedSize, (int)newFileSize)); break;
                             case 2: fileData = new MemoryStream(r.DecompressSnappy((int)file.PackedSize, (int)newFileSize)); break;
                             case 3: fileData = new MemoryStream(r.DecompressDoboz((int)file.PackedSize, (int)newFileSize)); break;
                             case 4: case 5: fileData = new MemoryStream(r.DecompressLz4((int)file.PackedSize, (int)newFileSize)); break;

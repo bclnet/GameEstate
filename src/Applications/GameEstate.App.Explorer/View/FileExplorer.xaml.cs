@@ -47,6 +47,8 @@ namespace GameEstate.Explorer.View
                 fileExplorer.NodeFilters = pakFile.GetExplorerItemFiltersAsync(Resource).Result;
                 fileExplorer.Nodes = fileExplorer.PakNodes = pakFile.GetExplorerItemNodesAsync(Resource).Result;
                 fileExplorer.SelectedItem = string.IsNullOrEmpty(fileExplorer.OpenPath) ? null : fileExplorer.FindByPath(fileExplorer.OpenPath);
+
+                fileExplorer.OnReady();
             }));
         public EstatePakFile PakFile
         {
@@ -119,6 +121,11 @@ namespace GameEstate.Explorer.View
         {
             if (e.NewValue is TreeViewItem item && item.Items.Count > 0) (item.Items[0] as TreeViewItem).IsSelected = true;
             else if (e.NewValue is ExplorerItemNode itemNode && itemNode.PakFile != null && SelectedItem != itemNode) SelectedItem = itemNode;
+        }
+
+        void OnReady()
+        {
+            if (!string.IsNullOrEmpty(Config.ForcePath)) SelectedItem = FindByPath(Config.ForcePath);
         }
     }
 }

@@ -3,6 +3,7 @@
   "name": "Origin Systems",
   "studio": "Origin Systems",
   "description": "Origin Systems file formats",
+  "estateType": "GameEstate.Origin.OriginEstate, GameEstate.Origin",
   "pakFileType": "GameEstate.Origin.OriginPakFile, GameEstate.Origin",
   "games": {
     "UltimaOnline": {

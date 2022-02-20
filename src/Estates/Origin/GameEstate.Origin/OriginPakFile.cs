@@ -7,7 +7,7 @@ namespace GameEstate.Origin
     /// <summary>
     /// OriginPakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class OriginPakFile : BinaryPakManyFile
     {
         /// <summary>

@@ -95,9 +95,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStack.Physics", "src\Op
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStack.Graphics.OpenGL2", "src\OpenStack\OpenStack.Graphics.OpenGL2\OpenStack.Graphics.OpenGL2.csproj", "{8CBDECFC-D1A0-4A03-BCD4-BE7F979EC9C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStack.Graphics.Common", "src\OpenStack\OpenStack.Graphics.Common\OpenStack.Graphics.Common.csproj", "{C1BA74B6-E3E4-428E-8A8D-B666182A14A9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.AC.Test", "src\Estates\AC\GameEstate.AC.Test\GameEstate.AC.Test.csproj", "{0EE14144-83BC-4907-AB66-FA660A3CCBB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.AC.Tests", "src\Estates\AC\GameEstate.AC.Tests\GameEstate.AC.Tests.csproj", "{0EE14144-83BC-4907-AB66-FA660A3CCBB8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AC", "AC", "{63EAABF5-FA58-43EA-BE1B-C5641D3996B1}"
 EndProject
@@ -119,25 +117,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Valve", "Valve", "{20F92FF8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arkane", "Arkane", "{C0591484-7895-44F5-B595-5A913F60F556}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Arkane.Test", "src\Estates\Arkane\GameEstate.Arkane.Test\GameEstate.Arkane.Test.csproj", "{AAA182C8-D4E5-426C-99E6-1878AB75104F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Arkane.Tests", "src\Estates\Arkane\GameEstate.Arkane.Tests\GameEstate.Arkane.Tests.csproj", "{AAA182C8-D4E5-426C-99E6-1878AB75104F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Aurora.Test", "src\Estates\Aurora\GameEstate.Aurora.Test\GameEstate.Aurora.Test.csproj", "{1829C813-0B7B-4BF6-90E1-B14C60305E0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Aurora.Tests", "src\Estates\Aurora\GameEstate.Aurora.Tests\GameEstate.Aurora.Tests.csproj", "{1829C813-0B7B-4BF6-90E1-B14C60305E0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Cry.Test", "src\Estates\Cry\GameEstate.Cry.Test\GameEstate.Cry.Test.csproj", "{13EDAB4C-8D29-4AE6-89AA-0A43C01E1B79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Cry.Tests", "src\Estates\Cry\GameEstate.Cry.Tests\GameEstate.Cry.Tests.csproj", "{13EDAB4C-8D29-4AE6-89AA-0A43C01E1B79}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Cyanide.Test", "src\Estates\Cyanide\GameEstate.Cyanide.Test\GameEstate.Cyanide.Test.csproj", "{2887FF71-10EA-4F92-9A9F-D764FEE87ECD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Cyanide.Tests", "src\Estates\Cyanide\GameEstate.Cyanide.Tests\GameEstate.Cyanide.Tests.csproj", "{2887FF71-10EA-4F92-9A9F-D764FEE87ECD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Origin.Test", "src\Estates\Origin\GameEstate.Origin.Test\GameEstate.Origin.Test.csproj", "{02C7DEBB-3CF7-440F-A3B6-CF81AE18121D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Origin.Tests", "src\Estates\Origin\GameEstate.Origin.Tests\GameEstate.Origin.Tests.csproj", "{02C7DEBB-3CF7-440F-A3B6-CF81AE18121D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Red.Test", "src\Estates\Red\GameEstate.Red.Test\GameEstate.Red.Test.csproj", "{A385BBE9-2E0E-4B64-9453-097340C7DBA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Red.Tests", "src\Estates\Red\GameEstate.Red.Tests\GameEstate.Red.Tests.csproj", "{A385BBE9-2E0E-4B64-9453-097340C7DBA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Rsi.Test", "src\Estates\Rsi\GameEstate.Rsi.Test\GameEstate.Rsi.Test.csproj", "{102723B8-1076-441E-B4D4-7A7F7A218580}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Rsi.Tests", "src\Estates\Rsi\GameEstate.Rsi.Tests\GameEstate.Rsi.Tests.csproj", "{102723B8-1076-441E-B4D4-7A7F7A218580}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Tes.Test", "src\Estates\Tes\GameEstate.Tes.Test\GameEstate.Tes.Test.csproj", "{4902D33D-5820-4D98-B615-1B617DE9F63C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Tes.Tests", "src\Estates\Tes\GameEstate.Tes.Tests\GameEstate.Tes.Tests.csproj", "{4902D33D-5820-4D98-B615-1B617DE9F63C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Valve.Test", "src\Estates\Valve\GameEstate.Valve.Test\GameEstate.Valve.Test.csproj", "{CA9D5751-98A4-4621-9719-9C8DD8075EE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Valve.Tests", "src\Estates\Valve\GameEstate.Valve.Tests\GameEstate.Valve.Tests.csproj", "{CA9D5751-98A4-4621-9719-9C8DD8075EE9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Platform.Unreal", "src\Platforms\GameEstate.Platform.Unreal\GameEstate.Platform.Unreal.csproj", "{D41A01B3-4586-4DDB-989D-98BB202B96F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.All.Tests", "src\Estates\GameEstate.All.Tests\GameEstate.All.Tests.csproj", "{E7557448-1A46-42B9-B57C-F3491E67FF59}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.Base.Tests", "src\Estates\GameEstate.Base.Tests\GameEstate.Base.Tests.csproj", "{8721872F-F714-4E26-9991-487404D570AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -309,10 +311,6 @@ Global
 		{8CBDECFC-D1A0-4A03-BCD4-BE7F979EC9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CBDECFC-D1A0-4A03-BCD4-BE7F979EC9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CBDECFC-D1A0-4A03-BCD4-BE7F979EC9C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1BA74B6-E3E4-428E-8A8D-B666182A14A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1BA74B6-E3E4-428E-8A8D-B666182A14A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1BA74B6-E3E4-428E-8A8D-B666182A14A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1BA74B6-E3E4-428E-8A8D-B666182A14A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EE14144-83BC-4907-AB66-FA660A3CCBB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0EE14144-83BC-4907-AB66-FA660A3CCBB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EE14144-83BC-4907-AB66-FA660A3CCBB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -357,6 +355,14 @@ Global
 		{D41A01B3-4586-4DDB-989D-98BB202B96F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D41A01B3-4586-4DDB-989D-98BB202B96F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D41A01B3-4586-4DDB-989D-98BB202B96F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7557448-1A46-42B9-B57C-F3491E67FF59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7557448-1A46-42B9-B57C-F3491E67FF59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7557448-1A46-42B9-B57C-F3491E67FF59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7557448-1A46-42B9-B57C-F3491E67FF59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8721872F-F714-4E26-9991-487404D570AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8721872F-F714-4E26-9991-487404D570AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8721872F-F714-4E26-9991-487404D570AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8721872F-F714-4E26-9991-487404D570AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -401,7 +407,6 @@ Global
 		{C36DED3A-7A90-4616-B8E5-24D3DBB6F9EC} = {C3CBA0E9-0DCB-486E-B1F4-DE3EE06FF465}
 		{B55EECCE-8302-4883-B25D-FB7EF4BE8CE0} = {4EC06189-D9CE-42F3-BFA0-F70810EF617B}
 		{8CBDECFC-D1A0-4A03-BCD4-BE7F979EC9C6} = {4EC06189-D9CE-42F3-BFA0-F70810EF617B}
-		{C1BA74B6-E3E4-428E-8A8D-B666182A14A9} = {4EC06189-D9CE-42F3-BFA0-F70810EF617B}
 		{0EE14144-83BC-4907-AB66-FA660A3CCBB8} = {63EAABF5-FA58-43EA-BE1B-C5641D3996B1}
 		{63EAABF5-FA58-43EA-BE1B-C5641D3996B1} = {6D79F5D6-917D-4593-A830-3998BF865DD2}
 		{0FE16CA6-5BAC-46EF-A696-2FFD44907F7A} = {6D79F5D6-917D-4593-A830-3998BF865DD2}
@@ -423,6 +428,8 @@ Global
 		{4902D33D-5820-4D98-B615-1B617DE9F63C} = {FE2BB652-4CA0-4EC3-9861-E99605C7CBD6}
 		{CA9D5751-98A4-4621-9719-9C8DD8075EE9} = {20F92FF8-A265-443A-8D10-F113903A7ECE}
 		{D41A01B3-4586-4DDB-989D-98BB202B96F0} = {CCEBF476-093B-49D8-91AD-6675B08CD89D}
+		{E7557448-1A46-42B9-B57C-F3491E67FF59} = {6D79F5D6-917D-4593-A830-3998BF865DD2}
+		{8721872F-F714-4E26-9991-487404D570AB} = {6D79F5D6-917D-4593-A830-3998BF865DD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9F1BB93-CFBC-4E41-A865-325B22465054}

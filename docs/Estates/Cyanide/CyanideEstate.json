@@ -3,6 +3,7 @@
   "name": "Cyanide",
   "studio": "",
   "description": "Cyanide Formats",
+  "estateType": "GameEstate.Cyanide.CyanideEstate, GameEstate.Cyanide",
   "pakFileType": "GameEstate.Cyanide.CyanidePakFile, GameEstate.Cyanide",
   "games": {
     "TheCouncil": {

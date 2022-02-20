@@ -25,9 +25,9 @@ namespace GameEstate.AC.Formats.FileTypes
             Stances = new Dictionary<MotionStance, AttackHeights>();
             foreach (var maneuver in CMT)
             {
-                if (!Stances.TryGetValue(maneuver.Style, out var attackHeights)) Stances.Add(maneuver.Style, new AttackHeights());
-                if (!attackHeights.Table.TryGetValue(maneuver.AttackHeight, out var attackTypes)) attackHeights.Table.Add(maneuver.AttackHeight, new AttackTypes());
-                if (!attackTypes.Table.TryGetValue(maneuver.AttackType, out var motionCommands)) attackTypes.Table.Add(maneuver.AttackType, new List<MotionCommand>());
+                if (!Stances.TryGetValue(maneuver.Style, out var attackHeights)) Stances.Add(maneuver.Style, attackHeights = new AttackHeights());
+                if (!attackHeights.Table.TryGetValue(maneuver.AttackHeight, out var attackTypes)) attackHeights.Table.Add(maneuver.AttackHeight, attackTypes = new AttackTypes());
+                if (!attackTypes.Table.TryGetValue(maneuver.AttackType, out var motionCommands)) attackTypes.Table.Add(maneuver.AttackType, motionCommands = new List<MotionCommand>());
                 motionCommands.Add(maneuver.Motion);
             }
         }

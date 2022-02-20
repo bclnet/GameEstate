@@ -6,6 +6,7 @@
   "name": "REDengine",
   "studio": "CD Projekt Red",
   "description": "REDengine file formats including the Witcher Series",
+  "estateType": "GameEstate.Red.RedEstate, GameEstate.Red",
   "pakFileType": "GameEstate.Red.RedPakFile, GameEstate.Red",
   "games": {
     "Witcher": {

@@ -1,13 +1,14 @@
 using GameEstate.AC.Formats.Props;
 using GameEstate.Explorer;
 using GameEstate.Formats;
+using OpenStack.Graphics;
 using System.Collections.Generic;
 using System.IO;
 
 namespace GameEstate.AC.Formats.FileTypes
 {
     [PakFileType(PakFileType.Texture)]
-    public class Texture : FileType, IGetExplorerInfo
+    public class Texture : FileType, IGetExplorerInfo //, ITextureInfo
     {
         public readonly int Unknown;
         public readonly int Width;
@@ -37,10 +38,23 @@ namespace GameEstate.AC.Formats.FileTypes
             }
         }
 
+        //byte[] ITextureInfo.this[int index] { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        //IDictionary<string, object> ITextureInfo.Data => null;
+        //int ITextureInfo.Width => Width;
+        //int ITextureInfo.Height => Height;
+        //int ITextureInfo.Depth => throw new System.NotImplementedException();
+        //TextureFlags ITextureInfo.Flags => throw new System.NotImplementedException();
+        //TextureUnityFormat ITextureInfo.UnityFormat => throw new System.NotImplementedException();
+        //TextureGLFormat ITextureInfo.GLFormat => throw new System.NotImplementedException();
+        //int ITextureInfo.NumMipMaps => 1;
+        //void ITextureInfo.MoveToData() { throw new System.NotImplementedException(); }
+
         //: FileTypes.Texture
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
+                new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Text", Name = Path.GetFileName(file.Path), Value = "PICTURE" }),
+                //new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Texture", Name = "Texture", Value = this, Dispose = this }),
                 new ExplorerInfoNode($"{nameof(Texture)}: {Id:X8}", items: new List<ExplorerInfoNode> {
                     new ExplorerInfoNode($"Unknown: {Unknown}"),
                     new ExplorerInfoNode($"Width: {Width}"),

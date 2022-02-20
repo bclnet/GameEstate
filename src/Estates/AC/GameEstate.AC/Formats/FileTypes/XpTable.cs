@@ -31,17 +31,17 @@ namespace GameEstate.AC.Formats.FileTypes
         {
             Id = r.ReadUInt32();
             // The counts for each "Table" are at the top of the file.
-            var attributeCount = r.ReadInt32();
-            var vitalCount = r.ReadInt32();
-            var trainedSkillCount = r.ReadInt32();
-            var specializedSkillCount = r.ReadInt32();
-            var levelCount = r.ReadUInt32();
-            AttributeXpList = r.ReadTArray<uint>(sizeof(uint), attributeCount); //: counts are +1?
-            VitalXpList = r.ReadTArray<uint>(sizeof(uint), vitalCount); //: counts are +1?
-            TrainedSkillXpList = r.ReadTArray<uint>(sizeof(uint), trainedSkillCount); //: counts are +1?
-            SpecializedSkillXpList = r.ReadTArray<uint>(sizeof(uint), specializedSkillCount); //: counts are +1?
-            CharacterLevelXPList = r.ReadTArray<ulong>(sizeof(ulong), (int)levelCount); //: counts are +1?
-            CharacterLevelSkillCreditList = r.ReadTArray<uint>(sizeof(uint), (int)levelCount); //: counts are +1?
+            var attributeCount = r.ReadInt32() + 1;
+            var vitalCount = r.ReadInt32() + 1;
+            var trainedSkillCount = r.ReadInt32() + 1;
+            var specializedSkillCount = r.ReadInt32() + 1;
+            var levelCount = r.ReadUInt32() + 1;
+            AttributeXpList = r.ReadTArray<uint>(sizeof(uint), attributeCount);
+            VitalXpList = r.ReadTArray<uint>(sizeof(uint), vitalCount);
+            TrainedSkillXpList = r.ReadTArray<uint>(sizeof(uint), trainedSkillCount);
+            SpecializedSkillXpList = r.ReadTArray<uint>(sizeof(uint), specializedSkillCount);
+            CharacterLevelXPList = r.ReadTArray<ulong>(sizeof(ulong), (int)levelCount);
+            CharacterLevelSkillCreditList = r.ReadTArray<uint>(sizeof(uint), (int)levelCount);
         }
 
         //: FileTypes.XpTable

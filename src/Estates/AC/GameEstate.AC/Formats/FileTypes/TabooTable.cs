@@ -33,10 +33,12 @@ namespace GameEstate.AC.Formats.FileTypes
         List<ExplorerInfoNode> IGetExplorerInfo.GetInfoNodes(ExplorerManager resource, FileMetadata file, object tag)
         {
             var nodes = new List<ExplorerInfoNode> {
-                new ExplorerInfoNode($"{nameof(TabooTable)}: {Id:X8}", items: TabooTableEntries.OrderBy(i => i.Key).Select(
-                    x => new ExplorerInfoNode($"{x.Key:X8}", items: x.Value.BannedPatterns.Select(y => new ExplorerInfoNode($"{y}")))
-                ))
+                //new ExplorerInfoNode($"{nameof(TabooTable)}: {Id:X8}", items: TabooTableEntries.OrderBy(i => i.Key).Select(
+                //    x => new ExplorerInfoNode($"{x.Key:X8}", items: x.Value.BannedPatterns.Select(y => new ExplorerInfoNode($"{y}")))
+                //))
             };
+            foreach (var x in TabooTableEntries.OrderBy(i => i.Key))
+                nodes.Add(new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Text", Name = $"F:{x.Key:X8}", Value = string.Join(", ", x.Value.BannedPatterns) }));
             return nodes;
         }
 

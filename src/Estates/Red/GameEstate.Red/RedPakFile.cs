@@ -7,7 +7,7 @@ namespace GameEstate.Red
     /// <summary>
     /// RedPakFile
     /// </summary>
-    /// <seealso cref="GameEstate.Core.BinaryPakFile" />
+    /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class RedPakFile : BinaryPakManyFile
     {
         /// <summary>
