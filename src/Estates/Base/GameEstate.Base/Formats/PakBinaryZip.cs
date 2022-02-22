@@ -79,6 +79,7 @@ namespace GameEstate.Formats
                 if (!input.CanRead) { Log($"Unable to read stream for file: {file.Path}"); exception?.Invoke(file, $"Unable to read stream for file: {file.Path}"); return Task.FromResult(System.IO.Stream.Null); }
                 var s = new MemoryStream();
                 input.CopyTo(s);
+                s.Position = 0;
                 return Task.FromResult((Stream)s);
             }
             catch (Exception e) { Log($"{file.Path} - Exception: {e.Message}"); exception?.Invoke(file, $"{file.Path} - Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }

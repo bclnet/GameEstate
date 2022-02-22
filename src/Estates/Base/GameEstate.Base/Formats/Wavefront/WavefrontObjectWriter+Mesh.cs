@@ -20,10 +20,10 @@ namespace GameEstate.Formats.Wavefront
                 w.WriteLine("g {0}", GroupOverride ?? mesh.Name);
 
                 // WRITE VERTICES OUT (V, VT)
-                if (mesh.Vertices == null)
+                if (mesh.Vertexs == null)
                 {
                     // Probably using VertsUVs (3.7+).  Write those vertices out. Do UVs at same time.
-                    for (var j = subset.FirstVertex; j < subset.NumVertices + subset.FirstVertex; j++)
+                    for (var j = subset.FirstVertex; j < subset.NumVertexs + subset.FirstVertex; j++)
                     {
                         // Let's try this using this node chunk's rotation matrix, and the transform is the sum of all the transforms.
                         // Get the transform.
@@ -32,28 +32,28 @@ namespace GameEstate.Formats.Wavefront
                         var multiplerY = Math.Abs(mesh.MinBound.Y - mesh.MaxBound.Y) / 2f; if (multiplerY < 1) multiplerY = 1;
                         var multiplerZ = Math.Abs(mesh.MinBound.Z - mesh.MaxBound.Z) / 2f; if (multiplerZ < 1) multiplerZ = 1;
 
-                        mesh.Vertices[j].X = mesh.Vertices[j].X * multiplerX + (mesh.MaxBound.X + mesh.MinBound.X) / 2f;
-                        mesh.Vertices[j].Y = mesh.Vertices[j].Y * multiplerY + (mesh.MaxBound.Y + mesh.MinBound.Y) / 2f;
-                        mesh.Vertices[j].Z = mesh.Vertices[j].Z * multiplerZ + (mesh.MaxBound.Z + mesh.MinBound.Z) / 2f;
-                        var vertex = mesh.GetTransform(mesh.Vertices[j]);
+                        mesh.Vertexs[j].X = mesh.Vertexs[j].X * multiplerX + (mesh.MaxBound.X + mesh.MinBound.X) / 2f;
+                        mesh.Vertexs[j].Y = mesh.Vertexs[j].Y * multiplerY + (mesh.MaxBound.Y + mesh.MinBound.Y) / 2f;
+                        mesh.Vertexs[j].Z = mesh.Vertexs[j].Z * multiplerZ + (mesh.MaxBound.Z + mesh.MinBound.Z) / 2f;
+                        var vertex = mesh.GetTransform(mesh.Vertexs[j]);
                         w.WriteLine($"v {MathX.Safe(vertex.X):F7} {MathX.Safe(vertex.Y):F7} {MathX.Safe(vertex.Z):F7}");
                     }
                     w.WriteLine();
-                    for (var j = subset.FirstVertex; j < subset.NumVertices + subset.FirstVertex; j++)
+                    for (var j = subset.FirstVertex; j < subset.NumVertexs + subset.FirstVertex; j++)
                         w.WriteLine($"vt {MathX.Safe(mesh.UVs[j].X):F7} {MathX.Safe(1 - mesh.UVs[j].Y):F7} 0");
                 }
                 else
                 {
-                    for (var j = subset.FirstVertex; j < subset.NumVertices + subset.FirstVertex; j++)
-                        if (mesh.Vertices != null)
+                    for (var j = subset.FirstVertex; j < subset.NumVertexs + subset.FirstVertex; j++)
+                        if (mesh.Vertexs != null)
                         {
                             // Rotate/translate the vertex
-                            var vertex = mesh.GetTransform(mesh.Vertices[j]);
+                            var vertex = mesh.GetTransform(mesh.Vertexs[j]);
                             w.WriteLine($"v {MathX.Safe(vertex.X):F7} {MathX.Safe(vertex.Y):F7} {MathX.Safe(vertex.Z):F7}");
                         }
                         else Log($"Error rendering vertices for {mesh.Name:X}");
                     w.WriteLine();
-                    for (var j = subset.FirstVertex; j < subset.NumVertices + subset.FirstVertex; j++)
+                    for (var j = subset.FirstVertex; j < subset.NumVertexs + subset.FirstVertex; j++)
                         w.WriteLine($"vt {MathX.Safe(mesh.UVs[j].X):F7} {MathX.Safe(1 - mesh.UVs[j].Y):F7} 0");
                 }
 
@@ -61,7 +61,7 @@ namespace GameEstate.Formats.Wavefront
 
                 // WRITE NORMALS BLOCK (VN)
                 if (mesh.Normals != null)
-                    for (var j = subset.FirstVertex; j < subset.NumVertices + subset.FirstVertex; j++)
+                    for (var j = subset.FirstVertex; j < subset.NumVertexs + subset.FirstVertex; j++)
                         w.WriteLine($"vn {mesh.Normals[j].X:F7} {mesh.Normals[j].Y:F7} {mesh.Normals[j].Z:F7}");
 
                 // WRITE GROUP (G)
@@ -80,14 +80,14 @@ namespace GameEstate.Formats.Wavefront
                 }
 
                 // Now write out the faces info based on the MtlName
-                for (var j = subset.FirstIndex; j < subset.NumIndices + subset.FirstIndex; j += 3)
+                for (var j = subset.FirstIndex; j < subset.NumIndexes + subset.FirstIndex; j += 3)
                     w.WriteLine("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}", // Vertices, UVs, Normals
-                        mesh.Indices[j] + 1 + CurrentVertexPosition,
-                        mesh.Indices[j + 1] + 1 + CurrentVertexPosition,
-                        mesh.Indices[j + 2] + 1 + CurrentVertexPosition);
+                        mesh.Indexs[j] + 1 + CurrentVertexPosition,
+                        mesh.Indexs[j + 1] + 1 + CurrentVertexPosition,
+                        mesh.Indexs[j + 2] + 1 + CurrentVertexPosition);
 
-                tempVertexPosition += subset.NumVertices;  // add the number of vertices so future objects can start at the right place
-                tempIndicesPosition += subset.NumIndices;  // Not really used...
+                tempVertexPosition += subset.NumVertexs;  // add the number of vertices so future objects can start at the right place
+                tempIndicesPosition += subset.NumIndexes;  // Not really used...
             }
 
             // Extend the current vertex, uv and normal positions by the length of those arrays.

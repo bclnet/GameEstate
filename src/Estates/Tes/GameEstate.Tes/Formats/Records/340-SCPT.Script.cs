@@ -36,16 +36,16 @@ namespace GameEstate.Tes.Formats.Records
                 {
                     Index = r.ReadByte();
                     Type = r.ReadByte();
-                    FunctionId = r.ReadString(2);
+                    FunctionId = r.ReadStringAsChars(2);
                     CompareOp = (byte)(r.ReadByte() << 1);
-                    Name = r.ReadString(dataSize - 5);
+                    Name = r.ReadStringAsChars(dataSize - 5);
                     ComparisonValue = Parameter1 = Parameter2 = 0;
                     return;
                 }
                 CompareOp = r.ReadByte();
                 r.Skip(3); // Unused
                 ComparisonValue = r.ReadSingle();
-                FunctionId = r.ReadString(4);
+                FunctionId = r.ReadStringAsChars(4);
                 Parameter1 = r.ReadInt32();
                 Parameter2 = r.ReadInt32();
                 if (dataSize != 24)

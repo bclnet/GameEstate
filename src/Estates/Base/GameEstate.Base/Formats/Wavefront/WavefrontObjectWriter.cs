@@ -1,12 +1,14 @@
 ﻿using GameEstate.Formats.Generic;
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats.Wavefront
 {
+    /// <summary>
+    /// export to .obj/.mat format (WAVEFRONT)
+    /// </summary>
+    /// <seealso cref="Generic.GenericObjectWriter" />
     public partial class WavefrontObjectWriter : GenericObjectWriter
     {
         public WavefrontObjectWriter(IGenericFile file) : base(file) { }

@@ -12,6 +12,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Formats\Collada\ColladaObjectWriter+OutputTest.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+ValidateXml.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+Create.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetScene.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryImages.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryMaterials.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryEffects.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryControllers.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryVisualScenes.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryGeometries.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryVisualScenesWithSkeleton.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter+SetAsset.cs" />
+    <Compile Include="Formats\Collada\ColladaObjectWriter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="..\..\..\..\lib\Native\x64\oo2ext_7_win64.dll" Link="oo2ext_7_win64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

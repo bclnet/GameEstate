@@ -15,12 +15,12 @@ namespace GameEstate.Rsi.Formats
         // object factory
         internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source)
         {
-            Task<object> DdsFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
-            {
-                var tex = new TextureInfo();
-                tex.ReadDds(r);
-                return Task.FromResult((object)tex);
-            }
+            //Task<object> DdsFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
+            //{
+            //    var tex = new TextureInfo();
+            //    tex.ReadDds(r);
+            //    return Task.FromResult((object)tex);
+            //}
             Task<object> DatabaseFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
             {
                 var file = new DatabaseFile();
@@ -29,8 +29,9 @@ namespace GameEstate.Rsi.Formats
             }
             return Path.GetExtension(source.Path).ToLowerInvariant() switch
             {
-                //".dds" => BinaryDds.Factory,
-                ".dds" => DdsFactory,
+                var x when x == ".cfg" || x == ".txt" || x == ".xml" => BinaryText.Factory,
+                ".dds" => BinaryDds.Factory,
+                //".dds" => DdsFactory,
                 ".dcb" => DatabaseFactory,
                 var x when x == ".soc" || x == ".cgf" || x == ".cga" || x == ".chr" || x == ".skin" || x == ".anim" => CryFile.Factory,
                 _ => null,

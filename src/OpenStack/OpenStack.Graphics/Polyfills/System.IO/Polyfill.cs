@@ -128,8 +128,8 @@ namespace System.IO
 
         #region String
 
-        public static string ReadString(this BinaryReader source, int length) => new string(source.ReadChars(length));
-        //public static string ReadString(this BinaryReader source, int length, Encoding encoding = null) => (encoding ?? Encoding.ASCII).GetString(source.ReadBytes(length)); //: collision maybe
+        public static string ReadStringAsChars(this BinaryReader source, int length) => new string(source.ReadChars(length));
+        public static string ReadStringAsBytes(this BinaryReader source, int length, Encoding encoding = null) => (encoding ?? Encoding.Default).GetString(source.ReadBytes(length));
         public static string ReadZString(this BinaryReader source, char endChar = '\0', StringBuilder builder = null)
         {
             var b = builder ?? new StringBuilder();

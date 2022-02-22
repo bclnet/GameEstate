@@ -1,5 +1,4 @@
 using GameEstate.Explorer;
-using GameEstate.Formats;
 using OpenStack.Graphics;
 using OpenStack.Graphics.DirectX;
 using System;
@@ -11,9 +10,19 @@ namespace GameEstate.Formats
 {
     public class BinaryDds : ITextureInfo, IGetExplorerInfo
     {
-        public BinaryDds() { }
-        public BinaryDds(BinaryReader r) => Read(r);
         public static Task<object> Factory(BinaryReader r, FileMetadata f, EstatePakFile s) => Task.FromResult((object)new BinaryDds(r));
+
+        public BinaryDds() { }
+        public BinaryDds(BinaryReader r)
+        {
+            var magic = r.ReadUInt32();
+            if (magic != DDS_HEADER.Literal.DDS_) throw new FormatException($"Invalid DDS file magic: \"{magic}\".");
+            Header = r.ReadT<DDS_HEADER>(DDS_HEADER.SizeOf);
+            HeaderDXT10 = Header.ddspf.dwFourCC == DDS_HEADER.Literal.DX10
+                ? (DDS_HEADER_DXT10?)r.ReadT<DDS_HEADER_DXT10>(DDS_HEADER_DXT10.SizeOf)
+                : null;
+            Header.Verify();
+        }
 
         public DDS_HEADER Header;
         public DDS_HEADER_DXT10? HeaderDXT10;
@@ -41,16 +50,5 @@ namespace GameEstate.Formats
                 new ExplorerInfoNode($"Mipmaps: {Header.dwMipMapCount}"),
             }),
         };
-
-        public unsafe void Read(BinaryReader r)
-        {
-            var magic = r.ReadUInt32();
-            if (magic != DDS_HEADER.Literal.DDS_) throw new FormatException($"Invalid DDS file magic: \"{magic}\".");
-            Header = r.ReadT<DDS_HEADER>(DDS_HEADER.SizeOf);
-            HeaderDXT10 = Header.ddspf.dwFourCC == DDS_HEADER.Literal.DX10
-                ? (DDS_HEADER_DXT10?)r.ReadT<DDS_HEADER_DXT10>(DDS_HEADER_DXT10.SizeOf)
-                : null;
-            Header.Verify();
-        }
     }
 }

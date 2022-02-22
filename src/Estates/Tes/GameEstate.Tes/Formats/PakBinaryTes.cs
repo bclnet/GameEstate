@@ -306,7 +306,7 @@ namespace GameEstate.Tes.Formats
                 multiSource.Files = files = new FileMetadata[header.FileCount];
                 for (var i = 0; i < header.FolderCount; i++)
                 {
-                    var folder_name = r.ReadString(r.ReadByte() - 1).Replace('\\', '/'); r.Skip(1);
+                    var folder_name = r.ReadStringAsChars(r.ReadByte() - 1).Replace('\\', '/'); r.Skip(1);
                     var headerFiles = r.ReadTArray<OB_HeaderFile>(sizeof(OB_HeaderFile), (int)foldersFiles[i]);
                     foreach (var headerFile in headerFiles)
                     {

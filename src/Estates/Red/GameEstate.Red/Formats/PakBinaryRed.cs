@@ -453,7 +453,7 @@ namespace GameEstate.Red.Formats
 
                         // parts
                         r.Position(header.FilesOffset);
-                        var headerFiles = r.ReadTArray<KEY_HeaderFile>(sizeof(KEY_HeaderFile), (int)header.NumFiles).Select(x => { r.Position(x.FileNameOffset); return (file: x, path: r.ReadString((int)x.FileNameSize)); }).ToArray();
+                        var headerFiles = r.ReadTArray<KEY_HeaderFile>(sizeof(KEY_HeaderFile), (int)header.NumFiles).Select(x => { r.Position(x.FileNameOffset); return (file: x, path: r.ReadStringAsChars((int)x.FileNameSize)); }).ToArray();
                         r.Position(header.KeysOffset);
                         var headerKeys = r.ReadTArray<KEY_HeaderKey>(sizeof(KEY_HeaderKey), (int)header.NumKeys).ToDictionary(x => (x.Id, x.ResourceId), x => UnsafeX.ReadZASCII(x.Name, 0x10));
 
@@ -658,7 +658,7 @@ namespace GameEstate.Red.Formats
                                 ? r.ReadT<CACHE_CS3W_Header>(sizeof(CACHE_CS3W_Header))
                                 : r.ReadT<CACHE_CS3W_HeaderV1>(sizeof(CACHE_CS3W_HeaderV1)).ToHeader();
                             r.Position((long)header.NameOffset);
-                            var name = r.ReadString((int)header.NameSize);
+                            var name = r.ReadStringAsChars((int)header.NameSize);
                         }
                         else
                         {
