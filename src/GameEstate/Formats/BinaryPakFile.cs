@@ -67,7 +67,7 @@ namespace GameEstate.Formats
             if (UseBinaryReader) GetBinaryReader()?.Action(async r => await ReadAsync(r, PakBinary.ReadStage.File));
             else ReadAsync(null, PakBinary.ReadStage.File).GetAwaiter().GetResult();
             Process();
-            EstateDebug.Log($"Opening: {Name} @ {watch.ElapsedMilliseconds}ms");
+            Log($"Opening: {Name} @ {watch.ElapsedMilliseconds}ms");
             watch.Stop();
         }
 

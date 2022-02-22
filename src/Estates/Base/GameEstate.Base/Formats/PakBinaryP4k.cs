@@ -2,25 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
 {
     /// <summary>
-    /// AbstractPakBinaryZip
+    /// PakBinaryP4k
     /// </summary>
-    /// <seealso cref="GameEstate.Formats._Packages.PakBinary" />
-    public abstract class AbstractPakBinaryZip : PakBinary
+    /// <seealso cref="GameEstate.Formats.PakBinary" />
+    public class PakBinaryP4k : PakBinary
     {
-        static readonly PropertyInfo ZipFile_KeyInfo = typeof(ZipFile).GetProperty("Key", BindingFlags.NonPublic | BindingFlags.Instance);
-
-        public AbstractPakBinaryZip(byte[] key = null) => Key = key;
-
         readonly byte[] Key;
+        readonly Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> GetObjectFactory;
 
-        protected abstract Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(FileMetadata source);
+        public PakBinaryP4k(byte[] key = null, Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> getObjectFactory = null)
+        {
+            Key = key;
+            GetObjectFactory = getObjectFactory;
+        }
 
         public override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -29,8 +29,7 @@ namespace GameEstate.Formats
 
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
-            var pak = (ZipFile)(source.Tag = new ZipFile(r.BaseStream)); // { Key = Key });
-            ZipFile_KeyInfo.SetValue(pak, Key);
+            var pak = (P4kFile)(source.Tag = new P4kFile(r.BaseStream) { Key = Key });
             foreach (ZipEntry entry in pak)
             {
                 var metadata = new FileMetadata
@@ -53,8 +52,7 @@ namespace GameEstate.Formats
 
             source.UseBinaryReader = false;
             var files = multiSource.Files;
-            var pak = (ZipFile)(source.Tag = new ZipFile(w.BaseStream));
-            pak.KeysRequired += (sender, e) => e.Key = Key;
+            var pak = (P4kFile)(source.Tag = new P4kFile(w.BaseStream) { Key = Key });
             pak.BeginUpdate();
             foreach (var file in files)
             {
@@ -68,7 +66,7 @@ namespace GameEstate.Formats
 
         public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
         {
-            var pak = (ZipFile)source.Tag;
+            var pak = (P4kFile)source.Tag;
             var entry = (ZipEntry)file.Tag;
             try
             {
@@ -83,7 +81,7 @@ namespace GameEstate.Formats
 
         public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception = null)
         {
-            var pak = (ZipFile)source.Tag;
+            var pak = (P4kFile)source.Tag;
             var entry = (ZipEntry)file.Tag;
             try
             {

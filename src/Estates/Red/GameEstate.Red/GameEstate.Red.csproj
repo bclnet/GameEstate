@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Base\GameEstate.Base\GameEstate.Base.csproj" />
     <ProjectReference Include="..\..\Aurora\GameEstate.Aurora\GameEstate.Aurora.csproj" />
     <ProjectReference Include="..\GameEstate.Red.Resource\GameEstate.Red.Resource.csproj" />
-    <ProjectReference Include="..\..\GameEstate.Base\GameEstate.Base.csproj" />
   </ItemGroup>
 
 </Project>

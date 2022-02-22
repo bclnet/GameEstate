@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\..\lib\Native\x64\oo2ext_7_win64.dll" Link="oo2ext_7_win64.dll">
+    <Content Include="..\..\..\..\lib\Native\x64\oo2ext_7_win64.dll" Link="oo2ext_7_win64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -20,7 +20,11 @@
   <ItemGroup>
     <PackageReference Include="K4os.Compression.LZ4" Version="1.2.16" />
     <PackageReference Include="SharpZipLib" Version="1.3.3" />
-    <ProjectReference Include="..\..\GameEstate\GameEstate.csproj" />
+    <PackageReference Include="ZstdNet" Version="1.4.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\GameEstate\GameEstate.csproj" />
   </ItemGroup>
 
 </Project>
