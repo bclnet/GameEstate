@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         /// <summary>
         /// Adds the Library_Materials element to the Collada document.

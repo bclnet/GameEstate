@@ -1,4 +1,4 @@
-﻿using GameEstate.Formats.Generic;
+﻿using GameEstate.Formats.Unknown;
 using grendgine_collada;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         /// <summary>
         /// Adds the Library_Effects element to the Collada document.
@@ -33,7 +33,7 @@ namespace GameEstate.Formats.Collada
                             {
                                 Type = "2D",
                                 //Init_From = new Grendgine_Collada_Init_From { Uri = CleanName(texture.File) },
-                                Init_From = new Grendgine_Collada_Init_From { Uri = $"{material.Name}_{texture.Map}" },
+                                Init_From = new Grendgine_Collada_Init_From { Uri = $"{material.Name}_{texture.Maps}" },
                             },
                         });
                         // Add the Sampler node
@@ -79,29 +79,29 @@ namespace GameEstate.Formats.Collada
                     foreach (var texture in material.Textures)
                     {
                         //Console.WriteLine("Processing material texture {0}", CleanName(texture.File));
-                        if (texture.Map == TextureMap.Diffuse)
+                        if ((texture.Maps & IUnknownTexture.Map.Diffuse) != 0)
                         {
                             hasDiffuse = true;
                             // Texcoord is the ID of the UV source in geometries.  Not needed.
                             phong.Diffuse.Texture = new Grendgine_Collada_Texture { Texture = $"{CleanMtlFileName(texture.Path)}-sampler", TexCoord = string.Empty };
                         }
-                        if (texture.Map == TextureMap.Specular)
+                        if ((texture.Maps & IUnknownTexture.Map.Specular) != 0)
                         {
                             hasSpecular = true;
                             phong.Specular.Texture = new Grendgine_Collada_Texture { Texture = $"{CleanMtlFileName(texture.Path)}-sampler", TexCoord = string.Empty };
                         }
-                        if (texture.Map == TextureMap.Bumpmap)
+                        if ((texture.Maps & IUnknownTexture.Map.Bumpmap) != 0)
                             technique.Extra = new[] { new Grendgine_Collada_Extra
-                        {
-                            Technique = new[] { new Grendgine_Collada_Technique
                             {
-                                profile = "FCOLLADA",
-                                Data = new XmlElement[] { new Grendgine_Collada_BumpMap
+                                Technique = new[] { new Grendgine_Collada_Technique
                                 {
-                                    Textures = new[] { new Grendgine_Collada_Texture { Texture = $"{CleanMtlFileName(texture.Path)}-sampler" } }
+                                    profile = "FCOLLADA",
+                                    Data = new XmlElement[] { new Grendgine_Collada_BumpMap
+                                    {
+                                        Textures = new[] { new Grendgine_Collada_Texture { Texture = $"{CleanMtlFileName(texture.Path)}-sampler" } }
+                                    }}
                                 }}
-                            }}
-                        } };
+                            }};
                     }
                     if (!hasDiffuse) phong.Diffuse.Color = new Grendgine_Collada_Color { sID = "diffuse", Value_As_String = $"{material.Diffuse}".Replace(",", " ") };
                     if (!hasSpecular) phong.Specular.Color = new Grendgine_Collada_Color { sID = "specular", Value_As_String = $"{material.Diffuse ?? Vector3.One}".Replace(",", " ") };

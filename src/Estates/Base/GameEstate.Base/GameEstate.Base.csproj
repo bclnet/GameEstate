@@ -12,19 +12,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Formats\Collada\ColladaObjectWriter+OutputTest.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+ValidateXml.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+Create.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetScene.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryImages.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryMaterials.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryEffects.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryControllers.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryVisualScenes.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryGeometries.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetLibraryVisualScenesWithSkeleton.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter+SetAsset.cs" />
-    <Compile Include="Formats\Collada\ColladaObjectWriter.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+OutputTest.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+ValidateXml.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+CreateNode.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetScene.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryImages.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryMaterials.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryEffects.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryControllers.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryVisualScenes.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryGeometries.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetLibraryVisualScenesWithSkeleton.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter+SetAsset.cs" />
+    <Compile Include="Formats\Collada\ColladaFileWriter.cs" />
   </ItemGroup>
 
   <ItemGroup>

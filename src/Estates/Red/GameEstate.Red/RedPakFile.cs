@@ -17,7 +17,8 @@ namespace GameEstate.Red
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public RedPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryRed.Instance, tag)
+        public RedPakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, PakBinaryRed.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();

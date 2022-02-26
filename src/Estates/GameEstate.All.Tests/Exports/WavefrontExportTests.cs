@@ -1,3 +1,5 @@
+using GameEstate.Formats.Unknown;
+using GameEstate.Formats.Wavefront;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
 
@@ -17,13 +19,11 @@ namespace GameEstate.Exports
 
         public async Task ExportFileObjectAsync(EstatePakFile source, string sampleFile)
         {
+            var unknownSource = Helper.Paks["Unknown"].Value;
             Assert.IsTrue(source.Contains(sampleFile));
-            var file = await source.LoadFileObjectAsync<object>(sampleFile);
-
-            //var cryFile = new CryFile(Path.Combine(AssetRoot, path));
-            //cryFile.LoadFromFile();
-            //var objFile = new WavefrontObjectWriter(cryFile);
-            //objFile.Write(@"C:\T_\Models", false);
+            var file = await source.LoadFileObjectAsync<IUnknownFileModel>(sampleFile, unknownSource);
+            var objFile = new WavefrontFileWriter(file);
+            objFile.Write(@"C:\T_\Models", false);
         }
     }
 }

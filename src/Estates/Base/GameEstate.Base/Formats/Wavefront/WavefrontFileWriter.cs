@@ -1,4 +1,4 @@
-﻿using GameEstate.Formats.Generic;
+﻿using GameEstate.Formats.Unknown;
 using System;
 using System.IO;
 using System.Reflection;
@@ -8,10 +8,10 @@ namespace GameEstate.Formats.Wavefront
     /// <summary>
     /// export to .obj/.mat format (WAVEFRONT)
     /// </summary>
-    /// <seealso cref="Generic.GenericObjectWriter" />
-    public partial class WavefrontObjectWriter : GenericObjectWriter
+    /// <seealso cref="UnknownFileModelWriter" />
+    public partial class WavefrontFileWriter : UnknownFileModelWriter
     {
-        public WavefrontObjectWriter(IGenericFile file) : base(file) { }
+        public WavefrontFileWriter(IUnknownFileModel file) : base(file) { }
 
         public FileInfo ModelFile { get; internal set; }
         public FileInfo MaterialFile { get; internal set; }
@@ -77,9 +77,5 @@ namespace GameEstate.Formats.Wavefront
             // If this has proxies, just write out the hitbox info. OBJ files can't do armatures.
             if (File.Proxies != null) WriteHitbox(w, File.Proxies);
         }
-
-        //public double safe(double value) => value == double.NegativeInfinity
-        //    ? double.MinValue
-        //    : value == double.PositiveInfinity ? double.MaxValue : value == double.NaN ? 0 : value;
     }
 }

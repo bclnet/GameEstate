@@ -17,7 +17,8 @@ namespace GameEstate.Cyanide
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public CyanidePakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryCyanide.Instance, tag)
+        public CyanidePakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, PakBinaryCyanide.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();

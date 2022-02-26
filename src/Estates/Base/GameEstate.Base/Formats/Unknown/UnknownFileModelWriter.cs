@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace GameEstate.Formats.Generic
+namespace GameEstate.Formats.Unknown
 {
-    public abstract class GenericObjectWriter
+    public abstract class UnknownFileModelWriter
     {
         // ARGS
         public DirectoryInfo DataDir = null;
@@ -13,9 +13,9 @@ namespace GameEstate.Formats.Generic
         public const bool GroupMeshes = true;
         public const bool Smooth = true;
 
-        public IGenericFile File { get; internal set; }
+        public IUnknownFileModel File { get; internal set; }
 
-        public GenericObjectWriter(IGenericFile file) => File = file;
+        public UnknownFileModelWriter(IUnknownFileModel file) => File = file;
 
         public abstract void Write(string outputDir = null, bool preservePath = true);
 

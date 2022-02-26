@@ -57,6 +57,7 @@ namespace GameEstate
         /// <returns></returns>
         public virtual Estate.Resource ParseResource(Estate estate, Uri uri)
         {
+            if (uri == null) return new Estate.Resource { Game = string.Empty };
             var fragment = uri.Fragment?[(uri.Fragment.Length != 0 ? 1 : 0)..];
             var game = estate.GetGame(fragment);
             var r = new Estate.Resource { Game = game.id };

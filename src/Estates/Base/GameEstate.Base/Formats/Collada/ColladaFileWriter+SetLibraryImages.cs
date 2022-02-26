@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         /// <summary>
         /// Adds the Library_Images element to the Collada document.
@@ -31,8 +31,8 @@ namespace GameEstate.Formats.Collada
                     // For each texture in the material, we make a new <image> object and add it to the list. 
                     return new Grendgine_Collada_Image
                     {
-                        ID = $"{material.Name}_{texture.Map}",
-                        Name = $"{material.Name}_{texture.Map}",
+                        ID = $"{material.Name}_{texture.Maps}",
+                        Name = $"{material.Name}_{texture.Maps}",
                         // if 1.4.1, use URI, else use Ref
                         Init_From = new Grendgine_Collada_Init_From
                         {

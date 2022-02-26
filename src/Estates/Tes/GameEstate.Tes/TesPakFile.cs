@@ -20,7 +20,8 @@ namespace GameEstate.Tes
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public TesPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, Path.GetExtension(filePath) != ".esm" ? PakBinaryTes.Instance : PakBinaryTesEsm.Instance, tag)
+        public TesPakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, Path.GetExtension(filePath) != ".esm" ? PakBinaryTes.Instance : PakBinaryTesEsm.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             PathFinders.Add(typeof(ITextureInfo), FindTexture);

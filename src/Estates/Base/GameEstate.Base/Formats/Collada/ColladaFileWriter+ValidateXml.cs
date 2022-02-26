@@ -6,7 +6,7 @@ using System.Xml.Schema;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         void ValidateXml()  // For testing
         {

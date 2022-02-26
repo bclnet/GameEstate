@@ -1,25 +1,9 @@
-﻿using GameEstate.Formats.Generic;
-using grendgine_collada;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using static GameEstate.EstateDebug;
-
-namespace GameEstate.Formats.Collada
+﻿namespace GameEstate.Formats.Collada
 {
-    /// <summary>
-    /// export to .dae format (COLLADA)
-    /// </summary>
-    /// <seealso cref="Generic.GenericObjectWriter" />
-    public partial class ColladaObjectWriter : GenericObjectWriter
+    partial class ColladaFileWriter
     {
+
+#if false
         Grendgine_Collada_Node CreateNode(ChunkNode nodeChunk)
         {
             // This will be used recursively to create a node object and return it to WriteLibrary_VisualScenes
@@ -202,5 +186,8 @@ namespace GameEstate.Formats.Collada
             ID = nodeChunk.Name + "-mesh-pos",
             Name = nodeChunk.Name + "-pos"
         };
+
+#endif
+
     }
 }

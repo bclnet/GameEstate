@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         /// <summary>
         /// Adds the Library_Visual_Scene element to the Collada document.
@@ -16,9 +16,9 @@ namespace GameEstate.Formats.Collada
             // There can be multiple visual scenes.  Will just have one (World) for now.  All node chunks go under Nodes for that visual scene
             var nodes = new List<Grendgine_Collada_Node>();
 
-            // Check to see if there is a CompiledBones chunk.  If so, add a Node.  
-            if (File.Chunks.Any(a => a.ChunkType == ChunkTypeEnum.CompiledBones || a.ChunkType == ChunkTypeEnum.CompiledBonesSC))
-                nodes.Add(CreateJointNode(File.Bones.RootBone));
+            //// Check to see if there is a CompiledBones chunk.  If so, add a Node.  
+            //if (File.Chunks.Any(a => a.ChunkType == ChunkTypeEnum.CompiledBones || a.ChunkType == ChunkTypeEnum.CompiledBonesSC))
+            //    nodes.Add(CreateJointNode(File.Bones.RootBone));
 
             // Geometry visual Scene.
             var firstModel = File.Models.First();

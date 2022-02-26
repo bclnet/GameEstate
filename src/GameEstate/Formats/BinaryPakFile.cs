@@ -40,7 +40,8 @@ namespace GameEstate.Formats
         /// <param name="pakBinary">The pak binary.</param>
         /// <param name="tag">The tag.</param>
         /// <exception cref="ArgumentNullException">pakBinary</exception>
-        public BinaryPakFile(Estate estate, string game, string filePath, PakBinary pakBinary, object tag = null) : base(estate, game, !string.IsNullOrEmpty(Path.GetFileName(filePath)) ? Path.GetFileName(filePath) : Path.GetFileName(Path.GetDirectoryName(filePath)))
+        public BinaryPakFile(Estate estate, string game, string filePath, PakBinary pakBinary, object tag = null)
+            : base(estate, game, !string.IsNullOrEmpty(Path.GetFileName(filePath)) ? Path.GetFileName(filePath) : Path.GetFileName(Path.GetDirectoryName(filePath)))
         {
             FilePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
             PakBinary = pakBinary ?? throw new ArgumentNullException(nameof(pakBinary));

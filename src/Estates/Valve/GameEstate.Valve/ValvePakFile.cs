@@ -19,7 +19,8 @@ namespace GameEstate.Valve
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public ValvePakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryValve.Instance, tag)
+        public ValvePakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, PakBinaryValve.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             PathFinders.Add(typeof(object), FindBinary);

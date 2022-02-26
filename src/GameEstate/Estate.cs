@@ -250,5 +250,13 @@ namespace GameEstate
             => OpenPakFile(FileManager.ParseResource(this, uri));
 
         #endregion
+
+        //#region Transform
+
+        //public TResult TransformFileObject<TFile, TResult>(TFile source, string srcGame, Estate dstEstate, string dstGame)
+        //{
+        //    return default;
+        //}
+        //#endregion
     }
 }

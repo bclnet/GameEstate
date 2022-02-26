@@ -1,4 +1,4 @@
-﻿using GameEstate.Formats.Generic;
+﻿using GameEstate.Formats.Unknown;
 using System;
 using System.IO;
 using System.Linq;
@@ -6,9 +6,9 @@ using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats.Wavefront
 {
-    partial class WavefrontObjectWriter
+    partial class WavefrontFileWriter
     {
-        void WriteMesh(StreamWriter w, IGenericMesh mesh) // Pass a node to this to have it write to the Stream
+        void WriteMesh(StreamWriter w, IUnknownMesh mesh) // Pass a node to this to have it write to the Stream
         {
             w.WriteLine("o {0}", mesh.Name);
 

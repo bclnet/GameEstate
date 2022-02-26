@@ -20,7 +20,8 @@ namespace GameEstate.AC
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public ACPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryAC.Instance, tag)
+        public ACPakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, PakBinaryAC.Instance, tag)
         {
             Options = PakManyOptions.FilesById;
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;

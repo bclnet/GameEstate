@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         /// <summary>
         /// Adds the Asset element to the Collada document.

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         /// <summary>
         /// Adds the Library_Controllers element to the Collada document.
@@ -24,15 +24,10 @@ namespace GameEstate.Formats.Collada
             sources.Add(new Grendgine_Collada_Source
             {
                 ID = "Controller-joints",
-                Name_Array = new Grendgine_Collada_Name_Array() { ID = "Controller-joints-array", Count = compiledBones.Count, Value_Pre_Parse = boneNames.ToString().TrimEnd() },
+                Name_Array = new Grendgine_Collada_Name_Array { ID = "Controller-joints-array", Count = compiledBones.Count, Value_Pre_Parse = boneNames.ToString().TrimEnd() },
                 Technique_Common = new Grendgine_Collada_Technique_Common_Source
                 {
-                    Accessor = new Grendgine_Collada_Accessor
-                    {
-                        Source = "#Controller-joints-array",
-                        Count = (uint)compiledBones.Count,
-                        Stride = 1
-                    }
+                    Accessor = new Grendgine_Collada_Accessor { Source = "#Controller-joints-array", Count = (uint)compiledBones.Count, Stride = 1 }
                 }
             });
 
@@ -43,13 +38,7 @@ namespace GameEstate.Formats.Collada
                 Float_Array = new Grendgine_Collada_Float_Array { ID = "Controller-bind_poses-array", Count = compiledBones.Count * 16, Value_As_String = GetBindPoseArray(compiledBones) },
                 Technique_Common = new Grendgine_Collada_Technique_Common_Source
                 {
-                    Accessor = new Grendgine_Collada_Accessor
-                    {
-                        Source = "#Controller-bind_poses-array",
-                        Count = (uint)compiledBones.Count,
-                        Stride = 16,
-                        Param = new[] { new Grendgine_Collada_Param { Name = "TRANSFORM", Type = "float4x4" } }
-                    }
+                    Accessor = new Grendgine_Collada_Accessor { Source = "#Controller-bind_poses-array", Count = (uint)compiledBones.Count, Stride = 16, Param = new[] { new Grendgine_Collada_Param { Name = "TRANSFORM", Type = "float4x4" } } }
                 }
             });
 
@@ -64,20 +53,13 @@ namespace GameEstate.Formats.Collada
             else
                 foreach (var ext2IntMap in ext2IntMaps)
                     for (var j = 0; j < 4; j++) weights.Append(intVertexs[ext2IntMap].Weights[j] + " ");
-            CleanNumbers(weights);
             sources.Add(new Grendgine_Collada_Source
             {
                 ID = "Controller-weights",
-                Float_Array = new Grendgine_Collada_Float_Array { ID = "Controller-weights-array", Count = weightsCount, Value_As_String = weights.ToString().TrimEnd() },
+                Float_Array = new Grendgine_Collada_Float_Array { ID = "Controller-weights-array", Count = weightsCount, Value_As_String = CleanNumbers(weights.ToString()).TrimEnd() },
                 Technique_Common = new Grendgine_Collada_Technique_Common_Source
                 {
-                    Accessor = new Grendgine_Collada_Accessor
-                    {
-                        Source = "#Controller-weights-array",
-                        Count = (uint)weightsCount * 4,
-                        Stride = 1,
-                        Param = new[] { new Grendgine_Collada_Param { Name = "WEIGHT", Type = "float" } }
-                    }
+                    Accessor = new Grendgine_Collada_Accessor { Source = "#Controller-weights-array", Count = (uint)weightsCount * 4, Stride = 1, Param = new[] { new Grendgine_Collada_Param { Name = "WEIGHT", Type = "float" } } }
                 }
             });
 

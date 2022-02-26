@@ -114,10 +114,41 @@ namespace GameEstate
         /// Loads the object asynchronous.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <param name="path">The file path.</param>
+        /// <param name="transformTo">The transformTo.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public async Task<T> LoadFileObjectAsync<T>(string path, EstatePakFile transformTo, Action<FileMetadata, string> exception = null)
+        {
+            await LoadFileObjectAsync<object>(path, exception);
+            return default;
+        }
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="fileId">The fileId.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public abstract Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null);
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="transformTo">The transformTo.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public async Task<T> LoadFileObjectAsync<T>(int fileId, EstatePakFile transformTo, Action<FileMetadata, string> exception = null)
+        {
+            await LoadFileObjectAsync<object>(fileId, exception);
+            return default;
+        }
+
+        public virtual Task<T> TransformFileObjectAsync<T>(EstatePakFile dstEstate, object source)
+        {
+            return default;
+        }
 
         /// <summary>
         /// Gets the graphic.

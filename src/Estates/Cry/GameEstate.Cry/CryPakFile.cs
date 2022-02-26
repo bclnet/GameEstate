@@ -17,7 +17,8 @@ namespace GameEstate.Cry
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public CryPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, PakBinaryCry.Instance, tag)
+        public CryPakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, PakBinaryCry.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();

@@ -1,6 +1,6 @@
 ﻿namespace GameEstate.Formats.Collada
 {
-    partial class ColladaObjectWriter
+    partial class ColladaFileWriter
     {
         void OutputTest()
         {

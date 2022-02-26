@@ -20,7 +20,8 @@ namespace GameEstate.Aurora
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public AuroraPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, filePath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ? ZipInstance : PakBinaryAurora.Instance, tag)
+        public AuroraPakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, filePath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ? ZipInstance : PakBinaryAurora.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();

@@ -17,7 +17,8 @@ namespace GameEstate.Origin
         /// <param name="game">The game.</param>
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
-        public OriginPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, game == "UltimaOnline" ? PakBinaryOriginUO.Instance : PakBinaryOriginU9.Instance, tag)
+        public OriginPakFile(Estate estate, string game, string filePath, object tag = null)
+            : base(estate, game, filePath, game == "UltimaOnline" ? PakBinaryOriginUO.Instance : PakBinaryOriginU9.Instance, tag)
         {
             ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             Open();

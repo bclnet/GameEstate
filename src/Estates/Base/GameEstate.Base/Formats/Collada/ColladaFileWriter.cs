@@ -1,4 +1,4 @@
-﻿using GameEstate.Formats.Generic;
+﻿using GameEstate.Formats.Unknown;
 using grendgine_collada;
 using System;
 using System.Collections.Generic;
@@ -6,8 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using static GameEstate.EstateDebug;
@@ -17,10 +15,10 @@ namespace GameEstate.Formats.Collada
     /// <summary>
     /// export to .dae format (COLLADA)
     /// </summary>
-    /// <seealso cref="Generic.GenericObjectWriter" />
-    public partial class ColladaObjectWriter : GenericObjectWriter
+    /// <seealso cref="UnknownFileModelWriter" />
+    public partial class ColladaFileWriter : UnknownFileModelWriter
     {
-        public ColladaObjectWriter(IGenericFile file) : base(file) { }
+        public ColladaFileWriter(IUnknownFileModel file) : base(file) { }
 
         public FileInfo ModelFile;
 
@@ -43,7 +41,7 @@ namespace GameEstate.Formats.Collada
             Log("*** Starting WriteCOLLADA() ***");
 
             Log($"Number of models: {File.Models.Count()}");
-            foreach (var model in File.Models) Log($"\tNumber of nodes in model: {model.NodeMap.Count}");
+            //foreach (var model in File.Models) Log($"\tNumber of nodes in model: {model.NodeMap.Count}");
             OutputTest();
 
             // File name will be "object name.dae"
@@ -54,7 +52,7 @@ namespace GameEstate.Formats.Collada
             SetScene();
             SetLibraryEffects();
             SetLibraryMaterials();
-            SetLibraryGeometries();
+            //SetLibraryGeometries();
             // If there is Skinning info, create the controller library and set up visual scene to refer to it. Otherwise just write the Visual Scene
             if (File.SkinningInfo.HasSkinningInfo)
             {
@@ -80,50 +78,28 @@ namespace GameEstate.Formats.Collada
         /// </summary>
         /// <param name="compiledBones">List of bones to get the BPM from.</param>
         /// <returns>The float_array that represents the BPM of all the bones, in order.</returns>
-        string GetBindPoseArray(ICollection<IGenericBone> compiledBones)
+        string GetBindPoseArray(ICollection<IUnknownBone> compiledBones)
         {
             var b = new StringBuilder();
-            foreach (var compiledBone in compiledBones) b.Append(CreateStringFromMatrix44(compiledBone.WorldToBone.GetMatrix44()) + " ");
+            foreach (var compiledBone in compiledBones) b.Append($"{CreateStringFromMatrix44(compiledBone.WorldToBone)} ");
             return b.ToString().TrimEnd();
         }
 
-        string GetRootBoneName(ChunkCompiledBones bones) => bones.RootBone.boneName;
+        //string GetRootBoneName(ChunkCompiledBones bones) => bones.RootBone.boneName;
 
+        //void CalculateTransform(IGenericNode node)
+        //{
+        //    var localTranslation = node.Transform.GetScale();
+        //    var localRotation = node.Transform.GetRotation();
+        //    var localScale = node.Transform.GetTranslation();
+        //    node.LocalTranslation = localTranslation;
+        //    node.LocalScale = localScale;
+        //    node.LocalRotation = localRotation;
+        //    node.LocalTransform = node.LocalTransform.GetTransformFromParts(localScale, localRotation, localTranslation);
+        //}
 
-        void CalculateTransform(ChunkNode node)
-        {
-            var localTranslation = node.Transform.GetScale();
-            var localRotation = node.Transform.GetRotation();
-            var localScale = node.Transform.GetTranslation();
-            node.LocalTranslation = localTranslation;
-            node.LocalScale = localScale;
-            node.LocalRotation = localRotation;
-            node.LocalTransform = node.LocalTransform.GetTransformFromParts(localScale, localRotation, localTranslation);
-        }
-
-        string CreateStringFromMatrix44(Matrix4x4 matrix)
-        {
-            var b = new StringBuilder();
-            b.AppendFormat("{0:F6} {1:F6} {2:F6} {3:F6} {4:F6} {5:F6} {6:F6} {7:F6} {8:F6} {9:F6} {10:F6} {11:F6} {12:F6} {13:F6} {14:F6} {15:F6}",
-                matrix.m00,
-                matrix.m01,
-                matrix.m02,
-                matrix.m03,
-                matrix.m10,
-                matrix.m11,
-                matrix.m12,
-                matrix.m13,
-                matrix.m20,
-                matrix.m21,
-                matrix.m22,
-                matrix.m23,
-                matrix.m30,
-                matrix.m31,
-                matrix.m32,
-                matrix.m33);
-            CleanNumbers(b);
-            return b.ToString();
-        }
+        string CreateStringFromMatrix44(Matrix4x4 m)
+            => CleanNumbers($"{m.M11:F6} {m.M12:F6} {m.M13:F6} {m.M14:F6} {m.M21:F6} {m.M22:F6} {m.M23:F6} {m.M24:F6} {m.M31:F6} {m.M32:F6} {m.M33:F6} {m.M34:F6} {m.M41:F6} {m.M42:F6} {m.M43:F6} {m.M44:F6}");
 
         /// <summary>Takes the Material file name and returns just the file name with no extension</summary>
         string CleanMtlFileName(string cleanMe)
@@ -138,13 +114,8 @@ namespace GameEstate.Formats.Collada
             return cleanMe;
         }
 
-        //double safe(double value) =>
-        //    value == double.NegativeInfinity
-        //        ? double.MinValue
-        //        : value == double.PositiveInfinity ? double.MaxValue : value == double.NaN ? 0 : value;
-
-        void CleanNumbers(StringBuilder b) =>
-            b.Replace("0.000000", "0")
+        string CleanNumbers(string b)
+            => b.Replace("0.000000", "0")
             .Replace("-0.000000", "0")
             .Replace("1.000000", "1")
             .Replace("-1.000000", "-1");
