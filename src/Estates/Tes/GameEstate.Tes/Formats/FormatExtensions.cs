@@ -11,7 +11,7 @@ namespace GameEstate.Tes.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source)
+        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactoryFactory(this FileMetadata source)
         {
             Task<object> NiFactory(BinaryReader r, FileMetadata f, EstatePakFile s) { var file = new NiFile(Path.GetFileNameWithoutExtension(f.Path)); file.Read(r); return Task.FromResult((object)file); }
             return Path.GetExtension(source.Path).ToLowerInvariant() switch

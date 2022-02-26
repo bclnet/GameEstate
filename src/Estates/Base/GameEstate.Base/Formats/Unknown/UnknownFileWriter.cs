@@ -2,7 +2,7 @@
 
 namespace GameEstate.Formats.Unknown
 {
-    public abstract class UnknownFileModelWriter
+    public abstract class UnknownFileWriter
     {
         // ARGS
         public DirectoryInfo DataDir = null;
@@ -15,7 +15,7 @@ namespace GameEstate.Formats.Unknown
 
         public IUnknownFileModel File { get; internal set; }
 
-        public UnknownFileModelWriter(IUnknownFileModel file) => File = file;
+        public UnknownFileWriter(IUnknownFileModel file) => File = file;
 
         public abstract void Write(string outputDir = null, bool preservePath = true);
 

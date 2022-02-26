@@ -12,7 +12,7 @@ namespace GameEstate.Valve.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source)
+        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactoryFactory(this FileMetadata source)
         {
             Task<object> BinaryPakFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
             {

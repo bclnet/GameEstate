@@ -2,10 +2,10 @@
 
 namespace GameEstate.Cry.Formats
 {
-    public class PakBinaryCry : PakBinaryZip2
+    public class PakBinaryCry : PakBinarySystemZip
     {
         public static readonly PakBinary Instance = new PakBinaryCry();
 
-        PakBinaryCry() : base(getObjectFactory: FormatExtensions.GetObjectFactory) { }
+        PakBinaryCry() : base() { }
     }
 }

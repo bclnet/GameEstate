@@ -28,8 +28,11 @@ namespace GameEstate.Formats
         public object DecryptKey;
 
         // explorer
-        protected Func<ExplorerManager, BinaryPakFile, Task<List<ExplorerItemNode>>> ExplorerItems;
+        protected Func<ExplorerManager, BinaryPakFile, Task<List<ExplorerItemNode>>> GetExplorerItems;
         protected Dictionary<string, Func<ExplorerManager, BinaryPakFile, FileMetadata, Task<List<ExplorerInfoNode>>>> ExplorerInfos = new Dictionary<string, Func<ExplorerManager, BinaryPakFile, FileMetadata, Task<List<ExplorerInfoNode>>>>();
+
+        // objectfactory
+        protected Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> GetObjectFactoryFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryPakFile" /> class.
@@ -77,7 +80,8 @@ namespace GameEstate.Formats
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        public GenericPool<BinaryReader> GetBinaryReader(string path = null, int retainInPool = 10) => BinaryReaders.GetOrAdd(path ?? FilePath, filePath => File.Exists(filePath) ? new GenericPool<BinaryReader>(() => new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)), retainInPool) : null);
+        public GenericPool<BinaryReader> GetBinaryReader(string path = null, int retainInPool = 10)
+            => BinaryReaders.GetOrAdd(path ?? FilePath, filePath => File.Exists(filePath) ? new GenericPool<BinaryReader>(() => new BinaryReader(File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)), retainInPool) : null);
 
         /// <summary>
         /// Closes this instance.
@@ -183,10 +187,18 @@ namespace GameEstate.Formats
         /// <param name="file">The file.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public Task<Stream> LoadFileDataAsync(FileMetadata file, Action<FileMetadata, string> exception = null) =>
-            UseBinaryReader
-                ? GetBinaryReader().Func(r => ReadFileDataAsync(r, file, exception))
-                : ReadFileDataAsync(null, file, exception);
+        public Task<Stream> LoadFileDataAsync(FileMetadata file, Action<FileMetadata, string> exception = null)
+            => UseBinaryReader
+            ? GetBinaryReader().Func(r => ReadFileDataAsync(r, file, exception))
+            : ReadFileDataAsync(null, file, exception);
+
+        /// <summary>
+        /// Gets the file object factory.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
+        public Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetFileObjectFactory(FileMetadata file)
+            => file.CachedObjectFactory = GetObjectFactoryFactory(file) ?? FileMetadata.EmptyObjectFactory;
 
         /// <summary>
         /// Loads the file data asynchronous.
@@ -199,7 +211,8 @@ namespace GameEstate.Formats
         {
             var type = typeof(T);
             var stream = await LoadFileDataAsync(file, exception = null);
-            if (file.ObjectFactory == null)
+            var objectFactory = GetFileObjectFactory(file);
+            if (objectFactory == FileMetadata.EmptyObjectFactory)
                 return type == typeof(Stream) || type == typeof(object)
                     ? (T)(object)stream
                     : throw new ArgumentOutOfRangeException(nameof(T), $"Stream not returned for {file.Path} with {type.Name}");
@@ -208,7 +221,7 @@ namespace GameEstate.Formats
             Task<object> task = null;
             try
             {
-                task = file.ObjectFactory(r, file, this);
+                task = objectFactory(r, file, this);
                 if (task == null)
                     return type == typeof(Stream) || type == typeof(object)
                         ? (T)(object)stream
@@ -233,7 +246,7 @@ namespace GameEstate.Formats
         /// <param name="file">The file.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public virtual Task<Stream> ReadFileDataAsync(BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception) => PakBinary.ReadDataAsync(this, r, file, exception);
+        public virtual Task<Stream> ReadFileDataAsync(BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception)=> PakBinary.ReadDataAsync(this, r, file, exception);
 
         /// <summary>
         /// Writes the file data asynchronous.
@@ -274,7 +287,7 @@ namespace GameEstate.Formats
         /// <param name="manager">The resource.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public override async Task<List<ExplorerItemNode>> GetExplorerItemNodesAsync(ExplorerManager manager) => Valid && ExplorerItems != null ? await ExplorerItems(manager, this) : null;
+        public override async Task<List<ExplorerItemNode>> GetExplorerItemNodesAsync(ExplorerManager manager) => Valid && GetExplorerItems != null ? await GetExplorerItems(manager, this) : null;
 
         /// <summary>
         /// Gets the explorer information nodes.

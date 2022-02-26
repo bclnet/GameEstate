@@ -5,12 +5,12 @@ namespace GameEstate.Rsi.Formats
     /// <summary>
     /// PakBinaryRsi
     /// </summary>
-    /// <seealso cref="GameEstate.Formats.PakBinaryZip" />
+    /// <seealso cref="GameEstate.Formats.PakBinarySharpZip" />
     public class PakBinaryRsi : PakBinaryP4k
     {
         public static readonly PakBinary Instance = new PakBinaryRsi();
         static readonly byte[] P4kKey = new byte[] { 0x5E, 0x7A, 0x20, 0x02, 0x30, 0x2E, 0xEB, 0x1A, 0x3B, 0xB6, 0x17, 0xC3, 0x0F, 0xDE, 0x1E, 0x47 };
         
-        PakBinaryRsi() : base(P4kKey, getObjectFactory: FormatExtensions.GetObjectFactory) { }
+        PakBinaryRsi() : base(P4kKey) { }
     }
 }

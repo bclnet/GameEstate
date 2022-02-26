@@ -1,6 +1,10 @@
 ﻿using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Formats.Unknown;
 using GameEstate.Rsi.Formats;
+using GameEstate.Rsi.Transforms;
+using GameEstate.Transforms;
+using System.Threading.Tasks;
 
 namespace GameEstate.Rsi
 {
@@ -8,7 +12,7 @@ namespace GameEstate.Rsi
     /// RsiPakFile
     /// </summary>
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
-    public class RsiPakFile : BinaryPakManyFile
+    public class RsiPakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RsiPakFile" /> class.
@@ -20,8 +24,16 @@ namespace GameEstate.Rsi
         public RsiPakFile(Estate estate, string game, string filePath, object tag = null)
             : base(estate, game, filePath, PakBinaryRsi.Instance, tag)
         {
-            ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             Open();
         }
+
+        #region Transforms
+
+        bool ITransformFileObject<IUnknownFileModel>.CanTransformFileObject(EstatePakFile transformTo, object source) => UnknownTransform.CanTransformFileObject(this, transformTo, source);
+        Task<IUnknownFileModel> ITransformFileObject<IUnknownFileModel>.TransformFileObjectAsync(EstatePakFile transformTo, object source) => UnknownTransform.TransformFileObjectAsync(this, transformTo, source);
+
+        #endregion
     }
 }

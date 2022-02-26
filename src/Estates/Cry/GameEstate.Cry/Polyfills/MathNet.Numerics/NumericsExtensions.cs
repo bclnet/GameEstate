@@ -1,11 +1,11 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using GameEstate.Cry.Formats;
 
-namespace GameEstate.Cry.Formats
+namespace MathNet.Numerics.LinearAlgebra
 {
-    public static partial class StructsExtensions
+    public static class NumericsExtensions
     {
-        //public static Vector<float> ToMathVector3(this Vector3 s) { var r = Vector<float>.Build.Dense(3); r[0] = s.x; r[1] = s.y; r[2] = s.z; return r; }
-        public static Vector3 GetVector3(this Vector3 s, Vector<float> vector) => new Vector3 { x = vector[0], y = vector[1], z = vector[2] };
+        public static Vector<float> ToMathVector3(this Vector3 s) { var r = Vector<float>.Build.Dense(3); r[0] = s.x; r[1] = s.y; r[2] = s.z; return r; }
+        public static Vector3 ToVector3(this Vector3 s, Vector<float> vector) => new Vector3 { x = vector[0], y = vector[1], z = vector[2] };
 
         public static Matrix<float> ToMathMatrix(this Matrix3x3 s)
         {
@@ -21,7 +21,7 @@ namespace GameEstate.Cry.Formats
             r[2, 2] = s.m22;
             return r;
         }
-        public static Matrix3x3 GetMatrix3x3(Matrix<float> matrix) => new Matrix3x3
+        public static Matrix3x3 ToMatrix3x3(this Matrix<float> matrix) => new Matrix3x3
         {
             m00 = matrix[0, 0],
             m01 = matrix[0, 1],
@@ -55,7 +55,7 @@ namespace GameEstate.Cry.Formats
             r[3, 3] = s.m33;
             return r;
         }
-        public static Matrix4x4 GetMatrix4x4(Matrix<float> matrix) => new Matrix4x4
+        public static Matrix4x4 ToMatrix4x4(this Matrix<float> matrix) => new Matrix4x4
         {
             m00 = matrix[0, 0],
             m01 = matrix[0, 1],

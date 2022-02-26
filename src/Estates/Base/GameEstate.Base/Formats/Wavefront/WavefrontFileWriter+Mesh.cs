@@ -8,7 +8,8 @@ namespace GameEstate.Formats.Wavefront
 {
     partial class WavefrontFileWriter
     {
-        void WriteMesh(StreamWriter w, IUnknownMesh mesh) // Pass a node to this to have it write to the Stream
+        // Pass a node to this to have it write to the Stream
+        void WriteMesh(StreamWriter w, IUnknownMesh mesh)
         {
             w.WriteLine("o {0}", mesh.Name);
 

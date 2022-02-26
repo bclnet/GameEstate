@@ -95,7 +95,7 @@ namespace GameEstate.AC.Formats
                         Tag = entry,
                     };
                     metadata.Path = Path.Combine(path, metadata.GetPath(r, pakType, out var type));
-                    metadata.ObjectFactory = metadata.GetObjectFactory(pakType, type);
+                    metadata.ExtraArgs = (pakType, type);
                     files.Add(metadata);
                 }
             }

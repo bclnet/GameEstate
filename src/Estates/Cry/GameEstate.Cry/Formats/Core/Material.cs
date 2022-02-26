@@ -11,12 +11,12 @@ namespace GameEstate.Cry.Formats.Core
     /// Representation of a CryEngine .mtl file
     /// </summary>
     [XmlRoot(ElementName = "Material")]
-    public class Material
+    public partial class Material
     {
         /// <summary>
         /// Color used in XML serialization/deserialization
         /// </summary>
-        public class Color
+        public partial class Color
         {
             public double Red;
             public double Green;
@@ -42,7 +42,7 @@ namespace GameEstate.Cry.Formats.Core
         /// The texture object
         /// </summary>
         [XmlRoot(ElementName = "Texture")]
-        public class Texture
+        public partial class Texture
         {
             public enum TypeEnum {[XmlEnum("0")] Default = 0, [XmlEnum("3")] Environment = 3, [XmlEnum("5")] Interface = 5, [XmlEnum("7")] CubeMap = 7 }
             public enum MapTypeEnum { Unknown = 0, Diffuse, Bumpmap, Specular, Environment, Decal, SubSurface, Custom, Opacity, Detail, Heightmap, BlendDetail }

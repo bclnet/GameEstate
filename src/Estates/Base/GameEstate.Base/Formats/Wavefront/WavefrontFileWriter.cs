@@ -8,8 +8,8 @@ namespace GameEstate.Formats.Wavefront
     /// <summary>
     /// export to .obj/.mat format (WAVEFRONT)
     /// </summary>
-    /// <seealso cref="UnknownFileModelWriter" />
-    public partial class WavefrontFileWriter : UnknownFileModelWriter
+    /// <seealso cref="UnknownFileWriter" />
+    public partial class WavefrontFileWriter : UnknownFileWriter
     {
         public WavefrontFileWriter(IUnknownFileModel file) : base(file) { }
 

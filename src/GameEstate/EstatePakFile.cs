@@ -1,5 +1,6 @@
 ﻿using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Transforms;
 using OpenStack.Graphics;
 using System;
 using System.Collections.Generic;
@@ -119,10 +120,7 @@ namespace GameEstate
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public async Task<T> LoadFileObjectAsync<T>(string path, EstatePakFile transformTo, Action<FileMetadata, string> exception = null)
-        {
-            await LoadFileObjectAsync<object>(path, exception);
-            return default;
-        }
+            => await TransformFileObjectAsync<T>(transformTo, await LoadFileObjectAsync<object>(path, exception));
         /// <summary>
         /// Loads the object asynchronous.
         /// </summary>
@@ -140,14 +138,20 @@ namespace GameEstate
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public async Task<T> LoadFileObjectAsync<T>(int fileId, EstatePakFile transformTo, Action<FileMetadata, string> exception = null)
-        {
-            await LoadFileObjectAsync<object>(fileId, exception);
-            return default;
-        }
+            => await TransformFileObjectAsync<T>(transformTo, await LoadFileObjectAsync<object>(fileId, exception));
 
-        public virtual Task<T> TransformFileObjectAsync<T>(EstatePakFile dstEstate, object source)
+        /// <summary>
+        /// Transforms the file object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="transformTo">The transformTo.</param>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        Task<T> TransformFileObjectAsync<T>(EstatePakFile transformTo, object source)
         {
-            return default;
+            if (this is ITransformFileObject<T> left && left.CanTransformFileObject(transformTo, source)) return left.TransformFileObjectAsync(transformTo, source);
+            else if (transformTo is ITransformFileObject<T> right && right.CanTransformFileObject(transformTo, source)) return right.TransformFileObjectAsync(transformTo, source);
+            else throw new ArgumentOutOfRangeException(nameof(transformTo));
         }
 
         /// <summary>

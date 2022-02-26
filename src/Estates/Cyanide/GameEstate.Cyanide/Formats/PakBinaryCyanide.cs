@@ -47,13 +47,12 @@ namespace GameEstate.Cyanide.Formats
             for (var i = 0; i < files.Count; i++)
             {
                 var headerFile = headerFiles[i];
-                var metadata = files[i] = new FileMetadata
+                files[i] = new FileMetadata
                 {
                     Path = UnsafeX.ReadZASCII(headerFile.FileName, 512).Replace('\\', '/'),
                     FileSize = headerFile.FileSize,
                     Position = (long)headerFile.Offset,
                 };
-                metadata.ObjectFactory = metadata.GetObjectFactory();
             }
             return Task.CompletedTask;
         }

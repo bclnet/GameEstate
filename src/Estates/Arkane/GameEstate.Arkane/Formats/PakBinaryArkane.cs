@@ -86,7 +86,7 @@ namespace GameEstate.Arkane.Formats
                 var flags2 = MathX.Reverse(r.ReadUInt16());
                 var useSharedResources = (flags & 32) != 0 && flags2 == 0x8000;
                 var newPath = !useSharedResources ? resourcePath : sharedResourcePath;
-                var metadata = files[i] = new FileMetadata
+                files[i] = new FileMetadata
                 {
                     Id = (int)id,
                     Path = path,
@@ -96,7 +96,6 @@ namespace GameEstate.Arkane.Formats
                     Position = (long)position,
                     Tag = (newPath, tag1, tag2),
                 };
-                metadata.ObjectFactory = metadata.GetObjectFactory();
             }
             return Task.CompletedTask;
         }

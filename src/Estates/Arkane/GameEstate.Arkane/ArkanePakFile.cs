@@ -1,6 +1,10 @@
 ﻿using GameEstate.Arkane.Formats;
+using GameEstate.Arkane.Transforms;
 using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Formats.Unknown;
+using GameEstate.Transforms;
+using System.Threading.Tasks;
 
 namespace GameEstate.Arkane
 {
@@ -8,7 +12,7 @@ namespace GameEstate.Arkane
     /// ArkanePakFile
     /// </summary>
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
-    public class ArkanePakFile : BinaryPakManyFile
+    public class ArkanePakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ArkanePakFile" /> class.
@@ -21,8 +25,16 @@ namespace GameEstate.Arkane
             : base(estate, game, filePath, PakBinaryArkane.Instance, tag)
         {
             Options = PakManyOptions.FilesById;
-            ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             Open();
         }
+
+        #region Transforms
+
+        bool ITransformFileObject<IUnknownFileModel>.CanTransformFileObject(EstatePakFile transformTo, object source) => UnknownTransform.CanTransformFileObject(this, transformTo, source);
+        Task<IUnknownFileModel> ITransformFileObject<IUnknownFileModel>.TransformFileObjectAsync(EstatePakFile transformTo, object source) => UnknownTransform.TransformFileObjectAsync(this, transformTo, source);
+
+        #endregion
     }
 }

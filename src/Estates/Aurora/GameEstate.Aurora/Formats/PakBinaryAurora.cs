@@ -279,15 +279,13 @@ namespace GameEstate.Aurora.Formats
                     var headerFile = headerFiles[i];
                     if (headerFile.Id > i) continue;
                     var path = $"{(keys.TryGetValue(headerFile.Id, out var key) ? key : $"{i}")}{(BIFF_FileTypes.TryGetValue((int)headerFile.FileType, out var z) ? $".{z}" : string.Empty)}".Replace('\\', '/');
-                    var metadata = new FileMetadata
+                    files2.Add(new FileMetadata
                     {
                         Id = (int)headerFile.Id,
                         Path = path,
                         FileSize = headerFile.FileSize,
                         Position = headerFile.Offset,
-                    };
-                    metadata.ObjectFactory = metadata.GetObjectFactory();
-                    files2.Add(metadata);
+                    });
                 }
             }
             else throw new FormatException($"Unknown File Type {magic}");

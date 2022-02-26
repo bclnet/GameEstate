@@ -192,7 +192,7 @@ namespace GameEstate.Valve.Formats
                         var fileName = r.ReadZUTF8();
                         if (fileName?.Length == 0) break;
 
-                        var file = new FileMetadata
+                        var metadata = new FileMetadata
                         {
                             Path = $"{(directoryName[0] != ' ' ? $"{directoryName}/" : null)}{fileName}.{typeName}",
                             Digest = r.ReadUInt32(),
@@ -201,16 +201,15 @@ namespace GameEstate.Valve.Formats
                             Position = r.ReadUInt32(),
                             FileSize = r.ReadUInt32(),
                         };
-                        file.ObjectFactory = file.GetObjectFactory();
-                        if (file.Id != 0x7FFF)
+                        if (metadata.Id != 0x7FFF)
                         {
                             if (!sourceFileDirVpk) throw new InvalidOperationException("Given VPK is not a _dir, but entry is referencing an external archive.");
-                            file.Tag = $"{sourceFilePath}_{file.Id:D3}.vpk";
+                            metadata.Tag = $"{sourceFilePath}_{metadata.Id:D3}.vpk";
                         }
-                        else file.Tag = (long)(header.HeaderSize + header.TreeSize);
-                        files.Add(file);
+                        else metadata.Tag = (long)(header.HeaderSize + header.TreeSize);
+                        files.Add(metadata);
                         if (r.ReadUInt16() != 0xFFFF) throw new FormatException("Invalid terminator.");
-                        if (file.Extra.Length > 0) r.Read(file.Extra, 0, file.Extra.Length);
+                        if (metadata.Extra.Length > 0) r.Read(metadata.Extra, 0, metadata.Extra.Length);
                     }
                 }
             }

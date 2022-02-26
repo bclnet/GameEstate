@@ -1,8 +1,12 @@
 ﻿using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Formats.Unknown;
 using GameEstate.Tes.Formats;
+using GameEstate.Tes.Transforms;
+using GameEstate.Transforms;
 using OpenStack.Graphics;
 using System.IO;
+using System.Threading.Tasks;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Tes
@@ -11,7 +15,7 @@ namespace GameEstate.Tes
     /// TesPakFile
     /// </summary>
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
-    public class TesPakFile : BinaryPakManyFile
+    public class TesPakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TesPakFile" /> class.
@@ -23,7 +27,8 @@ namespace GameEstate.Tes
         public TesPakFile(Estate estate, string game, string filePath, object tag = null)
             : base(estate, game, filePath, Path.GetExtension(filePath) != ".esm" ? PakBinaryTes.Instance : PakBinaryTesEsm.Instance, tag)
         {
-            ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             PathFinders.Add(typeof(ITextureInfo), FindTexture);
             Open();
         }
@@ -49,6 +54,13 @@ namespace GameEstate.Tes
             Log($"Could not find file '{path}' in a PAK file.");
             return null;
         }
+
+        #endregion
+
+        #region Transforms
+
+        bool ITransformFileObject<IUnknownFileModel>.CanTransformFileObject(EstatePakFile transformTo, object source) => UnknownTransform.CanTransformFileObject(this, transformTo, source);
+        Task<IUnknownFileModel> ITransformFileObject<IUnknownFileModel>.TransformFileObjectAsync(EstatePakFile transformTo, object source) => UnknownTransform.TransformFileObjectAsync(this, transformTo, source);
 
         #endregion
     }

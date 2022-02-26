@@ -1,7 +1,11 @@
 ﻿using GameEstate.Aurora.Formats;
+using GameEstate.Aurora.Transforms;
 using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Formats.Unknown;
+using GameEstate.Transforms;
 using System;
+using System.Threading.Tasks;
 
 namespace GameEstate.Aurora
 {
@@ -9,9 +13,9 @@ namespace GameEstate.Aurora
     /// AuroraPakFile
     /// </summary>
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
-    public class AuroraPakFile : BinaryPakManyFile
+    public class AuroraPakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
-        public static readonly PakBinary ZipInstance = new PakBinaryZip2();
+        public static readonly PakBinary ZipInstance = new PakBinarySystemZip();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuroraPakFile" /> class.
@@ -23,8 +27,16 @@ namespace GameEstate.Aurora
         public AuroraPakFile(Estate estate, string game, string filePath, object tag = null)
             : base(estate, game, filePath, filePath.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) ? ZipInstance : PakBinaryAurora.Instance, tag)
         {
-            ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             Open();
         }
+
+        #region Transforms
+
+        bool ITransformFileObject<IUnknownFileModel>.CanTransformFileObject(EstatePakFile transformTo, object source) => UnknownTransform.CanTransformFileObject(this, transformTo, source);
+        Task<IUnknownFileModel> ITransformFileObject<IUnknownFileModel>.TransformFileObjectAsync(EstatePakFile transformTo, object source) => UnknownTransform.TransformFileObjectAsync(this, transformTo, source);
+
+        #endregion
     }
 }

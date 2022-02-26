@@ -9,21 +9,16 @@ using static GameEstate.EstateDebug;
 namespace GameEstate.Formats
 {
     /// <summary>
-    /// PakBinaryZip
+    /// PakBinarySharpZip
     /// </summary>
     /// <seealso cref="GameEstate.Formats.PakBinary" />
-    public class PakBinaryZip : PakBinary
+    public class PakBinarySharpZip : PakBinary
     {
         static readonly PropertyInfo ZipFile_KeyProperty = typeof(ZipFile).GetProperty("Key", BindingFlags.NonPublic | BindingFlags.Instance);
 
         readonly byte[] Key;
-        readonly Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> GetObjectFactory;
 
-        public PakBinaryZip(byte[] key = null, Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> getObjectFactory = null)
-        {
-            Key = key;
-            GetObjectFactory = getObjectFactory;
-        }
+        public PakBinarySharpZip(byte[] key = null) => Key = key;
 
         public override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -44,7 +39,6 @@ namespace GameEstate.Formats
                     FileSize = entry.Size,
                     Tag = entry,
                 };
-                metadata.ObjectFactory = GetObjectFactory(metadata);
                 files.Add(metadata);
             }
             return Task.CompletedTask;

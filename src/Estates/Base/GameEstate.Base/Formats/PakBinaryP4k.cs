@@ -14,13 +14,8 @@ namespace GameEstate.Formats
     public class PakBinaryP4k : PakBinary
     {
         readonly byte[] Key;
-        readonly Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> GetObjectFactory;
 
-        public PakBinaryP4k(byte[] key = null, Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> getObjectFactory = null)
-        {
-            Key = key;
-            GetObjectFactory = getObjectFactory;
-        }
+        public PakBinaryP4k(byte[] key = null) => Key = key;
 
         public override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -40,7 +35,6 @@ namespace GameEstate.Formats
                     FileSize = entry.Size,
                     Tag = entry,
                 };
-                metadata.ObjectFactory = GetObjectFactory(metadata);
                 files.Add(metadata);
             }
             return Task.CompletedTask;

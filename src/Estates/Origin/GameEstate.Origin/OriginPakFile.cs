@@ -1,6 +1,10 @@
 ﻿using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Formats.Unknown;
 using GameEstate.Origin.Formats;
+using GameEstate.Origin.Transforms;
+using GameEstate.Transforms;
+using System.Threading.Tasks;
 
 namespace GameEstate.Origin
 {
@@ -8,7 +12,7 @@ namespace GameEstate.Origin
     /// OriginPakFile
     /// </summary>
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
-    public class OriginPakFile : BinaryPakManyFile
+    public class OriginPakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OriginPakFile" /> class.
@@ -20,8 +24,16 @@ namespace GameEstate.Origin
         public OriginPakFile(Estate estate, string game, string filePath, object tag = null)
             : base(estate, game, filePath, game == "UltimaOnline" ? PakBinaryOriginUO.Instance : PakBinaryOriginU9.Instance, tag)
         {
-            ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             Open();
         }
+
+        #region Transforms
+
+        bool ITransformFileObject<IUnknownFileModel>.CanTransformFileObject(EstatePakFile transformTo, object source) => UnknownTransform.CanTransformFileObject(this, transformTo, source);
+        Task<IUnknownFileModel> ITransformFileObject<IUnknownFileModel>.TransformFileObjectAsync(EstatePakFile transformTo, object source) => UnknownTransform.TransformFileObjectAsync(this, transformTo, source);
+
+        #endregion
     }
 }

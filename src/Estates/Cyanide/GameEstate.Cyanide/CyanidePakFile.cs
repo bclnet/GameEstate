@@ -1,6 +1,10 @@
 ﻿using GameEstate.Cyanide.Formats;
+using GameEstate.Cyanide.Transforms;
 using GameEstate.Explorer;
 using GameEstate.Formats;
+using GameEstate.Formats.Unknown;
+using GameEstate.Transforms;
+using System.Threading.Tasks;
 
 namespace GameEstate.Cyanide
 {
@@ -8,7 +12,7 @@ namespace GameEstate.Cyanide
     /// CyanidePakFile
     /// </summary>
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
-    public class CyanidePakFile : BinaryPakManyFile
+    public class CyanidePakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CyanidePakFile" /> class.
@@ -20,8 +24,16 @@ namespace GameEstate.Cyanide
         public CyanidePakFile(Estate estate, string game, string filePath, object tag = null)
             : base(estate, game, filePath, PakBinaryCyanide.Instance, tag)
         {
-            ExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
+            GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             Open();
         }
+
+        #region Transforms
+
+        bool ITransformFileObject<IUnknownFileModel>.CanTransformFileObject(EstatePakFile transformTo, object source) => UnknownTransform.CanTransformFileObject(this, transformTo, source);
+        Task<IUnknownFileModel> ITransformFileObject<IUnknownFileModel>.TransformFileObjectAsync(EstatePakFile transformTo, object source) => UnknownTransform.TransformFileObjectAsync(this, transformTo, source);
+
+        #endregion
     }
 }

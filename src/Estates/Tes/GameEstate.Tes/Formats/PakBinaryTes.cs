@@ -276,11 +276,7 @@ namespace GameEstate.Tes.Formats
                 {
                     r.Position((long)header.NameTableOffset);
                     var path = r.ReadL16String().Replace('\\', '/');
-                    foreach (var file in files)
-                    {
-                        file.Path = path;
-                        file.ObjectFactory = file.GetObjectFactory();
-                    }
+                    foreach (var file in files) file.Path = path;
                 }
             }
 
@@ -323,11 +319,7 @@ namespace GameEstate.Tes.Formats
 
                 // read-all names
                 var b = new StringBuilder();
-                foreach (var file in files)
-                {
-                    file.Path = $"{file.Path}/{r.ReadZString(builder: b)}";
-                    file.ObjectFactory = file.GetObjectFactory();
-                }
+                foreach (var file in files) file.Path = $"{file.Path}/{r.ReadZString(builder: b)}";
             }
 
             // Morrowind
@@ -358,9 +350,7 @@ namespace GameEstate.Tes.Formats
                 for (var i = 0; i < files.Length; i++)
                 {
                     r.Position(filenamesPosition + filenameOffsets[i]);
-                    var file = files[i];
-                    file.Path = r.ReadZASCII(1000, buf).Replace('\\', '/');
-                    file.ObjectFactory = file.GetObjectFactory();
+                    files[i].Path = r.ReadZASCII(1000, buf).Replace('\\', '/');
                 }
             }
 
@@ -376,8 +366,7 @@ namespace GameEstate.Tes.Formats
                 // Create file metadatas
                 multiSource.Files = files = new FileMetadata[r.ReadInt32()];
                 for (var i = 0; i < files.Length; i++)
-                {
-                    var metadata = files[i] = new FileMetadata
+                    files[i] = new FileMetadata
                     {
                         Path = r.ReadL32String().TrimStart('\\'),
                         Compressed = r.ReadByte(),
@@ -385,8 +374,6 @@ namespace GameEstate.Tes.Formats
                         PackedSize = r.ReadUInt32(),
                         Position = r.ReadUInt32(),
                     };
-                    metadata.ObjectFactory = metadata.GetObjectFactory();
-                }
             }
             else throw new InvalidOperationException("BAD MAGIC");
             return Task.CompletedTask;

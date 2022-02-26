@@ -6,7 +6,8 @@ namespace GameEstate.Formats.Wavefront
 {
     partial class WavefrontFileWriter
     {
-        void WriteHitbox(StreamWriter w, IEnumerable<IUnknownProxy> proxies)  // Pass a bone stream to write to the stream.  For .chr files (armatures)
+        // Pass a bone stream to write to the stream.  For .chr files (armatures)
+        void WriteHitbox(StreamWriter w, IEnumerable<IUnknownProxy> proxies)
         {
             var i = 0;
             // Write out all the bones

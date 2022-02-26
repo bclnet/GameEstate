@@ -15,8 +15,8 @@ namespace GameEstate.Formats.Collada
     /// <summary>
     /// export to .dae format (COLLADA)
     /// </summary>
-    /// <seealso cref="UnknownFileModelWriter" />
-    public partial class ColladaFileWriter : UnknownFileModelWriter
+    /// <seealso cref="UnknownFileWriter" />
+    public partial class ColladaFileWriter : UnknownFileWriter
     {
         public ColladaFileWriter(IUnknownFileModel file) : base(file) { }
 

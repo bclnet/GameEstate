@@ -2,7 +2,7 @@
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
-    public abstract class ChunkMesh : Chunk      //  cccc0000:  Object that points to the datastream chunk.
+    public abstract partial class ChunkMesh : Chunk      //  cccc0000:  Object that points to the datastream chunk.
     {
         // public uint Version;  // 623 Far Cry, 744 Far Cry, Aion, 800 Crysis
         //public bool HasVertexWeights; // for 744

@@ -21,7 +21,9 @@ namespace GameEstate.Formats
         public object FileInfo;
         public BinaryPakFile Pak;
         public object Tag;
+        public object ExtraArgs;
         // factory
-        public Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> ObjectFactory;
+        internal Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> CachedObjectFactory;
+        internal static readonly Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> EmptyObjectFactory = (a, b, c) => null;
     }
 }

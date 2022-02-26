@@ -29,8 +29,9 @@ namespace GameEstate.AC.Formats
         }
 
         // object factory
-        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactory(this FileMetadata source, PakType pakType, PakFileType? type)
+        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactoryFactory(this FileMetadata source)
         {
+            var (pakType, type) = ((PakType, PakFileType?))source.ExtraArgs;
             if ((uint)source.Id == Iteration.FILE_ID) return (r, m, s) => Task.FromResult((object)new Iteration(r));
             else if (type == null) return null;
             else return type.Value switch
