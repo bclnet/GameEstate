@@ -1,7 +1,8 @@
 ﻿using GameEstate.Formats.Unknown;
-using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats.Wavefront
 {
@@ -38,7 +39,7 @@ namespace GameEstate.Formats.Wavefront
             ModelFile = GetFileInfo("obj", outputDir, preservePath);
             MaterialFile = GetFileInfo("mtl", outputDir, preservePath);
             if (GroupMeshes) GroupOverride = Path.GetFileNameWithoutExtension(ModelFile.Name);
-            Console.WriteLine(@"Output file is {0}\...\{1}", outputDir, ModelFile.Name);
+            Log($@"Output file is {outputDir}\...\{ModelFile.Name}");
 
             if (!ModelFile.Directory.Exists) ModelFile.Directory.Create();
 
@@ -49,30 +50,17 @@ namespace GameEstate.Formats.Wavefront
             w.WriteLine("#");
             if (MaterialFile.Exists) w.WriteLine($"mtllib {MaterialFile.Name}");
 
-            FaceIndex = 1;
-            foreach (var mesh in File.Meshes) WriteMesh(w, mesh);
+            var rootNodes = File.RootNodes.ToArray();
+            if (rootNodes.Length > 1)
+                foreach (var node in rootNodes) Log($"Rendering node with null parent {node}");
 
-            //var nullParents = File.Nodes.Where(p => p.Parent == null).ToArray();
-            //if (nullParents.Length > 1) foreach (var node in nullParents) Log($"Rendering node with null parent {node.Name}");
-            //foreach (var node in File.Nodes)
-            //{
-            //    // Cry:Don't render shields
-            //    if (SkipShieldNodes && node.Name.StartsWith("$shield")) { Log($"Skipped shields node {node.Name}"); continue; }
-            //    // Cry:Don't render stream
-            //    if (SkipStreamNodes && node.Name.StartsWith("stream")) { Log($"Skipped stream node {node.Name}"); continue; }
-            //    if (node.Object == null) { Log($"Skipped node with missing Object {node.Name}"); continue; }
-            //    switch (node.Object.Type)
-            //    {
-            //        case ChunkType.Mesh:
-            //            // Render Meshes
-            //            if (node.Parent != null && node.Parent.Type != ChunkType.Node) Log($"Rendering {node.Name} to parent {node.Parent.Name}");
-            //            // Grab the mesh and process that.
-            //            WriteObjNode(file, node);
-            //            break;
-            //        case ChunkType.Helper: break; // Ignore Helpers nodes
-            //        default: Log($"Skipped a {node.Object.Type} chunk"); break; // Warn us if we're skipping other nodes of interest
-            //    }
-            //}
+            FaceIndex = 1;
+            foreach (var mesh in File.Meshes)
+            {
+                if (SkipShieldNodes && mesh.Name.StartsWith("$shield")) { Log($"Skipped shields node {mesh.Name}"); continue; }
+                if (SkipStreamNodes && mesh.Name.StartsWith("stream")) { Log($"Skipped stream node {mesh.Name}"); continue; }
+                WriteMesh(w, mesh);
+            }
 
             // If this has proxies, just write out the hitbox info. OBJ files can't do armatures.
             if (File.Proxies != null) WriteHitbox(w, File.Proxies);

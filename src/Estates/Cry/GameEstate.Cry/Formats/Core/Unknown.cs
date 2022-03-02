@@ -1,6 +1,7 @@
 ﻿using GameEstate.Formats.Unknown;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NVector2 = System.Numerics.Vector2;
 using NVector3 = System.Numerics.Vector3;
 
@@ -55,20 +56,13 @@ namespace GameEstate.Cry.Formats.Core
 
     namespace Chunks
     {
-        partial class ChunkMesh : IUnknownMesh
+        partial class ChunkCompiledPhysicalProxies : IUnknownProxy
         {
-            string IUnknownMesh.Name => throw new NotImplementedException();
-            IUnknownMesh.MeshSubset[] IUnknownMesh.Subsets => throw new NotImplementedException();
-            NVector3[] IUnknownMesh.Vertexs => throw new NotImplementedException();
-            int[] IUnknownMesh.Indexs => throw new NotImplementedException();
-            NVector3[] IUnknownMesh.Normals => throw new NotImplementedException();
-            NVector2[] IUnknownMesh.UVs => throw new NotImplementedException();
-            NVector3 IUnknownMesh.MinBound => throw new NotImplementedException();
-            NVector3 IUnknownMesh.MaxBound => throw new NotImplementedException();
-            NVector3 IUnknownMesh.GetTransform(NVector3 vector3)
+            IUnknownProxy.Proxy[] IUnknownProxy.PhysicalProxys => PhysicalProxies.Select(x => new IUnknownProxy.Proxy
             {
-                throw new NotImplementedException();
-            }
+                Indexs = x.Indices.Cast<int>().ToArray(),
+                Vertexs = x.Vertices,
+            }).ToArray();
         }
     }
 }

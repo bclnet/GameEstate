@@ -1,6 +1,5 @@
 ﻿using GameEstate.Cry.Formats;
 using GameEstate.Formats.Unknown;
-using System;
 using System.Threading.Tasks;
 
 namespace GameEstate.Cry.Transforms
@@ -12,9 +11,6 @@ namespace GameEstate.Cry.Transforms
     {
         internal static bool CanTransformFileObject(EstatePakFile left, EstatePakFile right, object source) => source is CryFile;
         internal static Task<IUnknownFileModel> TransformFileObjectAsync(EstatePakFile left, EstatePakFile right, object source)
-        {
-            var file = (CryFile)source;
-            return null;
-        }
+            => Task.FromResult((IUnknownFileModel)source);
     }
 }

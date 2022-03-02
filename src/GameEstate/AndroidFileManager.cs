@@ -5,7 +5,7 @@ namespace GameEstate
     /// <summary>
     /// AndroidFileManager
     /// </summary>
-    public class AndroidFileManager : FileManager
+    internal class AndroidFileManager : FileManager
     {
         #region Parse File-Manager
 

@@ -27,7 +27,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 Log($"           Number of Vertices:   {MeshSubsets[i].NumVertices}  (next will be {MeshSubsets[i].NumVertices + MeshSubsets[i].FirstVertex})");
                 Log($"           Material ID:          {MeshSubsets[i].MatID}");
                 Log($"           Radius:               {MeshSubsets[i].Radius}");
-                Log($"           Center:   {MeshSubsets[i].Center.x},{MeshSubsets[i].Center.y},{MeshSubsets[i].Center.z}");
+                Log($"           Center:   {MeshSubsets[i].Center.X},{MeshSubsets[i].Center.Y},{MeshSubsets[i].Center.Z}");
                 Log($"        ** Mesh Subset {i} End");
             }
             Log("*** END MESH SUBSET CHUNK ***");

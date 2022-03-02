@@ -28,12 +28,12 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             ShapeDeformationData = r.ReadInt32();
             BoneMapData = r.ReadInt32();
             FaceMapData = r.ReadInt32();
-            MinBound.x = r.ReadSingle();
-            MinBound.y = r.ReadSingle();
-            MinBound.z = r.ReadSingle();
-            MaxBound.x = r.ReadSingle();
-            MaxBound.y = r.ReadSingle();
-            MaxBound.z = r.ReadSingle();
+            MinBound.X = r.ReadSingle();
+            MinBound.Y = r.ReadSingle();
+            MinBound.Z = r.ReadSingle();
+            MaxBound.X = r.ReadSingle();
+            MaxBound.Y = r.ReadSingle();
+            MaxBound.Z = r.ReadSingle();
         }
     }
 }

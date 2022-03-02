@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using static GameEstate.Estate;
 
 namespace GameEstate
 {
@@ -55,18 +56,18 @@ namespace GameEstate
         /// <param name="estate">The estate.</param>
         /// <param name="uri">The URI.</param>
         /// <returns></returns>
-        public virtual Estate.Resource ParseResource(Estate estate, Uri uri)
+        public virtual Resource ParseResource(Estate estate, Uri uri)
         {
-            if (uri == null) return new Estate.Resource { Game = string.Empty };
+            if (uri == null) return new Resource { Game = string.Empty };
             var fragment = uri.Fragment?[(uri.Fragment.Length != 0 ? 1 : 0)..];
             var game = estate.GetGame(fragment);
-            var r = new Estate.Resource { Game = game.id };
+            var r = new Resource { Game = game.id };
+            // game-scheme
+            if (string.Equals(uri.Scheme, "game", StringComparison.OrdinalIgnoreCase)) r.Paths = FindGameFilePaths(r.Game, uri.LocalPath[1..]) ?? throw new ArgumentOutOfRangeException(nameof(r.Game), $"{game.id}: unable to locate game resources");
             // file-scheme
-            if (string.Equals(uri.Scheme, "game", StringComparison.OrdinalIgnoreCase)) r.Paths = FindGameFilePaths(r.Game, uri.LocalPath[1..]) ?? throw new InvalidOperationException($"No {game.id} resources match.");
-            // file-scheme
-            else if (uri.IsFile) r.Paths = GetLocalFilePaths(uri.LocalPath, out r.StreamPak) ?? throw new InvalidOperationException($"No {game.id} resources match.");
+            else if (uri.IsFile) r.Paths = GetLocalFilePaths(uri.LocalPath, out r.Options) ?? throw new InvalidOperationException($"{game.id}: unable to locate file resources");
             // network-scheme
-            else r.Paths = GetHttpFilePaths(uri, out r.Host, out r.StreamPak) ?? throw new InvalidOperationException($"No {game.id} resources match.");
+            else r.Paths = GetHttpFilePaths(uri, out r.Host, out r.Options) ?? throw new InvalidOperationException($"{game.id}: unable to locate network resources");
             return r;
         }
 
@@ -124,7 +125,7 @@ namespace GameEstate
         /// <param name="streamPak">if set to <c>true</c> [file pak].</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">pathOrPattern</exception>
-        string[] GetLocalFilePaths(string pathOrPattern, out bool streamPak)
+        string[] GetLocalFilePaths(string pathOrPattern, out PakOption options)
         {
             if (pathOrPattern == null) throw new ArgumentNullException(nameof(pathOrPattern));
             var searchPattern = Path.GetFileName(pathOrPattern);
@@ -132,13 +133,13 @@ namespace GameEstate
             // file
             if (!string.IsNullOrEmpty(searchPattern))
             {
-                streamPak = false;
+                options = default;
                 return searchPattern.Contains('*')
                     ? Directory.GetFiles(path, searchPattern)
                     : File.Exists(pathOrPattern) ? new[] { pathOrPattern } : null;
             }
             // folder
-            streamPak = true;
+            options = PakOption.Stream;
             searchPattern = Path.GetFileName(path);
             path = Path.GetDirectoryName(path);
             return pathOrPattern.Contains('*')
@@ -151,22 +152,21 @@ namespace GameEstate
         /// </summary>
         /// <param name="uri">The URI.</param>
         /// <param name="host">The host.</param>
-        /// <param name="streamPak">if set to <c>true</c> [file pak].</param>
+        /// <param name="options">if set to <c>true</c> [file pak].</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">uri</exception>
         /// <exception cref="ArgumentOutOfRangeException">pathOrPattern</exception>
         /// <exception cref="NotSupportedException">Web wildcard access to supported</exception>
-        string[] GetHttpFilePaths(Uri uri, out Uri host, out bool streamPak)
+        string[] GetHttpFilePaths(Uri uri, out Uri host, out PakOption options)
         {
-            if (uri == null)
-                throw new ArgumentNullException(nameof(uri));
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
             var pathOrPattern = uri.LocalPath;
             var searchPattern = Path.GetFileName(pathOrPattern);
             var path = Path.GetDirectoryName(pathOrPattern);
             // file
             if (!string.IsNullOrEmpty(searchPattern)) throw new ArgumentOutOfRangeException(nameof(pathOrPattern), pathOrPattern); //: Web single file access to supported.
             // folder
-            streamPak = true;
+            options = PakOption.Stream;
             searchPattern = Path.GetFileName(path);
             path = Path.GetDirectoryName(path);
             if (path.Contains('*')) throw new NotSupportedException("Web wildcard folder access");

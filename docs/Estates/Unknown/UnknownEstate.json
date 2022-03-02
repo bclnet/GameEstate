@@ -1,10 +1,10 @@
 ﻿{
-  "id": "Unk",
+  "id": "Unknown",
   "name": "Unknown",
   "studio": "",
   "description": "Unknown formats",
-  "estateType": "GameEstate.Unknown.UnkEstate, GameEstate.Base",
-  "pakFileType": "GameEstate.Unknown.UnkPakFile, GameEstate.Base",
+  "estateType": "GameEstate.Unknown.UnknownEstate, GameEstate.Base",
+  "pakFileType": "GameEstate.Unknown.UnknownPakFile, GameEstate.Base",
   "games": {
     "TheCouncil": {
       "name": "The Council",

@@ -12,42 +12,38 @@ namespace GameEstate.Cry.Formats.Core.Components
         ByteArray yBA = new ByteArray();
         ByteArray zBA = new ByteArray();
 
-        public float x { get => xBA.float1; set { _x = value; xBA.float1 = value; } }
-        public float y { get => yBA.float1; set { _y = value; yBA.float1 = value; } }
-        public float z { get => zBA.float1; set { _z = value; zBA.float1 = value; } }
-
         public float X { get => xBA.float1; set { _x = value; xBA.float1 = value; } }
         public float Y { get => yBA.float1; set { _y = value; yBA.float1 = value; } }
         public float Z { get => zBA.float1; set { _z = value; zBA.float1 = value; } }
 
-        public int xint { get => xBA.int1; set => xBA.int1 = value; }
-        public int yint { get => yBA.int1; set => yBA.int1 = value; }
-        public int zint { get => zBA.int1; set => zBA.int1 = value; }
+        public int Xint { get => xBA.int1; set => xBA.int1 = value; }
+        public int Yint { get => yBA.int1; set => yBA.int1 = value; }
+        public int Zint { get => zBA.int1; set => zBA.int1 = value; }
 
-        public uint xuint { get => xBA.uint1; set => xBA.uint1 = value; }
-        public uint yuint { get => yBA.uint1; set => yBA.uint1 = value; }
-        public uint zuint { get => zBA.uint1; set => zBA.uint1 = value; }
+        public uint Xuint { get => xBA.uint1; set => xBA.uint1 = value; }
+        public uint Yuint { get => yBA.uint1; set => yBA.uint1 = value; }
+        public uint Zuint { get => zBA.uint1; set => zBA.uint1 = value; }
 
         public Vector3() { }
         public Vector3(double x, double y, double z) { _x = (float)x; _y = (float)y; _z = (float)z; }
-        public Vector3(Vector3 vector) { _x = vector.x; _y = vector.y; _z = vector.z; }
+        public Vector3(Vector3 vector) { _x = vector.X; _y = vector.Y; _z = vector.Z; }
 
         public float this[int index]
         {
             get => index switch
             {
-                0 => x,
-                1 => y,
-                2 => z,
+                0 => X,
+                1 => Y,
+                2 => Z,
                 _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices must run from 0 to 2!"),
             };
             set
             {
                 switch (index)
                 {
-                    case 0: x = value; break;
-                    case 1: y = value; break;
-                    case 2: z = value; break;
+                    case 0: X = value; break;
+                    case 1: Y = value; break;
+                    case 2: Z = value; break;
                     default: throw new ArgumentOutOfRangeException(nameof(index), "Indices must run from 0 to 2!");
                 }
             }
@@ -67,10 +63,10 @@ namespace GameEstate.Cry.Formats.Core.Components
 
         public override bool Equals(object obj) => obj == null ? false : obj is Vector3 ? this == (Vector3)obj : false;
         public override string ToString() => $"{X},{Y},{Z}";
-        public static implicit operator Vector3(Vector4 vec4) => new Vector3(vec4.x, vec4.y, vec4.z);
+        public static implicit operator Vector3(Vector4 vec4) => new Vector3(vec4.X, vec4.Y, vec4.Z);
         public static bool operator ==(Vector3 left, Vector3 right) => right is null ? left is null : left.X == right.X && left.Y == right.Y && left.Z == right.Z;
         public static bool operator !=(Vector3 left, Vector3 right) => !(left == right);
-        public bool IsZero(float epsilon = 0) => Math.Abs(x) <= epsilon && Math.Abs(y) <= epsilon && Math.Abs(z) <= epsilon;
+        public bool IsZero(float epsilon = 0) => Math.Abs(X) <= epsilon && Math.Abs(Y) <= epsilon && Math.Abs(Z) <= epsilon;
         public float Dot(Vector3 v) => X * v.X + Y * v.Y + Z * v.Z;
     }
 }

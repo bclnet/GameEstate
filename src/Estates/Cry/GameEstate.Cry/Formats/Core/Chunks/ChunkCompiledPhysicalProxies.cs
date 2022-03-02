@@ -2,7 +2,7 @@
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
-    public abstract class ChunkCompiledPhysicalProxies : Chunk        // 0xACDC0003:  Hit boxes?
+    public abstract partial class ChunkCompiledPhysicalProxies : Chunk        // 0xACDC0003:  Hit boxes?
     {
         // Properties.  VERY similar to datastream, since it's essential vertex info.
         public uint Flags2;

@@ -6,7 +6,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     {
         public int Reserved;
         public IntSkinVertex[] IntSkinVertices;
-        public int NumIntVertices { get; set; }                  // Calculate by size of data div by size of IntSkinVertex structure.
+        public int NumIntVertices { get; set; } // Calculate by size of data div by size of IntSkinVertex structure.
 
         public override void WriteChunk()
         {

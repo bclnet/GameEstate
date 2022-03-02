@@ -13,8 +13,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             ID = r.ReadInt32();
             Size = r.ReadUInt32();
             Offset = r.ReadUInt32();
-            //if (ChunkType == ChunkTypeEnum.Timing)
-            //    ID += 0xFFFF0000;
+            //if (ChunkType == ChunkTypeEnum.Timing) ID += 0xFFFF0000;
         }
 
         public override void Write(BinaryWriter w) => throw new NotImplementedException();

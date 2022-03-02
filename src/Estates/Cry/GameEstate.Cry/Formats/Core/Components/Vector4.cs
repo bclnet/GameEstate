@@ -15,25 +15,20 @@ namespace GameEstate.Cry.Formats.Core.Components
         ByteArray zBA = new ByteArray();
         ByteArray wBA = new ByteArray();
 
-        public float x { get => xBA.float1; set { _x = value; xBA.float1 = value; } }
-        public float y { get => yBA.float1; set { _y = value; yBA.float1 = value; } }
-        public float z { get => zBA.float1; set { _z = value; zBA.float1 = value; } }
-        public float w { get => wBA.float1; set { _w = value; wBA.float1 = value; } }
-
         public float X { get => xBA.float1; set { _x = value; xBA.float1 = value; } }
         public float Y { get => yBA.float1; set { _y = value; yBA.float1 = value; } }
         public float Z { get => zBA.float1; set { _z = value; zBA.float1 = value; } }
         public float W { get => wBA.float1; set { _w = value; wBA.float1 = value; } }
 
-        public int xint { get => xBA.int1; set => xBA.int1 = value; }
-        public int yint { get => yBA.int1; set => yBA.int1 = value; }
-        public int zint { get => zBA.int1; set => zBA.int1 = value; }
-        public int wint { get => wBA.int1; set => wBA.int1 = value; }
+        public int Xint { get => xBA.int1; set => xBA.int1 = value; }
+        public int Yint { get => yBA.int1; set => yBA.int1 = value; }
+        public int Zint { get => zBA.int1; set => zBA.int1 = value; }
+        public int Wint { get => wBA.int1; set => wBA.int1 = value; }
 
-        public uint xuint { get => xBA.uint1; set => xBA.uint1 = value; }
-        public uint yuint { get => yBA.uint1; set => yBA.uint1 = value; }
-        public uint zuint { get => zBA.uint1; set => zBA.uint1 = value; }
-        public uint wuint { get => wBA.uint1; set => wBA.uint1 = value; }
+        public uint Xuint { get => xBA.uint1; set => xBA.uint1 = value; }
+        public uint Yuint { get => yBA.uint1; set => yBA.uint1 = value; }
+        public uint Zuint { get => zBA.uint1; set => zBA.uint1 = value; }
+        public uint Wuint { get => wBA.uint1; set => wBA.uint1 = value; }
 
         public Vector4(double x, double y, double z, double w) { _x = (float)x; _y = (float)y; _z = (float)z; _w = (float)w; }
 
@@ -41,9 +36,9 @@ namespace GameEstate.Cry.Formats.Core.Components
         {
             get => index switch
             {
-                0 => x,
-                1 => y,
-                2 => z,
+                0 => X,
+                1 => Y,
+                2 => Z,
                 3 => W,
                 _ => throw new ArgumentOutOfRangeException(nameof(index), "Indices must run from 0 to 3!"),
             };
@@ -51,9 +46,9 @@ namespace GameEstate.Cry.Formats.Core.Components
             {
                 switch (index)
                 {
-                    case 0: x = value; break;
-                    case 1: y = value; break;
-                    case 2: z = value; break;
+                    case 0: X = value; break;
+                    case 1: Y = value; break;
+                    case 2: Z = value; break;
                     case 3: W = value; break;
                     default: throw new ArgumentOutOfRangeException(nameof(index), "Indices must run from 0 to 3!");
                 }
@@ -63,8 +58,8 @@ namespace GameEstate.Cry.Formats.Core.Components
         public Vector3 ToVector3()
         {
             var r = new Vector3();
-            if (_w == 0) { r.x = _x; r.y = _y; r.z = _z; }
-            else { r.x = _x / _w; r.y = _y / _w; r.z = _z / _w; }
+            if (_w == 0) { r.X = _x; r.Y = _y; r.Z = _z; }
+            else { r.X = _x / _w; r.Y = _y / _w; r.Z = _z / _w; }
             return r;
         }
 
@@ -89,10 +84,10 @@ namespace GameEstate.Cry.Formats.Core.Components
 
         public override bool Equals(object obj) => obj == null ? false : obj is Vector4 ? this == (Vector4)obj : false;
         public override string ToString() => $"{X},{Y},{Z},{W}";
-        public static implicit operator Vector4(Vector3 vec3) => new Vector4(vec3.x, vec3.y, vec3.z, 0);
+        public static implicit operator Vector4(Vector3 vec3) => new Vector4(vec3.X, vec3.Y, vec3.Z, 0);
         public static bool operator ==(Vector4 left, Vector4 right) => right is null ? left is null : left.X == right.X && left.Y == right.Y && left.Z == right.Z && left.W == right.W;
         public static bool operator !=(Vector4 left, Vector4 right) => !(left == right);
-        public bool IsZero(float epsilon = 0) => Math.Abs(x) <= epsilon && Math.Abs(y) <= epsilon && Math.Abs(z) <= epsilon && Math.Abs(w) <= epsilon;
+        public bool IsZero(float epsilon = 0) => Math.Abs(X) <= epsilon && Math.Abs(Y) <= epsilon && Math.Abs(Z) <= epsilon && Math.Abs(W) <= epsilon;
         public float Dot(Vector4 v) => X * v.X + Y * v.Y + Z * v.Z + W * v.W;
     }
 }

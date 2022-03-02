@@ -20,5 +20,3 @@ namespace GameEstate.Cry.Formats
             };
     }
 }
-
-//

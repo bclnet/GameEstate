@@ -314,6 +314,21 @@ namespace System.IO
         public static Vector2 ReadVector2(this BinaryReader source) => new Vector2(source.ReadSingle(), source.ReadSingle());
         public static Vector3 ReadVector3(this BinaryReader source) => new Vector3(source.ReadSingle(), source.ReadSingle(), source.ReadSingle());
         public static Vector4 ReadVector4(this BinaryReader source) => new Vector4(source.ReadSingle(), source.ReadSingle(), source.ReadSingle(), source.ReadSingle());
+
+        public static Matrix3x3 ReadMatrix3x3(this BinaryReader r)
+            => new Matrix3x3
+            {
+                M11 = r.ReadSingle(),
+                M12 = r.ReadSingle(),
+                M13 = r.ReadSingle(),
+                M21 = r.ReadSingle(),
+                M22 = r.ReadSingle(),
+                M23 = r.ReadSingle(),
+                M31 = r.ReadSingle(),
+                M32 = r.ReadSingle(),
+                M33 = r.ReadSingle(),
+            };
+
         /// <summary>
         /// Reads a column-major 3x3 matrix but returns a functionally equivalent 4x4 matrix.
         /// </summary>

@@ -1,6 +1,7 @@
 using GameEstate.Formats;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using static GameEstate.Estate;
 
 namespace GameEstate
 {
@@ -18,19 +19,19 @@ namespace GameEstate
             => Assert.ThrowsException<ArgumentOutOfRangeException>(() => EstateManager.GetEstate(estateName).ParseResource(new Uri(uri)));
 
         [DataTestMethod]
-        [DataRow("Tes", $"game:/Oblivion*.bsa#Oblivion", "Oblivion", false, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        [DataRow("Tes", $"{FILE_Oblivion}/Data/Oblivion*.bsa#Oblivion", "Oblivion", false, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        [DataRow("Tes", $"{FILE_Oblivion}/Data/Oblivion%20-%20Meshes.bsa#Oblivion", "Oblivion", false, 1, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        //[DataRow("Tes", $"{DIR_Oblivion}/Oblivion*.bsa/#Oblivion", "Oblivion", true, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        //[DataRow("Tes", $"{DIR_Oblivion}/Oblivion%20-%20Meshes.bsa/#Oblivion", "Oblivion", true, 1, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        [DataRow("Tes", $"{HTTP_Oblivion}/Oblivion*.bsa/#Oblivion", "Oblivion", true, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        [DataRow("Tes", $"{HTTP_Oblivion}/Oblivion%20-%20Meshes.bsa/#Oblivion", "Oblivion", true, 1, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
-        public void Resource(string estateName, string uri, string game, bool streamPak, int pathsFound, string firstPak, string sampleFile, int sampleFileSize)
+        [DataRow("Tes", $"game:/Oblivion*.bsa#Oblivion", "Oblivion", 0, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        [DataRow("Tes", $"{FILE_Oblivion}/Data/Oblivion*.bsa#Oblivion", "Oblivion", 0, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        [DataRow("Tes", $"{FILE_Oblivion}/Data/Oblivion%20-%20Meshes.bsa#Oblivion", "Oblivion", 0, 1, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        //[DataRow("Tes", $"{DIR_Oblivion}/Oblivion*.bsa/#Oblivion", "Oblivion", PakOption.Stream, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        //[DataRow("Tes", $"{DIR_Oblivion}/Oblivion%20-%20Meshes.bsa/#Oblivion", "Oblivion", PakOption.Stream, 1, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        [DataRow("Tes", $"{HTTP_Oblivion}/Oblivion*.bsa/#Oblivion", "Oblivion", PakOption.Stream, 6, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        [DataRow("Tes", $"{HTTP_Oblivion}/Oblivion%20-%20Meshes.bsa/#Oblivion", "Oblivion", PakOption.Stream, 1, "Oblivion - Meshes.bsa", "trees/treeginkgo.spt", 2059)]
+        public void Resource(string estateName, string uri, string game, PakOption options, int pathsFound, string firstPak, string sampleFile, int sampleFileSize)
         {
             var estate = EstateManager.GetEstate(estateName);
             var resource = estate.ParseResource(new Uri(uri));
             Assert.AreEqual(game, resource.Game);
-            Assert.AreEqual(streamPak, resource.StreamPak);
+            Assert.AreEqual(options, resource.Options);
             Assert.AreEqual(pathsFound, resource.Paths.Length);
             var pakFile = estate.OpenPakFile(new Uri(uri));
             if (pakFile is MultiPakFile multiPakFile)

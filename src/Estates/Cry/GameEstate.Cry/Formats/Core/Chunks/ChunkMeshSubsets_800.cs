@@ -19,9 +19,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 MeshSubsets[i].NumVertices = r.ReadUInt32();
                 MeshSubsets[i].MatID = r.ReadUInt32();
                 MeshSubsets[i].Radius = r.ReadSingle();
-                MeshSubsets[i].Center.x = r.ReadSingle();
-                MeshSubsets[i].Center.y = r.ReadSingle();
-                MeshSubsets[i].Center.z = r.ReadSingle();
+                MeshSubsets[i].Center.X = r.ReadSingle();
+                MeshSubsets[i].Center.Y = r.ReadSingle();
+                MeshSubsets[i].Center.Z = r.ReadSingle();
             }
         }
     }

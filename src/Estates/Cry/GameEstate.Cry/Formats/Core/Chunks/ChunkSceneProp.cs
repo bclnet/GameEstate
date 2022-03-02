@@ -16,8 +16,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    ChunkType:   {ChunkType}");
             Log($"    Version:     {Version:X}");
             Log($"    ID:          {ID:X}");
-            for (var i = 0; i < NumProps; i++)
-                Log($"{PropKey[i],30}{PropValue[i],20}");
+            for (var i = 0; i < NumProps; i++) Log($"{PropKey[i],30}{PropValue[i],20}");
             Log("*** END SceneProp Chunk ***");
         }
     }

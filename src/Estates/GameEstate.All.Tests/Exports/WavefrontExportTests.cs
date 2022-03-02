@@ -15,7 +15,7 @@ namespace GameEstate.Exports
         //[DataRow("Rsi:StarCitizen", "Data/Objects/buildingsets/human/hightech/prop/hydroponic/hydroponic_machine_1_incubator_rotary_025x01x0225_a/cga")]
         //[DataRow("Rsi:StarCitizen", "Data/Objects/buildingsets/human/hightech/prop/hydroponic/hydroponic_machine_1_incubator_rotary_025x01x0225_a/cgf")]
         //[DataRow("Rsi:StarCitizen", "Data/Objects/Characters/Human/male_v7/armor/nvy/pilot_flightsuit/m_nvy_pilot_light_armor_helmet_01.skin")]
-        public async Task ExportFileObject(string pak, string sampleFile) => await ExportFileObjectAsync(Helper.Paks[pak].Value, sampleFile);
+        public async Task ExportFileObjectAsync(string pak, string sampleFile) => await ExportFileObjectAsync(Helper.Paks[pak].Value, sampleFile);
 
         public async Task ExportFileObjectAsync(EstatePakFile source, string sampleFile)
         {

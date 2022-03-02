@@ -1,6 +1,6 @@
 ﻿namespace GameEstate
 {
-    public static unsafe class TestPlatform
+    public static class TestPlatform
     {
         public static bool Startup()
         {

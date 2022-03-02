@@ -8,7 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            NumIntFaces = DataSize / 6;        // This is an array of TFaces, which are 3 uint16.
+            NumIntFaces = DataSize / 6; // This is an array of TFaces, which are 3 uint16.
             Faces = new TFace[NumIntFaces];
             for (var i = 0; i < NumIntFaces; i++)
             {

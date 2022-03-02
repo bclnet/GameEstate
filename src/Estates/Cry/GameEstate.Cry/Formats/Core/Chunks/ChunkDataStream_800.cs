@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
     public class ChunkDataStream_800 : ChunkDataStream
     {
-        // This includes changes for 2.6 created by Dymek (byte4/1/2hex, and 20 byte per element vertices).  Thank you!
+        // This includes changes for 2.6 created by Dymek (byte4/1/2hex, and 20 byte per element vertices). Thank you!
         public static float Byte4HexToFloat(string hexString) => BitConverter.ToSingle(BitConverter.GetBytes(uint.Parse(hexString, System.Globalization.NumberStyles.AllowHexSpecifier)), 0);
         public static int Byte1HexToIntType2(string hexString) => Convert.ToSByte(hexString, 16);
 
@@ -51,37 +52,37 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             if (_model.FileVersion == FileVersionEnum.CryTek_3_5 || _model.FileVersion == FileVersionEnum.CryTek_3_4) BytesPerElement = r.ReadUInt32(); // bytes per element
             if (_model.FileVersion == FileVersionEnum.CryTek_3_6)
             {
-                BytesPerElement = (uint)r.ReadInt16();        // Star Citizen 2.0 is using an int16 here now.
-                r.ReadInt16();                                // unknown value.   Doesn't look like padding though.
+                BytesPerElement = (uint)r.ReadInt16(); // Star Citizen 2.0 is using an int16 here now.
+                r.ReadInt16(); // unknown value.  Doesn't look like padding though.
             }
             SkipBytes(r, 8);
 
-            // Now do loops to read for each of the different Data Stream Types.  If vertices, need to populate Vector3s for example.
+            // Now do loops to read for each of the different Data Stream Types. If vertices, need to populate Vector3s for example.
             switch (DataStreamType)
             {
-                case DataStreamTypeEnum.VERTICES:  // Ref is 0x00000000
-                    Vertices = new Vector3[NumElements];
+                case DataStreamTypeEnum.VERTICES: // Ref is 0x00000000
+                    Vertices = new Vector4[NumElements];
                     switch (BytesPerElement)
                     {
                         case 12:
                             for (var i = 0; i < NumElements; i++)
                             {
-                                Vertices[i].x = r.ReadSingle();
-                                Vertices[i].y = r.ReadSingle();
-                                Vertices[i].z = r.ReadSingle();
+                                Vertices[i].X = r.ReadSingle();
+                                Vertices[i].Y = r.ReadSingle();
+                                Vertices[i].Z = r.ReadSingle();
                             }
                             break;
                         case 8:  // Prey files, and old Star Citizen files
                             for (var i = 0; i < NumElements; i++)
                             {
                                 // 2 byte floats.  Use the Half structure from TK.Math
-                                //Vertices[i].x = Byte4HexToFloat(r.ReadUInt16().ToString("X8"));
-                                //Vertices[i].y = Byte4HexToFloat(r.ReadUInt16().ToString("X8")); r.ReadUInt16();
-                                //Vertices[i].z = Byte4HexToFloat(r.ReadUInt16().ToString("X8"));
-                                //Vertices[i].w = Byte4HexToFloat(r.ReadUInt16().ToString("X8"));
-                                Vertices[i].x = new Half { bits = r.ReadUInt16() }.ToSingle();
-                                Vertices[i].y = new Half { bits = r.ReadUInt16() }.ToSingle();
-                                Vertices[i].z = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                //Vertices[i].X = Byte4HexToFloat(r.ReadUInt16().ToString("X8"));
+                                //Vertices[i].Y = Byte4HexToFloat(r.ReadUInt16().ToString("X8")); r.ReadUInt16();
+                                //Vertices[i].Z = Byte4HexToFloat(r.ReadUInt16().ToString("X8"));
+                                //Vertices[i].W = Byte4HexToFloat(r.ReadUInt16().ToString("X8"));
+                                Vertices[i].X = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                Vertices[i].Y = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                Vertices[i].Z = new Half { bits = r.ReadUInt16() }.ToSingle();
                                 r.ReadUInt16();
                             }
                             break;
@@ -89,10 +90,10 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                             //Console.WriteLine("method: (3)");
                             for (var i = 0; i < NumElements; i++)
                             {
-                                Vertices[i].x = r.ReadSingle();
-                                Vertices[i].y = r.ReadSingle();
-                                Vertices[i].z = r.ReadSingle();
-                                Vertices[i].w = r.ReadSingle(); // TODO:  Sometimes there's a W to these structures.  Will investigate.
+                                Vertices[i].X = r.ReadSingle();
+                                Vertices[i].Y = r.ReadSingle();
+                                Vertices[i].Z = r.ReadSingle();
+                                Vertices[i].W = r.ReadSingle(); // TODO:  Sometimes there's a W to these structures.  Will investigate.
                             }
                             break;
                     }
@@ -107,9 +108,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                     Normals = new Vector3[NumElements];
                     for (var i = 0; i < NumElements; i++)
                     {
-                        Normals[i].x = r.ReadSingle();
-                        Normals[i].y = r.ReadSingle();
-                        Normals[i].z = r.ReadSingle();
+                        Normals[i].X = r.ReadSingle();
+                        Normals[i].Y = r.ReadSingle();
+                        Normals[i].Z = r.ReadSingle();
                     }
                     //Log($"Offset is {r.BaseStream.Position:X}");
                     break;
@@ -130,35 +131,35 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                         {
                             case 0x10:
                                 // These have to be divided by 32767 to be used properly (value between 0 and 1)
-                                Tangents[i, 0].x = r.ReadInt16();
-                                Tangents[i, 0].y = r.ReadInt16();
-                                Tangents[i, 0].z = r.ReadInt16();
-                                Tangents[i, 0].w = r.ReadInt16();
+                                Tangents[i, 0].X = r.ReadInt16();
+                                Tangents[i, 0].Y = r.ReadInt16();
+                                Tangents[i, 0].Z = r.ReadInt16();
+                                Tangents[i, 0].W = r.ReadInt16();
                                 //
-                                Tangents[i, 1].x = r.ReadInt16();
-                                Tangents[i, 1].y = r.ReadInt16();
-                                Tangents[i, 1].z = r.ReadInt16();
-                                Tangents[i, 1].w = r.ReadInt16();
+                                Tangents[i, 1].X = r.ReadInt16();
+                                Tangents[i, 1].Y = r.ReadInt16();
+                                Tangents[i, 1].Z = r.ReadInt16();
+                                Tangents[i, 1].W = r.ReadInt16();
                                 break;
                             case 0x08:
                                 // These have to be divided by 127 to be used properly (value between 0 and 1)
                                 // Tangent
-                                Tangents[i, 0].w = r.ReadSByte() / 127.0f;
-                                Tangents[i, 0].x = r.ReadSByte() / 127.0f;
-                                Tangents[i, 0].y = r.ReadSByte() / 127.0f;
-                                Tangents[i, 0].z = r.ReadSByte() / 127.0f;
+                                Tangents[i, 0].W = r.ReadSByte() / 127.0f;
+                                Tangents[i, 0].X = r.ReadSByte() / 127.0f;
+                                Tangents[i, 0].Y = r.ReadSByte() / 127.0f;
+                                Tangents[i, 0].Z = r.ReadSByte() / 127.0f;
                                 // Binormal
-                                Tangents[i, 1].w = r.ReadSByte() / 127.0f;
-                                Tangents[i, 1].x = r.ReadSByte() / 127.0f;
-                                Tangents[i, 1].y = r.ReadSByte() / 127.0f;
-                                Tangents[i, 1].z = r.ReadSByte() / 127.0f;
+                                Tangents[i, 1].W = r.ReadSByte() / 127.0f;
+                                Tangents[i, 1].X = r.ReadSByte() / 127.0f;
+                                Tangents[i, 1].Y = r.ReadSByte() / 127.0f;
+                                Tangents[i, 1].Z = r.ReadSByte() / 127.0f;
                                 // Calculate the normal based on the cross product of the tangents.
-                                //Normals[i].x = (Tangents[i,0].y * Tangents[i,1].z - Tangents[i,0].z * Tangents[i,1].y);
-                                //Normals[i].y = 0 - (Tangents[i,0].x * Tangents[i,1].z - Tangents[i,0].z * Tangents[i,1].x); 
-                                //Normals[i].z = (Tangents[i,0].x * Tangents[i,1].y - Tangents[i,0].y * Tangents[i,1].x);
-                                //Console.WriteLine("Tangent: {0:F6} {1:F6} {2:F6}", Tangents[i,0].x, Tangents[i, 0].y, Tangents[i, 0].z);
-                                //Console.WriteLine("Binormal: {0:F6} {1:F6} {2:F6}", Tangents[i, 1].x, Tangents[i, 1].y, Tangents[i, 1].z);
-                                //Console.WriteLine("Normal: {0:F6} {1:F6} {2:F6}", Normals[i].x, Normals[i].y, Normals[i].z);
+                                //Normals[i].X = (Tangents[i, 0].Y * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].Y);
+                                //Normals[i].Y = 0 - (Tangents[i, 0].X * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].X);
+                                //Normals[i].Z = (Tangents[i, 0].X * Tangents[i, 1].Y - Tangents[i, 0].Y * Tangents[i, 1].X);
+                                //Console.WriteLine($"Tangent: {Tangents[i, 0].X:F6} {Tangents[i, 0].Y:F6} {Tangents[i, 0].Z:F6}");
+                                //Console.WriteLine($"Binormal: {Tangents[i, 1].X:F6} {Tangents[i, 1].Y:F6} {Tangents[i, 1].Z:F6}");
+                                //Console.WriteLine($"Normal: {Normals[i].X:F6} {Normals[i].Y:F6} {Normals[i].Z:F6}");
                                 break;
                             default: throw new Exception("Need to add new Tangent Size");
                         }
@@ -188,13 +189,12 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                             break;
                         default:
                             Log("Unknown Color Depth");
-                            for (var i = 0; i < NumElements; i++)
-                                SkipBytes(r, BytesPerElement);
+                            for (var i = 0; i < NumElements; i++) SkipBytes(r, BytesPerElement);
                             break;
                     }
                     break;
                 case DataStreamTypeEnum.VERTSUVS:  // 3 half floats for verts, 3 half floats for normals, 2 half floats for UVs
-                    Vertices = new Vector3[NumElements];
+                    Vertices = new Vector4[NumElements];
                     Normals = new Vector3[NumElements];
                     RGBColors = new IRGB[NumElements];
                     UVs = new UV[NumElements];
@@ -203,13 +203,13 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                         case 20:  // Dymek wrote this.  Used in 2.6 skin files.  3 floats for vertex position, 4 bytes for normals, 2 halfs for UVs.  Normals are calculated from Tangents
                             for (var i = 0; i < NumElements; i++)
                             {
-                                Vertices[i].x = r.ReadSingle();
-                                Vertices[i].y = r.ReadSingle();
-                                Vertices[i].z = r.ReadSingle(); // For some reason, skins are an extra 1 meter in the z direction.
+                                Vertices[i].X = r.ReadSingle();
+                                Vertices[i].Y = r.ReadSingle();
+                                Vertices[i].Z = r.ReadSingle(); // For some reason, skins are an extra 1 meter in the z direction.
                                 // Normals are stored in a signed byte, prob div by 127.
-                                Normals[i].x = (float)r.ReadSByte() / 127;
-                                Normals[i].y = (float)r.ReadSByte() / 127;
-                                Normals[i].z = (float)r.ReadSByte() / 127;
+                                Normals[i].X = (float)r.ReadSByte() / 127;
+                                Normals[i].Y = (float)r.ReadSByte() / 127;
+                                Normals[i].Z = (float)r.ReadSByte() / 127;
                                 r.ReadSByte(); // Should be FF.
                                 UVs[i].U = new Half { bits = r.ReadUInt16() }.ToSingle();
                                 UVs[i].V = new Half { bits = r.ReadUInt16() }.ToSingle();
@@ -223,42 +223,42 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                             {
                                 //ushort bver = 0;
                                 //var ver = 0F;
-                                Vertices[i].x = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
-                                Vertices[i].y = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
-                                Vertices[i].z = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
-                                Vertices[i].w = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f; // Almost always 1
+                                Vertices[i].X = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
+                                Vertices[i].Y = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
+                                Vertices[i].Z = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
+                                Vertices[i].W = Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f; // Almost always 1
                                 // Next structure is Colors, not normals.  For 16 byte elements, normals are calculated from Tangent data.
                                 //RGBColors[i].r = r.ReadByte();
                                 //RGBColors[i].g = r.ReadByte();
                                 //RGBColors[i].b = r.ReadByte();
                                 //r.ReadByte();           // additional byte.
                                 //
-                                //Normals[i].x = (r.ReadByte() - 128.0f) / 127.5f;
-                                //Normals[i].y = (r.ReadByte() - 128.0f) / 127.5f;
-                                //Normals[i].z = (r.ReadByte() - 128.0f) / 127.5f;
+                                //Normals[i].X = (r.ReadByte() - 128.0f) / 127.5f;
+                                //Normals[i].Y = (r.ReadByte() - 128.0f) / 127.5f;
+                                //Normals[i].Z = (r.ReadByte() - 128.0f) / 127.5f;
                                 //r.ReadByte();           // additional byte.
                                 // Read a Quat, convert it to vector3
                                 var quat = new Vector4
                                 {
-                                    x = (r.ReadByte() - 128.0f) / 127.5f,
-                                    y = (r.ReadByte() - 128.0f) / 127.5f,
-                                    z = (r.ReadByte() - 128.0f) / 127.5f,
-                                    w = (r.ReadByte() - 128.0f) / 127.5f
+                                    X = (r.ReadByte() - 128.0f) / 127.5f,
+                                    Y = (r.ReadByte() - 128.0f) / 127.5f,
+                                    Z = (r.ReadByte() - 128.0f) / 127.5f,
+                                    W = (r.ReadByte() - 128.0f) / 127.5f
                                 };
-                                Normals[i].x = (2 * (quat.x * quat.z + quat.y * quat.w));
-                                Normals[i].y = (2 * (quat.y * quat.z - quat.x * quat.w));
-                                Normals[i].z = (2 * (quat.z * quat.z + quat.w * quat.w)) - 1;
+                                Normals[i].X = (2 * (quat.X * quat.Z + quat.Y * quat.W));
+                                Normals[i].Y = (2 * (quat.Y * quat.Z - quat.X * quat.W));
+                                Normals[i].Z = (2 * (quat.Z * quat.Z + quat.W * quat.W)) - 1;
 
                                 // UVs ABSOLUTELY should use the Half structures.
                                 UVs[i].U = new Half { bits = r.ReadUInt16() }.ToSingle();
                                 UVs[i].V = new Half { bits = r.ReadUInt16() }.ToSingle();
 
-                                //Vertices[i].x = new Half { bits = r.ReadUInt16() }.ToSingle();
-                                //Vertices[i].y = new Half { bits = r.ReadUInt16() }.ToSingle();
-                                //Vertices[i].z = new Half { bits = r.ReadUInt16() }.ToSingle(); 
-                                //Normals[i].x = new Half { bits = r.ReadUInt16() }.ToSingle();
-                                //Normals[i].y = new Half { bits = r.ReadUInt16() }.ToSingle();
-                                //Normals[i].z = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                //Vertices[i].X = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                //Vertices[i].Y = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                //Vertices[i].Z = new Half { bits = r.ReadUInt16() }.ToSingle(); 
+                                //Normals[i].X = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                //Normals[i].Y = new Half { bits = r.ReadUInt16() }.ToSingle();
+                                //Normals[i].Z = new Half { bits = r.ReadUInt16() }.ToSingle();
                                 //UVs[i].U = new Half { bits = r.ReadUInt16() }.ToSingle();
                                 //UVs[i].V = new Half { bits = r.ReadUInt16() }.ToSingle();
                             }
@@ -302,19 +302,19 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                     Normals = new Vector3[NumElements];
                     for (var i = 0; i < NumElements; i++)
                     {
-                        Tangents[i, 0].w = r.ReadSByte() / 127.0f;
-                        Tangents[i, 0].x = r.ReadSByte() / 127.0f;
-                        Tangents[i, 0].y = r.ReadSByte() / 127.0f;
-                        Tangents[i, 0].z = r.ReadSByte() / 127.0f;
+                        Tangents[i, 0].W = r.ReadSByte() / 127.0f;
+                        Tangents[i, 0].X = r.ReadSByte() / 127.0f;
+                        Tangents[i, 0].Y = r.ReadSByte() / 127.0f;
+                        Tangents[i, 0].Z = r.ReadSByte() / 127.0f;
                         // Binormal
-                        Tangents[i, 1].w = r.ReadSByte() / 127.0f;
-                        Tangents[i, 1].x = r.ReadSByte() / 127.0f;
-                        Tangents[i, 1].y = r.ReadSByte() / 127.0f;
-                        Tangents[i, 1].z = r.ReadSByte() / 127.0f;
+                        Tangents[i, 1].W = r.ReadSByte() / 127.0f;
+                        Tangents[i, 1].X = r.ReadSByte() / 127.0f;
+                        Tangents[i, 1].Y = r.ReadSByte() / 127.0f;
+                        Tangents[i, 1].Z = r.ReadSByte() / 127.0f;
                         // Calculate the normal based on the cross product of the tangents.
-                        Normals[i].x = (Tangents[i, 0].y * Tangents[i, 1].z - Tangents[i, 0].z * Tangents[i, 1].y);
-                        Normals[i].y = 0 - (Tangents[i, 0].x * Tangents[i, 1].z - Tangents[i, 0].z * Tangents[i, 1].x);
-                        Normals[i].z = (Tangents[i, 0].x * Tangents[i, 1].y - Tangents[i, 0].y * Tangents[i, 1].x);
+                        Normals[i].X = (Tangents[i, 0].Y * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].Y);
+                        Normals[i].Y = 0 - (Tangents[i, 0].X * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].X);
+                        Normals[i].Z = (Tangents[i, 0].X * Tangents[i, 1].Y - Tangents[i, 0].Y * Tangents[i, 1].X);
                     }
                     break;
                 default: Log("***** Unknown DataStream Type *****"); break;

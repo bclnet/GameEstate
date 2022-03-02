@@ -10,10 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\docs\Estates\Unk\UnkEstate.json" Link="Estates\UnkEstate.json" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<EmbeddedResource Include="..\..\docs\Estates\AC\ACEstate.json" Link="Estates\ACEstate.json" />
 	<EmbeddedResource Include="..\..\docs\Estates\Arkane\ArkaneEstate.json" Link="Estates\ArkaneEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Aurora\AuroraEstate.json" Link="Estates\AuroraEstate.json" />
@@ -23,6 +19,7 @@
     <EmbeddedResource Include="..\..\docs\Estates\Red\RedEstate.json" Link="Estates\RedEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Rsi\RsiEstate.json" Link="Estates\RsiEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Tes\TesEstate.json" Link="Estates\TesEstate.json" />
+    <EmbeddedResource Include="..\..\docs\Estates\Unknown\UnknownEstate.json" Link="Estates\UnknownEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Valve\ValveEstate.json" Link="Estates\ValveEstate.json" />
   </ItemGroup>
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
@@ -38,7 +39,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         /// <summary>
         /// Rotation component of Transform
         /// </summary>
-        public Quat Rot { get; internal set; }
+        public Quaternion Rot { get; internal set; }
         /// <summary>
         /// Scalar component of Transform
         /// </summary>
@@ -62,10 +63,10 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 
         // Calculated Properties
 
-        public Matrix4x4 LocalTransform = new Matrix4x4();            // Because Cryengine tends to store transform relative to world, we have to add all the transforms from the node to the root.  Calculated, row major.
-        public Vector3 LocalTranslation = new Vector3();            // To hold the local translation vector
-        public Matrix3x3 LocalRotation = new Matrix3x3();             // to hold the local rotation matrix
-        public Vector3 LocalScale = new Vector3();                  // to hold the local scale matrix
+        public Matrix4x4 LocalTransform = new Matrix4x4();              // Because Cryengine tends to store transform relative to world, we have to add all the transforms from the node to the root.  Calculated, row major.
+        public Vector3 LocalTranslation = new Vector3();                // To hold the local translation vector
+        public Matrix3x3 LocalRotation = new Matrix3x3();               // to hold the local rotation matrix
+        public Vector3 LocalScale = new Vector3();                      // to hold the local scale matrix
 
         ChunkNode _parentNode;
         public ChunkNode ParentNode
@@ -102,11 +103,11 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         }
 
         public Vector3 TransformSoFar => ParentNode != null
-            ? ParentNode.TransformSoFar.Add(Transform.GetTranslation())
+            ? ParentNode.TransformSoFar + Transform.GetTranslation()
             : Transform.GetTranslation();
 
         public Matrix3x3 RotSoFar => ParentNode != null
-            ? Transform.GetRotation().Mult(ParentNode.RotSoFar)
+            ? Transform.GetRotation() * ParentNode.RotSoFar
             : _model.RootNode.Transform.GetRotation();
 
         public List<ChunkNode> AllChildNodes => __NumChildren == 0 ? null : _model.NodeMap.Values.Where(a => a.ParentNodeID == ID).ToList();
@@ -122,9 +123,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             var vec3 = transform;
             // Apply the local transforms (rotation and translation) to the vector
             // Do rotations.  Rotations must come first, then translate.
-            vec3 = RotSoFar.Mult3x1(vec3);
+            vec3 = RotSoFar * vec3;
             // Do translations.  I think this is right.  Objects in right place, not rotated right.
-            vec3 = vec3.Add(TransformSoFar);
+            vec3 += TransformSoFar;
             return vec3;
         }
 
@@ -141,44 +142,44 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             // Read the 4x4 transform matrix.  Should do a couple of for loops, but data structures...
             Transform = new Matrix4x4
             {
-                m00 = r.ReadSingle(),
-                m01 = r.ReadSingle(),
-                m02 = r.ReadSingle(),
-                m03 = r.ReadSingle(),
-                m10 = r.ReadSingle(),
-                m11 = r.ReadSingle(),
-                m12 = r.ReadSingle(),
-                m13 = r.ReadSingle(),
-                m20 = r.ReadSingle(),
-                m21 = r.ReadSingle(),
-                m22 = r.ReadSingle(),
-                m23 = r.ReadSingle(),
-                m30 = r.ReadSingle(),
-                m31 = r.ReadSingle(),
-                m32 = r.ReadSingle(),
-                m33 = r.ReadSingle(),
+                M11 = r.ReadSingle(),
+                M12 = r.ReadSingle(),
+                M13 = r.ReadSingle(),
+                M14 = r.ReadSingle(),
+                M21 = r.ReadSingle(),
+                M22 = r.ReadSingle(),
+                M23 = r.ReadSingle(),
+                M24 = r.ReadSingle(),
+                M31 = r.ReadSingle(),
+                M32 = r.ReadSingle(),
+                M33 = r.ReadSingle(),
+                M34 = r.ReadSingle(),
+                M41 = r.ReadSingle(),
+                M42 = r.ReadSingle(),
+                M43 = r.ReadSingle(),
+                M44 = r.ReadSingle(),
             };
             // Read the position Pos Vector3
             Pos = new Vector3
             {
-                x = r.ReadSingle() / 100,
-                y = r.ReadSingle() / 100,
-                z = r.ReadSingle() / 100,
+                X = r.ReadSingle() / 100,
+                Y = r.ReadSingle() / 100,
+                Z = r.ReadSingle() / 100,
             };
             // Read the rotation Rot Quad
-            Rot = new Quat
+            Rot = new Quaternion
             {
-                w = r.ReadSingle(),
-                x = r.ReadSingle(),
-                y = r.ReadSingle(),
-                z = r.ReadSingle(),
+                W = r.ReadSingle(),
+                X = r.ReadSingle(),
+                Y = r.ReadSingle(),
+                Z = r.ReadSingle(),
             };
             // Read the Scale Vector 3
             Scale = new Vector3
             {
-                x = r.ReadSingle(),
-                y = r.ReadSingle(),
-                z = r.ReadSingle(),
+                X = r.ReadSingle(),
+                Y = r.ReadSingle(),
+                Z = r.ReadSingle(),
             };
             // read the controller pos/rot/scale
             PosCtrlID = r.ReadInt32();
@@ -197,15 +198,15 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Parent ID:           {ParentNodeID:X}");
             Log($"    Number of Children:  {__NumChildren}");
             Log($"    Material ID:         {MatID:X}"); // 0x1 is mtllib w children, 0x10 is mtl no children, 0x18 is child
-            Log($"    Position:            {Pos.x:F7}   {Pos.y:F7}   {Pos.z:F7}");
-            Log($"    Scale:               {Scale.x:F7}   {Scale.y:F7}   {Scale.z:F7}");
-            LogFormat("    Transformation:      {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.m00, Transform.m01, Transform.m02, Transform.m03);
-            LogFormat("                         {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.m10, Transform.m11, Transform.m12, Transform.m13);
-            LogFormat("                         {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.m20, Transform.m21, Transform.m22, Transform.m23);
-            LogFormat("                         {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.m30 / 100, Transform.m31 / 100, Transform.m32 / 100, Transform.m33);
-            Log($"    Transform_sum:       {TransformSoFar.x:F7}  {TransformSoFar.y:F7}  {TransformSoFar.z:F7}");
+            Log($"    Position:            {Pos.X:F7}   {Pos.Y:F7}   {Pos.Z:F7}");
+            Log($"    Scale:               {Scale.X:F7}   {Scale.Y:F7}   {Scale.Z:F7}");
+            LogFormat("    Transformation:      {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.M11, Transform.M12, Transform.M13, Transform.M14);
+            LogFormat("                         {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.M21, Transform.M22, Transform.M23, Transform.M24);
+            LogFormat("                         {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.M31, Transform.M32, Transform.M33, Transform.M34);
+            LogFormat("                         {0:F7}  {1:F7}  {2:F7}  {3:F7}", Transform.M41 / 100, Transform.M42 / 100, Transform.M43 / 100, Transform.M44);
+            Log($"    Transform_sum:       {TransformSoFar.X:F7}  {TransformSoFar.Y:F7}  {TransformSoFar.Z:F7}");
             Log($"    Rotation_sum:");
-            RotSoFar.WriteMatrix3x3();
+            RotSoFar.LogMatrix3x3();
             Log($"*** END Node Chunk ***");
         }
     }

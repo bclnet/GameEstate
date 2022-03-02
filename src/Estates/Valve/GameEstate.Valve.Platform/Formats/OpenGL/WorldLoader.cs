@@ -120,12 +120,12 @@ namespace GameEstate.Valve.Formats.OpenGL
                     classname == "point_devshot_camera" ||
                     classname == "point_camera";
 
-                var scaleMatrix = Matrix4x4.CreateScale(VectorExtensions.ParseVector(scale));
+                var scaleMatrix = Matrix4x4.CreateScale(System.Numerics.Polyfill.ParseVector(scale));
 
-                var positionVector = VectorExtensions.ParseVector(position);
+                var positionVector = System.Numerics.Polyfill.ParseVector(position);
                 var positionMatrix = Matrix4x4.CreateTranslation(positionVector);
 
-                var pitchYawRoll = VectorExtensions.ParseVector(angles);
+                var pitchYawRoll = System.Numerics.Polyfill.ParseVector(angles);
                 var rollMatrix = Matrix4x4.CreateRotationX(OpenTK.MathHelper.DegreesToRadians(pitchYawRoll.Z)); // Roll
                 var pitchMatrix = Matrix4x4.CreateRotationY(OpenTK.MathHelper.DegreesToRadians(pitchYawRoll.X)); // Pitch
                 var yawMatrix = Matrix4x4.CreateRotationZ(OpenTK.MathHelper.DegreesToRadians(pitchYawRoll.Y)); // Yaw

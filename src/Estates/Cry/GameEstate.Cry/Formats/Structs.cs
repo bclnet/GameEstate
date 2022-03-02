@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Dolkens.Framework.Extensions;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats
@@ -49,7 +50,7 @@ namespace GameEstate.Cry.Formats
         public float Radius;
         public Vector3 Center;
 
-        public void WriteMeshSubset()
+        public void LogMeshSubset()
         {
             Log($"*** Mesh Subset ***");
             Log($"    First Index:  {FirstIndex}");
@@ -59,7 +60,7 @@ namespace GameEstate.Cry.Formats
             Log($"    Mat ID:       {MatID}");
             Log($"    Radius:       {Radius:F7}");
             Log($"    Center:");
-            Center.WriteVector3();
+            Center.LogVector3();
         }
     }
 
@@ -68,7 +69,7 @@ namespace GameEstate.Cry.Formats
         public int Time; // Time in ticks
         public Vector3 AbsPos; // absolute position
         public Vector3 RelPos; // relative position
-        public Quat RelQuat; //Relative Quaternion if ARG==1?
+        public Quaternion RelQuat; //Relative Quaternion if ARG==1?
         public Vector3 Unknown1; // If ARG==6 or 10?
         public float[] Unknown2; // If ARG==9?  array length = 2
     }
@@ -147,10 +148,10 @@ namespace GameEstate.Cry.Formats
     public struct Tangent
     {
         // Tangents.  Divide each component by 32767 to get the actual value
-        public float x;
-        public float y;
-        public float z;
-        public float w;  // Handness?  Either 32767 (+1.0) or -32767 (-1.0)
+        public float X;
+        public float Y;
+        public float Z;
+        public float W;  // Handness?  Either 32767 (+1.0) or -32767 (-1.0)
     }
 
     public struct SkinVertex
@@ -178,25 +179,25 @@ namespace GameEstate.Cry.Formats
 
         public Matrix4x4 GetMatrix44() => new Matrix4x4
         {
-            m00 = worldToBone[0, 0],
-            m01 = worldToBone[0, 1],
-            m02 = worldToBone[0, 2],
-            m03 = worldToBone[0, 3],
-            m10 = worldToBone[1, 0],
-            m11 = worldToBone[1, 1],
-            m12 = worldToBone[1, 2],
-            m13 = worldToBone[1, 3],
-            m20 = worldToBone[2, 0],
-            m21 = worldToBone[2, 1],
-            m22 = worldToBone[2, 2],
-            m23 = worldToBone[2, 3],
-            m30 = 0,
-            m31 = 0,
-            m32 = 0,
-            m33 = 1
+            M11 = worldToBone[0, 0],
+            M12 = worldToBone[0, 1],
+            M13 = worldToBone[0, 2],
+            M14 = worldToBone[0, 3],
+            M21 = worldToBone[1, 0],
+            M22 = worldToBone[1, 1],
+            M23 = worldToBone[1, 2],
+            M24 = worldToBone[1, 3],
+            M31 = worldToBone[2, 0],
+            M32 = worldToBone[2, 1],
+            M33 = worldToBone[2, 2],
+            M34 = worldToBone[2, 3],
+            M41 = 0,
+            M42 = 0,
+            M43 = 0,
+            M44 = 1
         };
 
-        public void WriteWorldToBone()
+        public void LogWorldToBone()
         {
             //Log("     *** World to Bone ***");
             Log($"     {worldToBone[0, 0]:F7}  {worldToBone[0, 1]:F7}  {worldToBone[0, 2]:F7}  {worldToBone[0, 3]:F7}");
@@ -206,22 +207,22 @@ namespace GameEstate.Cry.Formats
 
         internal Matrix3x3 GetWorldToBoneRotationMatrix() => new Matrix3x3
         {
-            m00 = worldToBone[0, 0],
-            m01 = worldToBone[0, 1],
-            m02 = worldToBone[0, 2],
-            m10 = worldToBone[1, 0],
-            m11 = worldToBone[1, 1],
-            m12 = worldToBone[1, 2],
-            m20 = worldToBone[2, 0],
-            m21 = worldToBone[2, 1],
-            m22 = worldToBone[2, 2]
+            M11 = worldToBone[0, 0],
+            M12 = worldToBone[0, 1],
+            M13 = worldToBone[0, 2],
+            M21 = worldToBone[1, 0],
+            M22 = worldToBone[1, 1],
+            M23 = worldToBone[1, 2],
+            M31 = worldToBone[2, 0],
+            M32 = worldToBone[2, 1],
+            M33 = worldToBone[2, 2]
         };
 
         internal Vector3 GetWorldToBoneTranslationVector() => new Vector3
         {
-            x = worldToBone[0, 3],
-            y = worldToBone[1, 3],
-            z = worldToBone[2, 3]
+            X = worldToBone[0, 3],
+            Y = worldToBone[1, 3],
+            Z = worldToBone[2, 3]
         };
     }
 
@@ -246,25 +247,25 @@ namespace GameEstate.Cry.Formats
         /// <returns>Matrix33</returns>
         public Matrix3x3 GetBoneToWorldRotationMatrix() => new Matrix3x3
         {
-            m00 = boneToWorld[0, 0],
-            m01 = boneToWorld[0, 1],
-            m02 = boneToWorld[0, 2],
-            m10 = boneToWorld[1, 0],
-            m11 = boneToWorld[1, 1],
-            m12 = boneToWorld[1, 2],
-            m20 = boneToWorld[2, 0],
-            m21 = boneToWorld[2, 1],
-            m22 = boneToWorld[2, 2]
+            M11 = boneToWorld[0, 0],
+            M12 = boneToWorld[0, 1],
+            M13 = boneToWorld[0, 2],
+            M21 = boneToWorld[1, 0],
+            M22 = boneToWorld[1, 1],
+            M23 = boneToWorld[1, 2],
+            M31 = boneToWorld[2, 0],
+            M32 = boneToWorld[2, 1],
+            M33 = boneToWorld[2, 2]
         };
 
         public Vector3 GetBoneToWorldTranslationVector() => new Vector3
         {
-            x = boneToWorld[0, 3],
-            y = boneToWorld[1, 3],
-            z = boneToWorld[2, 3]
+            X = boneToWorld[0, 3],
+            Y = boneToWorld[1, 3],
+            Z = boneToWorld[2, 3]
         };
 
-        public void WriteBoneToWorld()
+        public void LogBoneToWorld()
         {
             Log($"*** Bone to World ***");
             Log($"{boneToWorld[0, 0]:F6}  {boneToWorld[0, 1]:F6}  {boneToWorld[0, 2]:F6} {boneToWorld[0, 3]:F6}");
@@ -292,18 +293,18 @@ namespace GameEstate.Cry.Formats
         {
             physicsGeom = r.ReadUInt32();
             flags = r.ReadUInt32();
-            min.ReadVector3(r);
+            min = r.ReadVector3();
             // min.WriteVector3();
-            max.ReadVector3(r);
+            max = r.ReadVector3();
             // max.WriteVector3();
-            spring_angle.ReadVector3(r);
-            spring_tension.ReadVector3(r);
-            damping.ReadVector3(r);
-            framemtx.ReadMatrix3x3(r);
+            spring_angle = r.ReadVector3();
+            spring_tension = r.ReadVector3();
+            damping = r.ReadVector3();
+            framemtx = r.ReadMatrix3x3();
             return;
         }
 
-        public void WritePhysicsGeometry()
+        public void LogPhysicsGeometry()
             => Log("WritePhysicsGeometry");
     }
 
@@ -354,25 +355,25 @@ namespace GameEstate.Cry.Formats
 
         public Matrix4x4 ToMatrix44(float[,] boneToWorld) => new Matrix4x4
         {
-            m00 = boneToWorld[0, 0],
-            m01 = boneToWorld[0, 1],
-            m02 = boneToWorld[0, 2],
-            m03 = boneToWorld[0, 3],
-            m10 = boneToWorld[1, 0],
-            m11 = boneToWorld[1, 1],
-            m12 = boneToWorld[1, 2],
-            m13 = boneToWorld[1, 3],
-            m20 = boneToWorld[2, 0],
-            m21 = boneToWorld[2, 1],
-            m22 = boneToWorld[2, 2],
-            m23 = boneToWorld[2, 3],
-            m30 = 0,
-            m31 = 0,
-            m32 = 0,
-            m33 = 1
+            M11 = boneToWorld[0, 0],
+            M12 = boneToWorld[0, 1],
+            M13 = boneToWorld[0, 2],
+            M14 = boneToWorld[0, 3],
+            M21 = boneToWorld[1, 0],
+            M22 = boneToWorld[1, 1],
+            M23 = boneToWorld[1, 2],
+            M24 = boneToWorld[1, 3],
+            M31 = boneToWorld[2, 0],
+            M32 = boneToWorld[2, 1],
+            M33 = boneToWorld[2, 2],
+            M34 = boneToWorld[2, 3],
+            M41 = 0,
+            M42 = 0,
+            M43 = 0,
+            M44 = 1
         };
 
-        public void WriteCompiledBone()
+        public void LogCompiledBone()
         {
             // Output the bone to the console
             Log($"*** Compiled bone {boneName}");
@@ -380,7 +381,7 @@ namespace GameEstate.Cry.Formats
             Log($"    Offset in file: {offset:X}");
             Log($"    Controller ID: {ControllerID}");
             Log($"    World To Bone:");
-            boneToWorld.WriteBoneToWorld();
+            boneToWorld.LogBoneToWorld();
             Log($"    Limb ID: {limbID}");
             Log($"    Parent Offset: {offsetParent}");
             Log($"    Child Offset:  {offsetChild}");
@@ -417,7 +418,7 @@ namespace GameEstate.Cry.Formats
             childIDs = new List<uint>();
         }
 
-        public void WriteCompiledPhysicalBone()
+        public void LogCompiledPhysicalBone()
         {
             // Output the bone to the console
             Log($"*** Compiled bone ID {BoneIndex}");
@@ -526,10 +527,10 @@ namespace GameEstate.Cry.Formats
         public uint VertexID;
         public Vector3 Vertex;
 
-        public static MeshMorphTargetVertex Read(BinaryReader b)
+        public static MeshMorphTargetVertex Read(BinaryReader r)
         {
-            var vertex = new MeshMorphTargetVertex { VertexID = b.ReadUInt32() };
-            vertex.Vertex.ReadVector3(b);
+            var vertex = new MeshMorphTargetVertex { VertexID = r.ReadUInt32() };
+            vertex.Vertex = r.ReadVector3();
             return vertex;
         }
     }
@@ -556,7 +557,7 @@ namespace GameEstate.Cry.Formats
     public class MeshCollisionInfo
     {
         // AABB AABB;       // Bounding box structures?
-        // OBB OBB;         // Has an m33, h and c value.
+        // OBB OBB;         // Has an M44, h and c value.
         public Vector3 Position;
         public List<short> Indices;
         public int BoneID;
@@ -579,7 +580,7 @@ namespace GameEstate.Cry.Formats
         public float Slope;
         public int AnimFlags;
         public float[] MoveDir;
-        public Quat StartPosition;
+        public Quaternion StartPosition;
     }
 
     public struct PhysicalStream
@@ -593,7 +594,7 @@ namespace GameEstate.Cry.Formats
         public Vector3[] Vertices;    // Array of vertices (x,y,z) length NumVertices
         public ushort[] Indices;      // Array of indices
 
-        public void WriteHitBox()
+        public void LogHitBox()
         {
             Log($"     ** Hitbox **");
             Log($"        ID: {ID:X}");
@@ -619,7 +620,7 @@ namespace GameEstate.Cry.Formats
         public int Unknown4;
         public int Unknown5;
         public float[] Unknown6;  // array length 3, Inertia?
-        public Quat Rot;  // Most definitely a quaternion. Probably describes rotation of the physics object.
+        public Quaternion Rot;  // Most definitely a quaternion. Probably describes rotation of the physics object.
         public Vector3 Center;  // Center, or position. Probably describes translation of the physics object. Often corresponds to the center of the mesh data as described in the submesh chunk.
         public float Unknown10; // Mass?
         public int Unknown11;

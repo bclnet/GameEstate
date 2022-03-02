@@ -16,6 +16,21 @@ namespace GameEstate
     /// <seealso cref="System.IDisposable" />
     public abstract class EstatePakFile : IDisposable
     {
+        //class EmptyPakFile : EstatePakFile
+        //{
+        //    public EmptyPakFile() : base(Estate.Empty, "", "") { }
+        //    public override void Dispose() { }
+        //    public override int Count => 0;
+        //    public override void Close() { }
+        //    public override bool Contains(string path) => false;
+        //    public override bool Contains(int fileId) => false;
+        //    public override Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null) => throw new NotImplementedException();
+        //    public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null) => throw new NotImplementedException();
+        //    public override Task<T> LoadFileObjectAsync<T>(string path, Action<FileMetadata, string> exception = null) => throw new NotImplementedException();
+        //    public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null) => throw new NotImplementedException();
+        //}
+        //public static readonly EstatePakFile Empty = new EmptyPakFile();
+
         public readonly Estate Estate;
         public readonly string Game;
         public readonly string Name;

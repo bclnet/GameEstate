@@ -1,6 +1,7 @@
 ﻿using GameEstate.Formats.Unknown;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GameEstate.Formats.Wavefront
 {
@@ -11,7 +12,7 @@ namespace GameEstate.Formats.Wavefront
         {
             var i = 0;
             // Write out all the bones
-            foreach (var proxy in proxies)
+            foreach (var proxy in proxies.SelectMany(x => x.PhysicalProxys))
             {
                 // write out this bones vertex info.
                 w.WriteLine("g"); // Need to find a way to get the material name associated with the bone, so we can link the hitbox to the body part.

@@ -1,4 +1,5 @@
-﻿using static GameEstate.EstateDebug;
+﻿using System.Numerics;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
@@ -20,7 +21,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Version:     {Version:X}");
             Log($"    ID:          {ID:X}");
             Log($"    HelperType:  {HelperType}");
-            Log($"    Position:    {Pos.x}, {Pos.y}, {Pos.z}");
+            Log($"    Position:    {Pos.X}, {Pos.Y}, {Pos.Z}");
             Log($"*** END Helper Chunk ***");
         }
     }

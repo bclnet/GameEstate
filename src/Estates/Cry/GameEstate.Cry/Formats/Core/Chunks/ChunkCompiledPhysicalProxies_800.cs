@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Numerics;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
@@ -11,21 +12,21 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             var skin = GetSkinningInfo();
             NumPhysicalProxies = r.ReadUInt32(); // number of Bones in this chunk.
             //Log($"Number of bones (physical proxies): {NumPhysicalProxies}");
-            PhysicalProxies = new PhysicalStream[NumPhysicalProxies];    // now have an array of physical proxies
+            PhysicalProxies = new PhysicalStream[NumPhysicalProxies]; // now have an array of physical proxies
             for (var i = 0; i < NumPhysicalProxies; i++)
             {
                 // Start populating the physical stream array.  This is the Header.
                 PhysicalProxies[i].ID = r.ReadUInt32();
                 PhysicalProxies[i].NumVertices = r.ReadUInt32();
                 PhysicalProxies[i].NumIndices = r.ReadUInt32();
-                PhysicalProxies[i].Material = r.ReadUInt32();      // Probably a fill of some sort?
+                PhysicalProxies[i].Material = r.ReadUInt32(); // Probably a fill of some sort?
                 PhysicalProxies[i].Vertices = new Vector3[PhysicalProxies[i].NumVertices];
                 PhysicalProxies[i].Indices = new ushort[PhysicalProxies[i].NumIndices];
                 for (var j = 0; j < PhysicalProxies[i].NumVertices; j++)
                 {
-                    PhysicalProxies[i].Vertices[j].x = r.ReadSingle();
-                    PhysicalProxies[i].Vertices[j].y = r.ReadSingle();
-                    PhysicalProxies[i].Vertices[j].z = r.ReadSingle();
+                    PhysicalProxies[i].Vertices[j].X = r.ReadSingle();
+                    PhysicalProxies[i].Vertices[j].Y = r.ReadSingle();
+                    PhysicalProxies[i].Vertices[j].Z = r.ReadSingle();
                 }
                 // Read the indices
                 for (var j = 0; j < PhysicalProxies[i].NumIndices; j++) PhysicalProxies[i].Indices[j] = r.ReadUInt16(); //Log("Indices: {HitBoxes[i].Indices[j]}");

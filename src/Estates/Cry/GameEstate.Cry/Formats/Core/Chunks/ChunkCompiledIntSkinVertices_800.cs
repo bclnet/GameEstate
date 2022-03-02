@@ -10,13 +10,13 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             base.Read(r);
             NumIntVertices = (int)((Size - 32) / 64);
             IntSkinVertices = new IntSkinVertex[NumIntVertices];
-            SkipBytes(r, 32);          // Padding between the chunk header and the first IntVertex.
+            SkipBytes(r, 32); // Padding between the chunk header and the first IntVertex.
             // Size of the IntSkinVertex is 64 bytes
             for (var i = 0; i < NumIntVertices; i++)
             {
-                IntSkinVertices[i].Obsolete0.ReadVector3(r);
-                IntSkinVertices[i].Position.ReadVector3(r);
-                IntSkinVertices[i].Obsolete2.ReadVector3(r);
+                IntSkinVertices[i].Obsolete0 = r.ReadVector3();
+                IntSkinVertices[i].Position = r.ReadVector3();
+                IntSkinVertices[i].Obsolete2 = r.ReadVector3();
                 // Read 4 bone IDs
                 IntSkinVertices[i].BoneIDs = new ushort[4];
                 for (var j = 0; j < 4; j++) IntSkinVertices[i].BoneIDs[j] = r.ReadUInt16();

@@ -106,9 +106,7 @@ namespace GameEstate.Formats
 
             // read pak
             path = Path.Combine(FilePath, path);
-            return File.Exists(path)
-                ? File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read)
-                : null;
+            return File.Exists(path) ? File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read) : null;
         }
 
         /// <summary>
