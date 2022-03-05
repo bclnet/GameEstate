@@ -7,7 +7,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            var xml = CryXmlSerializer.ReadStream(r.BaseStream, true);
+            var xml = new CryXmlFile(r, true);
         }
     }
 }

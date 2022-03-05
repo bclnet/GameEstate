@@ -5,7 +5,7 @@ namespace GameEstate
     /// <summary>
     /// LinuxFileManager
     /// </summary>
-    public class LinuxFileManager : FileManager
+    internal class LinuxFileManager : FileManager
     {
         #region Parse File-Manager
 

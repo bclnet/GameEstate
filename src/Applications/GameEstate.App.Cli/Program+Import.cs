@@ -1,7 +1,5 @@
 ﻿using CommandLine;
-using GameEstate.Formats;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace GameEstate.App.Cli
@@ -25,22 +23,7 @@ namespace GameEstate.App.Cli
         {
             var from = ProgramState.Load(data => Convert.ToInt32(data), 0);
             var estate = EstateManager.GetEstate(opts.Estate);
-            var resource = estate.ParseResource(opts.Uri);
-            foreach (var path in resource.Paths)
-            {
-                using var pak = estate.OpenPakFile(new[] { path }, resource.Game) as BinaryPakFile;
-                if (pak == null)
-                    throw new InvalidOperationException("Pak not a BinaryPakFile");
-                using var w = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write));
-                await pak.ImportAsync(w, opts.Path, from, (file, index) =>
-                {
-                    //if ((index % 50) == 0)
-                    //    Console.WriteLine($"{file.Path}");
-                }, (file, message) =>
-                {
-                    Console.WriteLine($"{message}: {file?.Path}");
-                });
-            }
+            await ImportManager.ImportAsync(estate, estate.ParseResource(opts.Uri), opts.Path, from);
             ProgramState.Clear();
             return 0;
         }

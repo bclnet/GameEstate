@@ -5,7 +5,7 @@ namespace GameEstate
     /// <summary>
     /// OsxFileManager
     /// </summary>
-    public class MacOsFileManager : FileManager
+    internal class MacOsFileManager : FileManager
     {
         #region Parse File-Manager
 

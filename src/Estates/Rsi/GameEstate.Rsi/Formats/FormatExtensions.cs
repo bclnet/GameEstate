@@ -21,18 +21,12 @@ namespace GameEstate.Rsi.Formats
             //    tex.ReadDds(r);
             //    return Task.FromResult((object)tex);
             //}
-            Task<object> DatabaseFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
-            {
-                var file = new DatabaseFile();
-                file.Read(r);
-                return Task.FromResult((object)file);
-            }
             return Path.GetExtension(source.Path).ToLowerInvariant() switch
             {
-                var x when x == ".cfg" || x == ".txt" || x == ".xml" => BinaryText.Factory,
+                var x when x == ".cfg" || x == ".txt" => BinaryText.Factory,
+                var x when x == ".xml" => CryXmlFile.Factory,
                 ".dds" => BinaryDds.Factory,
-                //".dds" => DdsFactory,
-                ".dcb" => DatabaseFactory,
+                ".dcb" => ForgeFile.Factory,
                 var x when x == ".soc" || x == ".cgf" || x == ".cga" || x == ".chr" || x == ".skin" || x == ".anim" => CryFile.Factory,
                 _ => null,
             };

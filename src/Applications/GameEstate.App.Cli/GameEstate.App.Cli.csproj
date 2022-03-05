@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Estates\GameEstate.All\GameEstate.All.csproj" />
+    <ProjectReference Include="..\GameEstate.App.Base\GameEstate.App.Base.csproj" />
   </ItemGroup>
 
 </Project>

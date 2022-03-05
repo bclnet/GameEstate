@@ -131,7 +131,7 @@ namespace GameEstate.Cry.Formats.Core
         {
             if (file.Item2 == null)
                 return null;
-            try { return CryXmlSerializer.Deserialize<Material>(file.Item2); }
+            try { return CryXmlFile.Deserialize<Material>(file.Item2); }
             catch (Exception ex) { Debug.WriteLine($"{file.Item1} failed deserialize - {ex.Message}"); }
             return null;
         }

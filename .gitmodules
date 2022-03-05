@@ -1,0 +1,9 @@
+[submodule "etc/AC/ACViewer"]
+	path = etc/AC/ACViewer
+	url = git@github.com:ACEmulator/ACViewer.git
+[submodule "etc/Cry/unp4k"]
+	path = etc/Cry/unp4k
+	url = git@github.com:dolkensp/unp4k.git
+[submodule "etc/Cry/Cryengine-Converter"]
+	path = etc/Cry/Cryengine-Converter
+	url = git@github.com:Markemp/Cryengine-Converter.git

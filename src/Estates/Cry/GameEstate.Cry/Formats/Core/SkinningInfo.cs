@@ -17,12 +17,12 @@ namespace GameEstate.Cry.Formats.Core
         /// </summary>
         public bool HasIntToExtMapping { get; internal set; }
         /// <summary>
-        /// BoneEntities are the list of the bones in the object.  Contains the info to find each of the necessary skinning components.
+        /// BoneEntities are the list of the bones in the object. Contains the info to find each of the necessary skinning components.
         /// </summary>
         public List<BoneEntity> BoneEntities { get; set; }
         public List<CompiledBone> CompiledBones { get; set; }
         public List<DirectionalBlends> LookDirectionBlends { get; set; }
-        public List<PhysicalStream> PhysicalBoneMeshes { get; set; }           // Collision proxies
+        public List<PhysicalStream> PhysicalBoneMeshes { get; set; } // Collision proxies
         public List<MorphTargets> MorphTargets { get; set; }
         public List<TFace> IntFaces { get; set; }
         public List<IntSkinVertex> IntVertices { get; set; }
@@ -38,8 +38,7 @@ namespace GameEstate.Cry.Formats.Core
         public int GetJointIDByName(string jointName)
         {
             for (var i = 0; i < CompiledBones.Count; i++)
-                if (string.Equals(CompiledBones[i].boneName, jointName))
-                    return i;
+                if (string.Equals(CompiledBones[i].boneName, jointName)) return i;
             return -1;
         }
 
@@ -48,6 +47,7 @@ namespace GameEstate.Cry.Formats.Core
         /// </summary>
         /// <param name="jointID">ID of the bone.</param>
         /// <returns>Name of the bone.</returns>
-        public string GetJointNameByID(int jointID) => jointID >= 0 && jointID < CompiledBones.Count ? CompiledBones[jointID].boneName : string.Empty; // string.Empty is an Invalid bone ID
+        public string GetJointNameByID(int jointID)
+            => jointID >= 0 && jointID < CompiledBones.Count ? CompiledBones[jointID].boneName : string.Empty; // Invalid bone Id
     }
 }

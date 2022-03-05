@@ -10,7 +10,7 @@ namespace GameEstate
     /// <summary>
     /// WindowsFileManager
     /// </summary>
-    public class WindowsFileManager : FileManager
+    internal class WindowsFileManager : FileManager
     {
         #region Parse File-Manager
 

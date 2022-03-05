@@ -233,7 +233,7 @@ namespace GameEstate.Cry.Formats
                     //Log("Mapping Nodes");
                     foreach (var model in Models)
                     {
-                        model.RootNode = rootNode = rootNode ?? model.RootNode; // Each model will have it's own rootnode.
+                        model.RootNode = rootNode ??= model.RootNode; // Each model will have it's own rootnode.
                         foreach (var node in model.ChunkMap.Values.Where(c => c.ChunkType == ChunkTypeEnum.Node).Select(c => c as ChunkNode))
                         {
                             // Preserve existing parents
@@ -243,7 +243,7 @@ namespace GameEstate.Cry.Formats
                                 if (parentNode != null) parentNode = _nodeMap[parentNode.Name];
                                 node.ParentNode = parentNode;
                             }
-                            _nodeMap[node.Name] = node;    // TODO:  fix this.  The node name can conflict.
+                            _nodeMap[node.Name] = node; // TODO:  fix this.  The node name can conflict.
                         }
                     }
                 }
@@ -261,13 +261,17 @@ namespace GameEstate.Cry.Formats
             if (material != null)
             {
                 yield return material;
-                if (material.SubMaterials != null) foreach (var subMaterial in material.SubMaterials.SelectMany(m => FlattenMaterials(m))) yield return subMaterial;
+                if (material.SubMaterials != null)
+                    foreach (var subMaterial in material.SubMaterials.SelectMany(m => FlattenMaterials(m)))
+                        yield return subMaterial;
             }
         }
 
         public IEnumerable<string> GetTexturePaths()
         {
-            foreach (var texture in Materials.SelectMany(x => x.Textures)) if (!string.IsNullOrEmpty(texture.File)) yield return $@"Data\{texture.File}";
+            foreach (var texture in Materials.SelectMany(x => x.Textures))
+                if (!string.IsNullOrEmpty(texture.File))
+                    yield return $@"Data\{texture.File}";
         }
     }
 }

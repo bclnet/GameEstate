@@ -25,12 +25,12 @@ namespace GameEstate.Cry.Formats.Core
         /// <summary>
         /// Collection of all loaded Chunks
         /// </summary>
-        public List<ChunkHeader> ChunkHeaders { get; } = new List<ChunkHeader>();
+        List<ChunkHeader> ChunkHeaders = new List<ChunkHeader>();
 
-        /// <summary>
-        /// All the node chunks in this Model
-        /// </summary>
-        public List<ChunkNode> ChunkNodes { get; set; }
+        ///// <summary>
+        ///// All the node chunks in this Model
+        ///// </summary>
+        //public List<ChunkNode> ChunkNodes { get; set; }
 
         /// <summary>
         /// Lookup Table for Chunks, indexed by ChunkID
@@ -74,8 +74,7 @@ namespace GameEstate.Cry.Formats.Core
 
         public uint NumChunks { get; internal set; }
 
-        Dictionary<int, ChunkNode> _nodeMap { get; set; }
-
+        Dictionary<int, ChunkNode> _nodeMap;
         /// <summary>
         /// Node map for this model only.
         /// </summary>
@@ -83,29 +82,41 @@ namespace GameEstate.Cry.Formats.Core
         {
             get
             {
-                if (_nodeMap == null)
+                if (_nodeMap != null) return _nodeMap;
+                _nodeMap = new Dictionary<int, ChunkNode>();
+                ChunkNode rootNode = null;
+                RootNode = rootNode ??= RootNode; // Each model will have it's own rootnode.
+                foreach (var node in ChunkMap.Values.Where(c => c.ChunkType == ChunkTypeEnum.Node).OrderBy(c => c.ID).Select(c => c as ChunkNode))
                 {
-                    _nodeMap = new Dictionary<int, ChunkNode>();
-                    ChunkNode rootNode = null;
-                    //Log("Mapping Model Nodes");
-                    RootNode = rootNode = rootNode ?? RootNode;  // Each model will have it's own rootnode.
-                    foreach (var node in ChunkMap.Values.Where(c => c.ChunkType == ChunkTypeEnum.Node).Select(c => c as ChunkNode))
+                    // Preserve existing parents
+                    if (_nodeMap.TryGetValue(node.ID, out var knownNode))
                     {
-                        // Preserve existing parents
-                        if (_nodeMap.ContainsKey(node.ID))
-                        {
-                            var parentNode = _nodeMap[node.ID].ParentNode;
-                            if (parentNode != null)
-                                parentNode = _nodeMap[parentNode.ID];
-                            node.ParentNode = parentNode;
-                        }
-                        _nodeMap[node.ID] = node;
+                        var parentNode = knownNode.ParentNode;
+                        if (parentNode != null) parentNode = _nodeMap[parentNode.ID];
+                        node.ParentNode = parentNode;
                     }
+                    _nodeMap[node.ID] = node;
                 }
                 return _nodeMap;
             }
         }
-        // CALCULATED
+
+        public bool HasBones => Bones != null;
+
+        public bool HasGeometry
+        {
+            get
+            {
+                var types = ChunkMap.Select(n => n.Value.ChunkType);
+                if (ChunkMap.Select(n => n.Value.ChunkType).Contains(ChunkType.Mesh) || ChunkMap.Select(n => n.Value.ChunkType).Contains(ChunkType.MeshIvo))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+
         public List<ChunkHeader> _chunks = new List<ChunkHeader> { };
         public int NodeCount => ChunkMap.Values.Where(c => c.ChunkType == ChunkTypeEnum.Node).Count();
         public int BoneCount => ChunkMap.Values.Where(c => c.ChunkType == ChunkTypeEnum.CompiledBones).Count();

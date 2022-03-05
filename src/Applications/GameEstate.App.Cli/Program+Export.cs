@@ -1,8 +1,5 @@
 ﻿using CommandLine;
-using GameEstate.Formats;
 using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GameEstate.App.Cli
@@ -29,34 +26,7 @@ namespace GameEstate.App.Cli
         {
             var from = ProgramState.Load(data => Convert.ToInt32(data), 0);
             var estate = EstateManager.GetEstate(opts.Estate);
-
-            using var multiPak = estate.OpenPakFile(estate.ParseResource(opts.Uri)) as MultiPakFile;
-            if (multiPak == null)
-                throw new InvalidOperationException("multiPak not a MultiPakFile");
-            // write paks header
-            var filePath = opts.Path;
-            if (!string.IsNullOrEmpty(filePath) && !Directory.Exists(filePath))
-                Directory.CreateDirectory(filePath);
-            var setPath = Path.Combine(filePath, ".set");
-            using (var w = new BinaryWriter(new FileStream(setPath, FileMode.Create, FileAccess.Write)))
-                await PakBinary.Stream.WriteAsync(new StreamPakFile(HttpHost.Factory, null, null, "Root") { Files = multiPak.PakFiles.Select(x => new FileMetadata { Path = x.Name }).ToList() }, w, PakBinary.WriteStage._Set);
-
-            // write paks
-            foreach (var p in multiPak.PakFiles)
-            {
-                if (p is not BinaryPakFile pak)
-                    throw new InvalidOperationException("multiPak not a BinaryPakFile");
-                var newPath = Path.Combine(filePath, Path.GetFileName(pak.FilePath));
-
-                await pak.ExportAsync(newPath, from, (file, index) =>
-                {
-                    //if ((index % 50) == 0)
-                    //    Console.WriteLine($"{file.Path}");
-                }, (file, message) =>
-                {
-                    Console.WriteLine($"{message}: {file?.Path}");
-                });
-            }
+            await ExportManager.ExportAsync(estate, estate.ParseResource(opts.Uri), opts.Path, from);
             ProgramState.Clear();
             return 0;
         }
