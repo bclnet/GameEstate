@@ -30,7 +30,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public byte[,] FaceMap;             // for dataStreamType of 10, length is NumElements,BytesPerElement.
         public byte[,] VertMats;            // for dataStreamType of 11, length is NumElements,BytesPerElement.
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START DATASTREAM ***");
             Log($"    ChunkType:                       {ChunkType}");
@@ -42,5 +44,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Bytes per Element:               {BytesPerElement}");
             Log($"*** END DATASTREAM ***");
         }
+#endif
+        #endregion
     }
 }

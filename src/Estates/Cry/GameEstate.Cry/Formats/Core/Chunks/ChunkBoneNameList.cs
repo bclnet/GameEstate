@@ -11,7 +11,12 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public int NumEntities;
         public List<string> BoneNames;
 
-        public override void WriteChunk()
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Number of Targets: {NumEntities}";
+
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START MorphTargets Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
@@ -19,5 +24,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Number of Targets:   {NumEntities:X}");
             foreach (var name in BoneNames) Log($"    Bone Name:       {name}");
         }
+#endif
+        #endregion
     }
 }

@@ -8,6 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             //base.Read(r);
+
             //NumberOfMorphTargets = r.ReadUInt32();
             //if (NumberOfMorphTargets > 0)
             //{
@@ -18,7 +19,5 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             //var skin = GetSkinningInfo();
             //skin.MorphTargets = MorphTargetVertices.ToList();
         }
-
-        public override void WriteChunk() => base.WriteChunk();
     }
 }

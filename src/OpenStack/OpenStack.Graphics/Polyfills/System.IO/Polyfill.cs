@@ -206,6 +206,20 @@ namespace System.IO
             return encoding.GetString(s.ToArray());
         }
 
+        public static string[] ReadZStringArray(this BinaryReader source, int count, StringBuilder buf = null)
+        {
+            if (buf == null) buf = new StringBuilder();
+            var list = new List<string>();
+            for (var i = 0; i < count; i++)
+            {
+                var c = source.ReadChar();
+                while (c != 0) { buf.Append(c); c = source.ReadChar(); }
+                list.Add(buf.ToString());
+                buf.Clear();
+            }
+            return list.ToArray();
+        }
+
         public static string ReadO32Encoding(this BinaryReader source, Encoding encoding)
         {
             var currentOffset = source.BaseStream.Position;
@@ -309,11 +323,32 @@ namespace System.IO
             return set;
         }
 
-        public static bool ReadBool32(this BinaryReader source) => source.ReadUInt32() != 0;
+        public static float ReadHalf(this BinaryReader r)
+            => new HalfFloat { bits = r.ReadUInt16() }.ToSingle();
 
-        public static Vector2 ReadVector2(this BinaryReader source) => new Vector2(source.ReadSingle(), source.ReadSingle());
-        public static Vector3 ReadVector3(this BinaryReader source) => new Vector3(source.ReadSingle(), source.ReadSingle(), source.ReadSingle());
-        public static Vector4 ReadVector4(this BinaryReader source) => new Vector4(source.ReadSingle(), source.ReadSingle(), source.ReadSingle(), source.ReadSingle());
+        public static bool ReadBool32(this BinaryReader source)
+            => source.ReadUInt32() != 0;
+
+        public static Vector2 ReadVector2(this BinaryReader source)
+            => new Vector2(
+                x: source.ReadSingle(),
+                y: source.ReadSingle());
+        public static Vector3 ReadVector3(this BinaryReader source)
+            => new Vector3(
+                x: source.ReadSingle(),
+                y: source.ReadSingle(),
+                z: source.ReadSingle());
+        public static Vector3 ReadHalfVector3(this BinaryReader source)
+            => new Vector3(
+                x: source.ReadHalf(),
+                y: source.ReadHalf(),
+                z: source.ReadHalf());
+        public static Vector4 ReadVector4(this BinaryReader source)
+            => new Vector4(
+                x: source.ReadSingle(),
+                y: source.ReadSingle(),
+                z: source.ReadSingle(),
+                w: source.ReadSingle());
 
         public static Matrix3x3 ReadMatrix3x3(this BinaryReader r)
             => new Matrix3x3
@@ -327,6 +362,23 @@ namespace System.IO
                 M31 = r.ReadSingle(),
                 M32 = r.ReadSingle(),
                 M33 = r.ReadSingle(),
+            };
+
+        public static Matrix3x4 ReadMatrix3x4(this BinaryReader r)
+            => new Matrix3x4
+            {
+                M11 = r.ReadSingle(),
+                M12 = r.ReadSingle(),
+                M13 = r.ReadSingle(),
+                M14 = r.ReadSingle(),
+                M21 = r.ReadSingle(),
+                M22 = r.ReadSingle(),
+                M23 = r.ReadSingle(),
+                M24 = r.ReadSingle(),
+                M31 = r.ReadSingle(),
+                M32 = r.ReadSingle(),
+                M33 = r.ReadSingle(),
+                M34 = r.ReadSingle()
             };
 
         /// <summary>
@@ -374,21 +426,23 @@ namespace System.IO
             return matrix;
         }
         public static Quaternion ReadQuaternionWFirst(this BinaryReader source)
-        {
-            var w = source.ReadSingle();
-            var x = source.ReadSingle();
-            var y = source.ReadSingle();
-            var z = source.ReadSingle();
-            return new Quaternion(x, y, z, w);
-        }
-        public static Quaternion ReadLEQuaternionWLast(this BinaryReader source)
-        {
-            var x = source.ReadSingle();
-            var y = source.ReadSingle();
-            var z = source.ReadSingle();
-            var w = source.ReadSingle();
-            return new Quaternion(x, y, z, w);
-        }
+            => new Quaternion(
+                w: source.ReadSingle(),
+                x: source.ReadSingle(),
+                y: source.ReadSingle(),
+                z: source.ReadSingle());
+        public static Quaternion ReadQuaternion(this BinaryReader source)
+            => new Quaternion(
+                x: source.ReadSingle(),
+                y: source.ReadSingle(),
+                z: source.ReadSingle(),
+                w: source.ReadSingle());
+        public static Quaternion ReadHalfQuaternion(this BinaryReader source)
+            => new Quaternion(
+                x: source.ReadHalf(),
+                y: source.ReadHalf(),
+                z: source.ReadHalf(),
+                w: source.ReadHalf());
 
         #endregion
     }

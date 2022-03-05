@@ -8,11 +8,18 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public uint NumExtVertices;
         public ushort[] Source;
 
-        public override void WriteChunk()
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}";
+
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START MorphTargets Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
             Log($"    Node ID:             {ID:X}");
         }
+#endif
+        #endregion
     }
 }

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
 using MathNet.Numerics.LinearAlgebra;
 using System.Globalization;
 
@@ -56,6 +53,14 @@ namespace System.Numerics
         #endregion Public Fields
 
         #region Added
+
+        /// <summary>
+        /// Creates a rotation matrix from the given Quaternion rotation value.
+        /// </summary>
+        /// <param name="quaternion">The source Quaternion.</param>
+        /// <returns>The rotation matrix.</returns>
+        public static Matrix3x3 CreateFromQuaternion(Quaternion quaternion)
+            => quaternion.ConvertToRotationMatrix();
 
         /// <summary>
         /// Gets the copy.
@@ -175,8 +180,7 @@ namespace System.Numerics
         (
             1f, 0f, 0f,
             0f, 1f, 0f,
-            0f, 0f, 1f,
-            0f, 0f, 0f
+            0f, 0f, 1f
         );
 
         /// <summary>
@@ -211,8 +215,7 @@ namespace System.Numerics
         /// </summary>
         public Matrix3x3(float m11, float m12, float m13,
                          float m21, float m22, float m23,
-                         float m31, float m32, float m33,
-                         float m41, float m42, float m43)
+                         float m31, float m32, float m33)
         {
             this.M11 = m11;
             this.M12 = m12;

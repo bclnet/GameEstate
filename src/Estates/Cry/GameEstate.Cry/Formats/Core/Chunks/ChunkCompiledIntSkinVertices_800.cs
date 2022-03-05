@@ -8,6 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+
             NumIntVertices = (int)((Size - 32) / 64);
             IntSkinVertices = new IntSkinVertex[NumIntVertices];
             SkipBytes(r, 32); // Padding between the chunk header and the first IntVertex.
@@ -29,7 +30,5 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             var skin = GetSkinningInfo();
             skin.IntVertices = IntSkinVertices.ToList();
         }
-
-        public override void WriteChunk() => base.WriteChunk();
     }
 }

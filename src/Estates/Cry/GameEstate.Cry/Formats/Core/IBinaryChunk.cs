@@ -4,7 +4,7 @@ namespace GameEstate.Cry.Formats.Core
 {
     public interface IBinaryChunk
     {
-        void Read(BinaryReader reader);
-        void Write(BinaryWriter writer);
+        void Read(BinaryReader r);
+        void Write(BinaryWriter w);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GameEstate.Cry.Formats.Models;
+using System.Collections.Generic;
 
 namespace GameEstate.Cry.Formats.Core
 {

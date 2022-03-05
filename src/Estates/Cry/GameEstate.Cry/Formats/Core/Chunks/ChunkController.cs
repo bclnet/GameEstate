@@ -10,7 +10,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public uint ControllerID { get; internal set; } // Unique id based on CRC32 of bone name.  Ver 827 only?
         public Key[] Keys { get; internal set; } // array length NumKeys.  Ver 827?
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** Controller Chunk ***");
             Log($"Version:                 {Version:X}");
@@ -26,5 +28,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 Log($"        RelPos {i}:    {Keys[i].RelPos.X:F7}, {Keys[i].RelPos.Y:F7}, {Keys[i].RelPos.Z:F7}");
             }
         }
+#endif
+        #endregion
     }
 }

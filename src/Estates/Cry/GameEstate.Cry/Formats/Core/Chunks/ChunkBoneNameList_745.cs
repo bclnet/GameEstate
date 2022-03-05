@@ -9,9 +9,8 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+
             BoneNames = r.ReadCString().Split(' ').ToList();
         }
-
-        public override void WriteChunk() => base.WriteChunk();
     }
 }

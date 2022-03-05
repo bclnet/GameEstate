@@ -12,12 +12,16 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         //public uint Reserved2;
         public PhysicalStream[] PhysicalProxies;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START CompiledPhysicalProxies Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
             Log($"    Node ID:             {ID:X}");
             Log($"    Number of Targets:   {NumPhysicalProxies:X}");
         }
+#endif
+        #endregion
     }
 }

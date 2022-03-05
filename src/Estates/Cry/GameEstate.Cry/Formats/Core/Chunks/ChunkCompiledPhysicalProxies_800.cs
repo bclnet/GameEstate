@@ -9,6 +9,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+
             var skin = GetSkinningInfo();
             NumPhysicalProxies = r.ReadUInt32(); // number of Bones in this chunk.
             //Log($"Number of bones (physical proxies): {NumPhysicalProxies}");
@@ -36,7 +37,5 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             }
             skin.PhysicalBoneMeshes = PhysicalProxies.ToList();
         }
-
-        public override void WriteChunk() => base.WriteChunk();
     }
 }

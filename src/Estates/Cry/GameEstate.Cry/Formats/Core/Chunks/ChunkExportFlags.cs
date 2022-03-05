@@ -10,7 +10,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public uint[] RCVersion;  // 4 uints
         public string RCVersionString;  // Technically String16
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START EXPORT FLAGS ***");
             Log($"    Export Chunk ID: {ID:X}");
@@ -24,5 +26,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log("    RCVersion String: {RCVersionString}");
             Log("*** END EXPORT FLAGS ***");
         }
+#endif
+        #endregion
     }
 }

@@ -8,11 +8,15 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public uint NumIntFaces;
         public TFace[] Faces;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START MorphTargets Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
             Log($"    Node ID:             {ID:X}");
         }
+#endif
+        #endregion
     }
 }

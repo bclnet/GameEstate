@@ -8,7 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            MatType = (MtlNameTypeEnum)r.ReadUInt32();
+            MatType = (MtlNameType)r.ReadUInt32();
             // if 0x01, then material lib. If 0x12, mat name. This is actually a bitstruct.
             SkipBytes(r, 4); // NFlags2
             Name = r.ReadFString(128);

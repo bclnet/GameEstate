@@ -8,7 +8,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public string Date;
         public string Author;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** SOURCE INFO CHUNK ***");
             Log($"    ID: {ID:X}");
@@ -17,5 +19,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Author:     {Author}.");
             Log($"*** END SOURCE INFO CHUNK ***");
         }
+#endif
+        #endregion
     }
 }

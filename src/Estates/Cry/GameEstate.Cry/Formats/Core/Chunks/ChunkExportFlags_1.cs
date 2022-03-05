@@ -9,7 +9,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         {
             base.Read(b);
             var tmpExportFlag = b.ReadUInt32();
-            ChunkType = (ChunkTypeEnum)Enum.ToObject(typeof(ChunkTypeEnum), tmpExportFlag);
+            ChunkType = (ChunkType)Enum.ToObject(typeof(ChunkType), tmpExportFlag);
             Version = b.ReadUInt32();
             ChunkOffset = b.ReadUInt32();
             ID = b.ReadInt32();

@@ -117,10 +117,10 @@ namespace GameEstate.Cry.Formats
             ConsolidateGeometryInfo();
             // Get the material file name
             var fileName = files.First().Item1;
-            foreach (ChunkMtlName mtlChunk in Models.SelectMany(a => a.ChunkMap.Values).Where(c => c.ChunkType == ChunkTypeEnum.MtlName))
+            foreach (ChunkMtlName mtlChunk in Models.SelectMany(a => a.ChunkMap.Values).Where(c => c.ChunkType == ChunkType.MtlName))
             {
                 // Don't process child or collision materials for now
-                if (mtlChunk.MatType == MtlNameTypeEnum.Child || mtlChunk.MatType == MtlNameTypeEnum.Unknown1) continue;
+                if (mtlChunk.MatType == MtlNameType.Child || mtlChunk.MatType == MtlNameType.Unknown1) continue;
                 // The Replace part is for SC files that point to a _core material file that doesn't exist.
                 var cleanName = mtlChunk.Name.Replace("_core", string.Empty);
                 //
@@ -234,7 +234,7 @@ namespace GameEstate.Cry.Formats
                     foreach (var model in Models)
                     {
                         model.RootNode = rootNode ??= model.RootNode; // Each model will have it's own rootnode.
-                        foreach (var node in model.ChunkMap.Values.Where(c => c.ChunkType == ChunkTypeEnum.Node).Select(c => c as ChunkNode))
+                        foreach (var node in model.ChunkMap.Values.Where(c => c.ChunkType == ChunkType.Node).Select(c => c as ChunkNode))
                         {
                             // Preserve existing parents
                             if (_nodeMap.ContainsKey(node.Name))

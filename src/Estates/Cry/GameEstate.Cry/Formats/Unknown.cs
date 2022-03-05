@@ -19,12 +19,12 @@ namespace GameEstate.Cry.Formats
                 foreach (var node in NodeMap.Values)
                 {
                     if (node.ObjectChunk == null) { Log($"Skipped node with missing Object {node.Name}"); continue; }
-                    if (node.ObjectChunk.ChunkType == ChunkTypeEnum.Helper) { continue; }
-                    if (node.ObjectChunk.ChunkType != ChunkTypeEnum.Mesh) { Log($"Skipped a {node.ObjectChunk.ChunkType} chunk"); continue; }
+                    if (node.ObjectChunk.ChunkType == ChunkType.Helper) { continue; }
+                    if (node.ObjectChunk.ChunkType != ChunkType.Mesh) { Log($"Skipped a {node.ObjectChunk.ChunkType} chunk"); continue; }
                     if (!(node.ObjectChunk is ChunkMesh chunk)) { Log($"Invalid ChunkMesh in {node.Name}"); continue; }
 
                     // Get the Transform here. It's the node chunk Transform.m(41/42/42) divided by 100, added to the parent transform. The transform of a child has to add the transforms of ALL the parents.
-                    if (node.ParentNode != null && node.ParentNode.ChunkType != ChunkTypeEnum.Node) Log($"Rendering {node.Name} to parent {node.ParentNode.Name}");
+                    if (node.ParentNode != null && node.ParentNode.ChunkType != ChunkType.Node) Log($"Rendering {node.Name} to parent {node.ParentNode.Name}");
 
                     // This is probably wrong.  These may be parents with no geometry, but still have an offset
                     if (chunk.MeshSubsets == 0) { Log($"*******Found a Mesh chunk with no Submesh ID (ID: {chunk.ID:X}, Name: {node.Name}).  Skipping..."); continue; }
@@ -78,11 +78,11 @@ namespace GameEstate.Cry.Formats
             }
         }
         IEnumerable<IUnknownMaterial> IUnknownFileModel.Materials => Materials;
-        IEnumerable<IUnknownProxy> IUnknownFileModel.Proxies => Chunks.Where(a => a.ChunkType == ChunkTypeEnum.CompiledPhysicalProxies).Select(x => (IUnknownProxy)x);
+        IEnumerable<IUnknownProxy> IUnknownFileModel.Proxies => Chunks.Where(a => a.ChunkType == ChunkType.CompiledPhysicalProxies).Select(x => (IUnknownProxy)x);
         IUnknownSkin IUnknownFileModel.SkinningInfo => throw new NotImplementedException();
         string IUnknownFileObject.Name => Name;
         string IUnknownFileObject.Path => InputFile;
-        IEnumerable<IUnknownFileObject.Source> IUnknownFileObject.Sources => Chunks.Where(a => a.ChunkType == ChunkTypeEnum.SourceInfo).Select(x =>
+        IEnumerable<IUnknownFileObject.Source> IUnknownFileObject.Sources => Chunks.Where(a => a.ChunkType == ChunkType.SourceInfo).Select(x =>
         {
             var s = (ChunkSourceInfo)x;
             return new IUnknownFileObject.Source { Author = s.Author, SourceFile = s.SourceFile };

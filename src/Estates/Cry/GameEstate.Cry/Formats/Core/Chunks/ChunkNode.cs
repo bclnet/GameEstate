@@ -188,7 +188,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Properties = r.ReadPString();
         }
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START Node Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
@@ -209,5 +211,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             RotSoFar.LogMatrix3x3();
             Log($"*** END Node Chunk ***");
         }
+#endif
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using static GameEstate.EstateDebug;
+﻿using GameEstate.Cry.Formats.Models;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
@@ -16,7 +17,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public PhysicsData physicsData { get; internal set; }  // if physicsdatasize != 0
         public byte[] TetrahedraData { get; internal set; } // Array length TetrahedraDataSize.  
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START CompiledBone Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
@@ -26,5 +29,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Node ID:             {TetrahedraID:X}");
             Log($"    Node ID:             {ID:X}");
         }
+#endif
+        #endregion
     }
 }

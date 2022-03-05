@@ -44,11 +44,15 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             M44 = 1
         };
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START CompiledBone Chunk ***");
             Log($"    ChunkType:           {ChunkType}");
             Log($"    Node ID:             {ID:X}");
         }
+#endif
+        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats.Core
 {
@@ -13,10 +13,12 @@ namespace GameEstate.Cry.Formats.Core
     [XmlRoot(ElementName = "Material")]
     public partial class Material
     {
+        #region Data Structures
+
         /// <summary>
         /// Color used in XML serialization/deserialization
         /// </summary>
-        public partial class Color
+        internal partial class Color
         {
             public double Red;
             public double Green;
@@ -24,18 +26,20 @@ namespace GameEstate.Cry.Formats.Core
 
             public static Color Deserialize(string value)
             {
-                if (string.IsNullOrWhiteSpace(value))
-                    return null;
+                if (string.IsNullOrWhiteSpace(value)) return null;
                 var parts = value.Split(',');
-                if (parts.Length != 3)
-                    return null;
+                if (parts.Length != 3) return null;
                 var r = new Color();
                 if (!double.TryParse(parts[0], out r.Red)) return null;
                 if (!double.TryParse(parts[1], out r.Green)) return null;
                 if (!double.TryParse(parts[2], out r.Blue)) return null;
                 return r;
             }
-            public static string Serialize(Color input) => input == null ? null : $"{input.Red},{input.Green},{input.Blue}";
+            public static string Serialize(Color input)
+                => input == null ? null : $"{input.Red},{input.Green},{input.Blue}";
+
+            public override string ToString()
+                => $@"R: {Red}, G: {Green}, B: {Blue}";
         }
 
         /// <summary>
@@ -44,9 +48,35 @@ namespace GameEstate.Cry.Formats.Core
         [XmlRoot(ElementName = "Texture")]
         public partial class Texture
         {
-            public enum TypeEnum {[XmlEnum("0")] Default = 0, [XmlEnum("3")] Environment = 3, [XmlEnum("5")] Interface = 5, [XmlEnum("7")] CubeMap = 7 }
-            public enum MapTypeEnum { Unknown = 0, Diffuse, Bumpmap, Specular, Environment, Decal, SubSurface, Custom, Opacity, Detail, Heightmap, BlendDetail }
-            [XmlAttribute(AttributeName = "Map")] public string __Map { get => Enum.GetName(typeof(MapTypeEnum), Map); set { var r = MapTypeEnum.Unknown; Enum.TryParse(value, out r); Map = r; } }
+            public enum TypeEnum
+            {
+                [XmlEnum("0")] Default = 0,
+                [XmlEnum("3")] Environment = 3,
+                [XmlEnum("5")] Interface = 5,
+                [XmlEnum("7")] CubeMap = 7,
+                [XmlEnum("Nearest Cube-Map probe for alpha blended")] NearestCubeMap = 8
+            }
+            public enum MapTypeEnum
+            {
+                Unknown = 0,
+                Diffuse,
+                Bumpmap,
+                Specular,
+                Environment,
+                Decal,
+                SubSurface,
+                Custom,
+                Opacity,
+                Detail,
+                Heightmap,
+                BlendDetail
+            }
+            [XmlAttribute(AttributeName = "Map")]
+            public string __Map
+            {
+                get => Enum.GetName(typeof(MapTypeEnum), Map);
+                set { _ = Enum.TryParse(value, out MapTypeEnum z); Map = z; }
+            }
             [XmlIgnore] public MapTypeEnum Map { get; set; }
             [XmlAttribute(AttributeName = "File")] public string File { get; set; }
             [XmlAttribute(AttributeName = "TexType"), DefaultValue(TypeEnum.Default)] public TypeEnum TexType;
@@ -61,7 +91,12 @@ namespace GameEstate.Cry.Formats.Core
         {
             [XmlAttribute(AttributeName = "TexMod_RotateType")] public int RotateType { get; set; }
             [XmlAttribute(AttributeName = "TexMod_TexGenType")] public int GenType { get; set; }
-            [XmlAttribute(AttributeName = "TexMod_bTexGenProjected"), DefaultValue(1)] public int __Projected { get => Projected ? 1 : 0; set => Projected = value == 1; }
+            [XmlAttribute(AttributeName = "TexMod_bTexGenProjected"), DefaultValue(1)]
+            public int __Projected
+            {
+                get => Projected ? 1 : 0;
+                set => Projected = value == 1;
+            }
             [XmlIgnore] public bool Projected { get; set; }
             [XmlAttribute(AttributeName = "TileU"), DefaultValue(0)] public double TileU { get; set; }
             [XmlAttribute(AttributeName = "TileV"), DefaultValue(0)] public double TileV { get; set; }
@@ -73,7 +108,7 @@ namespace GameEstate.Cry.Formats.Core
         /// Not really needed
         /// </summary>
         [XmlRoot(ElementName = "PublicParams")]
-        public class PublicParameters
+        internal class PublicParameters
         {
             [XmlAttribute(AttributeName = "FresnelPower")] public string FresnelPower { get; set; }
             [XmlAttribute(AttributeName = "GlossFromDiffuseContrast")] public string GlossFromDiffuseContrast { get; set; }
@@ -98,6 +133,11 @@ namespace GameEstate.Cry.Formats.Core
             [XmlAttribute(AttributeName = "DetailGlossScale")] public string DetailGlossScale { get; set; }
         }
 
+        #endregion
+
+        #region Attributes
+
+        [XmlIgnore] internal string SourceFileName { get; set; }
         [XmlAttribute(AttributeName = "Name"), DefaultValue("")] public string Name { get; set; }
         [XmlAttribute(AttributeName = "MtlFlags")] public int Flags { get; set; }
         [XmlAttribute(AttributeName = "MatTemplate")] public string Template { get; set; }
@@ -107,12 +147,28 @@ namespace GameEstate.Cry.Formats.Core
         [XmlAttribute(AttributeName = "GenMask"), DefaultValue("")] public string GenMask { get; set; }
         [XmlAttribute(AttributeName = "StringGenMask"), DefaultValue("")] public string StringGenMask { get; set; }
         [XmlAttribute(AttributeName = "SurfaceType"), DefaultValue(null)] public string SurfaceType { get; set; }
-        [XmlAttribute(AttributeName = "Diffuse"), DefaultValue("")] public string __Diffuse { get => Color.Serialize(Diffuse); set => Diffuse = Color.Deserialize(value); }
-        [XmlIgnore] public Color Diffuse { get; set; }
-        [XmlAttribute(AttributeName = "Specular"), DefaultValue("")] public string __Specular { get => Color.Serialize(Specular); set => Specular = Color.Deserialize(value); }
-        [XmlIgnore] public Color Specular { get; set; }
-        [XmlAttribute(AttributeName = "Emissive"), DefaultValue("")] public string __Emissive { get => Color.Serialize(Emissive); set => Emissive = Color.Deserialize(value); }
-        [XmlIgnore] public Color Emissive { get; set; }
+        [XmlAttribute(AttributeName = "Diffuse"), DefaultValue("")]
+        public string __Diffuse
+        {
+            get => Color.Serialize(Diffuse);
+            set => Diffuse = Color.Deserialize(value);
+        }
+        [XmlIgnore] internal Color Diffuse { get; set; }
+        [XmlAttribute(AttributeName = "Specular"), DefaultValue("")]
+        public string __Specular
+        {
+            get => Color.Serialize(Specular);
+            set => Specular = Color.Deserialize(value);
+        }
+        [XmlIgnore] internal Color Specular { get; set; }
+        [XmlAttribute(AttributeName = "Emissive"), DefaultValue("")]
+        public string __Emissive
+        {
+            get => Color.Serialize(Emissive);
+            set => Emissive = Color.Deserialize(value);
+        }
+        [XmlIgnore] internal Color Emissive { get; set; }
+
         /// <summary>
         /// Value between 0 and 1 that controls opacity
         /// </summary>
@@ -122,17 +178,28 @@ namespace GameEstate.Cry.Formats.Core
         [XmlAttribute(AttributeName = "Glossiness"), DefaultValue(0)] public double Glossiness { get; set; }
         [XmlAttribute(AttributeName = "GlowAmount"), DefaultValue(0)] public double GlowAmount { get; set; }
         [XmlAttribute(AttributeName = "AlphaTest"), DefaultValue(0)] public double AlphaTest { get; set; }
+
+        #endregion
+
+        #region Elements
+
         [XmlArray(ElementName = "SubMaterials"), XmlArrayItem(ElementName = "Material")] public Material[] SubMaterials { get; set; }
-        [XmlElement(ElementName = "PublicParams")] public PublicParameters PublicParams { get; set; }
+        [XmlElement(ElementName = "PublicParams")] internal PublicParameters PublicParams { get; set; }
         // TODO: TimeOfDay Support
         [XmlArray(ElementName = "Textures"), XmlArrayItem(ElementName = "Texture")] public Texture[] Textures { get; set; }
 
-        public static Material FromFile((string, Stream) file)
+        #endregion
+
+        public static Material FromFile((string fileName, Stream stream) file)
         {
-            if (file.Item2 == null)
-                return null;
-            try { return CryXmlFile.Deserialize<Material>(file.Item2); }
-            catch (Exception ex) { Debug.WriteLine($"{file.Item1} failed deserialize - {ex.Message}"); }
+            if (file.stream == null) return null;
+            try
+            {
+                var fileData = CryXmlFile.Deserialize<Material>(file.stream);
+                fileData.SourceFileName = file.fileName.Replace('.', '_');
+                return fileData;
+            }
+            catch (Exception e) { Log($"{file.fileName} failed deserialize - {e.Message}"); }
             return null;
         }
     }

@@ -10,11 +10,13 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     public abstract class ChunkHelper : Chunk
     {
         public string Name;
-        public HelperTypeEnum HelperType;
+        public HelperType HelperType;
         public Vector3 Pos;
         public Matrix4x4 Transform;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START Helper Chunk ***");
             Log($"    ChunkType:   {ChunkType}");
@@ -24,5 +26,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Position:    {Pos.X}, {Pos.Y}, {Pos.Z}");
             Log($"*** END Helper Chunk ***");
         }
+#endif
+        #endregion
     }
 }

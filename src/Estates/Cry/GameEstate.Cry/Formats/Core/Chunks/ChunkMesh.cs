@@ -56,7 +56,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 
         //public ChunkMeshSubsets chunkMeshSubset; // pointer to the mesh subset that belongs to this mesh
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START MESH CHUNK ***");
             Log($"    ChunkType:           {ChunkType}");
@@ -73,5 +75,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    MaxBound:            {MaxBound.X:F7}, {MaxBound.Y:F7}, {MaxBound.Z:F7}");
             Log($"*** END MESH CHUNK ***");
         }
+#endif
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            HelperType = (HelperTypeEnum)Enum.ToObject(typeof(HelperTypeEnum), r.ReadUInt32());
+            HelperType = (HelperType)Enum.ToObject(typeof(HelperType), r.ReadUInt32());
             if (Version == 0x744)  // only has the Position.
             {
                 Pos.X = r.ReadSingle();
@@ -21,7 +21,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 var stringLength = 0;
                 for (int i = 0, j = tmpName.Length; i < j; i++) if (tmpName[i] == 0) { stringLength = i; break; }
                 Name = new string(tmpName, 0, stringLength);
-                HelperType = (HelperTypeEnum)Enum.ToObject(typeof(HelperTypeEnum), r.ReadUInt32());
+                HelperType = (HelperType)Enum.ToObject(typeof(HelperType), r.ReadUInt32());
                 Pos.X = r.ReadSingle();
                 Pos.Y = r.ReadSingle();
                 Pos.Z = r.ReadSingle();

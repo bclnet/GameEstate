@@ -12,7 +12,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Name = r.ReadFString(128);
             NumChildren = r.ReadUInt32();
             PhysicsType = new MtlNamePhysicsType[NumChildren];
-            MatType = NumChildren == 0 ? MtlNameTypeEnum.Single : MtlNameTypeEnum.Library;
+            MatType = NumChildren == 0 ? MtlNameType.Single : MtlNameType.Library;
             for (var i = 0; i < NumChildren; i++) PhysicsType[i] = (MtlNamePhysicsType)Enum.ToObject(typeof(MtlNamePhysicsType), r.ReadUInt32());
         }
     }

@@ -10,7 +10,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public string[] PropKey;
         public string[] PropValue;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** START SceneProp Chunk ***");
             Log($"    ChunkType:   {ChunkType}");
@@ -19,5 +21,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             for (var i = 0; i < NumProps; i++) Log($"{PropKey[i],30}{PropValue[i],20}");
             Log("*** END SceneProp Chunk ***");
         }
+#endif
+        #endregion
     }
 }

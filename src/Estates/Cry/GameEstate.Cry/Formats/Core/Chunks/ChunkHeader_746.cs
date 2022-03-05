@@ -8,7 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             var headerType = r.ReadUInt16() + 0xCCCBF000;
-            ChunkType = (ChunkTypeEnum)headerType;
+            ChunkType = (ChunkType)headerType;
             Version = r.ReadUInt16();
             ID = r.ReadInt32();
             Size = r.ReadUInt32();

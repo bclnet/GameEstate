@@ -12,7 +12,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public uint NumberOfBoneIDs;
         public ushort[] BoneIDs;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log("*** START MESH SUBSET CHUNK ***");
             Log("    ChunkType:       {ChunkType}");
@@ -32,5 +34,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             }
             Log("*** END MESH SUBSET CHUNK ***");
         }
+#endif
+        #endregion
     }
 }

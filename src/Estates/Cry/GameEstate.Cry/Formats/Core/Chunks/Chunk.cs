@@ -9,64 +9,94 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 {
     public abstract class Chunk : IBinaryChunk
     {
-        static Dictionary<Type, Dictionary<uint, Func<dynamic>>> _chunkFactoryCache = new Dictionary<Type, Dictionary<uint, Func<dynamic>>> { };
+        protected static readonly Random _rnd = new Random();
+        protected static readonly HashSet<int> _alreadyPickedRandoms = new HashSet<int>();
 
-        public static Chunk New(ChunkTypeEnum chunkType, uint version)
-        {
-            switch (chunkType)
+        static readonly Dictionary<Type, Dictionary<uint, Func<dynamic>>> _chunkFactoryCache = new Dictionary<Type, Dictionary<uint, Func<dynamic>>> { };
+
+        internal ChunkHeader _header;
+        internal Model _model;
+
+        /// <summary>
+        /// Position of the start of the chunk
+        /// </summary>
+        public uint Offset { get; internal set; }
+        /// <summary>
+        /// The Type of the Chunk
+        /// </summary>
+        public ChunkType ChunkType { get; internal set; }
+        /// <summary>
+        /// The Version of this Chunk
+        /// </summary>
+        internal uint Version;
+        /// <summary>
+        /// The ID of this Chunk
+        /// </summary>
+        internal int ID;
+        /// <summary>
+        /// The Size of this Chunk (in Bytes)
+        /// </summary>
+        internal uint Size;
+        /// <summary>
+        /// Size of the data in the chunk.  This is the chunk size, minus the header (if there is one)
+        /// </summary>
+        public uint DataSize { get; set; }
+
+        internal Dictionary<long, byte> SkippedBytes = new Dictionary<long, byte> { };
+
+        public static Chunk New(ChunkType chunkType, uint version)
+            => chunkType switch
             {
-                case ChunkTypeEnum.SourceInfo: return New<ChunkSourceInfo>(version);
-                case ChunkTypeEnum.Timing: return New<ChunkTimingFormat>(version);
-                case ChunkTypeEnum.ExportFlags: return New<ChunkExportFlags>(version);
-                case ChunkTypeEnum.MtlName: return New<ChunkMtlName>(version);
-                case ChunkTypeEnum.DataStream: return New<ChunkDataStream>(version);
-                case ChunkTypeEnum.Mesh: return New<ChunkMesh>(version);
-                case ChunkTypeEnum.MeshSubsets: return New<ChunkMeshSubsets>(version);
-                case ChunkTypeEnum.Node: return New<ChunkNode>(version);
-                case ChunkTypeEnum.Helper: return New<ChunkHelper>(version);
-                case ChunkTypeEnum.Controller: return New<ChunkController>(version);
-                case ChunkTypeEnum.SceneProps: return New<ChunkSceneProp>(version);
-                case ChunkTypeEnum.MeshPhysicsData: return New<ChunkMeshPhysicsData>(version);
-                case ChunkTypeEnum.BoneAnim: return New<ChunkBoneAnim>(version);
+                ChunkType.SourceInfo => New<ChunkSourceInfo>(version),
+                ChunkType.Timing => New<ChunkTimingFormat>(version),
+                ChunkType.ExportFlags => New<ChunkExportFlags>(version),
+                ChunkType.MtlName => New<ChunkMtlName>(version),
+                ChunkType.DataStream => New<ChunkDataStream>(version),
+                ChunkType.Mesh => New<ChunkMesh>(version),
+                ChunkType.MeshSubsets => New<ChunkMeshSubsets>(version),
+                ChunkType.Node => New<ChunkNode>(version),
+                ChunkType.Helper => New<ChunkHelper>(version),
+                ChunkType.Controller => New<ChunkController>(version),
+                ChunkType.SceneProps => New<ChunkSceneProp>(version),
+                ChunkType.MeshPhysicsData => New<ChunkMeshPhysicsData>(version),
+                ChunkType.BoneAnim => New<ChunkBoneAnim>(version),
                 // Compiled chunks
-                case ChunkTypeEnum.CompiledBones: return New<ChunkCompiledBones>(version);
-                case ChunkTypeEnum.CompiledPhysicalProxies: return New<ChunkCompiledPhysicalProxies>(version);
-                case ChunkTypeEnum.CompiledPhysicalBones: return New<ChunkCompiledPhysicalBones>(version);
-                case ChunkTypeEnum.CompiledIntSkinVertices: return New<ChunkCompiledIntSkinVertices>(version);
-                case ChunkTypeEnum.CompiledMorphTargets: return New<ChunkCompiledMorphTargets>(version);
-                case ChunkTypeEnum.CompiledExt2IntMap: return New<ChunkCompiledExtToIntMap>(version);
-                case ChunkTypeEnum.CompiledIntFaces: return New<ChunkCompiledIntFaces>(version);
+                ChunkType.CompiledBones => New<ChunkCompiledBones>(version),
+                ChunkType.CompiledPhysicalProxies => New<ChunkCompiledPhysicalProxies>(version),
+                ChunkType.CompiledPhysicalBones => New<ChunkCompiledPhysicalBones>(version),
+                ChunkType.CompiledIntSkinVertices => New<ChunkCompiledIntSkinVertices>(version),
+                ChunkType.CompiledMorphTargets => New<ChunkCompiledMorphTargets>(version),
+                ChunkType.CompiledExt2IntMap => New<ChunkCompiledExtToIntMap>(version),
+                ChunkType.CompiledIntFaces => New<ChunkCompiledIntFaces>(version),
                 // Star Citizen equivalents
-                case ChunkTypeEnum.CompiledBonesSC: return New<ChunkCompiledBones>(version);
-                case ChunkTypeEnum.CompiledPhysicalBonesSC: return New<ChunkCompiledPhysicalBones>(version);
-                case ChunkTypeEnum.CompiledExt2IntMapSC: return New<ChunkCompiledExtToIntMap>(version);
-                case ChunkTypeEnum.CompiledIntFacesSC: return New<ChunkCompiledIntFaces>(version);
-                case ChunkTypeEnum.CompiledIntSkinVerticesSC: return New<ChunkCompiledIntSkinVertices>(version);
-                case ChunkTypeEnum.CompiledMorphTargetsSC: return New<ChunkCompiledMorphTargets>(version);
-                case ChunkTypeEnum.CompiledPhysicalProxiesSC: return New<ChunkCompiledPhysicalProxies>(version);
+                ChunkType.CompiledBonesSC => New<ChunkCompiledBones>(version),
+                ChunkType.CompiledPhysicalBonesSC => New<ChunkCompiledPhysicalBones>(version),
+                ChunkType.CompiledExt2IntMapSC => New<ChunkCompiledExtToIntMap>(version),
+                ChunkType.CompiledIntFacesSC => New<ChunkCompiledIntFaces>(version),
+                ChunkType.CompiledIntSkinVerticesSC => New<ChunkCompiledIntSkinVertices>(version),
+                ChunkType.CompiledMorphTargetsSC => New<ChunkCompiledMorphTargets>(version),
+                ChunkType.CompiledPhysicalProxiesSC => New<ChunkCompiledPhysicalProxies>(version),
+                // Star Citizen IVO chunks
+                ChunkType.MtlNameIvo => New<ChunkMtlName>(version),
+                ChunkType.CompiledBonesIvo => New<ChunkCompiledBones>(version),
+                ChunkType.MeshIvo => New<ChunkMesh>(version),
+                ChunkType.IvoSkin => New<ChunkIvoSkin>(version),
+                // Star Citizen
+                ChunkType.BinaryXmlDataSC => New<ChunkXmlFileSC>(version),
                 // Old chunks
-                case ChunkTypeEnum.BoneNameList: return New<ChunkBoneNameList>(version);
-                case ChunkTypeEnum.MeshMorphTarget: return New<ChunkMeshMorphTargets>(version);
-                case ChunkTypeEnum.Mtl: //Log("Mtl Chunk here");  // Obsolete.  Not used
-                // Star Citizen new
-                case ChunkTypeEnum.XmlFileSC: return New<ChunkXmlFileSC>(version);
-                default: return new ChunkUnknown();
-            }
-        }
+                ChunkType.BoneNameList => New<ChunkBoneNameList>(version),
+                ChunkType.MeshMorphTarget => New<ChunkMeshMorphTargets>(version),
+                ChunkType.Mtl => new ChunkUnknown(),// Obsolete. Not used
+                _ => new ChunkUnknown(),
+            };
 
         public static T New<T>(uint version) where T : Chunk
         {
             if (!_chunkFactoryCache.TryGetValue(typeof(T), out var versionMap)) _chunkFactoryCache[typeof(T)] = versionMap = new Dictionary<uint, Func<dynamic>> { };
             if (!versionMap.TryGetValue(version, out var factory))
             {
-                var targetType = (
-                    from type in Assembly.GetExecutingAssembly().GetTypes()
-                    where !type.IsAbstract
-                    where type.IsClass
-                    where !type.IsGenericType
-                    where typeof(T).IsAssignableFrom(type)
-                    where type.Name == $"{typeof(T).Name}_{version:X}"
-                    select type).FirstOrDefault();
+                var targetType = typeof(T).Assembly.GetTypes()
+                    .FirstOrDefault(type => !type.IsAbstract && type.IsClass && !type.IsGenericType && typeof(T).IsAssignableFrom(type) && type.Name == $"{typeof(T).Name}_{version:X}");
                 if (targetType != null) factory = () => Activator.CreateInstance(targetType) as T;
                 _chunkFactoryCache[typeof(T)][version] = factory;
             }
@@ -79,62 +109,31 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             _header = header;
         }
 
-        internal ChunkHeader _header;
-        public Model _model;
-
-        /// <summary>
-        /// Position of the start of the chunk
-        /// </summary>
-        public uint Offset { get; internal set; }
-        /// <summary>
-        /// The Type of the Chunk
-        /// </summary>
-        public ChunkTypeEnum ChunkType { get; internal set; }
-        /// <summary>
-        /// The Version of this Chunk
-        /// </summary>
-        public uint Version;
-        /// <summary>
-        /// The ID of this Chunk
-        /// </summary>
-        public int ID;
-        /// <summary>
-        /// The Size of this Chunk (in Bytes)
-        /// </summary>
-        public uint Size;
-        /// <summary>
-        /// Size of the data in the chunk.  This is the chunk size, minus the header (if there is one)
-        /// </summary>
-        public uint DataSize { get; set; }
-
-        public Dictionary<long, byte> SkippedBytes = new Dictionary<long, byte> { };
-
         public void SkipBytes(BinaryReader r, long? bytesToSkip = null)
         {
             if (r == null) return;
             if (r.BaseStream.Position > Offset + Size && Size > 0) Log($"Buffer Overflow in {GetType().Name} 0x{ID:X} ({r.BaseStream.Position - Offset - Size} bytes)");
             if (r.BaseStream.Length < Offset + Size) Log($"Corrupt Headers in {GetType().Name} 0x{ID:X}");
             if (!bytesToSkip.HasValue) bytesToSkip = Size - Math.Max(r.BaseStream.Position - Offset, 0);
-            for (var i = 0L; i < bytesToSkip; i++)
-            {
-                SkippedBytes[r.BaseStream.Position - Offset] = r.ReadByte();
-                //if (SkippedBytes[r.BaseStream.Position - Offset - 1] == 0) SkippedBytes.Remove(r.BaseStream.Position - Offset - 1);
-            }
+            for (var i = 0L; i < bytesToSkip; i++) SkippedBytes[r.BaseStream.Position - Offset] = r.ReadByte();
         }
 
         public virtual void Read(BinaryReader r)
         {
+            if (r == null) throw new ArgumentNullException(nameof(r));
             ChunkType = _header.ChunkType;
             Version = _header.Version;
             Offset = _header.Offset;
             ID = _header.ID;
             Size = _header.Size;
             DataSize = Size; // For SC files, there is no header in chunks.  But need Datasize to calculate things.
-            r.BaseStream.Seek(_header.Offset, 0);
+
+            r.BaseStream.Seek(_header.Offset, SeekOrigin.Begin);
+
             // Star Citizen files don't have the type, version, offset and ID at the start of a chunk, so don't read them.
-            if (_model.FileVersion == FileVersionEnum.CryTek_3_4 || _model.FileVersion == FileVersionEnum.CryTek_3_5)
+            if (_model.FileVersion == FileVersion.CryTek_3_4 || _model.FileVersion == FileVersion.CryTek_3_5)
             {
-                ChunkType = (ChunkTypeEnum)Enum.ToObject(typeof(ChunkTypeEnum), r.ReadUInt32());
+                ChunkType = (ChunkType)Enum.ToObject(typeof(ChunkType), r.ReadUInt32());
                 Version = r.ReadUInt32();
                 Offset = r.ReadUInt32();
                 ID = r.ReadInt32();
@@ -160,7 +159,24 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 
         public virtual void Write(BinaryWriter w) => throw new NotImplementedException();
 
-        public virtual void WriteChunk()
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, Ver: {Version:X}, Offset: {Offset:X}, ID: {ID:X}, Size: {Size}";
+
+        protected static int GetNextRandom()
+        {
+            var available = false;
+            var rand = 0;
+            while (!available)
+            {
+                rand = _rnd.Next(100000);
+                if (!_alreadyPickedRandoms.Contains(rand)) { _alreadyPickedRandoms.Add(rand); available = true; }
+            }
+            return rand;
+        }
+
+        #region Log
+#if LOG
+        public virtual void LogChunk()
         {
             Log($"*** CHUNK ***");
             Log($"    ChunkType: {ChunkType}");
@@ -170,5 +186,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Size: {Size:X}");
             Log($"*** END CHUNK ***");
         }
+#endif
+        #endregion
     }
 }

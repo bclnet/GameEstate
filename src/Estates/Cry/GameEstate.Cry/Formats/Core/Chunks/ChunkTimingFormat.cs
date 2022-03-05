@@ -10,7 +10,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public RangeEntity GlobalRange;
         public int NumSubRanges;
 
-        public override void WriteChunk()
+        #region Log
+#if LOG
+        public override void LogChunk()
         {
             Log($"*** TIMING CHUNK ***");
             Log($"    ID: {ID:X}");
@@ -22,5 +24,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Log($"    Global Range:  End:  {GlobalRange.End}");
             Log($"*** END TIMING CHUNK ***");
         }
+#endif
+        #endregion
     }
 }

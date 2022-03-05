@@ -11,7 +11,6 @@ namespace System
         public const float PiOver4 = 0.7853982f;
         public const float PiOver6 = 0.5235988f;
 
-
         #region Safe
 
         public static double Safe(double value) => value == double.NegativeInfinity

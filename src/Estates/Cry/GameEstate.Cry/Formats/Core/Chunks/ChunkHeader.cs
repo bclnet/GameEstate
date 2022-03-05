@@ -4,6 +4,8 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 {
     public abstract class ChunkHeader : Chunk
     {
+        #region Log
+#if LOG
         public override string ToString()
         {
             var b = new StringBuilder();
@@ -16,5 +18,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             b.Append($"*** END CHUNK HEADER ***");
             return b.ToString();
         }
+#endif
+        #endregion
     }
 }

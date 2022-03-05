@@ -49,8 +49,8 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             var tmpdataStreamType = r.ReadUInt32();
             DataStreamType = (DataStreamTypeEnum)Enum.ToObject(typeof(DataStreamTypeEnum), tmpdataStreamType);
             NumElements = r.ReadUInt32(); // number of elements in this chunk
-            if (_model.FileVersion == FileVersionEnum.CryTek_3_5 || _model.FileVersion == FileVersionEnum.CryTek_3_4) BytesPerElement = r.ReadUInt32(); // bytes per element
-            if (_model.FileVersion == FileVersionEnum.CryTek_3_6)
+            if (_model.FileVersion == FileVersion.CryTek_3_5 || _model.FileVersion == FileVersion.CryTek_3_4) BytesPerElement = r.ReadUInt32(); // bytes per element
+            if (_model.FileVersion == FileVersion.CryTek_3_6)
             {
                 BytesPerElement = (uint)r.ReadInt16(); // Star Citizen 2.0 is using an int16 here now.
                 r.ReadInt16(); // unknown value.  Doesn't look like padding though.

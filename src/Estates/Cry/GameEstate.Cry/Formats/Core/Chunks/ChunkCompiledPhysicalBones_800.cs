@@ -7,6 +7,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+            
             SkipBytes(r, 32); // Padding between the chunk header and the first bone.
             NumBones = (int)((Size - 32) / 152);
             for (var i = 0U; i < NumBones; i++)
@@ -24,8 +25,5 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             var skin = GetSkinningInfo();
             //skin.PhysicalBoneMeshes
         }
-
-        public override void WriteChunk() => base.WriteChunk();
     }
-
 }
