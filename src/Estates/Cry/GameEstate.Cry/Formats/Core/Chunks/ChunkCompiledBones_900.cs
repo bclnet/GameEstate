@@ -30,6 +30,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 AddChildIDToParent(BoneList[i]);
             }
 
+            // Add to SkinningInfo
             var skin = GetSkinningInfo();
             skin.CompiledBones = new List<CompiledBone>();
             skin.HasSkinningInfo = true;

@@ -9,15 +9,10 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         {
             base.Read(r);
 
-            NumIntFaces = DataSize / 6; // This is an array of TFaces, which are 3 uint16.
-            Faces = new TFace[NumIntFaces];
-            for (var i = 0; i < NumIntFaces; i++)
-            {
-                Faces[i].I0 = r.ReadUInt16();
-                Faces[i].I1 = r.ReadUInt16();
-                Faces[i].I2 = r.ReadUInt16();
-            }
+            NumIntFaces = (int)(DataSize / 6); // This is an array of TFaces, which are 3 uint16.
+            Faces = r.ReadTArray<TFace>(TFace.SizeOf, NumIntFaces);
 
+            // Add to SkinningInfo
             var skin = GetSkinningInfo();
             skin.IntFaces = Faces.ToList();
         }

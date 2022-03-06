@@ -160,7 +160,7 @@
         AUTOCUBIC
     }
 
-    public enum DataStreamTypeEnum : uint
+    public enum DataStreamType : uint
     {
         VERTICES,
         NORMALS,
@@ -174,7 +174,7 @@
         BONEMAP,    // 0x09
         FACEMAP,
         VERTMATS,
-        UNKNOWN1,   // Prey Normals?
+        QTANGENTS,   // Prey Normals?
         UNKNOWN2,
         UNKNOWN3,
         VERTSUVS,   // 0x0F

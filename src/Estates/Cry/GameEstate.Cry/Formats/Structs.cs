@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats
@@ -77,17 +79,11 @@ namespace GameEstate.Cry.Formats
         public float[] Unknown2;    // If ARG==9?  array length = 2
     }
 
-    public struct UV
-    {
-        public float U;
-        public float V;
-    }
-
     public struct UVFace
     {
-        public int t0;              // first vertex index
-        public int t1;              // second vertex index
-        public int t2;              // third vertex index
+        public int T0;              // first vertex index
+        public int T1;              // second vertex index
+        public int T2;              // third vertex index
     }
 
     public struct ControllerInfo
@@ -99,39 +95,19 @@ namespace GameEstate.Cry.Formats
         public uint RotTrack;
     }
 
-    public struct IRGB
-    {
-        public byte r;              // red
-        public byte g;              // green
-        public byte b;              // blue
-
-        public IRGB Read(BinaryReader r)
-            => new IRGB
-            {
-                r = r.ReadByte(),
-                g = r.ReadByte(),
-                b = r.ReadByte()
-            };
-    }
-
     /// <summary>
     /// May also be known as ColorB.
     /// </summary>
+    [StructLayout(LayoutKind.Explicit)]
     public struct IRGBA
     {
-        public byte r;              // red
-        public byte g;              // green
-        public byte b;              // blue
-        public byte a;              // alpha
-
-        public IRGBA Read(BinaryReader r)
-            => new IRGBA
-            {
-                r = r.ReadByte(),
-                g = r.ReadByte(),
-                b = r.ReadByte(),
-                a = r.ReadByte()
-            };
+        public const int SizeOf = sizeof(byte) * 4;
+        public IRGBA(byte r, byte g, byte b, byte a) { value = 0; this.r = r; this.g = g; this.b = b; this.a = a; }
+        [FieldOffset(0)] public byte r;              // red
+        [FieldOffset(1)] public byte g;              // green
+        [FieldOffset(2)] public byte b;              // blue
+        [FieldOffset(3)] public byte a;              // alpha
+        [FieldOffset(0)] public int value;
     }
 
     //public struct FRGB
@@ -149,6 +125,7 @@ namespace GameEstate.Cry.Formats
 
     public struct Tangent
     {
+        public const int SizeOf = sizeof(float) * 4;
         // Tangents. Divide each component by 32767 to get the actual value
         public float X;
         public float Y;
@@ -318,17 +295,12 @@ namespace GameEstate.Cry.Formats
         public uint NumExtVertices;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct MeshMorphTargetVertex
     {
+        public const int SizeOf = sizeof(uint) + MathX.SizeOfVector3;
         public uint VertexID;
         public Vector3 Vertex;
-
-        public static MeshMorphTargetVertex Read(BinaryReader r)
-            => new MeshMorphTargetVertex
-            {
-                VertexID = r.ReadUInt32(),
-                Vertex = r.ReadVector3(),
-            };
     }
 
     public struct MorphTargets
@@ -339,8 +311,10 @@ namespace GameEstate.Cry.Formats
         readonly List<MeshMorphTargetVertex> ExtMorph;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public struct TFace
     {
+        public const int SizeOf = sizeof(ushort) * 3;
         public ushort I0;
         public ushort I1;
         public ushort I2;
@@ -384,10 +358,10 @@ namespace GameEstate.Cry.Formats
     public struct PhysicalStream
     {
         public uint ID;             // Chunk ID (although not technically a chunk
-        public uint FirstIndex;
-        public uint NumIndices;
-        public uint FirstVertex;
-        public uint NumVertices;
+        public int FirstIndex;
+        public int NumIndices;
+        public int FirstVertex;
+        public int NumVertices;
         public uint Material;       // Size of the weird data at the end of the hitbox structure.
         public Vector3[] Vertices;  // Array of vertices (x,y,z) length NumVertices
         public ushort[] Indices;    // Array of indices

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Numerics;
 using System.Text;
 
@@ -323,8 +324,28 @@ namespace System.IO
             return set;
         }
 
+        //:ref https://docs.microsoft.com/en-us/windows/win32/direct3d11/floating-point-rules#16-bit-floating-point-rules
+        static float Byte2HexIntFracToFloat2(string hexString)
+        {
+            string sintPart = hexString[..2], sfracPart = hexString.Substring(2, 2);
+            int intPart = Convert.ToSByte(sintPart, 16), num = short.Parse(sfracPart, NumberStyles.AllowHexSpecifier);
+            var bytes = BitConverter.GetBytes(num);
+            string binary = Convert.ToString(bytes[0], 2).PadLeft(8, '0'), binaryFracPart = binary;
+            // convert Fractional Part
+            var dec = 0f;
+            for (var i = 0; i < binaryFracPart.Length; i++)
+            {
+                if (binaryFracPart[i] == '0') continue;
+                dec += (float)Math.Pow(2, (i + 1) * (-1));
+            }
+            return intPart + dec;
+        }
+
         public static float ReadHalf(this BinaryReader r)
             => new HalfFloat { bits = r.ReadUInt16() }.ToSingle();
+        
+        public static float ReadHalf16(this BinaryReader r)
+            => Byte2HexIntFracToFloat2(r.ReadUInt16().ToString("X4")) / 127f;
 
         public static bool ReadBool32(this BinaryReader source)
             => source.ReadUInt32() != 0;
@@ -333,6 +354,10 @@ namespace System.IO
             => new Vector2(
                 x: source.ReadSingle(),
                 y: source.ReadSingle());
+        public static Vector2 ReadHalfVector2(this BinaryReader source)
+            => new Vector2(
+                x: source.ReadHalf(),
+                y: source.ReadHalf());
         public static Vector3 ReadVector3(this BinaryReader source)
             => new Vector3(
                 x: source.ReadSingle(),
@@ -343,12 +368,23 @@ namespace System.IO
                 x: source.ReadHalf(),
                 y: source.ReadHalf(),
                 z: source.ReadHalf());
+        public static Vector3 ReadHalf16Vector3(this BinaryReader source)
+            => new Vector3(
+                x: source.ReadHalf16(),
+                y: source.ReadHalf16(),
+                z: source.ReadHalf16());
         public static Vector4 ReadVector4(this BinaryReader source)
             => new Vector4(
                 x: source.ReadSingle(),
                 y: source.ReadSingle(),
                 z: source.ReadSingle(),
                 w: source.ReadSingle());
+        public static Vector4 ReadHalfVector4(this BinaryReader source)
+            => new Vector4(
+                x: source.ReadHalf(),
+                y: source.ReadHalf(),
+                z: source.ReadHalf(),
+                w: source.ReadHalf());
 
         public static Matrix3x3 ReadMatrix3x3(this BinaryReader r)
             => new Matrix3x3

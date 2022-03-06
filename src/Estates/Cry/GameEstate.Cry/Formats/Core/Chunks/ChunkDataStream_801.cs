@@ -6,26 +6,22 @@ using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
-    public class ChunkDataStream_800 : ChunkDataStream
+    public class ChunkDataStream_801 : ChunkDataStream
     {
-        // This includes changes for 2. (byte4/1/2hex, and 20 byte per element vertices).
-        short starCitizenFlag = 0;
-
         public override void Read(BinaryReader r)
         {
             base.Read(r);
 
             Flags2 = r.ReadUInt32(); // another filler
             DataStreamType = (DataStreamType)r.ReadUInt32();
+            SkipBytes(r, 4);
             NumElements = (int)r.ReadUInt32(); // number of elements in this chunk
-            if (_model.FileVersion == FileVersion.CryTek_3_5 || _model.FileVersion == FileVersion.CryTek_3_4) BytesPerElement = (int)r.ReadUInt32(); // bytes per element
-            else if (_model.FileVersion == FileVersion.CryTek_3_6) { BytesPerElement = r.ReadInt16(); r.ReadInt16(); } // Star Citizen 2.0 is using an int16 here now. Second value is unknown. Doesn't look like padding though.
+            BytesPerElement = (int)r.ReadUInt32();
             SkipBytes(r, 8);
 
-            // Now do loops to read for each of the different Data Stream Types. If vertices, need to populate Vector3s for example.
             switch (DataStreamType)
             {
-                case DataStreamType.VERTICES: // Ref is 0x00000000
+                case DataStreamType.VERTICES:
                     switch (BytesPerElement)
                     {
                         case 12: Vertices = r.ReadTArray<Vector3>(MathX.SizeOfVector3, NumElements); break;
@@ -34,7 +30,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                         case 16: Vertices = new Vector3[NumElements]; for (var i = 0; i < NumElements; i++) { Vertices[i] = r.ReadVector3(); SkipBytes(r, 4); } break;
                     }
                     break;
-                case DataStreamType.INDICES:  // Ref is
+                case DataStreamType.INDICES:
                     if (BytesPerElement == 2) { Indices = new uint[NumElements]; for (var i = 0; i < NumElements; i++) Indices[i] = r.ReadUInt16(); }
                     else if (BytesPerElement == 4) Indices = r.ReadTArray<uint>(sizeof(uint), NumElements);
                     break;
@@ -75,9 +71,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                                 Tangents[i, 1].Z = r.ReadSByte() / 127f;
 
                                 // Calculate the normal based on the cross product of the tangents.
-                                Normals[i].X = (Tangents[i, 0].Y * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].Y);
-                                Normals[i].Y = 0 - (Tangents[i, 0].X * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].X);
-                                Normals[i].Z = (Tangents[i, 0].X * Tangents[i, 1].Y - Tangents[i, 0].Y * Tangents[i, 1].X);
+                                //Normals[i].X = (Tangents[i, 0].Y * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].Y);
+                                //Normals[i].Y = 0 - (Tangents[i, 0].X * Tangents[i, 1].Z - Tangents[i, 0].Z * Tangents[i, 1].X);
+                                //Normals[i].Z = (Tangents[i, 0].X * Tangents[i, 1].Y - Tangents[i, 0].Y * Tangents[i, 1].X);
                                 break;
                             default: throw new Exception("Need to add new Tangent Size");
                         }
@@ -114,41 +110,33 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                                 Normals[i].X = r.ReadSByte() / 127f;
                                 Normals[i].Y = r.ReadSByte() / 127f;
                                 Normals[i].Z = r.ReadSByte() / 127f;
-                                r.ReadSByte(); // Should be FF.
+                                r.ReadSByte();
                                 UVs[i].X = r.ReadHalf();
                                 UVs[i].Y = r.ReadHalf();
                             }
                             break;
                         // 3 half floats for verts, 3 colors, 2 half floats for UVs
-                        case 16 when starCitizenFlag == 257:
+                        case 16:
                             for (var i = 0; i < NumElements; i++)
                             {
                                 Vertices[i] = r.ReadHalf16Vector3();
                                 SkipBytes(r, 2);
 
-                                Colors[i] = new IRGBA(
-                                    b: r.ReadByte(),
-                                    g: r.ReadByte(),
-                                    r: r.ReadByte(),
-                                    a: r.ReadByte());
-
-                                // Inelegant hack for Blender, as it's Collada importer doesn't support Alpha channels, and some materials need the alpha channel more than the green channel.
-                                // This is complicated, as some materials need the green channel more.
-                                byte a = Colors[i].a, g = Colors[i].g; Colors[i].a = g; Colors[i].g = a;
+                                // Read a Quat, convert it to vector3
+                                var quat = new Vector4
+                                {
+                                    X = (r.ReadByte() - 128.0f) / 127.5f,
+                                    Y = (r.ReadByte() - 128.0f) / 127.5f,
+                                    Z = (r.ReadByte() - 128.0f) / 127.5f,
+                                    W = (r.ReadByte() - 128.0f) / 127.5f
+                                };
+                                Normals[i].X = (2f * (quat.X * quat.Z + quat.Y * quat.W));
+                                Normals[i].Y = (2f * (quat.Y * quat.Z - quat.X * quat.W));
+                                Normals[i].Z = (2f * (quat.Z * quat.Z + quat.W * quat.W)) - 1f;
 
                                 // UVs ABSOLUTELY should use the Half structures.
                                 UVs[i].X = r.ReadHalf();
                                 UVs[i].Y = r.ReadHalf();
-                            }
-                            break;
-                        case 16 when starCitizenFlag != 257:
-                            Normals = new Vector3[NumElements];
-                            // Legacy version using Halfs (Also Hunt models)
-                            for (var i = 0; i < NumElements; i++)
-                            {
-                                Vertices[i] = r.ReadHalfVector3();
-                                Normals[i] = r.ReadHalfVector3();
-                                UVs[i] = r.ReadHalfVector2();
                             }
                             break;
                         default:

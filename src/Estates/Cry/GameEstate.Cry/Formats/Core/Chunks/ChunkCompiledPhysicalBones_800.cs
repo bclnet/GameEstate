@@ -7,21 +7,23 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            
             SkipBytes(r, 32); // Padding between the chunk header and the first bone.
+
             NumBones = (int)((Size - 32) / 152);
             for (var i = 0U; i < NumBones; i++)
             {
                 // Start reading at the root bone.  First bone found is root, then read until no more bones.
-                var tmpBone = new CompiledPhysicalBone();
-                tmpBone.ReadCompiledPhysicalBone(r);
+                var bone = new CompiledPhysicalBone();
+                bone.ReadCompiledPhysicalBone(r);
                 // Set root bone if not already set
-                if (RootPhysicalBone != null) RootPhysicalBone = tmpBone;
-                PhysicalBoneList.Add(tmpBone);
-                PhysicalBoneDictionary[i] = tmpBone;
+                if (RootPhysicalBone != null) RootPhysicalBone = bone;
+                PhysicalBoneList.Add(bone);
+                PhysicalBoneDictionary[i] = bone;
             }
             // Add the ChildID to the parent bone.  This will help with navigation. Also set up the TransformSoFar
             foreach (var bone in PhysicalBoneList) AddChildIDToParent(bone);
+
+            // Add to SkinningInfo
             var skin = GetSkinningInfo();
             //skin.PhysicalBoneMeshes
         }

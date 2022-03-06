@@ -4,15 +4,17 @@ using static GameEstate.EstateDebug;
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
     /// <summary>
-    /// Helper chunk.  This is the top level, then nodes, then mesh, then mesh subsets
-    /// CCCC0001  
+    /// Helper chunk. This is the top level, then nodes, then mesh, then mesh subsets. CCCC0001
     /// </summary>
-    public abstract class ChunkHelper : Chunk
+    public abstract class ChunkHelper : Chunk // CCCC0001
     {
         public string Name;
         public HelperType HelperType;
         public Vector3 Pos;
         public Matrix4x4 Transform;
+
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Version: {Version}";
 
         #region Log
 #if LOG

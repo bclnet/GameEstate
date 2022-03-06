@@ -5,8 +5,8 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     public abstract class ChunkCompiledIntSkinVertices : Chunk
     {
         public int Reserved;
+        public int NumIntVertices; // Calculate by size of data div by size of IntSkinVertex structure.
         public IntSkinVertex[] IntSkinVertices;
-        public int NumIntVertices { get; set; } // Calculate by size of data div by size of IntSkinVertex structure.
 
         #region Log
 #if LOG

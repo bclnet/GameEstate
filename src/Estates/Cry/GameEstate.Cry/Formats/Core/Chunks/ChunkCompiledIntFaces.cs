@@ -5,7 +5,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     public abstract class ChunkCompiledIntFaces : Chunk
     {
         public int Reserved;
-        public uint NumIntFaces;
+        public int NumIntFaces;
         public TFace[] Faces;
 
         #region Log

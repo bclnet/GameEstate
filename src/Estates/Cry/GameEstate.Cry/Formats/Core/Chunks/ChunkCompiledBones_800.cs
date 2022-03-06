@@ -26,6 +26,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             // Add the ChildID to the parent bone. This will help with navigation. Also set up the TransformSoFar
             foreach (var bone in BoneList) AddChildIDToParent(bone);
 
+            // Add to SkinningInfo
             var skin = GetSkinningInfo();
             skin.HasSkinningInfo = true;
             skin.CompiledBones = BoneList;

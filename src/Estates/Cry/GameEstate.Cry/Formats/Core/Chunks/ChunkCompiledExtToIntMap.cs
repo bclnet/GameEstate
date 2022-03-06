@@ -5,7 +5,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     public abstract class ChunkCompiledExtToIntMap : Chunk
     {
         public int Reserved;
-        public uint NumExtVertices;
+        public int NumExtVertices;
         public ushort[] Source;
 
         public override string ToString()

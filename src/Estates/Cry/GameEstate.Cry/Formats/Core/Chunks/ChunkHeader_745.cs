@@ -3,19 +3,15 @@ using System.IO;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
-    public class ChunkHeader_745 : ChunkHeader_744
+    public class ChunkHeader_745 : ChunkHeader
     {
         public override void Read(BinaryReader r)
         {
-            var headerType = r.ReadUInt32();
-            ChunkType = (ChunkType)headerType;
+            ChunkType = (ChunkType)r.ReadUInt32();
             Version = r.ReadUInt32();
             Offset = r.ReadUInt32();
             ID = r.ReadInt32();
             Size = r.ReadUInt32();
-            //if (ChunkType == ChunkTypeEnum.Timing) ID += 0xFFFF0000;
         }
-
-        public override void Write(BinaryWriter w) => throw new NotImplementedException();
     }
 }

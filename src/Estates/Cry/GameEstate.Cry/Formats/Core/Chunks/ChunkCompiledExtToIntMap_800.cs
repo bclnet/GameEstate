@@ -9,9 +9,8 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         {
             base.Read(r);
 
-            NumExtVertices = DataSize / sizeof(ushort);
-            Source = new ushort[NumExtVertices];
-            for (var i = 0; i < NumExtVertices; i++) Source[i] = r.ReadUInt16();
+            NumExtVertices = (int)(DataSize / sizeof(ushort));
+            Source = r.ReadTArray<ushort>(sizeof(ushort), NumExtVertices);
 
             // Add to SkinningInfo
             var skin = GetSkinningInfo();

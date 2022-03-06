@@ -5,11 +5,16 @@ namespace System
 {
     public static class MathX
     {
+        public const int SizeOfVector2 = sizeof(float) * 2;
+        public const int SizeOfVector3 = sizeof(float) * 3;
+        public const int SizeOfVector4 = sizeof(float) * 4;
+
         public const float Pi = 3.141593f;
         public const float PiOver2 = 1.570796f;
         public const float PiOver3 = 1.047198f;
         public const float PiOver4 = 0.7853982f;
         public const float PiOver6 = 0.5235988f;
+
 
         #region Safe
 
@@ -58,7 +63,13 @@ namespace System
 
         public static float Repeat(float t, float length) => Clamp(t - ((float)Math.Floor(t / length) * length), 0f, length);
 
+        #region Swap
         public static void Swap<T>(ref T a, ref T b) { var tmp = a; a = b; b = tmp; }
+        public static uint SwapEndian(uint value) { var bytes = BitConverter.GetBytes(value); Array.Reverse(bytes, 0, bytes.Length); return BitConverter.ToUInt32(bytes, 0); }
+        public static int SwapEndian(int value) { var bytes = BitConverter.GetBytes(value); Array.Reverse(bytes, 0, bytes.Length); return BitConverter.ToInt32(bytes, 0); }
+        public static float SwapEndian(float value) { var bytes = BitConverter.GetBytes(value); Array.Reverse(bytes, 0, bytes.Length); return BitConverter.ToSingle(bytes, 0); }
+        public static ushort SwapEndian(ushort value) { var bytes = BitConverter.GetBytes(value); Array.Reverse(bytes, 0, bytes.Length); return BitConverter.ToUInt16(bytes, 0); }
+        #endregion
 
         /// <summary>
         /// Extracts a range of bits from a byte array.

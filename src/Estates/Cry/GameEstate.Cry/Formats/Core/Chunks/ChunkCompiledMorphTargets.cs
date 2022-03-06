@@ -4,7 +4,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 {
     public abstract class ChunkCompiledMorphTargets : Chunk
     {
-        public uint NumberOfMorphTargets;
+        public int NumberOfMorphTargets;
         public MeshMorphTargetVertex[] MorphTargetVertices;
 
         #region Log

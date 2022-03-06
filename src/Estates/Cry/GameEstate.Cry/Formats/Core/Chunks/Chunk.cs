@@ -38,7 +38,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         /// </summary>
         internal uint Size;
         /// <summary>
-        /// Size of the data in the chunk.  This is the chunk size, minus the header (if there is one)
+        /// Size of the data in the chunk. This is the chunk size, minus the header (if there is one)
         /// </summary>
         public uint DataSize { get; set; }
 
@@ -109,14 +109,15 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             _header = header;
         }
 
-        public void SkipBytes(BinaryReader r, long? bytesToSkip = null)
+        protected void SkipBytes(BinaryReader r, long bytesToSkip)
         {
-            if (r == null) return;
+            if (bytesToSkip == 0) return;
             if (r.BaseStream.Position > Offset + Size && Size > 0) Log($"Buffer Overflow in {GetType().Name} 0x{ID:X} ({r.BaseStream.Position - Offset - Size} bytes)");
             if (r.BaseStream.Length < Offset + Size) Log($"Corrupt Headers in {GetType().Name} 0x{ID:X}");
-            if (!bytesToSkip.HasValue) bytesToSkip = Size - Math.Max(r.BaseStream.Position - Offset, 0);
+            //if (!bytesToSkip.HasValue) bytesToSkip = Size - Math.Max(r.BaseStream.Position - Offset, 0);
             for (var i = 0L; i < bytesToSkip; i++) SkippedBytes[r.BaseStream.Position - Offset] = r.ReadByte();
         }
+        protected void SkipBytesRemaining(BinaryReader r) => SkipBytes(r, Size - Math.Max(r.BaseStream.Position - Offset, 0));
 
         public virtual void Read(BinaryReader r)
         {
@@ -133,7 +134,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             // Star Citizen files don't have the type, version, offset and ID at the start of a chunk, so don't read them.
             if (_model.FileVersion == FileVersion.CryTek_3_4 || _model.FileVersion == FileVersion.CryTek_3_5)
             {
-                ChunkType = (ChunkType)Enum.ToObject(typeof(ChunkType), r.ReadUInt32());
+                ChunkType = (ChunkType)r.ReadUInt32();
                 Version = r.ReadUInt32();
                 Offset = r.ReadUInt32();
                 ID = r.ReadInt32();
