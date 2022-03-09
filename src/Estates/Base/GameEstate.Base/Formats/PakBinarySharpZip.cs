@@ -27,7 +27,7 @@ namespace GameEstate.Formats
 
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
-            var pak = (ZipFile)(source.Tag = new ZipFile(r.BaseStream)); // { Key = Key });
+            var pak = (ZipFile)(source.Tag = new ZipFile(r.BaseStream));
             ZipFile_KeyProperty.SetValue(pak, Key);
             foreach (ZipEntry entry in pak)
             {

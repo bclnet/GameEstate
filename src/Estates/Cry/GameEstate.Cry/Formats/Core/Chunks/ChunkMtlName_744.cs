@@ -3,17 +3,18 @@ using System.IO;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
-    // cccc0014:  provides material name as used in the .mtl file
+    // provides material name as used in the .mtl file. CCCC0014
     public class ChunkMtlName_744 : ChunkMtlName
     {
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+
             Name = r.ReadFString(128);
-            NumChildren = r.ReadUInt32();
-            PhysicsType = new MtlNamePhysicsType[NumChildren];
+            NumChildren = (int)r.ReadUInt32();
             MatType = NumChildren == 0 ? MtlNameType.Single : MtlNameType.Library;
-            for (var i = 0; i < NumChildren; i++) PhysicsType[i] = (MtlNamePhysicsType)Enum.ToObject(typeof(MtlNamePhysicsType), r.ReadUInt32());
+            PhysicsType = new MtlNamePhysicsType[NumChildren];
+            for (var i = 0; i < NumChildren; i++) PhysicsType[i] = (MtlNamePhysicsType)r.ReadUInt32();
         }
     }
 }

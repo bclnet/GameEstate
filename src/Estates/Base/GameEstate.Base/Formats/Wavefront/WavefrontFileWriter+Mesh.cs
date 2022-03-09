@@ -23,7 +23,7 @@ namespace GameEstate.Formats.Wavefront
                 // WRITE VERTICES OUT (V, VT)
                 if ((mesh.Effects & UnknownMesh.Effect.ScaleOffset) != 0)
                 {
-                    var (scale, offset) = mesh.ScaleOffset4;
+                    var (scale, offset) = mesh.ScaleOffset3;
                     foreach (var v in mesh[subset].Vertexs)
                     {
                         var vertex = mesh.GetTransform(v * scale + offset); // Rotate/translate the vertex

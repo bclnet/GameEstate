@@ -72,18 +72,18 @@
             "Bethesda Softworks/Oblivion",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 22330"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         "Morrowind": {
           "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 22320",
-          "assets": "Data Files"
+          "path": "Data Files"
         },
         "Skyrim": {
           "key": [
             "Bethesda Softworks/Skyrim",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 72850"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         "SkyrimSE": {
           "key": [
@@ -91,14 +91,14 @@
             "Bethesda Softworks/Skyrim Special Edition",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 489830"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         "SkyrimVR": {
           "key": [
             "Bethesda Softworks/Skyrim VR",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 611670"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         // fallout
         "Fallout2": {
@@ -109,37 +109,37 @@
         },
         "Fallout3": {
           "key": "Bethesda Softworks/Fallout3",
-          "assets": "Data"
+          "path": "Data"
         },
         "FalloutNV": {
           "key": "Bethesda Softworks/falloutnv",
-          "assets": "Data"
+          "path": "Data"
         },
         "Fallout4": {
           "key": [
             "Bethesda Softworks/Fallout4",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 377160"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         "Fallout4VR": {
           "key": [
             "Bethesda Softworks/Fallout 4 VR",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 611660"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         "Fallout76": {
           "key": [
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 1151340"
           ],
-          "assets": "Data"
+          "path": "Data"
         }
       },
       "direct_": {
         "Morrowind": {
           "path": "D:/Program Files (x86)/Steam/steamapps/common/Morrowind",
-          "assets": "Data Files"
+          "path2": "Data Files"
         }
       }
     },

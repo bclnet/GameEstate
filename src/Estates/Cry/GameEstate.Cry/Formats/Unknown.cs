@@ -27,14 +27,14 @@ namespace GameEstate.Cry.Formats
                     if (node.ParentNode != null && node.ParentNode.ChunkType != ChunkType.Node) Log($"Rendering {node.Name} to parent {node.ParentNode.Name}");
 
                     // This is probably wrong.  These may be parents with no geometry, but still have an offset
-                    if (chunk.MeshSubsets == 0) { Log($"*******Found a Mesh chunk with no Submesh ID (ID: {chunk.ID:X}, Name: {node.Name}).  Skipping..."); continue; }
+                    if (chunk.MeshSubsetsData == 0) { Log($"*******Found a Mesh chunk with no Submesh ID (ID: {chunk.ID:X}, Name: {node.Name}).  Skipping..."); continue; }
                     // This is probably wrong.  These may be parents with no geometry, but still have an offset
                     if (chunk.VerticesData == 0 && chunk.VertsUVsData == 0) { Log($"*******Found a Mesh chunk with no Vertex info (ID: {chunk.ID:X}, Name: {node.Name}).  Skipping..."); continue; }
 
                     // Going to assume that there is only one VerticesData datastream for now. Need to watch for this. Some 801 types have vertices and not VertsUVs.
                     var chunkMap = node._model.ChunkMap;
                     var mtlName = chunkMap.GetValue(node.MatID, null) as ChunkMtlName;
-                    var meshSubsets = chunkMap.GetValue(chunk.MeshSubsets, null) as ChunkMeshSubsets; // Listed as Object ID for the Node
+                    var meshSubsets = chunkMap.GetValue(chunk.MeshSubsetsData, null) as ChunkMeshSubsets; // Listed as Object ID for the Node
                     var indexs = chunkMap.GetValue(chunk.IndicesData, null) as ChunkDataStream;
                     var vertexes = chunkMap.GetValue(chunk.VerticesData, null) as ChunkDataStream;
                     var normals = chunkMap.GetValue(chunk.NormalsData, null) as ChunkDataStream;
@@ -53,7 +53,7 @@ namespace GameEstate.Cry.Formats
                             MatId = (int)s.MatID,
                         }).ToArray(),
                         Vertexs = chunk.VerticesData == 0 ? vertsUVs.Vertices : vertexes?.Vertices,
-                        UVs = (chunk.VerticesData == 0 ? vertsUVs.UVs : uvs.UVs).Select(x => new Vector2(x.U, x.V)).ToArray(),
+                        UVs = chunk.VerticesData == 0 ? vertsUVs.UVs : uvs.UVs,
                         Normals = chunk.NormalsData != 0 ? normals.Normals : null,
                         Indexs = indexs.Indices.Cast<int>().ToArray(),
                     };

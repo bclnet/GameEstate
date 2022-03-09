@@ -8,15 +8,15 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+
             MatType = (MtlNameType)r.ReadUInt32();
             // if 0x01, then material lib. If 0x12, mat name. This is actually a bitstruct.
-            SkipBytes(r, 4); // NFlags2
+            NFlags2 = r.ReadUInt32(); // NFlags2
             Name = r.ReadFString(128);
-            PhysicsType = new MtlNamePhysicsType[] { (MtlNamePhysicsType)r.ReadUInt32() };
-            NumChildren = r.ReadUInt32();
+            PhysicsType = new[] { (MtlNamePhysicsType)r.ReadUInt32() };
+            NumChildren = (int)r.ReadUInt32();
             // Now we need to read the Children references. 2 parts; the number of children, and then 66 - numchildren padding
-            ChildIDs = new uint[NumChildren];
-            for (var i = 0; i < NumChildren; i++) ChildIDs[i] = r.ReadUInt32();
+            ChildIDs = r.ReadTArray<uint>(sizeof(uint), NumChildren);
             SkipBytes(r, 32);
         }
     }

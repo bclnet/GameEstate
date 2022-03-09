@@ -10,6 +10,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public RangeEntity GlobalRange;
         public int NumSubRanges;
 
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Version: {Version}, Ticks per Frame: {TicksPerFrame}, Seconds per Tick: {SecsPerTick}";
+
         #region Log
 #if LOG
         public override void LogChunk()

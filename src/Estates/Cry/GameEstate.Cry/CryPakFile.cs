@@ -4,6 +4,7 @@ using GameEstate.Explorer;
 using GameEstate.Formats;
 using GameEstate.Formats.Unknown;
 using GameEstate.Transforms;
+using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("GameEstate.Rsi")]
@@ -16,6 +17,8 @@ namespace GameEstate.Cry
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class CryPakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
+        static ConcurrentDictionary<string, PakBinaryCry> PakBinarys = new ConcurrentDictionary<string, PakBinaryCry>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CryPakFile" /> class.
         /// </summary>
@@ -24,12 +27,15 @@ namespace GameEstate.Cry
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
         public CryPakFile(Estate estate, string game, string filePath, object tag = null)
-            : base(estate, game, filePath, PakBinaryCry.Instance, tag)
+            : base(estate, game, filePath, GetPackBinary(estate, game), tag)
         {
             GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;
             Open();
         }
+
+        static PakBinary GetPackBinary(Estate estate, string game)
+           => PakBinarys.GetOrAdd(game, _ => new PakBinaryCry(estate.GetGame(game).game.Key));
 
         #region Transforms
 

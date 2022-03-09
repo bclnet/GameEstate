@@ -12,10 +12,10 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             base.Read(r);
 
             NumPhysicalProxies = (int)r.ReadUInt32(); // number of Bones in this chunk.
-            PhysicalProxies = new PhysicalStream[NumPhysicalProxies]; // now have an array of physical proxies
+            PhysicalProxies = new PhysicalProxy[NumPhysicalProxies]; // now have an array of physical proxies
             for (var i = 0; i < NumPhysicalProxies; i++)
             {
-                ref PhysicalStream proxy = ref PhysicalProxies[i];
+                ref PhysicalProxy proxy = ref PhysicalProxies[i];
                 // Start populating the physical stream array.  This is the Header.
                 proxy.ID = r.ReadUInt32();
                 proxy.NumVertices = (int)r.ReadUInt32();

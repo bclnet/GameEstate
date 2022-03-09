@@ -8,7 +8,8 @@
   "games": {
     "StarCitizen": {
       "name": "Star Citizen",
-      "pak": "game:/Data.p4k#StarCitizen"
+      "pak": "game:/Data.p4k#StarCitizen",
+      "key": "/x5E/x7A/x20/x02/x30/x2E/xEB/x1A/x3B/xB6/x17/xC3/x0F/xDE/x1E/x47"
     }
   },
   "fileManager": {

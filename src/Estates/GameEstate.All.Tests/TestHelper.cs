@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GameEstate
 {
-    public static class Helper
+    public static class TestHelper
     {
         static readonly Estate estateAC = EstateManager.GetEstate("AC");
         static readonly Estate estateArkane = EstateManager.GetEstate("Arkane");
@@ -23,8 +23,8 @@ namespace GameEstate
             { "AC:AC:1", new Lazy<EstatePakFile>(() => estateAC.OpenPakFile(new Uri("game:/client_highres.dat#AC"))) },
             { "Arkane:Dishonored2", new Lazy<EstatePakFile>(() => estateArkane.OpenPakFile(new Uri("game:/*.index#Dishonored2"))) },
             { "Arkane:Dishonored2:1", new Lazy<EstatePakFile>(() => estateArkane.OpenPakFile(new Uri("game:/game1.index#Dishonored2"))) },
-            { "Cry:MechWarriorOnline", new Lazy<EstatePakFile>(() => estateCry.OpenPakFile(new Uri("game:/*.pak#MechWarriorOnline"))) },
-            { "Cry:MechWarriorOnline:1", new Lazy<EstatePakFile>(() => estateCry.OpenPakFile(new Uri("game:/GameData.pak#MechWarriorOnline"))) },
+            { "Cry:MWO", new Lazy<EstatePakFile>(() => estateCry.OpenPakFile(new Uri("game:/*.pak#MWO"))) },
+            { "Cry:MWO:1", new Lazy<EstatePakFile>(() => estateCry.OpenPakFile(new Uri("game:/GameData.pak#MWO"))) },
             { "Cyanide:TheCouncil", new Lazy<EstatePakFile>(() => estateCyanide.OpenPakFile(new Uri("game:/*.cpk#TheCouncil"))) },
             { "Cyanide:TheCouncil:1", new Lazy<EstatePakFile>(() => estateCyanide.OpenPakFile(new Uri("game:/Engine_Main_0.cpk#TheCouncil"))) },
             { "Origin:UltimaOnline", new Lazy<EstatePakFile>(() => estateOrigin.OpenPakFile(new Uri("game:/*.idx#UltimaOnline"))) },

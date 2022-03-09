@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace GameEstate
 
         public static DefaultOptions AppDefaultOptions = new DefaultOptions
         {
-            Estate = "Rsi",
+            Estate = "Cry",
             //Estate = "AC",
             GameId = null,
             //ForcePath = "TabooTable/0E00001E.taboo",
@@ -109,12 +110,19 @@ namespace GameEstate
             }
         }
 
-        static EstateGame ParseGame(IDictionary<string, string> locations, string game, JsonElement elem)
+        static EstateGame ParseGame(IDictionary<string, HashSet<string>> locations, string game, JsonElement elem)
         {
+            bool TryParseKey(string str, out byte[] value)
+            {
+                if (string.IsNullOrEmpty(str)) { value = null; return false; }
+                value = str.Split("/x").Skip(1).Select(x => byte.Parse(x, NumberStyles.HexNumber)).ToArray();
+                return true;
+            }
             var estate = new EstateGame
             {
                 Game = game,
                 Name = (elem.TryGetProperty("name", out var z) ? z.GetString() : null) ?? throw new ArgumentNullException("name"),
+                Key = elem.TryGetProperty("key", out z) ? TryParseKey(z.GetString(), out var z2) ? z2 : throw new ArgumentOutOfRangeException("key", z.GetString()) : null,
                 Found = locations.ContainsKey(game),
             };
             if (elem.TryGetProperty("pak", out z))

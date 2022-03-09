@@ -22,7 +22,7 @@ namespace GameEstate.Formats.Unknown
 
         public ref struct SubsetMesh
         {
-            public Span<Vector4> Vertexs;
+            public Span<Vector3> Vertexs;
             public Span<int> Indexs;
             public Span<Vector3> Normals;
             public Span<Vector2> UVs;
@@ -32,7 +32,7 @@ namespace GameEstate.Formats.Unknown
         public Vector3 MinBound;
         public Vector3 MaxBound;
         public Subset[] Subsets;
-        public Vector4[] Vertexs;
+        public Vector3[] Vertexs;
         public Vector2[] UVs;
         public Vector3[] Normals;
         public int[] Indexs;
@@ -48,6 +48,6 @@ namespace GameEstate.Formats.Unknown
             Indexs = Indexs.AsSpan(i.Indexs),
         };
 
-        public Vector4 GetTransform(Vector4 vertex) => vertex;
+        public Vector3 GetTransform(Vector3 vertex) => vertex;
     }
 }

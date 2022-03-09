@@ -41,11 +41,11 @@
       "registry": {
         "Witcher": {
           "key": "GOG.com/Games/1207658924",
-          "assets": "Data"
+          "path": "Data"
         },
         "Witcher2": {
           "key": "GOG.com/Games/1207658930",
-          "assets": "CookedPC"
+          "path": "CookedPC"
         },
         "Witcher3": {
           "key": [
@@ -53,11 +53,11 @@
             //"GOG.com/Games/1430742867",
             "GOG.com/Games/1495134320"
           ],
-          "assets": "content"
+          "path": "content"
         },
         "CP77": {
           "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 1091500",
-          "assets": "archive/pc/content"
+          "path": "archive/pc/content"
         }
       }
     }

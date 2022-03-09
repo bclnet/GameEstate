@@ -82,7 +82,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 ChunkType.MeshIvo => New<ChunkMesh>(version),
                 ChunkType.IvoSkin => New<ChunkIvoSkin>(version),
                 // Star Citizen
-                ChunkType.BinaryXmlDataSC => New<ChunkXmlFileSC>(version),
+                ChunkType.BinaryXmlDataSC => New<ChunkBinaryXmlData>(version),
                 // Old chunks
                 ChunkType.BoneNameList => New<ChunkBoneNameList>(version),
                 ChunkType.MeshMorphTarget => New<ChunkMeshMorphTargets>(version),
@@ -109,7 +109,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             _header = header;
         }
 
-        protected void SkipBytes(BinaryReader r, long bytesToSkip)
+        public void SkipBytes(BinaryReader r, long bytesToSkip)
         {
             if (bytesToSkip == 0) return;
             if (r.BaseStream.Position > Offset + Size && Size > 0) Log($"Buffer Overflow in {GetType().Name} 0x{ID:X} ({r.BaseStream.Position - Offset - Size} bytes)");
@@ -117,7 +117,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             //if (!bytesToSkip.HasValue) bytesToSkip = Size - Math.Max(r.BaseStream.Position - Offset, 0);
             for (var i = 0L; i < bytesToSkip; i++) SkippedBytes[r.BaseStream.Position - Offset] = r.ReadByte();
         }
-        protected void SkipBytesRemaining(BinaryReader r) => SkipBytes(r, Size - Math.Max(r.BaseStream.Position - Offset, 0));
+        public void SkipBytesRemaining(BinaryReader r) => SkipBytes(r, Size - Math.Max(r.BaseStream.Position - Offset, 0));
 
         public virtual void Read(BinaryReader r)
         {

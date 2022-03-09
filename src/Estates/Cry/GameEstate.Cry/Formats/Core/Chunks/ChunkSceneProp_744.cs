@@ -8,7 +8,8 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            NumProps = r.ReadUInt32(); // Should be 31 for 0x744
+
+            NumProps = (int)r.ReadUInt32(); // Should be 31 for 0x744
             PropKey = new string[NumProps];
             PropValue = new string[NumProps];
             // Read the array of scene props and their associated values

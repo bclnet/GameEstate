@@ -35,6 +35,8 @@ namespace GameEstate
         {
             var estate = Some.Estate;
             Assert.ThrowsException<ArgumentNullException>(() => estate.OpenPakFile(null, null));
+            Assert.ThrowsException<ArgumentNullException>(() => estate.OpenPakFile(null, "Wrong"));
+            Assert.AreEqual(null, estate.OpenPakFile(null, "Wrong", throwOnError: false));
             Assert.AreEqual(null, estate.OpenPakFile(null, "Found"));
             Assert.IsNotNull(estate.OpenPakFile(new string[] { "path" }, "Found"));
         }
@@ -44,6 +46,7 @@ namespace GameEstate
         {
             var estate = Some.Estate;
             Assert.ThrowsException<ArgumentNullException>(() => estate.OpenPakFile(new Resource { }));
+            Assert.AreEqual(null, estate.OpenPakFile(new Resource { }, throwOnError: false));
             Assert.IsNotNull(estate.OpenPakFile(new Resource { Paths = new[] { "path" }, Game = "Found" }));
         }
 

@@ -8,7 +8,7 @@ namespace GameEstate.Formats
     {
         [DataTestMethod]
         [DataRow("AC:AC:1", "Texture060043BE")]
-        [DataRow("Cry:MechWarriorOnline:1", "GameModeObjects.xml")]
+        [DataRow("Cry:MWO:1", "GameModeObjects.xml")]
         [DataRow("Rsi:StarCitizen", "Engine/default_cch.dds")]
         [DataRow("Red:Witcher:1", "2da00.bif")]
         [DataRow("Red:Witcher2:1", "globals/ch_credits_main.csv")]
@@ -25,7 +25,7 @@ namespace GameEstate.Formats
         [DataRow("Origin:UltimaOnline:1", "Engine/default_cch.dds")]
         [DataRow("Origin:UltimaIX:1", "Engine/default_cch.dds")]
         [DataRow("Valve:Dota2:1", "stringtokendatabase.txt")]
-        public async Task GraphicObject(string pak, string sampleFile) => await LoadGraphicObjectAsync(Helper.Paks[pak].Value, sampleFile);
+        public async Task GraphicObject(string pak, string sampleFile) => await LoadGraphicObjectAsync(TestHelper.Paks[pak].Value, sampleFile);
 
         static async Task LoadGraphicObjectAsync(EstatePakFile source, string sampleFile)
         {

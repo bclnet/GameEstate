@@ -10,7 +10,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public int BytesPerElement;        // Bytes per data entry
         //public uint Reserved1;
         //public uint Reserved2;
-        public PhysicalStream[] PhysicalProxies;
+        public PhysicalProxy[] PhysicalProxies;
 
         #region Log
 #if LOG

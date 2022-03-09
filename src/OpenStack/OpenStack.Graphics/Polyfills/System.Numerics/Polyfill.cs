@@ -128,10 +128,10 @@ namespace System.Numerics
             m43: 0.0f,
             m44: 1.0f);
 
-        public static Matrix4x4 GetTransform(this (Matrix4x4 parent, Matrix4x4 child) source)
-            => source.parent * source.child;
+        public static Matrix4x4 CreateLocalTransform(Matrix4x4 parent, Matrix4x4 child)
+            => parent * child;
 
-        public static Matrix4x4 GetTransform(Vector3 translation, Matrix3x3 rotation)
+        public static Matrix4x4 CreateTransformFromParts(Vector3 translation, Matrix3x3 rotation)
             => new Matrix4x4(
             m11: rotation.M11,
             m12: rotation.M12,

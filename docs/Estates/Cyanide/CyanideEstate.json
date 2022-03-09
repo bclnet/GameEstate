@@ -19,7 +19,7 @@
             "GOG.com/Games/1207658930",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 287630"
           ],
-          "assets": "Data/Packages"
+          "path": "Data/Packages"
         }
       }
     }

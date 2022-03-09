@@ -13,11 +13,13 @@ namespace GameEstate.Cry.Formats.Core.Chunks
             Offset = _header.Offset;
             ID = _header.ID;
             Size = _header.Size;
+
             r.BaseStream.Seek(_header.Offset, 0);
             var peek = r.ReadUInt32();
             // Try and detect SourceInfo type - if it's there, we need to skip ahead a few bytes
             if ((peek == (uint)ChunkType.SourceInfo) || (peek + 0xCCCBF000 == (uint)ChunkType.SourceInfo)) SkipBytes(r, 12);
             else r.BaseStream.Seek(_header.Offset, 0);
+
             if (Offset != _header.Offset || Size != _header.Size)
             {
                 Log($"Conflict in chunk definition:  SourceInfo chunk");
@@ -25,6 +27,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
                 Log($"{Offset:X}+{Size:X}");
                 LogChunk();
             }
+
             ChunkType = ChunkType.SourceInfo; // this chunk doesn't actually have the chunktype header.
             SourceFile = r.ReadCString();
             Date = r.ReadCString().TrimEnd(); // Strip off last 2 Characters, because it contains a return

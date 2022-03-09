@@ -17,7 +17,7 @@
       "registry": {
         "Dishonored2": {
           "key": "GOG.com/Games/1431426311",
-          "assets": "base"
+          "path": "base"
         }
       }
     },

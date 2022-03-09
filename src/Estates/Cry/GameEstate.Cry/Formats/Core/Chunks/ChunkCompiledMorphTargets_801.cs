@@ -4,7 +4,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 {
     public class ChunkCompiledMorphTargets_801 : ChunkCompiledMorphTargets
     {
-        // TODO:  Implement this.
+        // TODO: Implement this.
         public override void Read(BinaryReader r)
         {
             base.Read(r);

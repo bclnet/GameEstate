@@ -8,7 +8,7 @@ namespace GameEstate.Formats
     {
         [DataTestMethod]
         [DataRow("AC:AC:1", "Texture060043BE")]
-        [DataRow("Cry:MechWarriorOnline:1", "GameModeObjects.xml")]
+        [DataRow("Cry:MWO:1", "GameModeObjects.xml")]
         [DataRow("Rsi:StarCitizen", "Engine/default_cch.dds")]
         [DataRow("Origin:UltimaIX:1", "Engine/default_cch.dds")]
         [DataRow("Origin:UltimaOnline:1", "Engine/default_cch.dds")]
@@ -25,7 +25,7 @@ namespace GameEstate.Formats
         [DataRow("Tes:Fallout4VR:1", "Textures/Water/WaterRainRipples.dds")]
         [DataRow("Tes:Fallout4VR:2", "Textures/Terrain/DiamondCity/DiamondCity.16.-2.-2.DDS")]
         [DataRow("Valve:Dota2:1", "stringtokendatabase.txt")]
-        public async Task LoadGraphicTexture(string pak, string sampleFile) => await LoadGraphicTextureAsync(Helper.Paks[pak].Value, sampleFile);
+        public async Task LoadGraphicTexture(string pak, string sampleFile) => await LoadGraphicTextureAsync(TestHelper.Paks[pak].Value, sampleFile);
 
         static async Task LoadGraphicTextureAsync(EstatePakFile source, string sampleFile)
         {

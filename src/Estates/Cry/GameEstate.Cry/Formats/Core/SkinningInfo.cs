@@ -23,7 +23,7 @@ namespace GameEstate.Cry.Formats.Core
         public List<BoneEntity> BoneEntities { get; set; }
         public List<CompiledBone> CompiledBones { get; set; }
         public List<DirectionalBlends> LookDirectionBlends { get; set; }
-        public List<PhysicalStream> PhysicalBoneMeshes { get; set; } // Collision proxies
+        public List<PhysicalProxy> PhysicalBoneMeshes { get; set; } // Collision proxies
         public List<MorphTargets> MorphTargets { get; set; }
         public List<TFace> IntFaces { get; set; }
         public List<IntSkinVertex> IntVertices { get; set; }

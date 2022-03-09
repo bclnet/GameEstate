@@ -12,7 +12,7 @@ namespace GameEstate
 
         [DataTestMethod]
         [DataRow("AC", "AC", "client_cell_1.dat")]
-        [DataRow("Cry", "MechWarriorOnline", "GameData.pak")]
+        [DataRow("Cry", "MWO", "GameData.pak")]
         [DataRow("Red", "Witcher", "2da00.bif")]
         [DataRow("Red", "Witcher2", "tutorial.dzip")]
         [DataRow("Red", "Witcher3", "metadata.store")]

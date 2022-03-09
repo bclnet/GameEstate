@@ -43,10 +43,10 @@ namespace GameEstate.Cry.Formats
     /// </summary>
     public struct MeshSubset
     {
-        public uint FirstIndex;
-        public uint NumIndices;
-        public uint FirstVertex;
-        public uint NumVertices;
+        public int FirstIndex;
+        public int NumIndices;
+        public int FirstVertex;
+        public int NumVertices;
         public uint MatID;
         public float Radius;
         public Vector3 Center;
@@ -181,7 +181,7 @@ namespace GameEstate.Cry.Formats
     {
         public uint BoneIndex;
         public uint ParentOffset;
-        public uint NumChildren;
+        public int NumChildren;
         public uint ControllerID;
         public char[] prop;
         public PhysicsGeometry PhysicsGeometry;
@@ -196,7 +196,7 @@ namespace GameEstate.Cry.Formats
             // Reads just a single 584 byte entry of a bone. At the end the seek position will be advanced, so keep that in mind.
             BoneIndex = r.ReadUInt32();                 // unique id of bone (generated from bone name)
             ParentOffset = r.ReadUInt32();
-            NumChildren = r.ReadUInt32();
+            NumChildren = (int)r.ReadUInt32();
             ControllerID = r.ReadUInt32();
             prop = r.ReadChars(32);                     // Not sure what this is used for.
             PhysicsGeometry.ReadPhysicsGeometry(r);
@@ -282,17 +282,17 @@ namespace GameEstate.Cry.Formats
     public struct MeshPhysicalStreamHeader
     {
         public uint ChunkID;
-        public uint NumPoints;
-        public uint NumIndices;
-        public uint NumMaterials;
+        public int NumPoints;
+        public int NumIndices;
+        public int NumMaterials;
     }
 
     public struct MeshMorphTargetHeader
     {
         public uint MeshID;
-        public uint NameLength;
-        public uint NumIntVertices;
-        public uint NumExtVertices;
+        public int NameLength;
+        public int NumIntVertices;
+        public int NumExtVertices;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -355,12 +355,12 @@ namespace GameEstate.Cry.Formats
         public Quaternion StartPosition;
     }
 
-    public struct PhysicalStream
+    public struct PhysicalProxy
     {
         public uint ID;             // Chunk ID (although not technically a chunk
-        public int FirstIndex;
+        public uint FirstIndex;
         public int NumIndices;
-        public int FirstVertex;
+        public uint FirstVertex;
         public int NumVertices;
         public uint Material;       // Size of the weird data at the end of the hitbox structure.
         public Vector3[] Vertices;  // Array of vertices (x,y,z) length NumVertices
@@ -380,7 +380,7 @@ namespace GameEstate.Cry.Formats
         #endregion
     }
 
-    public struct PhysicalStreamStub
+    public struct PhysicalProxyStub
     {
         uint ChunkID;
         List<Vector3> Points;

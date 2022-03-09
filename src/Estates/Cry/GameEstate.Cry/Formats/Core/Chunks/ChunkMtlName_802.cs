@@ -1,16 +1,20 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {
-    /// <summary>
-    /// Remapped to CryEngine_744 format for now
-    /// </summary>
-    public class ChunkMtlName_802 : ChunkMtlName_744
+    public class ChunkMtlName_802 : ChunkMtlName
     {
+        // Appears to have 4 more Bytes than ChunkMtlName_744
         public override void Read(BinaryReader r)
         {
             base.Read(r);
-            // Appears to have 4 more Bytes than ChunkMtlName_744
+            
+            Name = r.ReadFString(128);
+            NumChildren = (int)r.ReadUInt32();
+            MatType = NumChildren == 0 ? MtlNameType.Single : MtlNameType.Library;
+            PhysicsType = new MtlNamePhysicsType[NumChildren];
+            for (var i = 0; i < NumChildren; i++) PhysicsType[i] = (MtlNamePhysicsType)r.ReadUInt32();
         }
     }
 }

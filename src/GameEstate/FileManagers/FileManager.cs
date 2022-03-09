@@ -36,7 +36,7 @@ namespace GameEstate
         /// <summary>
         /// The locations
         /// </summary>
-        public IDictionary<string, string> Paths = new Dictionary<string, string>();
+        public IDictionary<string, HashSet<string>> Paths = new Dictionary<string, HashSet<string>>();
 
         /// <summary>
         /// The ignores
@@ -55,19 +55,20 @@ namespace GameEstate
         /// </summary>
         /// <param name="estate">The estate.</param>
         /// <param name="uri">The URI.</param>
+        /// <param name="throwOnError">Throws on error.</param>
         /// <returns></returns>
-        public virtual Resource ParseResource(Estate estate, Uri uri)
+        public virtual Resource ParseResource(Estate estate, Uri uri, bool throwOnError = true)
         {
             if (uri == null) return new Resource { Game = string.Empty };
             var fragment = uri.Fragment?[(uri.Fragment.Length != 0 ? 1 : 0)..];
             var game = estate.GetGame(fragment);
             var r = new Resource { Game = game.id };
             // game-scheme
-            if (string.Equals(uri.Scheme, "game", StringComparison.OrdinalIgnoreCase)) r.Paths = FindGameFilePaths(r.Game, uri.LocalPath[1..]) ?? throw new ArgumentOutOfRangeException(nameof(r.Game), $"{game.id}: unable to locate game resources");
+            if (string.Equals(uri.Scheme, "game", StringComparison.OrdinalIgnoreCase)) r.Paths = FindGameFilePaths(r.Game, uri.LocalPath[1..]) ?? (throwOnError ? throw new ArgumentOutOfRangeException(nameof(r.Game), $"{game.id}: unable to locate game resources") : Array.Empty<string>());
             // file-scheme
-            else if (uri.IsFile) r.Paths = GetLocalFilePaths(uri.LocalPath, out r.Options) ?? throw new InvalidOperationException($"{game.id}: unable to locate file resources");
+            else if (uri.IsFile) r.Paths = GetLocalFilePaths(uri.LocalPath, out r.Options) ?? (throwOnError ? throw new InvalidOperationException($"{game.id}: unable to locate file resources") : Array.Empty<string>());
             // network-scheme
-            else r.Paths = GetHttpFilePaths(uri, out r.Host, out r.Options) ?? throw new InvalidOperationException($"{game.id}: unable to locate network resources");
+            else r.Paths = GetHttpFilePaths(uri, out r.Host, out r.Options) ?? (throwOnError ? throw new InvalidOperationException($"{game.id}: unable to locate network resources") : Array.Empty<string>());
             return r;
         }
 
@@ -86,12 +87,12 @@ namespace GameEstate
             // folder
             if (string.IsNullOrEmpty(searchPattern)) throw new ArgumentOutOfRangeException(nameof(pathOrPattern), pathOrPattern);
             // file
-            return Paths.TryGetValue(game, out var path)
-                ? ExpandAndSearchPaths(Ignores.TryGetValue(game, out var ignores) ? ignores : null, path, pathOrPattern).ToArray()
+            return Paths.TryGetValue(game, out var paths)
+                ? ExpandAndSearchPaths(Ignores.TryGetValue(game, out var ignores) ? ignores : null, paths, pathOrPattern).ToArray()
                 : null;
         }
 
-        static IEnumerable<string> ExpandAndSearchPaths(HashSet<string> ignore, string path, string pathOrPattern)
+        static IEnumerable<string> ExpandAndSearchPaths(HashSet<string> ignore, HashSet<string> paths, string pathOrPattern)
         {
             // expand
             int expandStartIdx, expandMidIdx, expandEndIdx;
@@ -101,21 +102,26 @@ namespace GameEstate
                 expandStartIdx < expandEndIdx)
             {
                 foreach (var expand in pathOrPattern.Substring(expandStartIdx + 1, expandEndIdx - expandStartIdx - 1).Split(':'))
-                    foreach (var found in ExpandAndSearchPaths(ignore, path, pathOrPattern.Remove(expandStartIdx, expandEndIdx - expandStartIdx + 1).Insert(expandStartIdx, expand))) yield return found;
+                    foreach (var found in ExpandAndSearchPaths(ignore, paths, pathOrPattern.Remove(expandStartIdx, expandEndIdx - expandStartIdx + 1).Insert(expandStartIdx, expand)))
+                        yield return found;
                 yield break;
             }
-            // folder
-            var searchPattern = Path.GetDirectoryName(pathOrPattern);
-            if (searchPattern.IndexOf('*') != -1)
+            foreach (var path in paths)
             {
-                foreach (var directory in Directory.GetDirectories(path, searchPattern))
-                    foreach (var found in ExpandAndSearchPaths(ignore, directory, Path.GetFileName(pathOrPattern))) yield return found;
-                yield break;
+                // folder
+                var searchPattern = Path.GetDirectoryName(pathOrPattern);
+                if (searchPattern.IndexOf('*') != -1)
+                {
+                    foreach (var directory in Directory.GetDirectories(path, searchPattern))
+                        foreach (var found in ExpandAndSearchPaths(ignore, new HashSet<string> { directory }, Path.GetFileName(pathOrPattern)))
+                            yield return found;
+                    yield break;
+                }
+                // file
+                var searchIdx = pathOrPattern.IndexOf('*');
+                if (searchIdx == -1) yield return Path.Combine(path, pathOrPattern);
+                else foreach (var file in Directory.GetFiles(path, pathOrPattern)) if (ignore == null || !ignore.Contains(Path.GetFileName(file))) yield return file;
             }
-            // file
-            var searchIdx = pathOrPattern.IndexOf('*');
-            if (searchIdx == -1) yield return Path.Combine(path, pathOrPattern);
-            else foreach (var file in Directory.GetFiles(path, pathOrPattern)) if (ignore == null || !ignore.Contains(Path.GetFileName(file))) yield return file;
         }
 
         /// <summary>
@@ -198,32 +204,39 @@ namespace GameEstate
             return true;
         }
 
-        protected bool TryAddPath(JsonProperty prop, string path)
+        protected void AddPath(JsonProperty prop, string path)
         {
-            if (path == null || !Directory.Exists(path = PathWithSpecialFolders(path))) return false;
+            if (path == null || !Directory.Exists(path = PathWithSpecialFolders(path))) return;
             path = Path.GetFullPath(path);
-            path = prop.Value.TryGetProperty("assets", out var z2) ? Path.Combine(path, z2.GetString()) : path;
-            if (Directory.Exists(path)) { this.Paths.Add(prop.Name, path.Replace('/', '\\')); return true; }
-            return false;
+            var paths = prop.Value.TryGetProperty("path", out var z) ? z.ValueKind switch
+            {
+                JsonValueKind.String => new[] { Path.Combine(path, z.GetString()) },
+                JsonValueKind.Array => z.EnumerateArray().Select(y => Path.Combine(path, y.GetString())),
+                _ => throw new ArgumentOutOfRangeException(),
+            } : new[] { path };
+            foreach (var path2 in paths)
+            {
+                if (!Directory.Exists(path2)) continue;
+                if (!Paths.TryGetValue(prop.Name, out var z2)) Paths.Add(prop.Name, z2 = new HashSet<string>());
+                z2.Add(path2.Replace('/', '\\'));
+            }
         }
 
-        protected bool TryAddIgnore(JsonProperty prop, string path)
+        protected void AddIgnore(JsonProperty prop, string path)
         {
-            if (!Ignores.TryGetValue(prop.Name, out var z2)) Ignores.Add(prop.Name, (z2 = new HashSet<string>()));
+            if (!Ignores.TryGetValue(prop.Name, out var z2)) Ignores.Add(prop.Name, z2 = new HashSet<string>());
             z2.Add(path);
-            return false;
         }
 
-        protected bool TryAddFilter(JsonProperty prop, string name, JsonElement element)
+        protected void AddFilter(JsonProperty prop, string name, JsonElement element)
         {
-            if (!Filters.TryGetValue(prop.Name, out var z2)) Filters.Add(prop.Name, (z2 = new Dictionary<string, string>()));
+            if (!Filters.TryGetValue(prop.Name, out var z2)) Filters.Add(prop.Name, z2 = new Dictionary<string, string>());
             var value = element.ValueKind switch
             {
                 JsonValueKind.String => element.GetString(),
                 _ => throw new ArgumentOutOfRangeException(),
             };
             z2.Add(name, value);
-            return false;
         }
 
         protected static string PathWithSpecialFolders(string path, string rootPath = null) =>
@@ -234,40 +247,49 @@ namespace GameEstate
 
         public virtual FileManager ParseFileManager(JsonElement elem)
         {
-            // direct
-            if (elem.TryGetProperty("direct", out var z))
-                foreach (var prop in z.EnumerateObject())
-                    if (prop.Value.TryGetProperty("path", out z))
-                    {
-                        var paths = z.ValueKind switch
-                        {
-                            JsonValueKind.String => new[] { z.GetString() },
-                            JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
-                            _ => throw new ArgumentOutOfRangeException(),
-                        };
-                        foreach (var path in paths) if (TryAddPath(prop, path)) break;
-                    }
-
-            // ignores
-            if (elem.TryGetProperty("ignores", out z))
-                foreach (var prop in z.EnumerateObject())
-                    if (prop.Value.TryGetProperty("path", out z))
-                    {
-                        var paths = z.ValueKind switch
-                        {
-                            JsonValueKind.String => new[] { z.GetString() },
-                            JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
-                            _ => throw new ArgumentOutOfRangeException(),
-                        };
-                        foreach (var path in paths) if (TryAddIgnore(prop, path)) break;
-                    }
-
-            // filters
-            if (elem.TryGetProperty("filters", out z))
-                foreach (var prop in z.EnumerateObject())
-                    foreach (var filter in prop.Value.EnumerateObject()) if (TryAddFilter(prop, filter.Name, filter.Value)) break;
-
+            AddDirect(elem);
+            AddIgnores(elem);
+            AddFilters(elem);
             return this;
+        }
+
+        protected void AddDirect(JsonElement elem)
+        {
+            if (!elem.TryGetProperty("direct", out var z)) return;
+            foreach (var prop in z.EnumerateObject())
+                if (prop.Value.TryGetProperty("path", out z))
+                {
+                    var paths = z.ValueKind switch
+                    {
+                        JsonValueKind.String => new[] { z.GetString() },
+                        JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
+                        _ => throw new ArgumentOutOfRangeException(),
+                    };
+                    foreach (var path in paths) AddPath(prop, path);
+                }
+        }
+
+        protected void AddIgnores(JsonElement elem)
+        {
+            if (!elem.TryGetProperty("ignores", out var z)) return;
+            foreach (var prop in z.EnumerateObject())
+                if (prop.Value.TryGetProperty("path", out z))
+                {
+                    var paths = z.ValueKind switch
+                    {
+                        JsonValueKind.String => new[] { z.GetString() },
+                        JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
+                        _ => throw new ArgumentOutOfRangeException(),
+                    };
+                    foreach (var path in paths) AddIgnore(prop, path);
+                }
+        }
+
+        protected void AddFilters(JsonElement elem)
+        {
+            if (!elem.TryGetProperty("filters", out var z)) return;
+            foreach (var prop in z.EnumerateObject())
+                foreach (var filter in prop.Value.EnumerateObject()) AddFilter(prop, filter.Name, filter.Value);
         }
 
         #endregion

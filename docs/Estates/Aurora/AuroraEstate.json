@@ -32,11 +32,11 @@
             "GOG.com/Games/1207659162",
             "Obsidian/NWN 2/Neverwinter"
           ],
-          "assets": "Data"
+          "path": "Data"
         },
         "Kotor": {
           "key": "GOG.com/Games/111",
-          "assets": "content"
+          "path": "content"
         }
       }
     }

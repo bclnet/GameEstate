@@ -8,6 +8,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public override void Read(BinaryReader r)
         {
             base.Read(r);
+
             // TODO:  This is copied from 918 but may not be entirely accurate.  Not tested.
             SecsPerTick = r.ReadSingle();
             TicksPerFrame = r.ReadInt32();

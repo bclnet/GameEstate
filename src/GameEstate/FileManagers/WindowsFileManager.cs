@@ -67,57 +67,29 @@ namespace GameEstate
             if (!elem.TryGetProperty("windows", out var z)) return this;
             elem = z;
 
-            // registry
-            if (elem.TryGetProperty("registry", out z))
-                foreach (var prop in z.EnumerateObject())
-                    if (prop.Value.TryGetProperty("key", out z))
-                    {
-                        var keys = z.ValueKind switch
-                        {
-                            JsonValueKind.String => new[] { z.GetString() },
-                            JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
-                            _ => throw new ArgumentOutOfRangeException(),
-                        };
-                        foreach (var key in keys)
-                            if (TryGetRegistryByKey(key, prop, prop.Value.TryGetProperty(key, out z) ? (JsonElement?)z : null, out var path)
-                                && TryAddPath(prop, path))
-                                break;
-                    }
-
-            // direct
-            if (elem.TryGetProperty("direct", out z))
-                foreach (var prop in z.EnumerateObject())
-                    if (prop.Value.TryGetProperty("path", out z))
-                    {
-                        var paths = z.ValueKind switch
-                        {
-                            JsonValueKind.String => new[] { z.GetString() },
-                            JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
-                            _ => throw new ArgumentOutOfRangeException(),
-                        };
-                        foreach (var path in paths) if (TryAddPath(prop, path)) break;
-                    }
-
-            // ignores
-            if (elem.TryGetProperty("ignores", out z))
-                foreach (var prop in z.EnumerateObject())
-                    if (prop.Value.TryGetProperty("path", out z))
-                    {
-                        var paths = z.ValueKind switch
-                        {
-                            JsonValueKind.String => new[] { z.GetString() },
-                            JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
-                            _ => throw new ArgumentOutOfRangeException(),
-                        };
-                        foreach (var path in paths) if (TryAddIgnore(prop, path)) break;
-                    }
-
-            // filters
-            if (elem.TryGetProperty("filters", out z))
-                foreach (var prop in z.EnumerateObject())
-                    foreach (var filter in prop.Value.EnumerateObject()) if (TryAddFilter(prop, filter.Name, filter.Value)) break;
+            AddRegistry(elem);
+            AddDirect(elem);
+            AddIgnores(elem);
+            AddFilters(elem);
 
             return this;
+        }
+
+        protected void AddRegistry(JsonElement elem)
+        {
+            if (!elem.TryGetProperty("registry", out var z)) return;
+            foreach (var prop in z.EnumerateObject())
+                if (prop.Value.TryGetProperty("key", out z))
+                {
+                    var keys = z.ValueKind switch
+                    {
+                        JsonValueKind.String => new[] { z.GetString() },
+                        JsonValueKind.Array => z.EnumerateArray().Select(y => y.GetString()),
+                        _ => throw new ArgumentOutOfRangeException(),
+                    };
+                    foreach (var key in keys)
+                        if (TryGetRegistryByKey(key, prop, prop.Value.TryGetProperty(key, out z) ? (JsonElement?)z : null, out var path)) AddPath(prop, path);
+                }
         }
 
         #endregion

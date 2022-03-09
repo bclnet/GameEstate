@@ -6,17 +6,49 @@
   "estateType": "GameEstate.Cry.CryEstate, GameEstate.Cry",
   "pakFileType": "GameEstate.Cry.CryPakFile, GameEstate.Cry",
   "games": {
-    "MechWarriorOnline": {
+    "ArcheAge": {
+      "name": "ArcheAge",
+      "pak": "game:/game_pak#ArcheAge",
+      "key": "/x32/x1F/x2A/xEE/xAA/x58/x4A/xB4/x9A/x6C/x9E/x09/xD5/x9E/x9C/x6F"
+    },
+    "Hunt": {
+      "name": "Hunt: Showdown",
+      "pak": "game:/*.pak#Hunt"
+    },
+    "MWO": {
       "name": "MechWarrior Online",
-      "pak": "game:/*.pak#MechWarriorOnline"
+      "pak": "game:/*.pak#MWO"
+    },
+    "Warface": {
+      "name": "Warface",
+      "pak": "game:/*.pak#Warface",
+      "key": "/x30/x81/x89/x02/x81/x81/x00/x9B/x60/x69/x31/xDC/xF7/x02/x7A/x4D/xC0/xE5/x26/x3B/x4A/xD0/xD8/xF4/xA4/x92/xA1/x6E/x4B/x5E/xC0/x85/x0F/x07/x4B/x4C/x3D/xA6/x27/xFF/x96/x67/x6D/x23/x79/xF8/x90/x62/xDE/x6C/x91/x7F/x26/x8C/xBD/x82/x24/x04/xD2/x6D/x9D/x79/xBC/xB0/x18/x2D/x4C/x96/xEE/xAF/x2B/x91/x8A/x03/x00/xBF/xB8/x16/x19/x62/x2D/x15/x56/xB4/xE0/x2D/x16/xFE/x0C/x7E/xD7/x2C/x01/xEE/x42/x9C/x4C/x84/x9C/x6A/x78/x6B/xCE/xC4/x4D/x6C/x50/xCB/x91/x46/x48/xBB/x66/x2D/x0B/xA2/x35/x68/x00/x02/xD4/x60/x50/x58/xD1/xC3/x0D/xA1/x12/x37/x82/x2A/x01/xF2/xEF/x02/x03/x01/x00/x01"
+    },
+    "Wolcen": {
+      "name": "Wolcen: Lords of Mayhem",
+      "pak": "game:/*.pak#Wolcen"
     }
   },
   "fileManager": {
     "windows": {
       "registry": {
-        "MechWarriorOnline": {
+        "ArcheAge": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 304030"
+        },
+        "Hunt": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 594650",
+          "path": ["engine", "game_hunt"]
+        },
+        "MWO": {
           "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 342200",
-          "assets": "Game"
+          "path": "Game"
+        },
+        "Warface": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 291480",
+          "path": ["13_2000076/Engine", "13_2000076/Game"]
+        },
+        "Wolcen": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 00"
         }
       }
     }

@@ -9,7 +9,7 @@ namespace GameEstate.Formats
         [DataTestMethod]
         [DataRow("AC:AC:1", "Texture060043BE", 32792)]
         [DataRow("Arkane:Dishonored2:1", "strings/english_m.lang", 765258)]
-        [DataRow("Cry:MechWarriorOnline:1", "GameModeObjects.xml", 153832)]
+        [DataRow("Cry:MWO:1", "GameModeObjects.xml", 153832)]
         [DataRow("Cyanide:TheCouncil:1", "data/engine_0.prefab", 20704)]
         [DataRow("Origin:UltimaOnline:1", "Engine/default_cch.dds", 16520)]
         [DataRow("Origin:UltimaIX:1", "Engine/default_cch.dds", 16520)]
@@ -29,7 +29,7 @@ namespace GameEstate.Formats
         [DataRow("Tes:Fallout4VR:1", "Textures/Water/WaterRainRipples.dds", 349680)]
         [DataRow("Tes:Fallout4VR:2", "Textures/Terrain/DiamondCity/DiamondCity.16.-2.-2.DDS", 174904)]
         [DataRow("Valve:Dota2:1", "stringtokendatabase.txt", 35624)]
-        public async Task LoadFileData(string pak, string sampleFile, int sampleFileSize) => await LoadFileDataAysc(Helper.Paks[pak].Value, sampleFile, sampleFileSize);
+        public async Task LoadFileData(string pak, string sampleFile, int sampleFileSize) => await LoadFileDataAysc(TestHelper.Paks[pak].Value, sampleFile, sampleFileSize);
 
         static async Task LoadFileDataAysc(EstatePakFile source, string sampleFile, int sampleFileSize)
         {

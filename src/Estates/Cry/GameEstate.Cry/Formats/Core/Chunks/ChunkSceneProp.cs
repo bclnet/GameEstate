@@ -6,9 +6,12 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     {
         // This chunk isn't really used, but contains some data probably necessary for the game.
         // Size for 0x744 type is always 0xBB4 (test this)
-        public uint NumProps; // number of elements in the props array  (31 for type 0x744)
+        public int NumProps; // number of elements in the props array  (31 for type 0x744)
         public string[] PropKey;
         public string[] PropValue;
+
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Version: {Version}";
 
         #region Log
 #if LOG

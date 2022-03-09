@@ -8,6 +8,9 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         public string Date;
         public string Author;
 
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Sourcefile: {SourceFile}";
+
         #region Log
 #if LOG
         public override void LogChunk()

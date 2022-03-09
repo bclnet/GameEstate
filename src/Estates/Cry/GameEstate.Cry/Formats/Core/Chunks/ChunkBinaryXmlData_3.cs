@@ -5,7 +5,7 @@ namespace GameEstate.Cry.Formats.Core.Chunks
 {
     public class ChunkBinaryXmlData_3 : ChunkBinaryXmlData
     {
-        public XmlDocument Data { get; private set; }
+        public XmlDocument Data;
 
         public override void Read(BinaryReader r)
         {

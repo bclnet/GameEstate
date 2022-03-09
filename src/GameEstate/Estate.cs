@@ -96,6 +96,10 @@ namespace GameEstate
             /// </summary>
             public IList<Uri> Dats { get; set; }
             /// <summary>
+            /// The key
+            /// </summary>
+            public byte[] Key { get; set; }
+            /// <summary>
             /// The has location
             /// </summary>
             public bool Found { get; set; }
@@ -209,9 +213,10 @@ namespace GameEstate
         /// Parses the estates resource.
         /// </summary>
         /// <param name="uri">The URI.</param>
+        /// <param name="throwOnError">Throws on error.</param>
         /// <returns></returns>
-        public Resource ParseResource(Uri uri)
-            => FileManager.ParseResource(this, uri);
+        public Resource ParseResource(Uri uri, bool throwOnError = true)
+            => FileManager.ParseResource(this, uri, throwOnError);
 
         #region Pak
 
@@ -234,8 +239,9 @@ namespace GameEstate
         /// <param name="index">The index.</param>
         /// <param name="game">The game.</param>
         /// <param name="host">The host.</param>
+        /// <param name="throwOnError">Throws on error.</param>
         /// <returns></returns>
-        EstatePakFile CreatePakFile(PakOption options, object value, int index, string game, Uri host)
+        EstatePakFile CreatePakFile(PakOption options, object value, int index, string game, Uri host, bool throwOnError)
             => WithPlatformGraphic(value switch
             {
                 string path when index == 0 && PakFileType != null => (EstatePakFile)Activator.CreateInstance(PakFileType, this, game, path, null),
@@ -243,8 +249,8 @@ namespace GameEstate
                 string path when (options & PakOption.Stream) != 0 => new StreamPakFile(FileManager.HostFactory, this, game, path, host),
                 string[] paths when (options & PakOption.Paths) != 0 && index == 0 && PakFileType != null => (EstatePakFile)Activator.CreateInstance(PakFileType, this, game, paths),
                 string[] paths when (options & PakOption.Paths) != 0 && index == 1 && Pak2FileType != null => (EstatePakFile)Activator.CreateInstance(Pak2FileType, this, game, paths),
-                string[] paths when paths.Length == 1 => CreatePakFile(options, paths[0], index, game, host),
-                string[] paths when paths.Length > 1 => new MultiPakFile(this, game, "Many", paths.Select(path => CreatePakFile(options, path, index, game, host)).ToArray()),
+                string[] paths when paths.Length == 1 => CreatePakFile(options, paths[0], index, game, host, throwOnError),
+                string[] paths when paths.Length > 1 => new MultiPakFile(this, game, "Many", paths.Select(path => CreatePakFile(options, path, index, game, host, throwOnError)).ToArray()),
                 null => null,
                 _ => throw new ArgumentOutOfRangeException(nameof(value), $"{value}"),
             });
@@ -254,28 +260,31 @@ namespace GameEstate
         /// </summary>
         /// <param name="paths">The file paths.</param>
         /// <param name="game">The game.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="throwOnError">Throws on error.</param>
         /// <returns></returns>
-        public EstatePakFile OpenPakFile(string[] paths, string game, int index = 0)
-            => CreatePakFile(PakOptions, paths, index, game ?? throw new ArgumentNullException(nameof(game)), null);
+        public EstatePakFile OpenPakFile(string[] paths, string game, int index = 0, bool throwOnError = true)
+            => CreatePakFile(PakOptions, paths, index, game ?? throw new ArgumentNullException(nameof(game)), null, throwOnError);
 
         /// <summary>
         /// Opens the estates pak file.
         /// </summary>
         /// <param name="resource">The resource.</param>
+        /// <param name="throwOnError">Throws on error.</param>
         /// <returns></returns>
-        public EstatePakFile OpenPakFile(Resource resource)
-            => CreatePakFile(resource.Options, resource.Paths, 0, resource.Game ?? throw new ArgumentNullException(nameof(resource.Game)), resource.Host);
+        public EstatePakFile OpenPakFile(Resource resource, bool throwOnError = true)
+            => CreatePakFile(resource.Options, resource.Paths, 0, resource.Game ?? throw new ArgumentNullException(nameof(resource.Game)), resource.Host, throwOnError);
 
         /// <summary>
         /// Opens the estates pak file.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        /// <param name="many">if set to <c>true</c> [many].</param>
+        /// <param name="throwOnError">Throws on error.</param>
         /// <returns></returns>
-        public EstatePakFile OpenPakFile(Uri uri)
+        public EstatePakFile OpenPakFile(Uri uri, bool throwOnError = true)
         {
             var resource = FileManager.ParseResource(this, uri);
-            return CreatePakFile(resource.Options, resource.Paths, 0, resource.Game ?? throw new ArgumentNullException(nameof(resource.Game)), resource.Host);
+            return CreatePakFile(resource.Options, resource.Paths, 0, resource.Game ?? throw new ArgumentNullException(nameof(resource.Game)), resource.Host, throwOnError);
         }
 
         #endregion

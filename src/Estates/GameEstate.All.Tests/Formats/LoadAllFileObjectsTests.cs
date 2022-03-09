@@ -11,7 +11,7 @@ namespace GameEstate.Formats
         [DataTestMethod]
         [DataRow("AC:AC")]
         [DataRow("Arkane:Dishonored2")]
-        [DataRow("Cry:MechWarriorOnline")]
+        [DataRow("Cry:MWO")]
         [DataRow("Cyanide:TheCouncil")]
         [DataRow("Origin:#UltimaOnline")]
         [DataRow("Origin:UltimaIX")]
@@ -30,7 +30,7 @@ namespace GameEstate.Formats
         [DataRow("Tes:Fallout4VR")]
         [DataRow("Tes:Fallout76")]
         [DataRow("Valve:Dota2")]
-        public async Task LoadAllFileObjects(string pak) => await LoadAllFileObjectsAsync(Helper.Paks[pak].Value);
+        public async Task LoadAllFileObjects(string pak) => await LoadAllFileObjectsAsync(TestHelper.Paks[pak].Value);
 
         static async Task LoadAllFileObjectsAsync(EstatePakFile source)
         {

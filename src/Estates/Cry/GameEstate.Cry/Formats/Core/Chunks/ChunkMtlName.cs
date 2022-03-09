@@ -7,17 +7,21 @@ namespace GameEstate.Cry.Formats.Core.Chunks
         /// <summary>
         /// Type of Material associated with this name
         /// </summary>
-        public MtlNameType MatType { get; internal set; }
+        public MtlNameType MatType;
         /// <summary>
         /// Name of the Material
         /// </summary>
-        public string Name { get; set; }
-        public MtlNamePhysicsType[] PhysicsType { get; internal set; }
+        public string Name;
+        public MtlNamePhysicsType[] PhysicsType;
         /// <summary>
         /// Number of Materials in this name (Max: 66)
         /// </summary>
-        public uint NumChildren { get; internal set; }
-        public uint[] ChildIDs { get; internal set; }
+        public int NumChildren;
+        public uint[] ChildIDs;
+        public uint NFlags2;
+
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Material Name: {Name}, Number of Children: {NumChildren}, Material Type: {MatType}";
 
         #region Log
 #if LOG

@@ -8,7 +8,10 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     public abstract class ChunkMeshMorphTargets : Chunk
     {
         public uint ChunkIDMesh;
-        public uint NumMorphVertices;
+        public int NumMorphVertices;
+
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Version: {Version}, Chunk ID Mesh: {ChunkIDMesh}";
 
         #region Log
 #if LOG

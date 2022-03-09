@@ -203,7 +203,7 @@ namespace GameEstate.Cry.Formats.Core
                 chunk.Load(this, chunkHeaderItem);
                 chunk.Read(r);
                 // Ensure we read to end of structure
-                chunk.SkipBytes(r);
+                chunk.SkipBytesRemaining(r);
 
                 // Assume first node read in Model[0] is root node.  This may be bad if they aren't in order!
                 if (chunkHeaderItem.ChunkType == ChunkType.Node && RootNode == null) RootNode = chunk as ChunkNode;

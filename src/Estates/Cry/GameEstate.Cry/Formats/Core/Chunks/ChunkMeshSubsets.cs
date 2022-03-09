@@ -5,12 +5,15 @@ namespace GameEstate.Cry.Formats.Core.Chunks
     public abstract class ChunkMeshSubsets : Chunk // cccc0017:  The different parts of a mesh.  Needed for obj exporting
     {
         public uint Flags; // probably the offset
-        public uint NumMeshSubset; // number of mesh subsets
+        public int NumMeshSubset; // number of mesh subsets
         public MeshSubset[] MeshSubsets;
 
         // For bone ID meshes? Not sure where this is used yet.
-        public uint NumberOfBoneIDs;
+        public int NumberOfBoneIDs;
         public ushort[] BoneIDs;
+
+        public override string ToString()
+            => $@"Chunk Type: {ChunkType}, ID: {ID:X}, Version: {Version}, Number of Mesh Subsets: {NumMeshSubset}";
 
         #region Log
 #if LOG
