@@ -10,9 +10,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         [RED] public CBufferVLQInt32<CName> tags { get; set; }
 
         public TagList(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
-        {
-            tags = new CBufferVLQInt32<CName>(cr2w, this, nameof(tags));
-        }
+            => tags = new CBufferVLQInt32<CName>(cr2w, this, nameof(tags));
 
         public override void Read(BinaryReader r, uint size)
         {
@@ -29,16 +27,14 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         public override void Write(BinaryWriter w)
         {
             w.WriteBit6(tags.Count);
-            for (var i = 0; i < tags.Count; i++)
-                tags[i].Write(w);
+            for (var i = 0; i < tags.Count; i++) tags[i].Write(w);
         }
 
         public static CVariable Create(CR2WFile cr2w, CVariable parent, string name) => new TagList(cr2w, parent, name);
 
         public override void AddVariable(CVariable var)
         {
-            if (var is CName tag)
-                tags.Add(tag);
+            if (var is CName tag) tags.Add(tag);
         }
 
         public override bool CanAddVariable(IEditableVariable newvar) => newvar == null || newvar is CName;
@@ -47,19 +43,14 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
 
         public override bool RemoveVariable(IEditableVariable child)
         {
-            if (child is CName tag)
-            {
-                tags.Remove(tag);
-                return true;
-            }
+            if (child is CName tag) { tags.Remove(tag); return true; }
             return false;
         }
 
         public override string ToString()
         {
             var list = new List<string>();
-            foreach (var tag in tags)
-                list.Add(tag.Value);
+            foreach (var tag in tags) list.Add(tag.Value);
             return string.Join(", ", list);
         }
     }

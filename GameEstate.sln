@@ -149,6 +149,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameEstate.App.Base.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenStack.GraphicsTests", "src\OpenStack\OpenStack.GraphicsTests\OpenStack.GraphicsTests.csproj", "{891EFFB1-686B-4F71-B472-D87E3E200BA4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameSpecs", "GameSpecs", "{4FD4E4F7-4DB2-4761-99D7-C2654BA34958}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tes", "Tes", "{7F78A794-57C6-4BC7-9267-1E68E4CEC9DE}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GameSpec.Tes.NifGen", "src\GameSpec\Tes\GameSpec.Tes.NifGen\GameSpec.Tes.NifGen.pyproj", "{D220D1B1-A252-4314-AB0D-A541B9BD5531}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -383,6 +389,8 @@ Global
 		{891EFFB1-686B-4F71-B472-D87E3E200BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{891EFFB1-686B-4F71-B472-D87E3E200BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{891EFFB1-686B-4F71-B472-D87E3E200BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D220D1B1-A252-4314-AB0D-A541B9BD5531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D220D1B1-A252-4314-AB0D-A541B9BD5531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -454,6 +462,8 @@ Global
 		{3F0D05C9-53B2-45E0-9B87-2AB5E6650135} = {0911DDF1-E514-4BCF-915A-49999D5D168C}
 		{BD2EA3EA-3F60-4184-94E2-7486A1BFE539} = {0911DDF1-E514-4BCF-915A-49999D5D168C}
 		{891EFFB1-686B-4F71-B472-D87E3E200BA4} = {4EC06189-D9CE-42F3-BFA0-F70810EF617B}
+		{7F78A794-57C6-4BC7-9267-1E68E4CEC9DE} = {4FD4E4F7-4DB2-4761-99D7-C2654BA34958}
+		{D220D1B1-A252-4314-AB0D-A541B9BD5531} = {7F78A794-57C6-4BC7-9267-1E68E4CEC9DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9F1BB93-CFBC-4E41-A865-325B22465054}

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public class CBufferUInt16<T> : CBufferBase<T> where T : CVariable
     {
         public CBufferUInt16(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public class CBufferVLQInt32<T> : CBufferBase<T> where T : CVariable
     {
         public CBufferVLQInt32(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -12,16 +12,8 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public override void Write(BinaryWriter w)
         {
-            if (elements.Count == 0)
-                w.Write((byte)0x80);
-            else
-            {
-                var count = new CVLQInt32(cr2w, null, "")
-                {
-                    val = elements.Count
-                };
-                count.Write(w);
-            }
+            if (elements.Count == 0) w.Write((byte)0x80);
+            else { var count = new CVLQInt32(cr2w, null, "") { val = elements.Count }; count.Write(w); }
             base.Write(w);
         }
 

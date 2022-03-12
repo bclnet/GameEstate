@@ -43,13 +43,9 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
                     var nextoffset = nextobj.offset.val;
                     len = nextoffset - curoffset;
                 }
-                else
-                    len = (ulong)blocksize.val - curoffset;
+                else len = (ulong)blocksize.val - curoffset;
 
-                var blockdata = new SBlockData(cr2w, BlockData, "")
-                {
-                    packedObjectType = (Enums.BlockDataObjectType)curobj.type.val
-                };
+                var blockdata = new SBlockData(cr2w, BlockData, "") { packedObjectType = (Enums.BlockDataObjectType)curobj.type.val };
                 blockdata.Read(r, (uint)len);
                 BlockData.AddVariable(blockdata);
             }

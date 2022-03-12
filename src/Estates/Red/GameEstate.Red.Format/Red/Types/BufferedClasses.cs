@@ -17,9 +17,7 @@ namespace GameEstate.Red.Formats.Red.Types
         [Ordinal(1000), REDBuffer] public CBytes Data { get; set; }
 
         public CClipMapCookedData(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
-        {
-            Data = new CBytes(cr2w, this, nameof(Data));
-        }
+            => Data = new CBytes(cr2w, this, nameof(Data));
     }
 
     // buffered classes
@@ -182,8 +180,7 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override CVariable SetValue(object val)
         {
-            if (val is CXml xml)
-                Ragdolldata = xml;
+            if (val is CXml xml) Ragdolldata = xml;
             return this;
         }
     }
@@ -201,8 +198,7 @@ namespace GameEstate.Red.Formats.Red.Types
         {
             base.Read(r, size);
             //lazy check if Cvariable is first chunk (= resource) or derived
-            if (ParentVar != null || this is CSkeletalAnimationSet)
-                return;
+            if (ParentVar != null || this is CSkeletalAnimationSet) return;
             Unk1 = new CUInt32(cr2w, this, nameof(Unk1)) { IsSerialized = true };
             Unk1.Read(r, size);
         }
@@ -211,8 +207,7 @@ namespace GameEstate.Red.Formats.Red.Types
         {
             base.Write(w);
 
-            if (ParentVar != null || this is CSkeletalAnimationSet)
-                return;
+            if (ParentVar != null || this is CSkeletalAnimationSet) return;
             Unk1.Write(w);
         }
     }
@@ -238,7 +233,7 @@ namespace GameEstate.Red.Formats.Red.Types
 
     public partial class CStorySceneSection : CStorySceneControlPart
     {
-        [Ordinal(1000)] [REDBuffer] public CArray<CVariantSizeType> sceneEventElements { get; set; }
+        [Ordinal(1000)][REDBuffer] public CArray<CVariantSizeType> sceneEventElements { get; set; }
     }
 
     public partial class CSwarmCellMap : CResource

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class IdTag : CVariable
     {
         public byte _type { get; set; }
@@ -17,8 +17,7 @@ namespace GameEstate.Red.Formats.Red.Types
             get => new Guid(_guid).ToString();
             set
             {
-                if (Guid.TryParse(value, out var g))
-                    _guid = g.ToByteArray();
+                if (Guid.TryParse(value, out var g)) _guid = g.ToByteArray();
             }
         }
 
@@ -28,8 +27,7 @@ namespace GameEstate.Red.Formats.Red.Types
             get => Convert.ToString(_type);
             set
             {
-                if (byte.TryParse(value, out var b))
-                    _type = b;
+                if (byte.TryParse(value, out var b)) _type = b;
             }
         }
 

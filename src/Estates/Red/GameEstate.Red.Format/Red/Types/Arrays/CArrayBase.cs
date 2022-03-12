@@ -9,7 +9,7 @@ using System.Text;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public abstract class CArrayBase<T> : CVariable, IArrayAccessor<T>, IList<T> where T : IEditableVariable
     {
         public CArrayBase(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -48,24 +48,18 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
                 // bacause cdpr serialized classes have no fixed size
                 // solution? not sure: pass 0 and disable checks?
                 element.Read(file, (uint)0);
-                if (element is T te)
-                {
-                    te.IsSerialized = true;
-                    Elements.Add(te);
-                }
+                if (element is T te) { te.IsSerialized = true; Elements.Add(te); }
             }
         }
 
         public override void Write(BinaryWriter file)
         {
-            foreach (var element in Elements)
-                element.Write(file);
+            foreach (var element in Elements) element.Write(file);
         }
 
         public override CVariable SetValue(object val)
         {
-            if (val is CArrayBase<T> cvar)
-                Elements = cvar.Elements;
+            if (val is CArrayBase<T> cvar) Elements = cvar.Elements;
             return this;
         }
 
@@ -73,23 +67,13 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public override void AddVariable(CVariable variable)
         {
-            if (variable is T tvar)
-            {
-                variable.SetREDName(Elements.Count.ToString());
-                tvar.IsSerialized = true;
-                Elements.Add(tvar);
-            }
+            if (variable is T tvar) { variable.SetREDName(Elements.Count.ToString()); tvar.IsSerialized = true; Elements.Add(tvar); }
         }
         public override bool CanRemoveVariable(IEditableVariable child) => child is T && Elements.Count > 0;
 
         public override bool RemoveVariable(IEditableVariable child)
         {
-            if (child is T tvar)
-            {
-                Elements.Remove(tvar);
-                UpdateNames();
-                return true;
-            }
+            if (child is T tvar) { Elements.Remove(tvar); UpdateNames(); return true; }
             return false;
         }
 
@@ -102,11 +86,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
                 foreach (var element in Elements)
                 {
                     b.Append(" <").Append(element.ToString()).Append(">");
-                    if (b.Length > 100)
-                    {
-                        b.Remove(100, b.Length - 100);
-                        break;
-                    }
+                    if (b.Length > 100) { b.Remove(100, b.Length - 100); break; }
                 }
             }
             return b.ToString();
@@ -120,8 +100,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
         void UpdateNames()
         {
             for (var i = 0; i < Elements.Count; i++)
-                if (!(Elements[i] is CVariantSizeNameType))
-                    Elements[i].SetREDName(i.ToString());
+                if (!(Elements[i] is CVariantSizeNameType)) Elements[i].SetREDName(i.ToString());
         }
 
         public override CVariable Copy(CR2WCopyAction context)
@@ -131,8 +110,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
             foreach (var element in Elements)
             {
                 var ccopy = element.Copy(context);
-                if (ccopy is T copye)
-                    copy.Elements.Add(copye);
+                if (ccopy is T copye) copy.Elements.Add(copye);
             }
             return copy;
         }
@@ -190,11 +168,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public int Add(object value)
         {
-            if (value is T tvar)
-            {
-                AddVariable(tvar as CVariable);
-                return Elements.Count;
-            }
+            if (value is T tvar) { AddVariable(tvar as CVariable); return Elements.Count; }
             return -1;
         }
 
@@ -210,8 +184,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public void Remove(object value)
         {
-            if (value is T cvar)
-                RemoveVariable(cvar);
+            if (value is T cvar) RemoveVariable(cvar);
         }
 
         public void CopyTo(Array array, int index) => ((IList)Elements).CopyTo(array, index);

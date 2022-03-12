@@ -1,29 +1,23 @@
+using FastMember;
+using GameEstate.Red.Formats.Red.CR2W;
 using System.IO;
 using System.Runtime.Serialization;
-using GameEstate.Red.Formats.Red.CR2W.Reflection;
-using FastMember;
-using static GameEstate.Red.Formats.Red.Records.Enums;
-
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-	[DataContract(Namespace = "")]
-	[REDMeta]
-	public partial class CFoliageResource : CResource
-	{
-		[Ordinal(1)] [RED("bbox")] 		public Box Bbox { get; set;}
+    [DataContract(Namespace = ""), REDMeta]
+    public partial class CFoliageResource : CResource
+    {
+        [Ordinal(1), RED("bbox")] public Box Bbox { get; set; }
+        [Ordinal(2), RED("gridbbox")] public Box Gridbbox { get; set; }
+        [Ordinal(3), RED("version")] public CUInt32 Version { get; set; }
 
-		[Ordinal(2)] [RED("gridbbox")] 		public Box Gridbbox { get; set;}
+        public CFoliageResource(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
 
-		[Ordinal(3)] [RED("version")] 		public CUInt32 Version { get; set;}
+        public static new CVariable Create(CR2WFile cr2w, CVariable parent, string name) => new CFoliageResource(cr2w, parent, name);
 
-		public CFoliageResource(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name){ }
+        public override void Read(BinaryReader file, uint size) => base.Read(file, size);
 
-		public static new CVariable Create(CR2WFile cr2w, CVariable parent, string name) => new CFoliageResource(cr2w, parent, name);
-
-		public override void Read(BinaryReader file, uint size) => base.Read(file, size);
-
-		public override void Write(BinaryWriter file) => base.Write(file);
-
-	}
+        public override void Write(BinaryWriter file) => base.Write(file);
+    }
 }

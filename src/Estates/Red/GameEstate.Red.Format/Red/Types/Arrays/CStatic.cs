@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public class CStatic<T> : CArray<T> where T : CVariable
     {
         public CStatic(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }

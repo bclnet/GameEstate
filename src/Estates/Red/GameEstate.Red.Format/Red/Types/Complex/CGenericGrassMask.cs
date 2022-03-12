@@ -20,8 +20,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         public override void Read(BinaryReader r, uint size)
         {
             base.Read(r, size);
-            if (MaskRes == null)
-                return;
+            if (MaskRes == null) return;
             var res = MaskRes.val;
             grassmask.Bytes = r.ReadBytes((int)(res * res >> 3));
         }
@@ -29,8 +28,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         public override void Write(BinaryWriter w)
         {
             base.Write(w);
-            if (grassmask.Bytes.Length > 0)
-                grassmask.Write(w);
+            if (grassmask.Bytes.Length > 0) grassmask.Write(w);
         }
 
     }

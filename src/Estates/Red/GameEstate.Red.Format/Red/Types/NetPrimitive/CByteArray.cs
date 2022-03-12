@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class CByteArray : CVariable, IByteSource
     {
         public string InternalType { get; set; }

@@ -15,7 +15,7 @@ namespace GameEstate.Red.Formats.Red.Types
     /// if ImportHandle: A string Handle, string Filetype and ushort Flags
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [REDMeta()]
+    [REDMeta]
     public class CHandle<T> : CVariable, IHandleAccessor where T : CVariable
     {
         public CHandle(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -80,8 +80,7 @@ namespace GameEstate.Red.Formats.Red.Types
             var val = 0;
             if (ChunkHandle)
             {
-                if (Reference != null)
-                    val = Reference.ChunkIndex + 1;
+                if (Reference != null) val = Reference.ChunkIndex + 1;
             }
             else
             {
@@ -121,8 +120,7 @@ namespace GameEstate.Red.Formats.Red.Types
             if (ChunkHandle && Reference != null)
             {
                 CR2WExportWrapper newref = context.TryLookupReference(Reference, copy);
-                if (newref != null)
-                    copy.Reference = newref;
+                if (newref != null) copy.Reference = newref;
             }
 
             return copy;

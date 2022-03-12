@@ -41,10 +41,8 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override CVariable SetValue(object val)
         {
-            if (val is Color color)
-                Color = color;
-            else if (val is CColor cvar)
-                Color = cvar.Color;
+            if (val is Color color) Color = color;
+            else if (val is CColor cvar) Color = cvar.Color;
             return this;
         }
     }

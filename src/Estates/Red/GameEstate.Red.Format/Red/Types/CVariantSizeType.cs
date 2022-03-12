@@ -10,7 +10,7 @@ namespace GameEstate.Red.Formats.Red.Types
     /// Format: [uint size] [ushort typeID] [byte[size] data]
     /// </summary>
     [DataContract(Namespace = "")]
-    [REDMeta()]
+    [REDMeta]
     public class CVariantSizeType : CVariable, IBufferVariantAccessor
     {
         public CVariable Variant { get; set; }
@@ -57,8 +57,7 @@ namespace GameEstate.Red.Formats.Red.Types
         public override CVariable Copy(CR2WCopyAction context)
         {
             var copy = (CVariantSizeType)base.Copy(context);
-            if (Variant != null)
-                copy.Variant = Variant.Copy(context);
+            if (Variant != null) copy.Variant = Variant.Copy(context);
             return copy;
         }
 

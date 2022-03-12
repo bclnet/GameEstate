@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class IdHandle : CVariable
     {
         public CName handlename;

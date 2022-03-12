@@ -22,8 +22,7 @@ namespace GameEstate.Red.Formats.Red.Types
             return ReferenceType;
             //try
             //{
-            //    if (Reference == null)
-            //        return "NULL";
+            //    if (Reference == null) return "NULL";
             //    return Reference.REDType;
             //}
             //catch (Exception ex) { throw new InvalidPtrException(ex.Message); }
@@ -43,10 +42,7 @@ namespace GameEstate.Red.Formats.Red.Types
             {
                 Reference = val == 0 ? null : cr2w.Chunks[val - 1];
             }
-            catch (Exception ex)
-            {
-                throw new InvalidPtrException(ex.Message);
-            }
+            catch (Exception ex) throw new InvalidPtrException(ex.Message);
 
             // Try reparenting on virtual mountpoint
             if (Reference != null)
@@ -55,10 +51,7 @@ namespace GameEstate.Red.Formats.Red.Types
                 Reference.AdReferences.Add(this);
                 cr2w.Chunks[LookUpChunkIndex()].AbReferences.Add(this);
                 //Soft mount the chunk except root chunk
-                if (Reference.ChunkIndex != 0)
-                {
-                    Reference.MountChunkVirtually(LookUpChunkIndex());
-                }
+                if (Reference.ChunkIndex != 0) Reference.MountChunkVirtually(LookUpChunkIndex());
                 //Hard mounts
                 switch (REDName)
                 {
@@ -69,13 +62,12 @@ namespace GameEstate.Red.Formats.Red.Types
                         //       Reference.MountChunkVirtually(GetVarChunkIndex(), true); break;
                 }
             }
-        }
+            }
 
         public override void Write(BinaryWriter w)
         {
             var val = 0;
-            if (Reference != null)
-                val = Reference.ChunkIndex + 1;
+            if (Reference != null) val = Reference.ChunkIndex + 1;
             w.Write(val);
         }
 
@@ -95,8 +87,7 @@ namespace GameEstate.Red.Formats.Red.Types
             if (Reference != null)
             {
                 var newref = context.TryLookupReference(Reference, copy);
-                if (newref != null)
-                    copy.SetValue(newref);
+                if (newref != null) copy.SetValue(newref);
             }
             return copy;
         }

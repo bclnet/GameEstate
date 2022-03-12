@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class CGUID : CVariable
     {
         public byte[] guid;
@@ -19,11 +19,7 @@ namespace GameEstate.Red.Formats.Red.Types
         public string GuidString
         {
             get => ToString();
-            set
-            {
-                if (Guid.TryParse(value, out var g))
-                    guid = g.ToByteArray();
-            }
+            set { if (Guid.TryParse(value, out var g)) guid = g.ToByteArray(); }
         }
 
         public override void Read(BinaryReader r, uint size) => guid = r.ReadBytes(16);
@@ -48,8 +44,7 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override string ToString()
         {
-            if (guid != null && guid.Length > 0)
-                return new Guid(guid).ToString();
+            if (guid != null && guid.Length > 0) return new Guid(guid).ToString();
             guid = new byte[16];
             return ToString();
         }

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class CFloat : CVariable, IREDPrimitive
     {
         public CFloat() { }

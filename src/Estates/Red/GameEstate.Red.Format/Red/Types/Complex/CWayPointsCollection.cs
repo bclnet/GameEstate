@@ -1,6 +1,7 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
 using GameEstate.Red.Formats.Red.Types.Arrays;
+using System;
 using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.Complex
@@ -25,8 +26,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             base.Read(r, size);
             var buffersize = r.ReadUInt32();
             var d = CalculateBufferSize();
-            if (buffersize != CalculateBufferSize())
-                throw new InvalidParsingException("Calculated buffersize is not equal actual buffersize.");
+            if (buffersize != CalculateBufferSize()) throw new FormatException("Calculated buffersize is not equal actual buffersize.");
             using (var ms = new MemoryStream(r.ReadBytes((int)buffersize)))
             using (var br = new BinaryReader(ms))
             {
@@ -38,8 +38,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
                 ComponentsMappings.Read(br, (uint)cc * 32, cc);
                 WaypointsGroups.Read(br, (uint)wgc * 12, wgc);
                 Indexes.Read(br, (uint)ic * 2, ic);
-                if (buffersize - ms.Position > 0)
-                    throw new InvalidParsingException("Did not read buffer to the end.");
+                if (buffersize - ms.Position > 0) throw new FormatException("Did not read buffer to the end.");
             }
         }
 
@@ -57,7 +56,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
                 var buffersize = (int)ms.Position;
                 var calcb = CalculateBufferSize();
                 if (buffersize != calcb)
-                    throw new InvalidParsingException("Calculated buffersize is not equal actual buffersize.");
+                    throw new FormatException("Calculated buffersize is not equal actual buffersize.");
                 w.Write(buffersize);
                 w.Write(ms.ToArray());
             }

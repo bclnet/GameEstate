@@ -60,12 +60,9 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         public override void Write(BinaryWriter w)
         {
             flags = 0;
-            if (X.val != 0 || Y.val != 0 || Z.val != 0)
-                flags |= 1;
-            if (Pitch.val != 0 || Yaw.val != 0 || Roll.val != 0)
-                flags |= 2;
-            if (Scale_x.val != 0 || Scale_y.val != 0 || Scale_z.val != 0)
-                flags |= 4;
+            if (X.val != 0 || Y.val != 0 || Z.val != 0) flags |= 1;
+            if (Pitch.val != 0 || Yaw.val != 0 || Roll.val != 0) flags |= 2;
+            if (Scale_x.val != 0 || Scale_y.val != 0 || Scale_z.val != 0) flags |= 4;
             w.Write(flags);
             if ((flags & 1) == 1)
             {

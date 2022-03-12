@@ -1,5 +1,6 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
+using GameEstate.Red.Formats.Red.Types.Arrays;
 using System.Runtime.Serialization;
 
 namespace GameEstate.Red.Formats.Red.Types.BufferStructs

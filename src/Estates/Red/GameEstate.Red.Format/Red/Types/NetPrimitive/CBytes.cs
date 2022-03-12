@@ -4,7 +4,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class CBytes : CVariable, IByteSource
     {
         public CBytes(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -15,8 +15,7 @@ namespace GameEstate.Red.Formats.Red.Types
         public override void Read(BinaryReader r, uint size) => Bytes = r.ReadBytes((int)size);
         public override void Write(BinaryWriter w)
         {
-            if (Bytes != null && Bytes.Length != 0)
-                w.Write(Bytes);
+            if (Bytes != null && Bytes.Length != 0) w.Write(Bytes);
         }
 
         public override CVariable SetValue(object val)
@@ -31,7 +30,7 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override CVariable Copy(CR2WCopyAction context)
         {
-            var copy = (CBytes) base.Copy(context);
+            var copy = (CBytes)base.Copy(context);
             if (Bytes == null) return copy;
             var newbytes = new byte[Bytes.Length];
             Bytes.CopyTo(newbytes, 0);
@@ -41,8 +40,7 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override string ToString()
         {
-            if (Bytes == null)
-                Bytes = Array.Empty<byte>();
+            if (Bytes == null) Bytes = Array.Empty<byte>();
             return $"{Bytes.Length} bytes";
         }
 
@@ -57,11 +55,11 @@ namespace GameEstate.Red.Formats.Red.Types
             switch (var)
             {
                 case CBytes b:
-                {
-                    Bytes = new byte[b.Bytes.Length];
-                    Buffer.BlockCopy(b.Bytes, 0, Bytes, 0, b.Bytes.Length);
-                    break;
-                }
+                    {
+                        Bytes = new byte[b.Bytes.Length];
+                        Buffer.BlockCopy(b.Bytes, 0, Bytes, 0, b.Bytes.Length);
+                        break;
+                    }
             }
         }
     }

@@ -12,7 +12,7 @@ namespace GameEstate.Red.Formats.Red.Types
     /// Imports have flags which are set on write
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [REDMeta()]
+    [REDMeta]
     public class CSoft<T> : CVariable, ISoftAccessor where T : CVariable
     {
         public CSoft(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }

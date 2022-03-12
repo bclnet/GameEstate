@@ -48,8 +48,7 @@ namespace GameEstate.Red.Formats.Red
             if (AssemblyDictionary.TypeExists(typename))
             {
                 var type = AssemblyDictionary.GetTypeByName(typename);
-                if (type != null)
-                    return Activator.CreateInstance(type, cr2w, parentVariable, varname) as CVariable;
+                if (type != null) return Activator.CreateInstance(type, cr2w, parentVariable, varname) as CVariable;
             }
             // check for enum types
             if (AssemblyDictionary.EnumExists(typename))
@@ -104,7 +103,7 @@ namespace GameEstate.Red.Formats.Red
                             var body = string.Join(",", arraysplits.Skip(2));
                             if (arraysplits.Length >= 3)
                             {
-                                //byte arrays, these can be huge, using ordinary arrays is just too slow.
+                                // byte arrays, these can be huge, using ordinary arrays is just too slow.
                                 if (body == "Uint8" || body == "Int8")
                                 {
                                     var bytearray = new CByteArray(cr2w, parentVariable, varname);
@@ -116,9 +115,8 @@ namespace GameEstate.Red.Formats.Red
                                 // all other arrays
                                 var innerobject = Create(body, "", cr2w, null);
                                 var arrayacc = MakeArray(typeof(CArray<>), innerobject.GetType());
-                                arrayacc.Flags = new List<int>() { int.Parse(flag1), int.Parse(flag2) };
-                                if (innerobject is IArrayAccessor accessor && accessor.Flags != null)
-                                    arrayacc.Flags.AddRange(accessor.Flags);
+                                arrayacc.Flags = new List<int> { int.Parse(flag1), int.Parse(flag2) };
+                                if (innerobject is IArrayAccessor accessor && accessor.Flags != null) arrayacc.Flags.AddRange(accessor.Flags);
                                 arrayacc.Elementtype = body;
                                 return arrayacc as CVariable;
                             }
@@ -146,8 +144,7 @@ namespace GameEstate.Red.Formats.Red
                                 arrayacc.Elementtype = matchArrayType.Groups[2].Value;
                                 return arrayacc as CVariable;
                             }
-                            else
-                                throw new InvalidParsingException($"Invalid static type format: typename: {typename}.");
+                            else throw new FormatException($"Invalid static type format: typename: {typename}.");
                         }
                     case "CBufferUInt16":
                         {
@@ -219,8 +216,7 @@ namespace GameEstate.Red.Formats.Red
                     //}
 
                     // this should never happen
-                    if (!cr2w.UnknownTypes.Contains(fullname))
-                        cr2w.UnknownTypes.Add(fullname);
+                    if (!cr2w.UnknownTypes.Contains(fullname)) cr2w.UnknownTypes.Add(fullname);
 
                     return readUnknownAsBytes ? new CBytes(cr2w, parentVariable, $"UNKNOWN:{typename}:{varname}") : null;
                 }

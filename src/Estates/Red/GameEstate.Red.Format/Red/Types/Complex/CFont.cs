@@ -84,8 +84,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         {
             base.Write(file);
             file.WriteVLQInt32(Unicodemapping.Count);
-            foreach (var mapping in Unicodemapping)
-                mapping.Write(file);
+            foreach (var mapping in Unicodemapping) mapping.Write(file);
 
             Linedist.Write(file);
             Maxglyphheight.Write(file);
@@ -94,8 +93,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             file.WriteVLQInt32(Glyphs.Count);
 
             for (var i = 0; i < Glyphs.Count; i++)
-                foreach (var subelement in (Glyphs[i]).Elements)
-                    subelement.Write(file);
+                foreach (var subelement in (Glyphs[i]).Elements) subelement.Write(file);
         }
     }
 }

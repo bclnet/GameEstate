@@ -29,7 +29,7 @@ namespace GameEstate.Red.Formats.Red.Types
     /// <summary>
     /// Represents a REDEngine compatible datetime value.
     /// </summary>
-    [REDMeta()]
+    [REDMeta]
     public sealed class CDateTime : CVariable/*, IEquatable<CDateTime>*/
     {
         /// <summary>
@@ -141,8 +141,7 @@ namespace GameEstate.Red.Formats.Red.Types
         /// <returns>true if other is equal to this instance, otherwise false.</returns>
         //public bool Equals(CDateTime other)
         //{
-        //    if (other is null)
-        //        return false;
+        //    if (other is null) return false;
         //    return m_value.Equals(this);
         //}
 
@@ -161,8 +160,7 @@ namespace GameEstate.Red.Formats.Red.Types
         /// <returns>true if other is a CDateTime inmstance and equal to this instance, otherwise false.</returns>
         //public override bool Equals(object obj)
         //{
-        //    if (obj is CDateTime dt)
-        //        return this.Equals(dt);
+        //    if (obj is CDateTime dt) return this.Equals(dt);
         //    return false;
         //}
 
@@ -176,19 +174,15 @@ namespace GameEstate.Red.Formats.Red.Types
 
         //public static bool operator ==(CDateTime left, CDateTime right)
         //{
-        //    if (ReferenceEquals(left, right))
-        //        return true;
-        //    if (left is null)
-        //        return false;
+        //    if (ReferenceEquals(left, right)) return true;
+        //    if (left is null) return false;
         //    return left.Equals(right);
         //}
 
         //public static bool operator !=(CDateTime left, CDateTime right)
         //{
-        //    if (ReferenceEquals(left, right))
-        //        return false;
-        //    if (left is null)
-        //        return true;
+        //    if (ReferenceEquals(left, right)) return false;
+        //    if (left is null) return true;
         //    return !left.Equals(right);
         //}
     }

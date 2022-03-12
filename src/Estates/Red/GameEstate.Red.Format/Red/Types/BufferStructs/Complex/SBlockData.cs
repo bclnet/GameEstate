@@ -83,15 +83,13 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
             var endp = r.BaseStream.Position;
             var read = endp - startp;
             if (read < size) { }
-            else if (read > size)
-                throw new FileFormatException("read too far");
+            else if (read > size) throw new FormatException("read too far");
         }
 
         public override void Write(BinaryWriter w)
         {
             base.Write(w);
-            if (packedObject != null)
-                packedObject.Write(w);
+            if (packedObject != null) packedObject.Write(w);
         }
 
         public override string ToString() => $"Packed [{Enum.GetName(typeof(Enums.BlockDataObjectType), packedObjectType)}] object";

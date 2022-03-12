@@ -10,9 +10,7 @@ namespace GameEstate.Red.Formats.Red.Types
     public class CColorShift : CVariable
     {
         [Ordinal(1), RED("hue")] public CUInt16 Hue { get; set; }
-
         [Ordinal(2), RED("saturation")] public CInt8 Saturation { get; set; }
-
         [Ordinal(3), RED("luminance")] public CInt8 Luminance { get; set; }
 
         public HslColor Color = new HslColor(0, 0, 0);

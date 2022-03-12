@@ -4,13 +4,12 @@ using System.Runtime.Serialization;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class LocalizedString : CVariable
     {
         public LocalizedString(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
         {
-            if (cr2w != null)
-                cr2w.LocalizedStrings.Add(this);
+            if (cr2w != null) cr2w.LocalizedStrings.Add(this);
         }
 
         public uint val { get; set; }
@@ -21,8 +20,7 @@ namespace GameEstate.Red.Formats.Red.Types
             get
             {
                 var text = cr2w.GetLocalizedString(val);
-                if (text != null)
-                    return text;
+                if (text != null) return text;
                 return val.ToString();
             }
             private set { }     //vl: dummy setter for serialization; in xml it's always number bc LocalizedSource is not avail
@@ -42,7 +40,7 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override CVariable Copy(CR2WCopyAction context)
         {
-            var var = (LocalizedString) base.Copy(context);
+            var var = (LocalizedString)base.Copy(context);
             var.val = val;
             return var;
         }

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class CName : CVariable, IREDPrimitive
     {
         public CName() { }

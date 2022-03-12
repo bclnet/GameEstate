@@ -16,8 +16,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
             get
             {
                 if (_data == null || (_data != null && _data.Length <= 0)) return new XDocument();
-                using (var ms = new MemoryStream(_data))
-                    return new XDocument(XDocument.Load(ms));
+                using (var ms = new MemoryStream(_data)) return new XDocument(XDocument.Load(ms));
             }
             set => _data = Encoding.ASCII.GetBytes(value.ToString());
         }

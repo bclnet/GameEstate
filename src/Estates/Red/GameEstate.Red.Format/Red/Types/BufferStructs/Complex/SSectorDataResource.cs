@@ -40,20 +40,16 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
             var hashint = r.ReadUInt64();
 
             // here for now until maincontroller is in Wkit.Common
-            if (hashint == 0)
-                pathHash.val = "";
+            if (hashint == 0) pathHash.val = "";
             else
             {
                 // check for vanilla hashed paths
-                //if (Cr2wResourceManager.Get().HashdumpDict.ContainsValue(hashint))
-                //    pathHash.val = Cr2wResourceManager.Get().HashdumpDict.First(_ => _.Value == hashint).Key;
+                //if (Cr2wResourceManager.Get().HashdumpDict.ContainsValue(hashint)) pathHash.val = Cr2wResourceManager.Get().HashdumpDict.First(_ => _.Value == hashint).Key;
                 //else
                 //{
                 //    // check for custom hashed paths
-                //    if (Cr2wResourceManager.Get().CHashdumpDict.ContainsValue(hashint))
-                //        pathHash.val = Cr2wResourceManager.Get().CHashdumpDict.First(_ => _.Value == hashint).Key;
-                //    else
-                //        pathHash.val = $"#{hashint}";
+                //    if (Cr2wResourceManager.Get().CHashdumpDict.ContainsValue(hashint)) pathHash.val = Cr2wResourceManager.Get().CHashdumpDict.First(_ => _.Value == hashint).Key;
+                //    else pathHash.val = $"#{hashint}";
                 //}
             }
         }
@@ -69,23 +65,18 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
             // here for now until maincontroller is in Wkit.Common
             var hashint = 0UL;
             // awkward test for unrecognized custom hashes
-            if (string.IsNullOrEmpty(pathHash.val))
-                hashint = 0;
-            else if (pathHash.val[0] == '#')
-                hashint = ulong.Parse(pathHash.val.TrimStart('#'));
+            if (string.IsNullOrEmpty(pathHash.val)) hashint = 0;
+            else if (pathHash.val[0] == '#') hashint = ulong.Parse(pathHash.val.TrimStart('#'));
             else
             {
                 //check if in game depot hashes
-                //if (Cr2wResourceManager.Get().HashdumpDict.ContainsKey(pathHash.val))
-                //    hashint = Cr2wResourceManager.Get().HashdumpDict[pathHash.val];
+                //if (Cr2wResourceManager.Get().HashdumpDict.ContainsKey(pathHash.val)) hashint = Cr2wResourceManager.Get().HashdumpDict[pathHash.val];
                 //else
                 //{
-                //    //check if in local custom hashes
-                //    if (Cr2wResourceManager.Get().CHashdumpDict.ContainsKey(pathHash.val))
-                //        hashint = Cr2wResourceManager.Get().CHashdumpDict[pathHash.val];
-                //    //hash new path and add to collection
-                //    else
-                //        hashint = Cr2wResourceManager.Get().RegisterAndWriteCustomPath(pathHash.val);
+                //    // check if in local custom hashes
+                //    if (Cr2wResourceManager.Get().CHashdumpDict.ContainsKey(pathHash.val)) hashint = Cr2wResourceManager.Get().CHashdumpDict[pathHash.val];
+                //    // hash new path and add to collection
+                //    else hashint = Cr2wResourceManager.Get().RegisterAndWriteCustomPath(pathHash.val);
                 //}
             }
             w.Write(hashint);

@@ -50,12 +50,8 @@ namespace GameEstate.Red.Formats.Red
 
             foreach (Type type in lib.GetTypes())
             {
-                if (!type.IsPublic)
-                    continue;
-
-                if (_types.ContainsKey(type.Name))
-                    continue;
-
+                if (!type.IsPublic) continue;
+                if (_types.ContainsKey(type.Name)) continue;
                 _types.Add(type.Name, type);
             }
         }
@@ -66,12 +62,8 @@ namespace GameEstate.Red.Formats.Red
 
             foreach (Type type in typeof(Enums).GetNestedTypes())
             {
-                if (!type.IsEnum)
-                    continue;
-
-                if (_enums.ContainsKey(type.Name))
-                    continue;
-
+                if (!type.IsEnum) continue;
+                if (_enums.ContainsKey(type.Name)) continue;
                 _enums.Add(type.Name, type);
             }
         }

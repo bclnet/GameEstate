@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public class CBufferBit6<T> : CBufferBase<T> where T : CVariable
     {
         public CBufferBit6(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -12,10 +12,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public override void Write(BinaryWriter w)
         {
-            var count = new CDynamicInt(cr2w, null, "")
-            {
-                val = elements.Count
-            };
+            var count = new CDynamicInt(cr2w, null, "") { val = elements.Count };
             count.Write(w);
             base.Write(w);
         }

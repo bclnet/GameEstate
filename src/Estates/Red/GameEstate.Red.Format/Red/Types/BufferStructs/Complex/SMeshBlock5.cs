@@ -22,8 +22,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
         public override void Read(BinaryReader r, uint size)
         {
             bytesize.Read(r, 2);
-            if (bytesize.val != fixedbuffersize)
-                throw new NotImplementedException();
+            if (bytesize.val != fixedbuffersize) throw new NotImplementedException();
             unk1.Read(r, (uint)bytesize.val - 2);
         }
 

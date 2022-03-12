@@ -5,7 +5,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class EntityHandle : CVariable
     {
         public CUInt16 id;

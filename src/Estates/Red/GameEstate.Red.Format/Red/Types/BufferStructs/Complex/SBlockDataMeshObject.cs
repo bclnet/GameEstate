@@ -1,5 +1,6 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
+using System;
 using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
@@ -26,17 +27,14 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
             base.Read(r, size);
             var endp = r.BaseStream.Position;
             var read = endp - startp;
-            if (read < size)
-                unk1.Read(r, size - (uint)read);
-            else if (read > size)
-                throw new FileFormatException("read too far");
+            if (read < size) unk1.Read(r, size - (uint)read);
+            else if (read > size) throw new FormatException("read too far");
         }
 
         public override void Write(BinaryWriter w)
         {
             base.Write(w);
-            if (unk1.Bytes != null && unk1.Bytes.Length > 0)
-                unk1.Write(w);
+            if (unk1.Bytes != null && unk1.Bytes.Length > 0) unk1.Write(w);
         }
     }
 }

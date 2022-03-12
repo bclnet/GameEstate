@@ -32,8 +32,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             // Read Component Array (should only be present if NOT created from template)
             #region Componentsarray
 
-            //if (Components == null)
-            //    Components = CR2WTypeManager.Create("array:2,0,ptr:CComponent", "Components", cr2w, this) as CArray<CPtr<CComponent>>;
+            //if (Components == null) Components = CR2WTypeManager.Create("array:2,0,ptr:CComponent", "Components", cr2w, this) as CArray<CPtr<CComponent>>;
 
             var endPos = file.BaseStream.Position;
             var bytesleft = size - (endPos - startPos);
@@ -72,8 +71,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
                 {
                     var t_buffer = new SEntityBufferType1(cr2w, BufferV1, idx.ToString()) { IsSerialized = true };
                     canRead = t_buffer.CanRead(file);
-                    if (canRead)
-                        t_buffer.Read(file, 0);
+                    if (canRead) t_buffer.Read(file, 0);
                     BufferV1.AddVariable(t_buffer);
                     idx++;
                 } while (canRead);
@@ -107,22 +105,15 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             if (!isCreatedFromTemplate)
             {
                 w.WriteBit6(Components.Count);
-                for (var i = 0; i < Components.Count; i++)
-                    Components[i].Write(w);
+                for (var i = 0; i < Components.Count; i++) Components[i].Write(w);
             }
 
             // Write Buffer 1 (always)
-            if (BufferV1.Count > 0)
-            {
-                foreach (var buf in BufferV1)
-                    buf.Write(w);
-            }
-            else
-                w.Write((ushort)0x0); //2 null bytes
+            if (BufferV1.Count > 0) foreach (var buf in BufferV1) buf.Write(w);
+            else w.Write((ushort)0x0); //2 null bytes
 
             // Write Buffer 2 (if created from template)
-            if (isCreatedFromTemplate)
-                BufferV2.Write(w);
+            if (isCreatedFromTemplate) BufferV2.Write(w);
         }
     }
 }

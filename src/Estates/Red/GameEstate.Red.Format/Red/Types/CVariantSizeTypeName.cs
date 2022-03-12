@@ -26,8 +26,7 @@ namespace GameEstate.Red.Formats.Red.Types
             {
                 var typeId = br.ReadUInt16();
                 var nameId = br.ReadUInt16();
-                if (nameId == 0)
-                    return;
+                if (nameId == 0) return;
                 var typename = cr2w.Names[typeId].Str;
                 var varname = cr2w.Names[nameId].Str;
                 parsedvar = CR2WTypeManager.Create(typename, varname, cr2w, this);
@@ -61,8 +60,7 @@ namespace GameEstate.Red.Formats.Red.Types
         public override CVariable Copy(CR2WCopyAction context)
         {
             var copy = (CVariantSizeTypeName)base.Copy(context);
-            if (Variant != null)
-                copy.Variant = Variant.Copy(context);
+            if (Variant != null) copy.Variant = Variant.Copy(context);
             return copy;
         }
 

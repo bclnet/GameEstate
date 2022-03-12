@@ -14,8 +14,7 @@ namespace GameEstate.Red.Formats.Red
         /// <returns>The Enum value</returns>
         public static object ConvertToEnum(Type enumType, IEnumerable<CName> names)
         {
-            if (!enumType.IsEnum)
-                throw new ArgumentException();
+            if (!enumType.IsEnum) throw new ArgumentException();
             try
             {
                 var enumString = string.Join(", ", names);

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class CByteArray2 : CVariable, IByteSource
     {
         public CByteArray2(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }

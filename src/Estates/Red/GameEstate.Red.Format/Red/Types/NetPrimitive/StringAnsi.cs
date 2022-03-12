@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types
 {
-    [REDMeta()]
+    [REDMeta]
     public class StringAnsi : CVariable
     {
         public StringAnsi(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -16,10 +16,8 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override CVariable SetValue(object val)
         {
-            if (val is string z)
-                this.val = z;
-            else if (val is StringAnsi cvar)
-                this.val = cvar.val;
+            if (val is string z) this.val = z;
+            else if (val is StringAnsi cvar) this.val = cvar.val;
             return this;
         }
 

@@ -53,9 +53,7 @@ namespace GameEstate.Red.Formats.Red.Types
         public void SetIsSerialized()
         {
             IsSerialized = true;
-            if (ParentVar != null)
-                if (ParentVar is CVariable cparent)
-                    cparent.SetIsSerialized();
+            if (ParentVar != null && ParentVar is CVariable cparent) cparent.SetIsSerialized();
         }
 
         private ushort _redFlags;
@@ -101,8 +99,7 @@ namespace GameEstate.Red.Formats.Red.Types
         {
             get
             {
-                if (string.IsNullOrEmpty(_name))
-                    throw new NotImplementedException();
+                if (string.IsNullOrEmpty(_name)) throw new NotImplementedException();
                 //return "<NO NAME SET>";
                 else return _name;
             }

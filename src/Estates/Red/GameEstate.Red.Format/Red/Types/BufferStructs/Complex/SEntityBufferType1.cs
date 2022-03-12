@@ -1,6 +1,5 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -51,9 +50,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
         }
 
         public static CVariable Create(CR2WFile cr2w, CVariable parent, string name)
-        {
-            return new SEntityBufferType1(cr2w, parent, name);
-        }
+            => new SEntityBufferType1(cr2w, parent, name);
 
         public override CVariable Copy(CR2WCopyAction context)
         {
@@ -68,10 +65,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
 
         public override List<IEditableVariable> GetEditableVariables()
         {
-            var editableVars = new List<IEditableVariable>()
-            {
-                ComponentName,
-            };
+            var editableVars = new List<IEditableVariable> { ComponentName };
             if (!string.IsNullOrEmpty(ComponentName.Value))
             {
                 editableVars.Add(Guid);

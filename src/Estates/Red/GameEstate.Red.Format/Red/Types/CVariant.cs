@@ -8,7 +8,7 @@ namespace GameEstate.Red.Formats.Red.Types
     /// A generic wrapper class for a single CVariable
     /// Format: [ushort typeID] [uint size] [byte[size] data]
     /// </summary>
-    [REDMeta()]
+    [REDMeta]
     public class CVariant : CVariable, IVariantAccessor
     {
         public CVariable Variant { get; set; }

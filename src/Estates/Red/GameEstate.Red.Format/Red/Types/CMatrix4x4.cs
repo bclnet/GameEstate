@@ -40,28 +40,24 @@ namespace GameEstate.Red.Formats.Red.Types
 
         public override void Read(BinaryReader file, uint size)
         {
-            foreach (var variable in fields)
-                variable.Read(file, size);
+            foreach (var variable in fields) variable.Read(file, size);
         }
 
         public override void Write(BinaryWriter file)
         {
-            foreach (var variable in fields)
-                variable.Write(file);
+            foreach (var variable in fields) variable.Write(file);
         }
 
         public override CVariable Copy(CR2WCopyAction context)
         {
             var copy = base.Copy(context) as CMatrix4x4;
-            for (var i = 0; i < fields.Length; i++)
-                (copy.fields[i] as CFloat).val = (fields[i] as CFloat).val;
+            for (var i = 0; i < fields.Length; i++) (copy.fields[i] as CFloat).val = (fields[i] as CFloat).val;
             return copy;
         }
 
         public override CVariable SetValue(object val)
         {
-            if (val is CMatrix4x4 v)
-                this.fields = v.fields;
+            if (val is CMatrix4x4 v) this.fields = v.fields;
             return this;
         }
 
@@ -74,11 +70,7 @@ namespace GameEstate.Red.Formats.Red.Types
                 foreach (var element in fields)
                 {
                     b.Append(" <").Append(element.ToString()).Append(">");
-                    if (b.Length > 100)
-                    {
-                        b.Remove(100, b.Length - 100);
-                        break;
-                    }
+                    if (b.Length > 100) { b.Remove(100, b.Length - 100); break; }
                 }
             }
             return b.ToString();

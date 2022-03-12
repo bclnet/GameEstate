@@ -5,7 +5,7 @@ using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public class CPaddedBuffer<T> : CBufferBase<T> where T : CVariable
     {
         public CFloat padding;
@@ -29,10 +29,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public override void Write(BinaryWriter w)
         {
-            var count = new CDynamicInt(cr2w, null, "")
-            {
-                val = elements.Count
-            };
+            var count = new CDynamicInt(cr2w, null, "") { val = elements.Count };
             count.Write(w);
             base.Write(w);
             padding.Write(w);
@@ -44,8 +41,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
             //foreach (var element in elements)
             //{
             //    var ccopy = element.Copy(new CR2WCopyAction() { DestinationFile = context.DestinationFile, Parent = copy });
-            //    if (ccopy is T copye)
-            //        copy.elements.Add(copye);
+            //    if (ccopy is T copye) copy.elements.Add(copye);
             //}
             copy.padding = (CFloat)padding.Copy(context);
             return copy;

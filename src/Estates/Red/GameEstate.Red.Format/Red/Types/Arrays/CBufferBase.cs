@@ -9,7 +9,7 @@ using System.Text;
 
 namespace GameEstate.Red.Formats.Red.Types.Arrays
 {
-    [REDMeta()]
+    [REDMeta]
     public abstract class CBufferBase<T> : CVariable, IList<T>, IList, IBufferAccessor where T : CVariable
     {
         public CBufferBase(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name) { }
@@ -45,47 +45,31 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
                 var element = CR2WTypeManager.Create(redtype, i.ToString(), cr2w, this);
                 element.Read(r, 0);
                 element.IsSerialized = true;
-                if (element is T te)
-                    elements.Add(te);
+                if (element is T te) elements.Add(te);
             }
         }
 
         public override void Write(BinaryWriter file)
         {
-            foreach (var element in elements)
-                element.Write(file);
+            foreach (var element in elements) element.Write(file);
         }
 
         public override bool CanAddVariable(IEditableVariable newvar) => newvar == null || newvar is T;
 
         public override void AddVariable(CVariable variable)
         {
-            if (variable is T tvar)
-            {
-                variable.SetREDName(elements.Count.ToString());
-                tvar.IsSerialized = true;
-                elements.Add(tvar);
-            }
+            if (variable is T tvar) { variable.SetREDName(elements.Count.ToString()); tvar.IsSerialized = true; elements.Add(tvar); }
         }
 
         public void AddVariableWithName(CVariable variable)
         {
-            if (variable is T tvar)
-            {
-                tvar.IsSerialized = true;
-                elements.Add(tvar);
-            }
+            if (variable is T tvar) { tvar.IsSerialized = true; elements.Add(tvar); }
         }
         public override bool CanRemoveVariable(IEditableVariable child) => child is T && elements.Count > 0;
 
         public override bool RemoveVariable(IEditableVariable child)
         {
-            if (child is T tvar)
-            {
-                elements.Remove(tvar);
-                UpdateNames();
-                return true;
-            }
+            if (child is T tvar) { elements.Remove(tvar); UpdateNames(); return true; }
             return false;
         }
 
@@ -98,11 +82,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
                 foreach (var element in elements)
                 {
                     b.Append(" <").Append(element.ToString()).Append(">");
-                    if (b.Length > 100)
-                    {
-                        b.Remove(100, b.Length - 100);
-                        break;
-                    }
+                    if (b.Length > 100) { b.Remove(100, b.Length - 100); break; }
                 }
             }
             return b.ToString();
@@ -121,8 +101,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
             foreach (var element in elements)
             {
                 var ccopy = element.Copy(context);
-                if (ccopy is T copye)
-                    copy.elements.Add(copye);
+                if (ccopy is T copye) copy.elements.Add(copye);
             }
             return copy;
         }
@@ -181,11 +160,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public int Add(object value)
         {
-            if (value is T tvar)
-            {
-                AddVariable(tvar);
-                return elements.Count;
-            }
+            if (value is T tvar) { AddVariable(tvar); return elements.Count; }
             return -1;
         }
 
@@ -201,8 +176,7 @@ namespace GameEstate.Red.Formats.Red.Types.Arrays
 
         public void Remove(object value)
         {
-            if (value is T cvar)
-                RemoveVariable(cvar);
+            if (value is T cvar) RemoveVariable(cvar);
         }
 
         public void CopyTo(Array array, int index) => ((IList)elements).CopyTo(array, index);

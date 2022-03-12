@@ -1,5 +1,6 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
+using GameEstate.Red.Formats.Red.Types.Arrays;
 using System.Diagnostics;
 using System.IO;
 
@@ -24,8 +25,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
             var copy = base.Copy(context) as CurveInfo;
             copy.someName = someName.Copy(context) as CName;
             copy.someByte = someByte.Copy(context) as CUInt8;
-            foreach (var piece in pieces)
-                copy.pieces.Add(piece.Copy(context) as CurvePiece);
+            foreach (var piece in pieces) copy.pieces.Add(piece.Copy(context) as CurvePiece);
             return copy;
         }
 
@@ -35,11 +35,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
         {
             someName.Read(file, size);
             var count = file.ReadByte();
-            if (count > 4)
-            {
-                Debug.Print($"Curve piece count out of bounds: {count}, using as 4");
-                count = 4;
-            }
+            if (count > 4) { Debug.Print($"Curve piece count out of bounds: {count}, using as 4"); count = 4; }
             someByte.Read(file, size);
             pieces.Read(file, size, count);
         }
@@ -47,16 +43,11 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
         public override void Write(BinaryWriter file)
         {
             var pieceCount = (byte)pieces.Count;
-            if (pieceCount > 4)
-            {
-                Debug.Print($"Cannot write more than 4 pieces ({pieceCount}) for curve info, limiting");
-                pieceCount = 4;
-            }
+            if (pieceCount > 4) { Debug.Print($"Cannot write more than 4 pieces ({pieceCount}) for curve info, limiting"); pieceCount = 4; }
             someName.Write(file);
             file.Write(pieceCount);
             someByte.Write(file);
             pieces.Write(file);
         }
     }
-
 }

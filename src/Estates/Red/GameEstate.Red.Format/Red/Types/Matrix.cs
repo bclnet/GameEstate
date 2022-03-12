@@ -20,6 +20,5 @@ namespace GameEstate.Red.Formats.Red.Types
         public override void Read(BinaryReader r, uint size) => base.Read(r, size);
 
         public override void Write(BinaryWriter w) => base.Write(w);
-
     }
 }

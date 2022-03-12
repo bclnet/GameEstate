@@ -10,9 +10,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         [Ordinal(1000), REDBuffer(true)] public CCompressedBuffer<CVariant> BufferParameters { get; set; }
 
         public CStorySceneScript(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
-        {
-            BufferParameters = new CCompressedBuffer<CVariant>(cr2w, this, nameof(BufferParameters)) { IsSerialized = true };
-        }
+            => BufferParameters = new CCompressedBuffer<CVariant>(cr2w, this, nameof(BufferParameters)) { IsSerialized = true };
 
         public override void Read(BinaryReader r, uint size)
         {
@@ -20,8 +18,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             while (true)
             {
                 var nameId = r.ReadUInt16();
-                if (nameId == 0)
-                    break;
+                if (nameId == 0) break;
                 // read cvariant
                 var varname = cr2w.Names[nameId].Str;
                 var cVariant = new CVariant(cr2w, BufferParameters, varname);

@@ -1,6 +1,7 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
 using GameEstate.Red.Formats.Red.Types.Arrays;
+using System;
 using System.IO;
 
 namespace GameEstate.Red.Formats.Red.Types.Complex
@@ -10,9 +11,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         [Ordinal(1000), REDBuffer(true)] public CBufferVLQInt32<IReferencable> Data { get; set; }
 
         public SAppearanceAttachment(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
-        {
-            Data = new CBufferVLQInt32<IReferencable>(cr2w, this, nameof(Data)) { IsSerialized = true };
-        }
+           => Data = new CBufferVLQInt32<IReferencable>(cr2w, this, nameof(Data)) { IsSerialized = true };
 
         public override void Read(BinaryReader r, uint size)
         {
@@ -33,8 +32,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             //check
             var endpos = r.BaseStream.Position;
             var bytesread = endpos - startpos;
-            if (bytesread != bytecount)
-                throw new InvalidParsingException($"Error in parsing SAppearanceAttachment: Data Variable. Bytes read: {bytesread} out of {bytecount}.");
+            if (bytesread != bytecount) throw new FormatException($"Error in parsing SAppearanceAttachment: Data Variable. Bytes read: {bytesread} out of {bytecount}.");
         }
 
         public override void Write(BinaryWriter w)
@@ -47,10 +45,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
                 bw.WriteBit6(Data.elements.Count);
                 foreach (var cvar in Data.elements)
                 {
-                    var className = new CName(cr2w, null, "")
-                    {
-                        Value = cvar.REDType
-                    };
+                    var className = new CName(cr2w, null, "") { Value = cvar.REDType };
                     className.Write(bw);
                     cvar.Write(bw);
                 }

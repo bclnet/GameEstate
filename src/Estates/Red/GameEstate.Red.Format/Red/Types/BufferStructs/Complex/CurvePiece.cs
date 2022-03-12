@@ -1,5 +1,6 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
+using GameEstate.Red.Formats.Red.Types.Arrays;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,8 +10,8 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
     [REDMeta(EREDMetaInfo.REDStruct)]
     public class CurvePiece : CVariable
     {
-        [Ordinal(0)] [RED] public CUInt16 valueCount { get; set; }
-        [Ordinal(1)] [RED] public CCompressedBuffer<CFloat> values { get; set; }
+        [Ordinal(0)][RED] public CUInt16 valueCount { get; set; }
+        [Ordinal(1)][RED] public CCompressedBuffer<CFloat> values { get; set; }
 
         public CurvePiece(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
         {
@@ -33,16 +34,14 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
         public override void Read(BinaryReader r, uint size)
         {
             valueCount.Read(r, size);
-            if (valueCount.val > 16)
-                Debug.Print($"Read: curve piece value count {valueCount.val} exceeds limit {values.Count}");
+            if (valueCount.val > 16) Debug.Print($"Read: curve piece value count {valueCount.val} exceeds limit {values.Count}");
             values.Read(r, size, valueCount.val);
         }
 
         public override void Write(BinaryWriter w)
         {
             var writtenCount = Math.Min(valueCount.val, (ushort)values.Count);
-            if (writtenCount != valueCount.val)
-                Debug.Print($"Write: curve piece value count {valueCount.val} exceeds limit {values.Count}");
+            if (writtenCount != valueCount.val) Debug.Print($"Write: curve piece value count {valueCount.val} exceeds limit {values.Count}");
             w.Write(writtenCount);
             values.Write(w);
         }

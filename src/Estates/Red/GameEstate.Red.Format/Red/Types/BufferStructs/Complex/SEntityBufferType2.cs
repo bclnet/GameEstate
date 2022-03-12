@@ -1,5 +1,6 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
+using GameEstate.Red.Formats.Red.Types.Arrays;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -14,11 +14,7 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs
 
         public override CVariable SetValue(object val)
         {
-            if (val is SVector2D v)
-            {
-                x = v.x;
-                y = v.y;
-            }
+            if (val is SVector2D v) { x = v.x; y = v.y; }
             return this;
         }
 

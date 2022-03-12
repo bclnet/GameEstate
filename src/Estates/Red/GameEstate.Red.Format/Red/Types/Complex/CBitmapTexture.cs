@@ -1,5 +1,6 @@
 ﻿using FastMember;
 using GameEstate.Red.Formats.Red.CR2W;
+using GameEstate.Red.Formats.Red.Types.Arrays;
 using System.IO;
 using System.Linq;
 
@@ -35,11 +36,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
             {
                 if (Mipdata.Count <= 0) return null;
                 bytesource = Mipdata.First().Mip.Bytes;
-                for (var index = 1; index < Mipdata.Count; index++)
-                {
-                    var byteArray = Mipdata[index].Mip;
-                    bytesource = bytesource.Concat(byteArray.Bytes).ToArray();
-                }
+                for (var index = 1; index < Mipdata.Count; index++) bytesource = bytesource.Concat(Mipdata[index].Mip.Bytes).ToArray();
             }
             else bytesource = Residentmip.Bytes;
             return bytesource;

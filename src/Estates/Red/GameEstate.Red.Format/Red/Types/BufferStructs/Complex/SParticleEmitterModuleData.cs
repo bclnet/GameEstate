@@ -1,4 +1,5 @@
 ﻿using GameEstate.Red.Formats.Red.CR2W;
+using GameEstate.Red.Formats.Red.Types.Arrays;
 using System.Collections.Generic;
 using System.IO;
 
@@ -147,22 +148,19 @@ namespace GameEstate.Red.Formats.Red.Types.BufferStructs.Complex
 
         public override void Read(BinaryReader r, uint size)
         {
-            for (var i = 0; i < fields.Length; i++)
-                fields[i].Read(r, size);
+            for (var i = 0; i < fields.Length; i++) fields[i].Read(r, size);
         }
 
         public override void Write(BinaryWriter w)
         {
-            foreach (var variable in fields)
-                variable.Write(w);
+            foreach (var variable in fields) variable.Write(w);
         }
 
         public override CVariable Copy(CR2WCopyAction context) => W3ReaderExtensions.CopyViaBuffer(this, base.Copy(context));
 
         public override CVariable SetValue(object val)
         {
-            if (val is SParticleEmitterModuleData)
-                fields = (val as SParticleEmitterModuleData).fields;
+            if (val is SParticleEmitterModuleData) fields = (val as SParticleEmitterModuleData).fields;
             return this;
         }
 

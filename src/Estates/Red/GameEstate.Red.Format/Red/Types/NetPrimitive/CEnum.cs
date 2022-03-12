@@ -25,11 +25,7 @@ namespace GameEstate.Red.Formats.Red.Types
         public T WrappedEnum
         {
             get => _wrappedEnum;
-            set
-            {
-                _wrappedEnum = value;
-                UpdateStringList();
-            }
+            set { _wrappedEnum = value; UpdateStringList(); }
         }
 
         [DataMember]
@@ -72,8 +68,7 @@ namespace GameEstate.Red.Formats.Red.Types
                 while (true)
                 {
                     var idx = r.ReadUInt16();
-                    if (idx == 0)
-                        break;
+                    if (idx == 0) break;
                     var s = cr2w.Names[idx].Str;
                     strings.Add(s);
                 }
@@ -100,8 +95,7 @@ namespace GameEstate.Red.Formats.Red.Types
                 val = (ushort)cr2w.Names.IndexOf(nw);
                 w.Write(val);
             }
-            if (IsFlag)
-                w.Write((ushort)0x00);
+            if (IsFlag) w.Write((ushort)0x00);
         }
 
         public override CVariable Copy(CR2WCopyAction context)

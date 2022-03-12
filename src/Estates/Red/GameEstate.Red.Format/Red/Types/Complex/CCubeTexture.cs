@@ -17,9 +17,7 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
         [Ordinal(1007), REDBuffer(true)] public CBytes Rawfile { get; set; }
 
         public CCubeTexture(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
-        {
-            Rawfile = new CBytes(cr2w, this, "Image") { IsSerialized = true };
-        }
+            => Rawfile = new CBytes(cr2w, this, "Image") { IsSerialized = true };
 
         public override void Read(BinaryReader r, uint size)
         {

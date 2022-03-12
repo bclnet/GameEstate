@@ -9,12 +9,10 @@ namespace GameEstate.Red.Formats.Red.Types.Complex
 {
     public partial class CSkeleton : CResource
     {
-        [Ordinal(1000),REDBuffer(true)] public CCompressedBuffer<SSkeletonRigData> rigdata { get; set; }
+        [Ordinal(1000), REDBuffer(true)] public CCompressedBuffer<SSkeletonRigData> rigdata { get; set; }
 
         public CSkeleton(CR2WFile cr2w, CVariable parent, string name) : base(cr2w, parent, name)
-        {
-            rigdata = new CCompressedBuffer<SSkeletonRigData>(cr2w, this, nameof(rigdata)) { IsSerialized = true };
-        }
+            => rigdata = new CCompressedBuffer<SSkeletonRigData>(cr2w, this, nameof(rigdata)) { IsSerialized = true };
 
         public override void Read(BinaryReader r, uint size)
         {

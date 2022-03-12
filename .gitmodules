@@ -7,3 +7,6 @@
 [submodule "etc/Cry/Cryengine-Converter"]
 	path = etc/Cry/Cryengine-Converter
 	url = git@github.com:Markemp/Cryengine-Converter.git
+[submodule "src/GameSpecs"]
+	path = src/GameSpecs
+	url = git@github.com:bclnet/GameSpecs.git
