@@ -9,10 +9,11 @@
     "ArcheAge": {
       "name": "ArcheAge",
       "pak": "game:/game_pak#ArcheAge",
-      "key": "/x32/x1F/x2A/xEE/xAA/x58/x4A/xB4/x9A/x6C/x9E/x09/xD5/x9E/x9C/x6F"
+      "key": "aes:321F2AEEAA584AB49A6C9E09D59E9C6F"
     },
     "Hunt": {
       "name": "Hunt: Showdown",
+      "description": "Hunt: Showdown is a competitive first-person PvP bounty hunting game with heavy PvE elements, from the makers of Crysis. Set in the darkest corners of the world, it packs the thrill of survival games into a match-based format.",
       "pak": "game:/*.pak#Hunt"
     },
     "MWO": {
@@ -21,12 +22,33 @@
     },
     "Warface": {
       "name": "Warface",
-      "pak": "game:/*.pak#Warface",
-      "key": "/x30/x81/x89/x02/x81/x81/x00/x9B/x60/x69/x31/xDC/xF7/x02/x7A/x4D/xC0/xE5/x26/x3B/x4A/xD0/xD8/xF4/xA4/x92/xA1/x6E/x4B/x5E/xC0/x85/x0F/x07/x4B/x4C/x3D/xA6/x27/xFF/x96/x67/x6D/x23/x79/xF8/x90/x62/xDE/x6C/x91/x7F/x26/x8C/xBD/x82/x24/x04/xD2/x6D/x9D/x79/xBC/xB0/x18/x2D/x4C/x96/xEE/xAF/x2B/x91/x8A/x03/x00/xBF/xB8/x16/x19/x62/x2D/x15/x56/xB4/xE0/x2D/x16/xFE/x0C/x7E/xD7/x2C/x01/xEE/x42/x9C/x4C/x84/x9C/x6A/x78/x6B/xCE/xC4/x4D/x6C/x50/xCB/x91/x46/x48/xBB/x66/x2D/x0B/xA2/x35/x68/x00/x02/xD4/x60/x50/x58/xD1/xC3/x0D/xA1/x12/x37/x82/x2A/x01/xF2/xEF/x02/x03/x01/x00/x01"
+      "pak": "game:/*.pak#Warface"
     },
     "Wolcen": {
       "name": "Wolcen: Lords of Mayhem",
-      "pak": "game:/*.pak#Wolcen"
+      "description": "",
+      "pak": "game:/*.pak#Wolcen",
+      "key": "aes:308189028181009B606931DCF7027A4DC0E5263B4AD0D8F4A492A16E4B5EC0850F074B4C3DA627FF96676D2379F89062DE6C917F268CBD822404D26D9D79BCB0182D4C96EEAF2B918A0300BFB81619622D1556B4E02D16FE0C7ED72C01EE429C4C849C6A786BCEC44D6C50CB914648BB662D0BA235680002D4605058D1C30DA11237822A01F2EF0203010001"
+    },
+    "Crysis": {
+      "name": "Crysis Remastered",
+      "description": "The classic first person shooter from Crytek is back with the action-packed gameplay, sandbox world, and thrilling epic battles you loved the first time around – now with remastered graphics optimized for a new generation of hardware.",
+      "pak": "game:/*.pak#Crysis"
+    },
+    "Ryse": {
+      "name": "Ryse: Son of Rome",
+      "description": "“Ryse: Son of Rome” tells the story of Marius Titus, a young Roman soldier who witnesses the murder of his family at the hands of barbarian bandits, then travels with the Roman army to Britannia to seek revenge.",
+      "pak": "game:/*.pak#Ryse"
+    },
+    "Robinson": {
+      "name": "Robinson: The Journey",
+      "description": "When the Esmeralda crashes on Tyson III, Robin is left stranded. He must rely on his wits – and HIGS, an AI unit from the ship – to survive. As he searches for the lost crew and comes face-to-face with dinosaurs, Robin discovers that Tyson III is not the paradise once promised.",
+      "pak": "game:/*.pak#Robinson"
+    },
+    "Snow": {
+      "name": "SNOW - The Ultimate Edition",
+      "description": "SNOW - The Ultimate Edition is the only open world, winter sports game. Explore a massive mountain, customize your character with clothing and equipment, compete in events to be the best. Access to all mountains, tracks, events as well including all cosmetics, ski, snowboard, drone, and snowmobile.",
+      "pak": "game:/*.pak#Snow"
     }
   },
   "fileManager": {
@@ -37,7 +59,7 @@
         },
         "Hunt": {
           "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 594650",
-          "path": ["engine", "game_hunt"]
+          "path": [ "engine", "game_hunt" ]
         },
         "MWO": {
           "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 342200",
@@ -45,10 +67,27 @@
         },
         "Warface": {
           "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 291480",
-          "path": ["13_2000076/Engine", "13_2000076/Game"]
+          "path": [ "13_2000076/Engine", "13_2000076/Game" ]
         },
         "Wolcen": {
-          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 00"
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 424370",
+          "path": [ "Engine", "Game" ]
+        },
+        "Crysis": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 1715130",
+          "path": [ "Engine", "Game" ]
+        },
+        "Ryse": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 302510",
+          "path": [ "Engine", "GameRyse" ]
+        },
+        "Robinson": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 579820",
+          "path": [ "engine", "game_robinson" ]
+        },
+        "Snow": {
+          "key": "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 244930",
+          "path": "Assets"
         }
       }
     }

@@ -80,7 +80,7 @@
         },
         "Skyrim": {
           "key": [
-            "Bethesda Softworks/Skyrim",
+            "Bethesda Softworks/skyrim",
             "Microsoft/Windows/CurrentVersion/Uninstall/Steam App 72850"
           ],
           "path": "Data"

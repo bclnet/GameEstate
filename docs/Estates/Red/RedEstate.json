@@ -40,11 +40,17 @@
     "windows": {
       "registry": {
         "Witcher": {
-          "key": "GOG.com/Games/1207658924",
+          "key": [
+            "CD Projekt RED/The Witcher",
+            "GOG.com/Games/1207658924"
+          ],
           "path": "Data"
         },
         "Witcher2": {
-          "key": "GOG.com/Games/1207658930",
+          "key": [
+            "CD Projekt RED/The Witcher 2",
+            "GOG.com/Games/1207658930"
+          ],
           "path": "CookedPC"
         },
         "Witcher3": {

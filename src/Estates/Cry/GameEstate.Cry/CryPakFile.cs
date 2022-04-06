@@ -34,8 +34,15 @@ namespace GameEstate.Cry
             Open();
         }
 
+        static PakBinaryCry PackBinaryFactory(Estate.EstateGame game)
+        {
+            if (game.Key is Estate.AesKey aes)
+                return new PakBinaryCry(aes.Key);
+            return new PakBinaryCry(null);
+        }
+
         static PakBinary GetPackBinary(Estate estate, string game)
-           => PakBinarys.GetOrAdd(game, _ => new PakBinaryCry(estate.GetGame(game).game.Key));
+           => PakBinarys.GetOrAdd(game, _ => PackBinaryFactory(estate.GetGame(game).game));
 
         #region Transforms
 

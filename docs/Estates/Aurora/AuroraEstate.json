@@ -23,14 +23,14 @@
       "registry": {
         "NWN": {
           "key": [
-            "GOG.com/Games/1207658890",
-            "BioWare/NWN/Neverwinter"
+            "BioWare/NWN/Neverwinter",
+            "GOG.com/Games/1207658890"
           ]
         },
         "NWN2": {
           "key": [
-            "GOG.com/Games/1207659162",
-            "Obsidian/NWN 2/Neverwinter"
+            "Obsidian/NWN 2/Neverwinter",
+            "GOG.com/Games/1207659162"
           ],
           "path": "Data"
         },

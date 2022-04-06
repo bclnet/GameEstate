@@ -110,14 +110,23 @@ namespace GameEstate
             }
         }
 
+        static bool TryParseKey(string str, out object value)
+        {
+            if (string.IsNullOrEmpty(str)) { value = null; return false; }
+            if (str.StartsWith("aes:", StringComparison.OrdinalIgnoreCase))
+            {
+                var keyStr = str[4..];
+                var key = keyStr.StartsWith("/")
+                    ? Enumerable.Range(0, keyStr.Length >> 2).Select(x => byte.Parse(keyStr.Substring((x << 2) + 2, 2), NumberStyles.HexNumber)).ToArray()
+                    : Enumerable.Range(0, keyStr.Length >> 1).Select(x => byte.Parse(keyStr.Substring(x << 1, 2), NumberStyles.HexNumber)).ToArray();
+                value = new AesKey { Key = key };
+            }
+            else throw new ArgumentOutOfRangeException(nameof(str), str);
+            return true;
+        }
+
         static EstateGame ParseGame(IDictionary<string, HashSet<string>> locations, string game, JsonElement elem)
         {
-            bool TryParseKey(string str, out byte[] value)
-            {
-                if (string.IsNullOrEmpty(str)) { value = null; return false; }
-                value = str.Split("/x").Skip(1).Select(x => byte.Parse(x, NumberStyles.HexNumber)).ToArray();
-                return true;
-            }
             var estate = new EstateGame
             {
                 Game = game,
@@ -130,14 +139,14 @@ namespace GameEstate
                 {
                     JsonValueKind.String => new[] { new Uri(z.GetString()) },
                     JsonValueKind.Array => z.EnumerateArray().Select(y => new Uri(z.GetString())).ToArray(),
-                    _ => throw new ArgumentOutOfRangeException(),
+                    _ => throw new ArgumentOutOfRangeException("pak", $"{z}"),
                 };
             if (elem.TryGetProperty("dat", out z))
                 estate.Dats = z.ValueKind switch
                 {
                     JsonValueKind.String => new[] { new Uri(z.GetString()) },
                     JsonValueKind.Array => z.EnumerateArray().Select(y => new Uri(z.GetString())).ToArray(),
-                    _ => throw new ArgumentOutOfRangeException(),
+                    _ => throw new ArgumentOutOfRangeException("dat", $"{z}"),
                 };
             return estate;
         }

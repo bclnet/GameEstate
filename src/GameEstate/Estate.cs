@@ -72,6 +72,14 @@ namespace GameEstate
         }
 
         /// <summary>
+        /// AesKey
+        /// </summary>
+        public class AesKey
+        {
+            public byte[] Key;
+        }
+
+        /// <summary>
         /// EstateGame
         /// </summary>
         public class EstateGame
@@ -98,7 +106,7 @@ namespace GameEstate
             /// <summary>
             /// The key
             /// </summary>
-            public byte[] Key { get; set; }
+            public object Key { get; set; }
             /// <summary>
             /// The has location
             /// </summary>

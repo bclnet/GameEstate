@@ -153,7 +153,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameSpecs", "GameSpecs", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tes", "Tes", "{7F78A794-57C6-4BC7-9267-1E68E4CEC9DE}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GameSpec.Tes.NifGen", "src\GameSpec\Tes\GameSpec.Tes.NifGen\GameSpec.Tes.NifGen.pyproj", "{D220D1B1-A252-4314-AB0D-A541B9BD5531}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "GameSpec.Tes.NifGen", "src\GameSpecs\Tes\GameSpec.Tes.NifGen\GameSpec.Tes.NifGen.pyproj", "{D220D1B1-A252-4314-AB0D-A541B9BD5531}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
