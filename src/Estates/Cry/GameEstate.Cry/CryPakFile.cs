@@ -17,7 +17,7 @@ namespace GameEstate.Cry
     /// <seealso cref="GameEstate.Formats.BinaryPakFile" />
     public class CryPakFile : BinaryPakManyFile, ITransformFileObject<IUnknownFileModel>
     {
-        static ConcurrentDictionary<string, PakBinaryCry> PakBinarys = new ConcurrentDictionary<string, PakBinaryCry>();
+        static ConcurrentDictionary<string, PakBinary> PakBinarys = new ConcurrentDictionary<string, PakBinary>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CryPakFile" /> class.
@@ -34,11 +34,11 @@ namespace GameEstate.Cry
             Open();
         }
 
-        static PakBinaryCry PackBinaryFactory(Estate.EstateGame game)
+        static PakBinary PackBinaryFactory(Estate.EstateGame game)
         {
             if (game.Key is Estate.AesKey aes)
-                return new PakBinaryCry(aes.Key);
-            return new PakBinaryCry(null);
+                return new PakBinaryCry3(aes.Key);
+            return new PakBinaryCry3(null);
         }
 
         static PakBinary GetPackBinary(Estate estate, string game)

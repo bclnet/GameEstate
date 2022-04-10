@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SharpZipLib.P4k" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Base\GameEstate.Base\GameEstate.Base.csproj" />
     <ProjectReference Include="..\..\Cry\GameEstate.Cry\GameEstate.Cry.csproj" />
   </ItemGroup>

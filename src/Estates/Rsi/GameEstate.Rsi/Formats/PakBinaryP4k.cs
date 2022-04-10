@@ -1,11 +1,12 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿using GameEstate.Formats;
+using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using static GameEstate.EstateDebug;
 
-namespace GameEstate.Formats
+namespace GameEstate.Rsi.Formats
 {
     /// <summary>
     /// PakBinaryP4k
