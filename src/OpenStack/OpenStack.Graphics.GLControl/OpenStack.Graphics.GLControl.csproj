@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="OpenTK.NetStandard" Version="1.0.5.32" />
+    <PackageReference Include="OpenTK.NetStandard.GLControl" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\OpenTK\OpenTK.GLControl\OpenTK.GLControl.csproj" />
     <ProjectReference Include="..\OpenStack.Graphics.OpenGL\OpenStack.Graphics.OpenGL.csproj" />
   </ItemGroup>
 
