@@ -22,7 +22,7 @@ namespace GameEstate.Unity
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
         public UnityPakFile(Estate estate, string game, string filePath, object tag = null)
-            : base(estate, game, filePath, PakBinaryRsi.Instance, tag)
+            : base(estate, game, filePath, PakBinaryXyz.Instance, tag)
         {
             GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;

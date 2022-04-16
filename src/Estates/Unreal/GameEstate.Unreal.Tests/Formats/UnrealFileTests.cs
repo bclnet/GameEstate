@@ -17,7 +17,7 @@ namespace GameEstate.Unreal.Formats
         public async Task LoadFileObjectAsync(EstatePakFile source, string sampleFile)
         {
             Assert.IsTrue(source.Contains(sampleFile));
-            var file = await source.LoadFileObjectAsync<CryFile>(sampleFile);
+            var file = await source.LoadFileObjectAsync<byte[]>(sampleFile);
         }
     }
 }

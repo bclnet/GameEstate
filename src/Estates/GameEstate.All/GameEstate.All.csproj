@@ -25,6 +25,8 @@
     <ProjectReference Include="..\Rsi\GameEstate.Rsi\GameEstate.Rsi.csproj" />
     <ProjectReference Include="..\Tes\GameEstate.Tes.Platform\GameEstate.Tes.Platform.csproj" />
     <ProjectReference Include="..\Tes\GameEstate.Tes\GameEstate.Tes.csproj" />
+    <ProjectReference Include="..\Unity\GameEstate.Unity\GameEstate.Unity.csproj" />
+    <ProjectReference Include="..\Unreal\GameEstate.Unreal\GameEstate.Unreal.csproj" />
     <ProjectReference Include="..\Valve\GameEstate.Valve.Platform\GameEstate.Valve.Platform.csproj" />
     <ProjectReference Include="..\Valve\GameEstate.Valve\GameEstate.Valve.csproj" />
   </ItemGroup>

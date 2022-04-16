@@ -26,6 +26,7 @@ namespace GameEstate.Cry.Formats
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
             var pak = (Cry3File)(source.Tag = new Cry3File(r.BaseStream, Key));
+            var links = new Dictionary<string, FileMetadata>();
             foreach (ZipEntry entry in pak)
             {
                 var metadata = new FileMetadata
@@ -36,6 +37,8 @@ namespace GameEstate.Cry.Formats
                     FileSize = entry.Size,
                     Tag = entry,
                 };
+                if (metadata.Path.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
+                    links.Add(metadata.Path, metadata);
                 files.Add(metadata);
             }
             return Task.CompletedTask;
