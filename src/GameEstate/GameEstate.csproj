@@ -19,7 +19,9 @@
     <EmbeddedResource Include="..\..\docs\Estates\Red\RedEstate.json" Link="Estates\RedEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Rsi\RsiEstate.json" Link="Estates\RsiEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Tes\TesEstate.json" Link="Estates\TesEstate.json" />
+    <EmbeddedResource Include="..\..\docs\Estates\Unreal\UnityEstate.json" Link="Estates\UnityEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Unknown\UnknownEstate.json" Link="Estates\UnknownEstate.json" />
+    <EmbeddedResource Include="..\..\docs\Estates\Unreal\UnrealEstate.json" Link="Estates\UnrealEstate.json" />
     <EmbeddedResource Include="..\..\docs\Estates\Valve\ValveEstate.json" Link="Estates\ValveEstate.json" />
   </ItemGroup>
 
