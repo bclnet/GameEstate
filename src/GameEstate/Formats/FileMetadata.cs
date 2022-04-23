@@ -12,6 +12,7 @@ namespace GameEstate.Formats
     {
         internal static readonly Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> EmptyObjectFactory = (a, b, c) => null;
         internal Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> CachedObjectFactory;
+        internal DataOption CachedDataOption;
         public BinaryPakFile Pak;
         public object Tag;
         // common
@@ -24,7 +25,6 @@ namespace GameEstate.Formats
         public long Position;
         public long Digest;
         // options
-        public DataOption DataOption;
         public IList<FileMetadata> Parts;
         // extra
         public object FileInfo;

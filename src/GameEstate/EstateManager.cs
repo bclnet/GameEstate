@@ -11,6 +11,9 @@ namespace GameEstate
 {
     public class EstateManager
     {
+        public static readonly Estate Unknown;
+        public static readonly EstatePakFile UnknownPakFile;
+
         static string[] EstateKeys = new[] { "AC", "Arkane", "Aurora", "Cry", "Cyanide", "Origin", "Red", "Rsi", "Tes", "Unity", "Unknown", "Unreal", "Valve" };
 
         public class DefaultOptions
@@ -42,6 +45,8 @@ namespace GameEstate
                     var estate = ParseEstate(r.ReadToEnd());
                     if (estate != null) Estates.Add(estate.Id, estate);
                 }
+            Unknown = GetEstate("Unknown");
+            UnknownPakFile = Unknown.OpenPakFile(null);
         }
 
         /// <summary>

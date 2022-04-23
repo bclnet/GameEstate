@@ -73,6 +73,7 @@ namespace GameEstate.Graphics
                 var width = info.Width >> i;
                 var height = info.Height >> i;
                 var bytes = info[i];
+                if (bytes == null) return DefaultTexture;
 
                 GL.CompressedTexImage2D(TextureTarget.Texture2D, i, format, width, height, 0, bytes.Length, bytes);
             }

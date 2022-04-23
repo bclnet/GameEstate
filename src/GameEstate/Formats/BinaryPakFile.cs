@@ -32,8 +32,8 @@ namespace GameEstate.Formats
         protected Func<ExplorerManager, BinaryPakFile, Task<List<ExplorerItemNode>>> GetExplorerItems;
         protected Dictionary<string, Func<ExplorerManager, BinaryPakFile, FileMetadata, Task<List<ExplorerInfoNode>>>> ExplorerInfos = new Dictionary<string, Func<ExplorerManager, BinaryPakFile, FileMetadata, Task<List<ExplorerInfoNode>>>>();
 
-        // objectfactory
-        protected Func<FileMetadata, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>> GetObjectFactoryFactory;
+        // object-factory
+        protected Func<FileMetadata, (DataOption option, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> factory)> GetObjectFactoryFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryPakFile" /> class.
@@ -172,7 +172,7 @@ namespace GameEstate.Formats
         /// <param name="option">The file.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public Task<Stream> LoadFileDataAsync(FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> LoadFileDataAsync(FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
             => UseBinaryReader
             ? GetBinaryReader().Func(r => ReadFileDataAsync(r, file, option, exception))
             : ReadFileDataAsync(null, file, option, exception);
@@ -198,12 +198,19 @@ namespace GameEstate.Formats
         public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
 
         /// <summary>
-        /// Gets the file object factory.
+        /// Ensures the file object factory.
         /// </summary>
         /// <param name="file">The file.</param>
         /// <returns></returns>
-        public Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetFileObjectFactory(FileMetadata file)
-            => file.CachedObjectFactory = GetObjectFactoryFactory(file) ?? FileMetadata.EmptyObjectFactory;
+        public Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> EnsureCachedObjectFactory(FileMetadata file)
+        {
+            if (file.CachedObjectFactory != null) return file.CachedObjectFactory;
+
+            var factory = GetObjectFactoryFactory(file);
+            file.CachedDataOption = factory.option;
+            file.CachedObjectFactory = factory.factory ?? FileMetadata.EmptyObjectFactory;
+            return file.CachedObjectFactory;
+        }
 
         /// <summary>
         /// Loads the file data asynchronous.
@@ -213,11 +220,11 @@ namespace GameEstate.Formats
         /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public async Task<T> LoadFileObjectAsync<T>(FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override async Task<T> LoadFileObjectAsync<T>(FileMetadata file, Action<FileMetadata, string> exception = null)
         {
             var type = typeof(T);
             var stream = await LoadFileDataAsync(file, 0, exception);
-            var objectFactory = GetFileObjectFactory(file);
+            var objectFactory = EnsureCachedObjectFactory(file);
             if (objectFactory == FileMetadata.EmptyObjectFactory)
                 return type == typeof(Stream) || type == typeof(object)
                     ? (T)(object)stream

@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GameEstate.Formats.Unknown
 {
     public abstract class UnknownFileWriter
     {
+        public static readonly IDictionary<string, Func<IUnknownFileModel, UnknownFileWriter>> Factories = new Dictionary<string, Func<IUnknownFileModel, UnknownFileWriter>>(StringComparer.OrdinalIgnoreCase);
+
         // ARGS
         public DirectoryInfo DataDir = null;
         public const bool NoConflicts = false;
@@ -34,5 +38,9 @@ namespace GameEstate.Formats.Unknown
             }
             return new FileInfo(fileName);
         }
+
+        public static UnknownFileWriter Factory(string name, IUnknownFileModel model) => Factories.TryGetValue(name, out var factory)
+            ? factory(model)
+            : throw new ArgumentOutOfRangeException(nameof(name), name);
     }
 }

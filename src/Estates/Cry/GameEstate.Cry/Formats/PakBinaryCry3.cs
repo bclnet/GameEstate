@@ -40,11 +40,10 @@ namespace GameEstate.Cry.Formats
                     FileSize = entry.Size,
                     Tag = entry,
                 };
-                // link dds
-                if (metadata.Path.EndsWith(".dds")) parentByPath.Add(metadata.Path, metadata);
-                else if (metadata.Path[^8..].Contains(".dds."))
+                if (metadata.Path.EndsWith(".dds", StringComparison.OrdinalIgnoreCase)) parentByPath.Add(metadata.Path, metadata);
+                else if (metadata.Path[^8..].Contains(".dds.", StringComparison.OrdinalIgnoreCase))
                 {
-                    var parentPath = metadata.Path[..(metadata.Path.IndexOf(".dds") + 4)];
+                    var parentPath = metadata.Path[..(metadata.Path.IndexOf(".dds", StringComparison.OrdinalIgnoreCase) + 4)];
                     var parts = partByPath.TryGetValue(parentPath, out var z) ? z : null;
                     if (parts == null) partByPath.Add(parentPath, parts = new SortedList<string, FileMetadata>());
                     parts.Add(metadata.Path, metadata);

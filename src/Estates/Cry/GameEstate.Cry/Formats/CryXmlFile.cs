@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace GameEstate.Cry.Formats
 {
-    public class CryXmlFile : XmlDocument
+    public class CryXmlFile : XmlDocument, IHaveStream
     {
         class Node
         {
@@ -157,22 +157,30 @@ namespace GameEstate.Cry.Formats
 
         public static TObject Deserialize<TObject>(Stream inStream) where TObject : class
         {
-            using var ms = new MemoryStream();
+            using var s = new MemoryStream();
             var xs = new XmlSerializer(typeof(TObject));
             var xmlDoc = new CryXmlFile(new BinaryReader(inStream));
-            xmlDoc.Save(ms);
-            ms.Seek(0, SeekOrigin.Begin);
-            return xs.Deserialize(ms) as TObject;
+            xmlDoc.Save(s);
+            s.Seek(0, SeekOrigin.Begin);
+            return xs.Deserialize(s) as TObject;
         }
 
         public static TObject Deserialize<TObject>(string inFile) where TObject : class
         {
-            using var ms = new MemoryStream();
+            using var s = new MemoryStream();
             var xmlDoc = new CryXmlFile(inFile);
-            xmlDoc.Save(ms);
-            ms.Seek(0, SeekOrigin.Begin);
+            xmlDoc.Save(s);
+            s.Seek(0, SeekOrigin.Begin);
             var xs = new XmlSerializer(typeof(TObject));
-            return xs.Deserialize(ms) as TObject;
+            return xs.Deserialize(s) as TObject;
+        }
+
+        public Stream GetStream()
+        {
+            var s = new MemoryStream();
+            Save(s);
+            s.Seek(0, SeekOrigin.Begin);
+            return s;
         }
     }
 }

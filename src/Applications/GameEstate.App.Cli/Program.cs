@@ -1,4 +1,7 @@
 ﻿using CommandLine;
+using GameEstate.Formats.Collada;
+using GameEstate.Formats.Unknown;
+using GameEstate.Formats.Wavefront;
 using System;
 using System.IO;
 
@@ -69,7 +72,17 @@ namespace GameEstate.App.Cli
         static string[] argsRed1 = new[] { "export", "-e", "Red", "-u", "game:/main.key#Witcher", "--path", @"D:\T_\Witcher" };
         static string[] argsRed2 = new[] { "export", "-e", "Red", "-u", "game:/krbr.dzip#Witcher2", "--path", @"D:\T_\Witcher2" };
 
-        static void Main(string[] args) => Parser.Default.ParseArguments<TestOptions, ListOptions, ExportOptions, ImportOptions, XsportOptions>(argsRsi1)
+        static void Register()
+        {
+            UnknownFileWriter.Factories["Collada"] = file => new ColladaFileWriter(file);
+            UnknownFileWriter.Factories["Wavefront"] = file => new WavefrontFileWriter(file);
+            UnknownFileWriter.Factories["default"] = UnknownFileWriter.Factories["Wavefront"];
+        }
+
+        static void Main(string[] args)
+        {
+            Register();
+            Parser.Default.ParseArguments<TestOptions, ListOptions, ExportOptions, ImportOptions, XsportOptions>(argsRsi1)
             .MapResult(
                 (TestOptions opts) => RunTestAsync(opts).GetAwaiter().GetResult(),
                 (ListOptions opts) => RunListAsync(opts).GetAwaiter().GetResult(),
@@ -77,5 +90,6 @@ namespace GameEstate.App.Cli
                 (ImportOptions opts) => RunImportAsync(opts).GetAwaiter().GetResult(),
                 (XsportOptions opts) => RunXsportAsync(opts).GetAwaiter().GetResult(),
                 errs => 1);
+        }
     }
 }

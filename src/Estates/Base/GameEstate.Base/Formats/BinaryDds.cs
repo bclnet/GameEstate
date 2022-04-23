@@ -63,8 +63,9 @@ namespace GameEstate.Formats
         {
             get
             {
-                var uncompressedSize = this.GetMipMapTrueDataSize(index);
-                return _r.ReadBytes(uncompressedSize);
+                //var uncompressedSize = this.GetMipMapTrueDataSize(index);
+                //return _r.ReadBytes(uncompressedSize);
+                return null;
             }
             set => throw new NotImplementedException();
         }

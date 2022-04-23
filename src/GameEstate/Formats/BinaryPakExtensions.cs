@@ -1,15 +1,16 @@
-﻿using System;
+﻿using GameEstate.Formats.Unknown;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using static GameEstate.Estate;
 
 namespace GameEstate.Formats
 {
-    public static class MultiPakExtensions
+    public static class BinaryPakExtensions
     {
         const int MaxDegreeOfParallelism = 1; //8;
 
-        #region Export / Import
+        #region Export
 
         public static async Task ExportAsync(this BinaryPakFile source, string filePath, int from = 0, DataOption option = 0, Action<FileMetadata, int> advance = null, Action<FileMetadata, string> exception = null)
         {
@@ -28,8 +29,11 @@ namespace GameEstate.Formats
                 var directory = Path.GetDirectoryName(newPath);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
-                // extract pak
-                if (file.Pak != null) await file.Pak.ExportAsync(newPath);
+                // recursive extract pak, and exit
+                if (file.Pak != null) { await file.Pak.ExportAsync(newPath); return; }
+
+                // ensure cached object factory
+                if ((option & (DataOption.Stream | DataOption.Model)) != 0) source.EnsureCachedObjectFactory(file);
 
                 // extract file
                 try
@@ -49,17 +53,25 @@ namespace GameEstate.Formats
         static async Task ExportFileAsync(FileMetadata file, BinaryPakManyFile pak, string newPath, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             if (file.FileSize == 0 && file.PackedSize == 0) return;
-            if ((option & file.DataOption) != 0)
+            var fileOption = file.CachedDataOption;
+            if ((option & fileOption) != 0)
             {
-                if ((option & DataOption.Model) != 0)
+                if ((fileOption & DataOption.Model) != 0)
                 {
-                    //var file = await pak.LoadFileObjectAsync<IUnknownFileModel>(file, unknownSource);
-                    //using var b2 = await pak.LoadFileObjectAsync(file, option, exception);
+                    var model = await pak.LoadFileObjectAsync<IUnknownFileModel>(file, EstateManager.UnknownPakFile);
+                    UnknownFileWriter.Factory("default", model).Write(newPath, false);
                     return;
                 }
-                if ((option & DataOption.Transform) != 0)
+                else if ((fileOption & DataOption.Stream) != 0)
                 {
-                    //using var b2 = await pak.LoadFileObjectAsync(file, option, exception);
+                    if (!(await pak.LoadFileObjectAsync<object>(file) is IHaveStream haveStream))
+                    {
+                        exception?.Invoke(null, $"ExportFileAsync: {file.Path} @ {file.FileSize}");
+                        throw new InvalidOperationException();
+                    }
+                    using var b2 = haveStream.GetStream();
+                    using var s2 = new FileStream(newPath, FileMode.Create, FileAccess.Write);
+                    b2.CopyTo(s2);
                     return;
                 }
             }
@@ -73,6 +85,10 @@ namespace GameEstate.Formats
                     b2.CopyTo(s);
                 }
         }
+
+        #endregion
+
+        #region Import
 
         public static async Task ImportAsync(this BinaryPakFile source, BinaryWriter w, string filePath, int from = 0, DataOption option = 0, Action<FileMetadata, int> advance = null, Action<FileMetadata, string> exception = null)
         {

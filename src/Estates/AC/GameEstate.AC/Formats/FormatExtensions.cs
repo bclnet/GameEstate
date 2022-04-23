@@ -4,6 +4,7 @@ using GameEstate.Formats;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using Environment = GameEstate.AC.Formats.FileTypes.Environment;
 
 namespace GameEstate.AC.Formats
@@ -29,79 +30,79 @@ namespace GameEstate.AC.Formats
         }
 
         // object factory
-        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactoryFactory(this FileMetadata source)
+        internal static (DataOption, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>) GetObjectFactoryFactory(this FileMetadata source)
         {
             var (pakType, type) = ((PakType, PakFileType?))source.ExtraArgs;
-            if ((uint)source.Id == Iteration.FILE_ID) return (r, m, s) => Task.FromResult((object)new Iteration(r));
-            else if (type == null) return null;
+            if ((uint)source.Id == Iteration.FILE_ID) return (0, (r, m, s) => Task.FromResult((object)new Iteration(r)));
+            else if (type == null) return (0, null);
             else return type.Value switch
             {
-                PakFileType.LandBlock => (r, m, s) => Task.FromResult((object)new Landblock(r)),
-                PakFileType.LandBlockInfo => (r, m, s) => Task.FromResult((object)new LandblockInfo(r)),
-                PakFileType.EnvCell => (r, m, s) => Task.FromResult((object)new EnvCell(r)),
-                //PakFileType.LandBlockObjects => null;
-                //PakFileType.Instantiation => null;
-                PakFileType.GraphicsObject => (r, m, s) => Task.FromResult((object)new GfxObj(r)),
-                PakFileType.Setup => (r, m, s) => Task.FromResult((object)new SetupModel(r)),
-                PakFileType.Animation => (r, m, s) => Task.FromResult((object)new Animation(r)),
-                //PakFileType.AnimationHook => null;
-                PakFileType.Palette => (r, m, s) => Task.FromResult((object)new Palette(r)),
-                PakFileType.SurfaceTexture => (r, m, s) => Task.FromResult((object)new SurfaceTexture(r)),
-                PakFileType.Texture => (r, m, s) => Task.FromResult((object)new Texture(r)),
-                PakFileType.Surface => (r, m, s) => Task.FromResult((object)new Surface(r)),
-                PakFileType.MotionTable => (r, m, s) => Task.FromResult((object)new MotionTable(r)),
-                PakFileType.Wave => (r, m, s) => Task.FromResult((object)new Wave(r)),
-                PakFileType.Environment => (r, m, s) => Task.FromResult((object)new Environment(r)),
-                PakFileType.ChatPoseTable => (r, m, s) => Task.FromResult((object)new ChatPoseTable(r)),
-                PakFileType.ObjectHierarchy => (r, m, s) => Task.FromResult((object)new GeneratorTable(r)), //: Name wayoff
-                PakFileType.BadData => (r, m, s) => Task.FromResult((object)new BadData(r)),
-                PakFileType.TabooTable => (r, m, s) => Task.FromResult((object)new TabooTable(r)),
-                PakFileType.FileToId => null,
-                PakFileType.NameFilterTable => (r, m, s) => Task.FromResult((object)new NameFilterTable(r)),
-                PakFileType.MonitoredProperties => null,
-                PakFileType.PaletteSet => (r, m, s) => Task.FromResult((object)new PaletteSet(r)),
-                PakFileType.Clothing => (r, m, s) => Task.FromResult((object)new ClothingTable(r)),
-                PakFileType.DegradeInfo => (r, m, s) => Task.FromResult((object)new GfxObjDegradeInfo(r)),
-                PakFileType.Scene => (r, m, s) => Task.FromResult((object)new Scene(r)),
-                PakFileType.Region => (r, m, s) => Task.FromResult((object)new RegionDesc(r)),
-                PakFileType.KeyMap => null,
-                PakFileType.RenderTexture => (r, m, s) => Task.FromResult((object)new RenderTexture(r)),
-                PakFileType.RenderMaterial => null,
-                PakFileType.MaterialModifier => null,
-                PakFileType.MaterialInstance => null,
-                PakFileType.SoundTable => (r, m, s) => Task.FromResult((object)new SoundTable(r)),
-                PakFileType.UILayout => null,
-                PakFileType.EnumMapper => (r, m, s) => Task.FromResult((object)new EnumMapper(r)),
-                PakFileType.StringTable => (r, m, s) => Task.FromResult((object)new StringTable(r)),
-                PakFileType.DidMapper => (r, m, s) => Task.FromResult((object)new DidMapper(r)),
-                PakFileType.ActionMap => null,
-                PakFileType.DualDidMapper => (r, m, s) => Task.FromResult((object)new DualDidMapper(r)),
-                PakFileType.String => (r, m, s) => Task.FromResult((object)new LanguageString(r)), //: Name wayoff
-                PakFileType.ParticleEmitter => (r, m, s) => Task.FromResult((object)new ParticleEmitterInfo(r)),
-                PakFileType.PhysicsScript => (r, m, s) => Task.FromResult((object)new PhysicsScript(r)),
-                PakFileType.PhysicsScriptTable => (r, m, s) => Task.FromResult((object)new PhysicsScriptTable(r)),
-                PakFileType.MasterProperty => null,
-                PakFileType.Font => (r, m, s) => Task.FromResult((object)new Font(r)),
-                PakFileType.FontLocal => null,
-                PakFileType.StringState => (r, m, s) => Task.FromResult((object)new LanguageInfo(r)), //: Name wayoff
-                PakFileType.DbProperties => null,
-                PakFileType.RenderMesh => null,
-                PakFileType.WeenieDefaults => null,
-                PakFileType.CharacterGenerator => (r, m, s) => Task.FromResult((object)new CharGen(r)),
-                PakFileType.SecondaryAttributeTable => (r, m, s) => Task.FromResult((object)new SecondaryAttributeTable(r)),
-                PakFileType.SkillTable => (r, m, s) => Task.FromResult((object)new SkillTable(r)),
-                PakFileType.SpellTable => (r, m, s) => Task.FromResult((object)new SpellTable(r)),
-                PakFileType.SpellComponentTable => (r, m, s) => Task.FromResult((object)new SpellComponentTable(r)),
-                PakFileType.TreasureTable => null,
-                PakFileType.CraftTable => null,
-                PakFileType.XpTable => (r, m, s) => Task.FromResult((object)new XpTable(r)),
-                PakFileType.Quests => null,
-                PakFileType.GameEventTable => null,
-                PakFileType.QualityFilter => (r, m, s) => Task.FromResult((object)new QualityFilter(r)),
-                PakFileType.CombatTable => (r, m, s) => Task.FromResult((object)new CombatManeuverTable(r)),
-                PakFileType.ItemMutation => null,
-                PakFileType.ContractTable => (r, m, s) => Task.FromResult((object)new ContractTable(r)),
-                _ => null,
+                PakFileType.LandBlock => (0, (r, m, s) => Task.FromResult((object)new Landblock(r))),
+                PakFileType.LandBlockInfo => (0, (r, m, s) => Task.FromResult((object)new LandblockInfo(r))),
+                PakFileType.EnvCell => (0, (r, m, s) => Task.FromResult((object)new EnvCell(r))),
+                //PakFileType.LandBlockObjects => (0, null),
+                //PakFileType.Instantiation => (0, null),
+                PakFileType.GraphicsObject => (0, (r, m, s) => Task.FromResult((object)new GfxObj(r))),
+                PakFileType.Setup => (0, (r, m, s) => Task.FromResult((object)new SetupModel(r))),
+                PakFileType.Animation => (0, (r, m, s) => Task.FromResult((object)new Animation(r))),
+                //PakFileType.AnimationHook => (0, null),
+                PakFileType.Palette => (0, (r, m, s) => Task.FromResult((object)new Palette(r))),
+                PakFileType.SurfaceTexture => (0, (r, m, s) => Task.FromResult((object)new SurfaceTexture(r))),
+                PakFileType.Texture => (0, (r, m, s) => Task.FromResult((object)new Texture(r))),
+                PakFileType.Surface => (0, (r, m, s) => Task.FromResult((object)new Surface(r))),
+                PakFileType.MotionTable => (0, (r, m, s) => Task.FromResult((object)new MotionTable(r))),
+                PakFileType.Wave => (0, (r, m, s) => Task.FromResult((object)new Wave(r))),
+                PakFileType.Environment => (0, (r, m, s) => Task.FromResult((object)new Environment(r))),
+                PakFileType.ChatPoseTable => (0, (r, m, s) => Task.FromResult((object)new ChatPoseTable(r))),
+                PakFileType.ObjectHierarchy => (0, (r, m, s) => Task.FromResult((object)new GeneratorTable(r))), //: Name wayoff
+                PakFileType.BadData => (0, (r, m, s) => Task.FromResult((object)new BadData(r))),
+                PakFileType.TabooTable => (0, (r, m, s) => Task.FromResult((object)new TabooTable(r))),
+                PakFileType.FileToId => (0, null),
+                PakFileType.NameFilterTable => (0, (r, m, s) => Task.FromResult((object)new NameFilterTable(r))),
+                PakFileType.MonitoredProperties => (0, null),
+                PakFileType.PaletteSet => (0, (r, m, s) => Task.FromResult((object)new PaletteSet(r))),
+                PakFileType.Clothing => (0, (r, m, s) => Task.FromResult((object)new ClothingTable(r))),
+                PakFileType.DegradeInfo => (0, (r, m, s) => Task.FromResult((object)new GfxObjDegradeInfo(r))),
+                PakFileType.Scene => (0, (r, m, s) => Task.FromResult((object)new Scene(r))),
+                PakFileType.Region => (0, (r, m, s) => Task.FromResult((object)new RegionDesc(r))),
+                PakFileType.KeyMap => (0, null),
+                PakFileType.RenderTexture => (0, (r, m, s) => Task.FromResult((object)new RenderTexture(r))),
+                PakFileType.RenderMaterial => (0, null),
+                PakFileType.MaterialModifier => (0, null),
+                PakFileType.MaterialInstance => (0, null),
+                PakFileType.SoundTable => (0, (r, m, s) => Task.FromResult((object)new SoundTable(r))),
+                PakFileType.UILayout => (0, null),
+                PakFileType.EnumMapper => (0, (r, m, s) => Task.FromResult((object)new EnumMapper(r))),
+                PakFileType.StringTable => (0, (r, m, s) => Task.FromResult((object)new StringTable(r))),
+                PakFileType.DidMapper => (0, (r, m, s) => Task.FromResult((object)new DidMapper(r))),
+                PakFileType.ActionMap => (0, null),
+                PakFileType.DualDidMapper => (0, (r, m, s) => Task.FromResult((object)new DualDidMapper(r))),
+                PakFileType.String => (0, (r, m, s) => Task.FromResult((object)new LanguageString(r))), //: Name wayoff
+                PakFileType.ParticleEmitter => (0, (r, m, s) => Task.FromResult((object)new ParticleEmitterInfo(r))),
+                PakFileType.PhysicsScript => (0, (r, m, s) => Task.FromResult((object)new PhysicsScript(r))),
+                PakFileType.PhysicsScriptTable => (0, (r, m, s) => Task.FromResult((object)new PhysicsScriptTable(r))),
+                PakFileType.MasterProperty => (0, null),
+                PakFileType.Font => (0, (r, m, s) => Task.FromResult((object)new Font(r))),
+                PakFileType.FontLocal => (0, null),
+                PakFileType.StringState => (0, (r, m, s) => Task.FromResult((object)new LanguageInfo(r))), //: Name wayoff
+                PakFileType.DbProperties => (0, null),
+                PakFileType.RenderMesh => (0, null),
+                PakFileType.WeenieDefaults => (0, null),
+                PakFileType.CharacterGenerator => (0, (r, m, s) => Task.FromResult((object)new CharGen(r))),
+                PakFileType.SecondaryAttributeTable => (0, (r, m, s) => Task.FromResult((object)new SecondaryAttributeTable(r))),
+                PakFileType.SkillTable => (0, (r, m, s) => Task.FromResult((object)new SkillTable(r))),
+                PakFileType.SpellTable => (0, (r, m, s) => Task.FromResult((object)new SpellTable(r))),
+                PakFileType.SpellComponentTable => (0, (r, m, s) => Task.FromResult((object)new SpellComponentTable(r))),
+                PakFileType.TreasureTable => (0, null),
+                PakFileType.CraftTable => (0, null),
+                PakFileType.XpTable => (0, (r, m, s) => Task.FromResult((object)new XpTable(r))),
+                PakFileType.Quests => (0, null),
+                PakFileType.GameEventTable => (0, null),
+                PakFileType.QualityFilter => (0, (r, m, s) => Task.FromResult((object)new QualityFilter(r))),
+                PakFileType.CombatTable => (0, (r, m, s) => Task.FromResult((object)new CombatManeuverTable(r))),
+                PakFileType.ItemMutation => (0, null),
+                PakFileType.ContractTable => (0, (r, m, s) => Task.FromResult((object)new ContractTable(r))),
+                _ => (0, null),
             };
         }
 

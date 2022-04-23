@@ -15,9 +15,16 @@ namespace GameEstate.Rsi.Formats
     /// <seealso cref="GameEstate.Formats.PakBinary" />
     public class PakBinaryP4k : PakBinary
     {
+        public static readonly PakBinary Instance = new PakBinaryP4k();
+        static readonly byte[] DefaultKey = new byte[] { 0x5E, 0x7A, 0x20, 0x02, 0x30, 0x2E, 0xEB, 0x1A, 0x3B, 0xB6, 0x17, 0xC3, 0x0F, 0xDE, 0x1E, 0x47 };
         readonly byte[] Key;
 
-        public PakBinaryP4k(byte[] key = null) => Key = key;
+        class SubPakFile : BinaryPakManyFile
+        {
+            public SubPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, Instance, tag) => Open();
+        }
+
+        PakBinaryP4k(byte[] key = null) => Key = key ?? DefaultKey;
 
         public override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {
@@ -39,11 +46,11 @@ namespace GameEstate.Rsi.Formats
                     FileSize = entry.Size,
                     Tag = entry,
                 };
-                // link dds
-                if (metadata.Path.EndsWith(".dds")) parentByPath.Add(metadata.Path, metadata);
-                else if (metadata.Path[^8..].Contains(".dds."))
+                if (metadata.Path.EndsWith(".socpak", StringComparison.OrdinalIgnoreCase)) { } // metadata.Pak = new SubPakFile(source.Estate, source.Game, metadata.Path);
+                else if (metadata.Path.EndsWith(".dds", StringComparison.OrdinalIgnoreCase)) parentByPath.Add(metadata.Path, metadata);
+                else if (metadata.Path[^8..].Contains(".dds.", StringComparison.OrdinalIgnoreCase))
                 {
-                    var parentPath = metadata.Path[..(metadata.Path.IndexOf(".dds") + 4)];
+                    var parentPath = metadata.Path[..(metadata.Path.IndexOf(".dds", StringComparison.OrdinalIgnoreCase) + 4)];
                     var parts = partsByPath.TryGetValue(parentPath, out var z) ? z : null;
                     if (parts == null) partsByPath.Add(parentPath, parts = new SortedList<string, FileMetadata>());
                     parts.Add(metadata.Path, metadata);

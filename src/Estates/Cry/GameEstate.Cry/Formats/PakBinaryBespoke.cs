@@ -24,14 +24,14 @@ namespace GameEstate.Cry.Formats
         [StructLayout(LayoutKind.Sequential, Pack = 0x1)]
         struct AA_Header
         {
-            public uint Magic;              // Magic
-            public uint Dummy1;             // Dummy
-            public uint FileCount;              // Files
-            public uint ExtraFiles;         // Extra Files
-            public uint Dummy2;             // Dummy
-            public uint Dummy3;             // Dummy
-            public uint Dummy4;             // Dummy
-            public uint Dummy5;             // Dummy
+            public uint Magic;
+            public uint Dummy1;
+            public uint FileCount;
+            public uint ExtraFiles;
+            public uint Dummy2;
+            public uint Dummy3;
+            public uint Dummy4;
+            public uint Dummy5;
         }
 
         #endregion

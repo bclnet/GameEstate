@@ -3,6 +3,7 @@ using GameEstate.Valve.Formats.Blocks;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Valve.Formats
 {
@@ -12,7 +13,7 @@ namespace GameEstate.Valve.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactoryFactory(this FileMetadata source)
+        internal static (DataOption, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>) GetObjectFactoryFactory(this FileMetadata source)
         {
             Task<object> BinaryPakFactory(BinaryReader r, FileMetadata f, EstatePakFile s)
             {
@@ -39,7 +40,7 @@ namespace GameEstate.Valve.Formats
             }
             return Path.GetExtension(source.Path).ToLowerInvariant() switch
             {
-                _ => BinaryPakFactory,
+                _ => (0, BinaryPakFactory),
             };
         }
     }

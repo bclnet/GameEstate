@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Cyanide.Formats
 {
@@ -11,11 +12,11 @@ namespace GameEstate.Cyanide.Formats
     public static class FormatExtensions
     {
         // object factory
-        internal static Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>> GetObjectFactoryFactory(this FileMetadata source)
+        internal static (DataOption, Func<BinaryReader, FileMetadata, EstatePakFile, Task<object>>) GetObjectFactoryFactory(this FileMetadata source)
             => Path.GetExtension(source.Path).ToLowerInvariant() switch
             {
-                ".dds" => BinaryDds.Factory,
-                _ => null,
+                ".dds" => (0, BinaryDds.Factory),
+                _ => (0, null),
             };
     }
 }

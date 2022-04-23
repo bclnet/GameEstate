@@ -11,15 +11,14 @@ namespace GameEstate.Arkane.Formats
     public class PakBinaryArkane : PakBinary
     {
         public static readonly PakBinary Instance = new PakBinaryArkane();
-        PakBinaryArkane() { }
-
         const uint RES_MAGIC = 0x04534552;
 
         class SubPakFile : BinaryPakManyFile
         {
-            public SubPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, Instance, tag)
-                => Open();
+            public SubPakFile(Estate estate, string game, string filePath, object tag = null) : base(estate, game, filePath, Instance, tag) => Open();
         }
+
+        PakBinaryArkane() { }
 
         public unsafe override Task ReadAsync(BinaryPakFile source, BinaryReader r, ReadStage stage)
         {

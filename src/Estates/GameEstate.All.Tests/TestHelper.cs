@@ -14,7 +14,6 @@ namespace GameEstate
         static readonly Estate estateRed = EstateManager.GetEstate("Red");
         static readonly Estate estateRsi = EstateManager.GetEstate("Rsi");
         static readonly Estate estateTes = EstateManager.GetEstate("Tes");
-        static readonly Estate estateUnknown = EstateManager.GetEstate("Unknown");
         static readonly Estate estateValve = EstateManager.GetEstate("Valve");
 
         public static readonly Dictionary<string, Lazy<EstatePakFile>> Paks = new()
@@ -64,7 +63,6 @@ namespace GameEstate
             { "Tes:Fallout4VR:2", new Lazy<EstatePakFile>(() => estateTes.OpenPakFile(new Uri("game:/Fallout4 - Textures8.ba2#Fallout4VR"))) },
             { "Tes:Fallout76", new Lazy<EstatePakFile>(() => estateTes.OpenPakFile(new Uri("game:/SeventySix*.ba2#Fallout76"))) },
             { "Tes:Fallout76:1", new Lazy<EstatePakFile>(() => estateTes.OpenPakFile(new Uri("game:/SeventySix - 00UpdateMain.ba2#Fallout76"))) },
-            { "Unknown", new Lazy<EstatePakFile>(() => estateUnknown.OpenPakFile(null)) },
             { "Valve:Dota2", new Lazy<EstatePakFile>(() => estateValve.OpenPakFile(new Uri("game:/(core:dota)/*_dir.vpk#Dota2"))) },
             { "Valve:Dota2:1", new Lazy<EstatePakFile>(() => estateValve.OpenPakFile(new Uri("game:/dota/pak01_dir.vpk#Dota2"))) },
         };

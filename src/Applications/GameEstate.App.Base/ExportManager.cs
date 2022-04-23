@@ -42,11 +42,10 @@ namespace GameEstate.App
             // write pak
             await pak.ExportAsync(newPath, from, option, (file, index) =>
             {
-                //if ((index % 50) == 0)
-                //    Console.WriteLine($"{file.Path}");
+                if ((index % 50) == 0) Console.WriteLine($"{index, 6}> {file.Path}");
             }, (file, message) =>
             {
-                Console.WriteLine($"{message}: {file?.Path}");
+                Console.WriteLine($"ERROR: {message} - {file?.Path}");
             });
         }
     }

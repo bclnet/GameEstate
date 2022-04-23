@@ -35,11 +35,7 @@ namespace GameEstate.Cry.Formats
         public CryFile(string fileName)
         {
             // Validate file extension - handles .cgam / skinm
-            if (!_validExtensions.Contains(Path.GetExtension(fileName)))
-            {
-                Log("Warning: Unsupported file extension - please use a cga, cgf, chr or skin file");
-                throw new FileLoadException("Warning: Unsupported file extension - please use a cga, cgf, chr or skin file", fileName);
-            }
+            if (!_validExtensions.Contains(Path.GetExtension(fileName))) throw new FileLoadException("Warning: Unsupported file extension - please use a cga, cgf, chr, skin or anim file", fileName);
             InputFile = fileName;
         }
 

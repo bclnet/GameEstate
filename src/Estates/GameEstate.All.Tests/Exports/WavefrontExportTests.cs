@@ -18,9 +18,8 @@ namespace GameEstate.Exports
 
         public async Task ExportFileObjectAsync(EstatePakFile source, string sampleFile)
         {
-            var unknownSource = TestHelper.Paks["Unknown"].Value;
             Assert.IsTrue(source.Contains(sampleFile));
-            var file = await source.LoadFileObjectAsync<IUnknownFileModel>(sampleFile, unknownSource);
+            var file = await source.LoadFileObjectAsync<IUnknownFileModel>(sampleFile, EstateManager.UnknownPakFile);
             var objFile = new WavefrontFileWriter(file);
             objFile.Write(@"C:\T_\Models", false);
         }

@@ -22,7 +22,7 @@ namespace GameEstate.Rsi
         /// <param name="filePath">The file path.</param>
         /// <param name="tag">The tag.</param>
         public RsiPakFile(Estate estate, string game, string filePath, object tag = null)
-            : base(estate, game, filePath, PakBinaryRsi.Instance, tag)
+            : base(estate, game, filePath, PakBinaryP4k.Instance, tag)
         {
             GetExplorerItems = StandardExplorerItem.GetPakFilesAsync;
             GetObjectFactoryFactory = FormatExtensions.GetObjectFactoryFactory;

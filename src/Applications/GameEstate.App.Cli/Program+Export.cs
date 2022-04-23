@@ -19,7 +19,7 @@ namespace GameEstate.App.Cli
             [Option("path", Default = @".\out", HelpText = "Output folder")]
             public string Path { get; set; }
 
-            [Option("option", Default = 0, HelpText = "Data option")]
+            [Option("option", Default = DataOption.Stream | DataOption.Model, HelpText = "Data option")]
             public DataOption Option { get; set; }
         }
 

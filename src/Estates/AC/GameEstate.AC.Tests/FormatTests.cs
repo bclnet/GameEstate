@@ -55,7 +55,7 @@ namespace GameEstate.AC
                 var fileType = metadata.GetFileType(PakType.Cell).fileType;
                 Assert.IsNotNull(fileType, $"Key: 0x{key:X8}, ObjectID: 0x{metadata.Id:X8}, FileSize: {metadata.FileSize}");
 
-                var factory = source.GetFileObjectFactory(metadata);
+                var factory = source.EnsureCachedObjectFactory(metadata);
                 if (factory == null) throw new Exception($"Class for fileType: {fileType} does not implement an ObjectFactory.");
 
                 using var r = new BinaryReader(await source.LoadFileDataAsync(metadata));
@@ -85,7 +85,7 @@ namespace GameEstate.AC
                 if (fileType == PakFileType.MasterProperty) continue;
                 if (fileType == PakFileType.DbProperties) continue;
 
-                var factory = source.GetFileObjectFactory(metadata);
+                var factory = source.EnsureCachedObjectFactory(metadata);
                 if (factory == null) throw new Exception($"Class for fileType: {fileType} does not implement an ObjectFactory.");
 
                 using var r = new BinaryReader(await source.LoadFileDataAsync(metadata));
@@ -110,7 +110,7 @@ namespace GameEstate.AC
                 // These file types aren't converted yet
                 if (fileType == PakFileType.UILayout) continue;
 
-                var factory = source.GetFileObjectFactory(metadata);
+                var factory = source.EnsureCachedObjectFactory(metadata);
                 if (factory == null) throw new Exception($"Class for fileType: {fileType} does not implement an ObjectFactory.");
 
                 using var r = new BinaryReader(await source.LoadFileDataAsync(metadata));

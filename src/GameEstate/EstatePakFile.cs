@@ -105,6 +105,14 @@ namespace GameEstate
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public abstract Task<Stream> LoadFileDataAsync(int fileId, DataOption option = 0, Action<FileMetadata, string> exception = null);
+        /// <summary>
+        /// Loads the file data asynchronous.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="option">The option.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public abstract Task<Stream> LoadFileDataAsync(FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null);
 
         /// <summary>
         /// Loads the object asynchronous.
@@ -114,6 +122,23 @@ namespace GameEstate
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public abstract Task<T> LoadFileObjectAsync<T>(string path, Action<FileMetadata, string> exception = null);
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="fileId">The fileId.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public abstract Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null);
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="file">The file.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public abstract Task<T> LoadFileObjectAsync<T>(FileMetadata file, Action<FileMetadata, string> exception = null);
+
         /// <summary>
         /// Loads the object asynchronous.
         /// </summary>
@@ -129,18 +154,20 @@ namespace GameEstate
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="fileId">The fileId.</param>
-        /// <param name="exception">The exception.</param>
-        /// <returns></returns>
-        public abstract Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null);
-        /// <summary>
-        /// Loads the object asynchronous.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fileId">The fileId.</param>
         /// <param name="transformTo">The transformTo.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public async Task<T> LoadFileObjectAsync<T>(int fileId, EstatePakFile transformTo, Action<FileMetadata, string> exception = null)
+            => await TransformFileObjectAsync<T>(transformTo, await LoadFileObjectAsync<object>(fileId, exception));
+        /// <summary>
+        /// Loads the object asynchronous.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="file">The file.</param>
+        /// <param name="transformTo">The transformTo.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public async Task<T> LoadFileObjectAsync<T>(FileMetadata fileId, EstatePakFile transformTo, Action<FileMetadata, string> exception = null)
             => await TransformFileObjectAsync<T>(transformTo, await LoadFileObjectAsync<object>(fileId, exception));
 
         /// <summary>
