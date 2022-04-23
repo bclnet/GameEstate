@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Formats
 {
@@ -96,9 +97,10 @@ namespace GameEstate.Formats
         /// </summary>
         /// <param name="r">The r.</param>
         /// <param name="file">The file.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public override async Task<Stream> ReadFileDataAsync(BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception)
+        public override async Task<Stream> ReadFileDataAsync(BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var path = file.Path;
             // http pak
@@ -115,9 +117,10 @@ namespace GameEstate.Formats
         /// <param name="w">The w.</param>
         /// <param name="file">The file.</param>
         /// <param name="data">The data.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
-        public override Task WriteFileDataAsync(BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception) => throw new NotSupportedException();
+        public override Task WriteFileDataAsync(BinaryWriter w, FileMetadata file, Stream data, DataOption option = 0, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
     }
 }

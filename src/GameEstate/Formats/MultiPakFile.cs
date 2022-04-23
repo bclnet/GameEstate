@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Formats
 {
@@ -70,22 +71,24 @@ namespace GameEstate.Formats
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="filePath">The file path.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="System.IO.FileNotFoundException">Could not find file \"{filePath}\".</exception>
-        public override Task<Stream> LoadFileDataAsync(string filePath, Action<FileMetadata, string> exception) =>
+        public override Task<Stream> LoadFileDataAsync(string filePath, DataOption option = 0, Action<FileMetadata, string> exception = null) =>
             (PakFiles.FirstOrDefault(x => x.Valid && x.Contains(filePath)) ?? throw new FileNotFoundException($"Could not find file \"{filePath}\"."))
-            .LoadFileDataAsync(filePath, exception);
+            .LoadFileDataAsync(filePath, option, exception);
         /// <summary>
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="fileId">The fileId.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="System.IO.FileNotFoundException">Could not find file \"{filePath}\".</exception>
-        public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception) =>
+        public override Task<Stream> LoadFileDataAsync(int fileId, DataOption option = 0, Action<FileMetadata, string> exception = null) =>
             (PakFiles.FirstOrDefault(x => x.Valid && x.Contains(fileId)) ?? throw new FileNotFoundException($"Could not find file \"{fileId}\"."))
-            .LoadFileDataAsync(fileId, exception);
+            .LoadFileDataAsync(fileId, option, exception);
 
         /// <summary>
         /// Loads the object asynchronous.

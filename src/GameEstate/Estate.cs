@@ -23,7 +23,7 @@ namespace GameEstate
             if (EstatePlatform.InTestHost && EstatePlatform.Startups.Count == 0) EstatePlatform.Startups.Add(TestPlatform.Startup);
             foreach (var startup in EstatePlatform.Startups) if (startup()) return;
             EstatePlatform.Platform = EstatePlatform.PlatformUnknown;
-            EstatePlatform.GraphicFactory = source => throw new Exception("No GraphicFactory");
+            EstatePlatform.GraphicFactory = source => null; // throw new Exception("No GraphicFactory");
             EstateDebug.AssertFunc = x => System.Diagnostics.Debug.Assert(x);
             EstateDebug.LogFunc = a => System.Diagnostics.Debug.Print(a);
             EstateDebug.LogFormatFunc = (a, b) => System.Diagnostics.Debug.Print(a, b);
@@ -46,6 +46,19 @@ namespace GameEstate
         {
             Paths = 0x1,
             Stream = 0x2,
+        }
+
+        [Flags]
+        public enum DataOption
+        {
+            Stream = Raw | Marker,
+            //
+            None = 0x0,
+            Raw = 0x1,
+            Marker = 0x2,
+            Transform = 0x4,
+            // exports
+            Model = 0x100,
         }
 
         /// <summary>
@@ -119,6 +132,14 @@ namespace GameEstate
             /// The name of the displayed.
             /// </value>
             public string DisplayedName => $"{Name}{(Found ? " - found" : null)}";
+
+            /// <summary>
+            /// Converts to string.
+            /// </summary>
+            /// <returns>
+            /// A <see cref="System.String" /> that represents this instance.
+            /// </returns>
+            public override string ToString() => Name;
         }
 
         /// <summary>
@@ -127,8 +148,7 @@ namespace GameEstate
         /// <returns>
         /// A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString()
-            => Name;
+        public override string ToString() => Name;
 
         /// <summary>
         /// Gets the identifier.

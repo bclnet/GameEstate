@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Aurora.Formats
 {
@@ -292,7 +293,7 @@ namespace GameEstate.Aurora.Formats
             return Task.CompletedTask;
         }
 
-        public unsafe override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public unsafe override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             Stream fileData;
             r.Position(file.Position);

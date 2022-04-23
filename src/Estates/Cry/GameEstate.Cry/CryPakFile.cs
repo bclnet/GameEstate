@@ -36,13 +36,16 @@ namespace GameEstate.Cry
 
         static PakBinary PackBinaryFactory(Estate.EstateGame game)
         {
-            if (game.Key is Estate.AesKey aes)
-                return new PakBinaryCry3(aes.Key);
-            return new PakBinaryCry3(null);
+            var key = game.Key is Estate.AesKey aes ? aes.Key : null;
+            return game.Game switch
+            {
+                "ArcheAge" => new PakBinaryBespoke(key),
+                _ => new PakBinaryCry3(key),
+            };
         }
 
         static PakBinary GetPackBinary(Estate estate, string game)
-           => PakBinarys.GetOrAdd(game, _ => PackBinaryFactory(estate.GetGame(game).game));
+            => PakBinarys.GetOrAdd(game, _ => PackBinaryFactory(estate.GetGame(game).game));
 
         #region Transforms
 

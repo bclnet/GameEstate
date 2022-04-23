@@ -26,7 +26,7 @@ namespace GameEstate.Formats
                         string path;
                         var startIndex = Path.GetDirectoryName(lines[0].TrimEnd().Replace('\\', '/')).Length + 1;
                         foreach (var line in lines)
-                            if (line.Length >= startIndex && (path = line.Substring(startIndex).TrimEnd().Replace('\\', '/')) != ".set")
+                            if (line.Length >= startIndex && (path = line[startIndex..].TrimEnd().Replace('\\', '/')) != ".set")
                                 files.Add(new FileMetadata { Path = path });
                         return Task.CompletedTask;
                     }

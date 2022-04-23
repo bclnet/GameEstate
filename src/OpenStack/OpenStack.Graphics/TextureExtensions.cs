@@ -26,8 +26,8 @@ namespace OpenStack.Graphics
             var currentHeight = source.Height >> index;
             var currentDepth = source.Depth >> index;
             if (currentDepth < 1) currentDepth = 1;
-            if (format == TextureGLFormat.DXT1 || format == TextureGLFormat.DXT5 || format == TextureGLFormat.BC6H || format == TextureGLFormat.BC7 ||
-                format == TextureGLFormat.ETC2 || format == TextureGLFormat.ETC2_EAC || format == TextureGLFormat.ATI1N)
+            if (format == TextureGLFormat.CompressedRgbaS3tcDxt1Ext || format == TextureGLFormat.CompressedRgbaS3tcDxt5Ext || format == TextureGLFormat.CompressedRgbBptcUnsignedFloat || format == TextureGLFormat.CompressedRgbaBptcUnorm ||
+                format == TextureGLFormat.CompressedRgb8Etc2 || format == TextureGLFormat.CompressedRgba8Etc2Eac || format == TextureGLFormat.CompressedRedRgtc1)
             {
                 var misalign = currentWidth % 4;
                 if (misalign > 0) currentWidth += 4 - misalign;
@@ -44,32 +44,30 @@ namespace OpenStack.Graphics
         }
 
         public static int GetBlockSize(this TextureGLFormat source)
-        {
-            switch (source)
+            => source switch
             {
-                case TextureGLFormat.DXT1: return 8;
-                case TextureGLFormat.DXT5: return 6;
-                case TextureGLFormat.RGBA8888: return 4;
-                case TextureGLFormat.R16: return 2;
-                case TextureGLFormat.RG1616: return 4;
-                case TextureGLFormat.RGBA16161616: return 8;
-                case TextureGLFormat.R16F: return 2;
-                case TextureGLFormat.RG1616F: return 4;
-                case TextureGLFormat.RGBA16161616F: return 8;
-                case TextureGLFormat.R32F: return 4;
-                case TextureGLFormat.RG3232F: return 8;
-                case TextureGLFormat.RGB323232F: return 12;
-                case TextureGLFormat.RGBA32323232F: return 16;
-                case TextureGLFormat.BC6H: return 16;
-                case TextureGLFormat.BC7: return 16;
-                case TextureGLFormat.IA88: return 2;
-                case TextureGLFormat.ETC2: return 8;
-                case TextureGLFormat.ETC2_EAC: return 16;
-                case TextureGLFormat.BGRA8888: return 4;
-                case TextureGLFormat.ATI1N: return 8;
-                default: return 1;
-            }
-        }
+                TextureGLFormat.CompressedRgbaS3tcDxt1Ext => 8,
+                TextureGLFormat.CompressedRgbaS3tcDxt5Ext => 6,
+                TextureGLFormat.Rgba8 => 4,
+                TextureGLFormat.R16 => 2,
+                //TextureGLFormat.RG1616 => 4;
+                TextureGLFormat.Rgba16f => 8,
+                TextureGLFormat.R16f => 2,
+                //TextureGLFormat.RG1616F => 4;
+                //TextureGLFormat.RGBA16161616F => 8;
+                //TextureGLFormat.R32F => 4;
+                //TextureGLFormat.RG3232F => 8;
+                //TextureGLFormat.RGB323232F => 12;
+                //TextureGLFormat.RGBA32323232F => 16;
+                TextureGLFormat.CompressedRgbBptcUnsignedFloat => 16,
+                TextureGLFormat.CompressedRgbaBptcUnorm => 16,
+                TextureGLFormat.Intensity8 => 2,
+                TextureGLFormat.CompressedRgb8Etc2 => 8,
+                TextureGLFormat.CompressedRgba8Etc2Eac => 16,
+                //TextureGLFormat.BGRA8888 => 4;
+                TextureGLFormat.CompressedRedRgtc1 => 8,
+                _ => 1,
+            };
 
         #endregion
 

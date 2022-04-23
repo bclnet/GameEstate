@@ -23,11 +23,13 @@ namespace GameEstate
 
         public static DefaultOptions AppDefaultOptions = new DefaultOptions
         {
-            Estate = "Cry",
-            //Estate = "AC",
-            GameId = null,
-            //ForcePath = "TabooTable/0E00001E.taboo",
-            ForceOpen = false,
+            ForceOpen = true,
+            //Estate = "AC", ForcePath = "TabooTable/0E00001E.taboo",
+            //Estate = "Cry", GameId = "Hunt",
+            Estate = "Rsi",
+            GameId = "StarCitizen",
+            ForcePath = "Data/Textures/asteroids/asteroid_dmg_brown_organic_01_ddn.dds"
+            //Estate = "Valve", GameId = "Dota2", ForcePath = "materials/console_background_color_psd_b9e26a4.vtex_c"
         };
 
         static EstateManager()
@@ -54,10 +56,12 @@ namespace GameEstate
         /// Gets the specified estate.
         /// </summary>
         /// <param name="estateName">Name of the estate.</param>
+        /// <param name="throwOnError">Throw on error.</param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException">estateName</exception>
-        public static Estate GetEstate(string estateName)
-            => Estates.TryGetValue(estateName, out var estate) ? estate : throw new ArgumentOutOfRangeException(nameof(estateName), estateName);
+        public static Estate GetEstate(string estateName, bool throwOnError = true)
+            => Estates.TryGetValue(estateName, out var estate) ? estate
+            : throwOnError ? throw new ArgumentOutOfRangeException(nameof(estateName), estateName) : (Estate)null;
 
         #region Parse
 

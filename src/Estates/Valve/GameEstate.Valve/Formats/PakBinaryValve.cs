@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Valve.Formats
 {
@@ -246,7 +247,7 @@ namespace GameEstate.Valve.Formats
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var data = new byte[file.Extra.Length + file.FileSize];
             if (file.Extra.Length > 0) file.Extra.CopyTo(data, 0);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.AC.Formats
 {
@@ -116,7 +117,7 @@ namespace GameEstate.AC.Formats
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null) =>
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null) =>
             Task.FromResult((Stream)new MemoryStream(ReadBytes(r, file.Position, (int)file.FileSize, (int)file.Digest)));
 
         static T ReadT<T>(BinaryReader r, long offset, int size, int blockSize) => UnsafeX.MarshalT<T>(ReadBytes(r, offset, size, blockSize));

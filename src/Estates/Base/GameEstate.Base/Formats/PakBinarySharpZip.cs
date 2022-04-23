@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
@@ -57,13 +58,13 @@ namespace GameEstate.Formats
             {
                 var entry = (ZipEntry)(file.Tag = new ZipEntry(Path.GetFileName(file.Path)));
                 pak.Add(entry);
-                source.PakBinary.WriteDataAsync(source, w, file, null, null);
+                source.PakBinary.WriteDataAsync(source, w, file, null, 0, null);
             }
             pak.CommitUpdate();
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var pak = (ZipFile)source.Tag;
             var entry = (ZipEntry)file.Tag;
@@ -79,7 +80,7 @@ namespace GameEstate.Formats
             catch (Exception e) { Log($"{file.Path} - Exception: {e.Message}"); exception?.Invoke(file, $"{file.Path} - Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }
         }
 
-        public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception = null)
+        public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var pak = (ZipFile)source.Tag;
             var entry = (ZipEntry)file.Tag;

@@ -30,7 +30,6 @@ namespace GameEstate.Explorer.View
             {
                 var estates = EstateManager.Estates;
                 Estate.SelectedIndex = estates.Keys.ToList().IndexOf(Config.DefaultEstate);
-                if (!string.IsNullOrEmpty(Config.DefaultGameId)) EstateGame.SelectedIndex = estates[Config.DefaultEstate].Games.Keys.ToList().IndexOf(Config.DefaultGameId);
             }
         }
 
@@ -95,7 +94,12 @@ namespace GameEstate.Explorer.View
         {
             var selected = (Estate)Estate.SelectedItem;
             EstateGames = selected?.Games.Values;
-            EstateGame.SelectedIndex = 0;
+            if (!string.IsNullOrEmpty(Config.DefaultGameId))
+            {
+                var estates = EstateManager.Estates;
+                EstateGame.SelectedIndex = estates[Config.DefaultEstate].Games.Keys.ToList().IndexOf(Config.DefaultGameId);
+            }
+            else EstateGame.SelectedIndex = 0;
 
             OnReady();
         }

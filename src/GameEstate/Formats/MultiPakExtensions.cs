@@ -1,24 +1,27 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Formats
 {
     public static class MultiPakExtensions
     {
+        const int MaxDegreeOfParallelism = 1; //8;
+
         #region Export / Import
 
-        public static async Task ExportAsync(this BinaryPakFile source, string filePath, int from = 0, Action<FileMetadata, int> advance = null, Action<FileMetadata, string> exception = null)
+        public static async Task ExportAsync(this BinaryPakFile source, string filePath, int from = 0, DataOption option = 0, Action<FileMetadata, int> advance = null, Action<FileMetadata, string> exception = null)
         {
-            if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
+            if (!(source is BinaryPakManyFile pak)) throw new NotSupportedException();
 
             // write pak
             if (!string.IsNullOrEmpty(filePath) && !Directory.Exists(filePath)) Directory.CreateDirectory(filePath);
 
             // write files
-            Parallel.For(from, multiSource.Files.Count, new ParallelOptions { /*MaxDegreeOfParallelism = 1*/ }, async index =>
+            Parallel.For(from, pak.Files.Count, new ParallelOptions { MaxDegreeOfParallelism = MaxDegreeOfParallelism }, async index =>
             {
-                var file = multiSource.Files[index];
+                var file = pak.Files[index];
                 var newPath = Path.Combine(filePath, file.Path);
 
                 // create directory
@@ -28,30 +31,52 @@ namespace GameEstate.Formats
                 // extract pak
                 if (file.Pak != null) await file.Pak.ExportAsync(newPath);
 
-                // skip empty file
-                if (file.FileSize == 0 && file.PackedSize == 0) { advance?.Invoke(file, index); return; }
-
                 // extract file
                 try
                 {
-                    using (var b = await multiSource.LoadFileDataAsync(file, exception))
-                    using (var s = new FileStream(newPath, FileMode.Create, FileAccess.Write)) b.CopyTo(s);
+                    await ExportFileAsync(file, pak, newPath, option, exception);
+                    if (file.Parts != null && (option & DataOption.Raw) != 0)
+                        foreach (var part in file.Parts) await ExportFileAsync(part, pak, Path.Combine(filePath, part.Path), option, exception);
                     advance?.Invoke(file, index);
                 }
                 catch (Exception e) { exception?.Invoke(file, $"Exception: {e.Message}"); }
             });
 
             // write pak-raw
-            await new StreamPakFile(multiSource, null, source.Game, filePath).WriteAsync(null, PakBinary.WriteStage.File);
-
-            //// write pak-raw
-            //if (source.FilesRawSet != null && source.FilesRawSet.Count > 0)
-            //    using (var w = new BinaryWriter(new FileStream(rawPath, FileMode.Create, FileAccess.Write))) await PakFormat.Stream.WriteAsync(source, w, PakFormat.WriteStage._Raw);
+            if ((option & DataOption.Marker) != 0) await new StreamPakFile(pak, null, source.Game, filePath).WriteAsync(null, PakBinary.WriteStage.File);
         }
 
-        public static async Task ImportAsync(this BinaryPakFile source, BinaryWriter w, string filePath, int from = 0, Action<FileMetadata, int> advance = null, Action<FileMetadata, string> exception = null)
+        static async Task ExportFileAsync(FileMetadata file, BinaryPakManyFile pak, string newPath, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
-            if (!(source is BinaryPakManyFile multiSource)) throw new NotSupportedException();
+            if (file.FileSize == 0 && file.PackedSize == 0) return;
+            if ((option & file.DataOption) != 0)
+            {
+                if ((option & DataOption.Model) != 0)
+                {
+                    //var file = await pak.LoadFileObjectAsync<IUnknownFileModel>(file, unknownSource);
+                    //using var b2 = await pak.LoadFileObjectAsync(file, option, exception);
+                    return;
+                }
+                if ((option & DataOption.Transform) != 0)
+                {
+                    //using var b2 = await pak.LoadFileObjectAsync(file, option, exception);
+                    return;
+                }
+            }
+            using var b = await pak.LoadFileDataAsync(file, option, exception);
+            using var s = new FileStream(newPath, FileMode.Create, FileAccess.Write);
+            b.CopyTo(s);
+            if (file.Parts != null && (option & DataOption.Raw) == 0)
+                foreach (var part in file.Parts)
+                {
+                    using var b2 = await pak.LoadFileDataAsync(part, option, exception);
+                    b2.CopyTo(s);
+                }
+        }
+
+        public static async Task ImportAsync(this BinaryPakFile source, BinaryWriter w, string filePath, int from = 0, DataOption option = 0, Action<FileMetadata, int> advance = null, Action<FileMetadata, string> exception = null)
+        {
+            if (!(source is BinaryPakManyFile pak)) throw new NotSupportedException();
 
             // read pak
             if (string.IsNullOrEmpty(filePath) || !Directory.Exists(filePath)) { exception?.Invoke(null, $"Directory Missing: {filePath}"); return; }
@@ -66,9 +91,9 @@ namespace GameEstate.Formats
             if (from == 0) await source.PakBinary.WriteAsync(source, w, PakBinary.WriteStage.Header);
 
             // write files
-            Parallel.For(0, multiSource.Files.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 }, async index =>
+            Parallel.For(0, pak.Files.Count, new ParallelOptions { MaxDegreeOfParallelism = MaxDegreeOfParallelism }, async index =>
             {
-                var file = multiSource.Files[index];
+                var file = pak.Files[index];
                 var newPath = Path.Combine(filePath, file.Path);
 
                 // check directory
@@ -79,7 +104,7 @@ namespace GameEstate.Formats
                 try
                 {
                     await source.PakBinary.WriteAsync(source, w, PakBinary.WriteStage.File);
-                    using (var r = File.Open(newPath, FileMode.Open, FileAccess.Read, FileShare.Read)) await source.WriteFileDataAsync(w, file, new MemoryStream(r.ReadAllBytes()), exception);
+                    using (var r = File.Open(newPath, FileMode.Open, FileAccess.Read, FileShare.Read)) await source.WriteFileDataAsync(w, file, new MemoryStream(r.ReadAllBytes()), option, exception);
                     advance?.Invoke(file, index);
                 }
                 catch (Exception e) { exception?.Invoke(file, $"Exception: {e.Message}"); }

@@ -49,10 +49,10 @@ namespace OpenStack.Graphics
         {
             // Check the magic string.
             var magic = r.ReadUInt32();
-            if (magic != DDS_HEADER.Literal.DDS_) throw new FormatException($"Invalid DDS file magic: \"{magic}\".");
+            if (magic != DDS_HEADER.DDS_) throw new FormatException($"Invalid DDS file magic: \"{magic}\".");
             var header = r.ReadT<DDS_HEADER>(DDS_HEADER.SizeOf);
+            if (header.ddspf.dwFourCC == DDS_HEADER.DX10) r.ReadT<DDS_HEADER_DXT10>(DDS_HEADER_DXT10.SizeOf);
             header.Verify();
-            if (header.ddspf.dwFourCC == DDS_HEADER.Literal.DX10) r.ReadT<DDS_HEADER_DXT10>(DDS_HEADER_DXT10.SizeOf);
             header.ReadAndDecode(source, r);
             source.PostProcess(flipVertically);
             return source;

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
@@ -147,20 +148,34 @@ namespace GameEstate.Formats
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="path">The file path.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public override Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+        public override Task<Stream> LoadFileDataAsync(string path, DataOption option = 0, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
         /// <summary>
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="fileId">The fileId.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+        public override Task<Stream> LoadFileDataAsync(int fileId, DataOption option = 0, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+
+        /// <summary>
+        /// Loads the file data asynchronous.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="option">The file.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns></returns>
+        public Task<Stream> LoadFileDataAsync(FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
+            => UseBinaryReader
+            ? GetBinaryReader().Func(r => ReadFileDataAsync(r, file, option, exception))
+            : ReadFileDataAsync(null, file, option, exception);
 
         /// <summary>
         /// Loads the object asynchronous.
@@ -176,21 +191,11 @@ namespace GameEstate.Formats
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="fileId">The fileId.</param>
+        /// <param name="option">The file.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
         public override Task<T> LoadFileObjectAsync<T>(int fileId, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
-
-        /// <summary>
-        /// Loads the file data asynchronous.
-        /// </summary>
-        /// <param name="file">The file.</param>
-        /// <param name="exception">The exception.</param>
-        /// <returns></returns>
-        public Task<Stream> LoadFileDataAsync(FileMetadata file, Action<FileMetadata, string> exception = null)
-            => UseBinaryReader
-            ? GetBinaryReader().Func(r => ReadFileDataAsync(r, file, exception))
-            : ReadFileDataAsync(null, file, exception);
 
         /// <summary>
         /// Gets the file object factory.
@@ -205,12 +210,13 @@ namespace GameEstate.Formats
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="file">The file.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         public async Task<T> LoadFileObjectAsync<T>(FileMetadata file, Action<FileMetadata, string> exception = null)
         {
             var type = typeof(T);
-            var stream = await LoadFileDataAsync(file, exception = null);
+            var stream = await LoadFileDataAsync(file, 0, exception);
             var objectFactory = GetFileObjectFactory(file);
             if (objectFactory == FileMetadata.EmptyObjectFactory)
                 return type == typeof(Stream) || type == typeof(object)
@@ -244,9 +250,10 @@ namespace GameEstate.Formats
         /// </summary>
         /// <param name="r">The r.</param>
         /// <param name="file">The file.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public virtual Task<Stream> ReadFileDataAsync(BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception)=> PakBinary.ReadDataAsync(this, r, file, exception);
+        public virtual Task<Stream> ReadFileDataAsync(BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null) => PakBinary.ReadDataAsync(this, r, file, option, exception);
 
         /// <summary>
         /// Writes the file data asynchronous.
@@ -254,9 +261,10 @@ namespace GameEstate.Formats
         /// <param name="w">The w.</param>
         /// <param name="file">The file.</param>
         /// <param name="data">The data.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public virtual Task WriteFileDataAsync(BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception) => PakBinary.WriteDataAsync(this, w, file, data, exception);
+        public virtual Task WriteFileDataAsync(BinaryWriter w, FileMetadata file, Stream data, DataOption option = 0, Action<FileMetadata, string> exception = null) => PakBinary.WriteDataAsync(this, w, file, data, option, exception);
 
         /// <summary>
         /// Reads the asynchronous.
@@ -322,6 +330,9 @@ namespace GameEstate.Formats
             nodes.Add(new ExplorerInfoNode("File", items: new List<ExplorerInfoNode> {
                 new ExplorerInfoNode($"Path: {file.Path}"),
                 new ExplorerInfoNode($"FileSize: {file.FileSize}"),
+                file.Parts != null
+                    ? new ExplorerInfoNode("Parts", items: file.Parts.Select(part => new ExplorerInfoNode($"{part.FileSize}@{part.Path}")))
+                    : null
             }));
             //nodes.Add(new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Hex", Name = "TEST", Value = new MemoryStream() }));
             //nodes.Add(new ExplorerInfoNode(null, new ExplorerContentTab { Type = "Image", Name = "TEST", MaxWidth = 500, MaxHeight = 500, Value = null }));

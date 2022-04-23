@@ -12,13 +12,16 @@ namespace GameEstate.Formats
     {
         public static Task<object> Factory(BinaryReader r, FileMetadata f, EstatePakFile s) => Task.FromResult((object)new BinaryDds(r));
 
+        BinaryReader _r;
+
         public BinaryDds() { }
         public BinaryDds(BinaryReader r)
         {
+            _r = r;
             var magic = r.ReadUInt32();
-            if (magic != DDS_HEADER.Literal.DDS_) throw new FormatException($"Invalid DDS file magic: \"{magic}\".");
+            if (magic != DDS_HEADER.DDS_) throw new FormatException($"Invalid DDS file magic: \"{magic}\".");
             Header = r.ReadT<DDS_HEADER>(DDS_HEADER.SizeOf);
-            HeaderDXT10 = Header.ddspf.dwFourCC == DDS_HEADER.Literal.DX10
+            HeaderDXT10 = Header.ddspf.dwFourCC == DDS_HEADER.DX10
                 ? (DDS_HEADER_DXT10?)r.ReadT<DDS_HEADER_DXT10>(DDS_HEADER_DXT10.SizeOf)
                 : null;
             Header.Verify();
@@ -32,12 +35,37 @@ namespace GameEstate.Formats
         public int Height => (int)Header.dwHeight;
         public int Depth => 0;
         public TextureFlags Flags => 0;
-        public TextureUnityFormat UnityFormat => TextureUnityFormat.RGBA32;
-        public TextureGLFormat GLFormat => TextureGLFormat.BGRA8888;
+        public TextureUnityFormat UnityFormat => Header.ddspf.dwFourCC switch
+        {
+            DDS_HEADER.DXT1 => TextureUnityFormat.DXT1,
+            DDS_HEADER.DXT5 => TextureUnityFormat.DXT5,
+            DDS_HEADER.DX10 => HeaderDXT10?.dxgiFormat switch
+            {
+                _ => throw new ArgumentOutOfRangeException(nameof(HeaderDXT10.Value.dxgiFormat), $"{HeaderDXT10?.dxgiFormat}"),
+            },
+            _ => throw new ArgumentOutOfRangeException(nameof(Header.ddspf.dwFourCC), $"{Header.ddspf.dwFourCC}"),
+        };
+        // https://www.g-truc.net/post-0335.html
+        public TextureGLFormat GLFormat => Header.ddspf.dwFourCC switch
+        {
+            DDS_HEADER.DXT1 => TextureGLFormat.CompressedRgbaS3tcDxt1Ext,
+            DDS_HEADER.DXT5 => TextureGLFormat.CompressedRgbaS3tcDxt5Ext,
+            DDS_HEADER.DX10 => HeaderDXT10?.dxgiFormat switch
+            {
+                DXGI_FORMAT.BC5_UNORM => TextureGLFormat.CompressedRgRgtc2,
+                DXGI_FORMAT.BC5_SNORM => TextureGLFormat.CompressedSignedRgRgtc2,
+                _ => throw new ArgumentOutOfRangeException(nameof(HeaderDXT10.Value.dxgiFormat), $"{HeaderDXT10?.dxgiFormat}"),
+            },
+            _ => throw new ArgumentOutOfRangeException(nameof(Header.ddspf.dwFourCC), $"{Header.ddspf.dwFourCC}"),
+        };
         public int NumMipMaps => (int)Header.dwMipMapCount;
         public byte[] this[int index]
         {
-            get => throw new NotImplementedException();
+            get
+            {
+                var uncompressedSize = this.GetMipMapTrueDataSize(index);
+                return _r.ReadBytes(uncompressedSize);
+            }
             set => throw new NotImplementedException();
         }
         public void MoveToData() { }

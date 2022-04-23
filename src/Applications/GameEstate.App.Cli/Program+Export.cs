@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using System;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.App.Cli
 {
@@ -18,15 +19,15 @@ namespace GameEstate.App.Cli
             [Option("path", Default = @".\out", HelpText = "Output folder")]
             public string Path { get; set; }
 
-            [Option("fix", Default = false, HelpText = "Fix")]
-            public bool Fix { get; set; }
+            [Option("option", Default = 0, HelpText = "Data option")]
+            public DataOption Option { get; set; }
         }
 
         static async Task<int> RunExportAsync(ExportOptions opts)
         {
             var from = ProgramState.Load(data => Convert.ToInt32(data), 0);
             var estate = EstateManager.GetEstate(opts.Estate);
-            await ExportManager.ExportAsync(estate, estate.ParseResource(opts.Uri), opts.Path, from);
+            await ExportManager.ExportAsync(estate, estate.ParseResource(opts.Uri), opts.Path, from, opts.Option);
             ProgramState.Clear();
             return 0;
         }

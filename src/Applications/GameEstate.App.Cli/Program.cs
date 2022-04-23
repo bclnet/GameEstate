@@ -69,7 +69,7 @@ namespace GameEstate.App.Cli
         static string[] argsRed1 = new[] { "export", "-e", "Red", "-u", "game:/main.key#Witcher", "--path", @"D:\T_\Witcher" };
         static string[] argsRed2 = new[] { "export", "-e", "Red", "-u", "game:/krbr.dzip#Witcher2", "--path", @"D:\T_\Witcher2" };
 
-        static void Main(string[] args) => Parser.Default.ParseArguments<TestOptions, ListOptions, ExportOptions, ImportOptions, XsportOptions>(test00)
+        static void Main(string[] args) => Parser.Default.ParseArguments<TestOptions, ListOptions, ExportOptions, ImportOptions, XsportOptions>(argsRsi1)
             .MapResult(
                 (TestOptions opts) => RunTestAsync(opts).GetAwaiter().GetResult(),
                 (ListOptions opts) => RunListAsync(opts).GetAwaiter().GetResult(),
@@ -77,6 +77,5 @@ namespace GameEstate.App.Cli
                 (ImportOptions opts) => RunImportAsync(opts).GetAwaiter().GetResult(),
                 (XsportOptions opts) => RunXsportAsync(opts).GetAwaiter().GetResult(),
                 errs => 1);
-
     }
 }

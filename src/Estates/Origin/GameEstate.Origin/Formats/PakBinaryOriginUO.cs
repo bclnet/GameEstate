@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Origin.Formats
 {
@@ -18,7 +19,7 @@ namespace GameEstate.Origin.Formats
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             r.Position(file.Position);
             return Task.FromResult((Stream)new MemoryStream(r.ReadBytes((int)file.FileSize)));

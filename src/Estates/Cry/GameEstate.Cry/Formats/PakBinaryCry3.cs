@@ -3,7 +3,9 @@ using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Cry.Formats
@@ -26,7 +28,8 @@ namespace GameEstate.Cry.Formats
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
             var pak = (Cry3File)(source.Tag = new Cry3File(r.BaseStream, Key));
-            var links = new Dictionary<string, FileMetadata>();
+            var parentByPath = new Dictionary<string, FileMetadata>();
+            var partByPath = new Dictionary<string, SortedList<string, FileMetadata>>();
             foreach (ZipEntry entry in pak)
             {
                 var metadata = new FileMetadata
@@ -37,10 +40,22 @@ namespace GameEstate.Cry.Formats
                     FileSize = entry.Size,
                     Tag = entry,
                 };
-                if (metadata.Path.EndsWith(".dds", StringComparison.OrdinalIgnoreCase))
-                    links.Add(metadata.Path, metadata);
+                // link dds
+                if (metadata.Path.EndsWith(".dds")) parentByPath.Add(metadata.Path, metadata);
+                else if (metadata.Path[^8..].Contains(".dds."))
+                {
+                    var parentPath = metadata.Path[..(metadata.Path.IndexOf(".dds") + 4)];
+                    var parts = partByPath.TryGetValue(parentPath, out var z) ? z : null;
+                    if (parts == null) partByPath.Add(parentPath, parts = new SortedList<string, FileMetadata>());
+                    parts.Add(metadata.Path, metadata);
+                    continue;
+                }
                 files.Add(metadata);
             }
+
+            // process links
+            if (partByPath.Count != 0)
+                foreach (var kv in partByPath) if (parentByPath.TryGetValue(kv.Key, out var parent)) parent.Parts = kv.Value.Values;
             return Task.CompletedTask;
         }
 
@@ -56,13 +71,13 @@ namespace GameEstate.Cry.Formats
             {
                 var entry = (ZipEntry)(file.Tag = new ZipEntry(Path.GetFileName(file.Path)));
                 pak.Add(entry);
-                source.PakBinary.WriteDataAsync(source, w, file, null, null);
+                source.PakBinary.WriteDataAsync(source, w, file, null, 0, null);
             }
             pak.CommitUpdate();
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var pak = (Cry3File)source.Tag;
             var entry = (ZipEntry)file.Tag;
@@ -78,7 +93,7 @@ namespace GameEstate.Cry.Formats
             catch (Exception e) { Log($"{file.Path} - Exception: {e.Message}"); exception?.Invoke(file, $"{file.Path} - Exception: {e.Message}"); return Task.FromResult(System.IO.Stream.Null); }
         }
 
-        public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception = null)
+        public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var pak = (Cry3File)source.Tag;
             var entry = (ZipEntry)file.Tag;

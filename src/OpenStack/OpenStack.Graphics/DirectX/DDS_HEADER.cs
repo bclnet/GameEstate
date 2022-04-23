@@ -130,25 +130,22 @@ namespace OpenStack.Graphics.DirectX
     {
         //public const uint MAGIC = 0x20534444; // "DDS "
 
-        public static uint MAKEFOURCC(string text) => ((uint)(byte)(text[0]) | ((uint)(byte)(text[1]) << 8) | ((uint)(byte)(text[2]) << 16 | ((uint)(byte)(text[3]) << 24)));
+        //public static uint MAKEFOURCC(string text) => ((uint)(byte)(text[0]) | ((uint)(byte)(text[1]) << 8) | ((uint)(byte)(text[2]) << 16 | ((uint)(byte)(text[3]) << 24)));
 
         /// <summary>
         /// Literal
         /// </summary>
-        public static class Literal
-        {
-            public static readonly uint DDS_ = MAKEFOURCC("DDS "); //?
-            public static readonly uint DXT1 = MAKEFOURCC("DXT1"); // DXT1
-            public static readonly uint DXT2 = MAKEFOURCC("DXT2");
-            public static readonly uint DXT3 = MAKEFOURCC("DXT3"); // DXT3
-            public static readonly uint DXT4 = MAKEFOURCC("DXT4");
-            public static readonly uint DXT5 = MAKEFOURCC("DXT5"); // DXT5
-            public static readonly uint RXGB = MAKEFOURCC("RXGB");
-            public static readonly uint ATI1 = MAKEFOURCC("ATI1");
-            public static readonly uint ATI2 = MAKEFOURCC("ATI2"); // ATI2
-            public static readonly uint A2XY = MAKEFOURCC("A2XY");
-            public static readonly uint DX10 = MAKEFOURCC("DX10"); // DX10
-        }
+        public const uint DDS_ = 0x20534444; // MAKEFOURCC("DDS "); //?
+        public const uint DXT1 = 0x31545844; // MAKEFOURCC("DXT1"); // DXT1
+        public const uint DXT2 = 0x32545844; // MAKEFOURCC("DXT2");
+        public const uint DXT3 = 0x33545844; // MAKEFOURCC("DXT3"); // DXT3
+        public const uint DXT4 = 0x34545844; // MAKEFOURCC("DXT4");
+        public const uint DXT5 = 0x35545844; // MAKEFOURCC("DXT5"); // DXT5
+        public const uint RXGB = 0x42475852; // MAKEFOURCC("RXGB");
+        public const uint ATI1 = 0x31495441; // MAKEFOURCC("ATI1");
+        public const uint ATI2 = 0x32495441; // MAKEFOURCC("ATI2"); // ATI2
+        public const uint A2XY = 0x59583241; // MAKEFOURCC("A2XY");
+        public const uint DX10 = 0x30315844; // MAKEFOURCC("DX10"); // DX10
 
         /// <summary>
         /// The size of
@@ -253,17 +250,17 @@ namespace OpenStack.Graphics.DirectX
                     r.ReadToEnd(source.Data);
                 }
             }
-            else if (ddspf.dwFourCC == Literal.DXT1)
+            else if (ddspf.dwFourCC == DXT1)
             {
                 source.UnityFormat = TextureUnityFormat.ARGB32;
                 source.Data = DecodeDXT1ToARGB(r.ReadToEnd(), dwWidth, dwHeight, ddspf, source.Mipmaps);
             }
-            else if (ddspf.dwFourCC == Literal.DXT3)
+            else if (ddspf.dwFourCC == DXT3)
             {
                 source.UnityFormat = TextureUnityFormat.ARGB32;
                 source.Data = DecodeDXT3ToARGB(r.ReadToEnd(), dwWidth, dwHeight, ddspf, source.Mipmaps);
             }
-            else if (ddspf.dwFourCC == Literal.DXT5)
+            else if (ddspf.dwFourCC == DXT5)
             {
                 source.UnityFormat = TextureUnityFormat.ARGB32;
                 source.Data = DecodeDXT5ToARGB(r.ReadToEnd(), dwWidth, dwHeight, ddspf, source.Mipmaps);

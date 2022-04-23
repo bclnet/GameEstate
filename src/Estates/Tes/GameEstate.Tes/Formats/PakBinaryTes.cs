@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Tes.Formats
 {
@@ -382,7 +383,7 @@ namespace GameEstate.Tes.Formats
         public unsafe override Task WriteAsync(BinaryPakFile source, BinaryWriter w, WriteStage stage)
             => throw new NotImplementedException();
 
-        public unsafe override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public unsafe override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             const int GNF_HEADER_MAGIC = 0x20464E47;
             const int GNF_HEADER_CONTENT_SIZE = 248;
@@ -421,27 +422,27 @@ namespace GameEstate.Tes.Formats
                         {
                             case DXGI_FORMAT.BC1_UNORM:
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT1;
+                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT1;
                                 ddsHeader.dwPitchOrLinearSize = (uint)(tex.Width * tex.Height / 2U); // 4bpp
                                 break;
                             case DXGI_FORMAT.BC2_UNORM:
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT3;
+                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT3;
                                 ddsHeader.dwPitchOrLinearSize = (uint)(tex.Width * tex.Height); // 8bpp
                                 break;
                             case DXGI_FORMAT.BC3_UNORM:
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT5;
+                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT5;
                                 ddsHeader.dwPitchOrLinearSize = (uint)(tex.Width * tex.Height); // 8bpp
                                 break;
                             case DXGI_FORMAT.BC5_UNORM:
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.ATI2;
+                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.ATI2;
                                 ddsHeader.dwPitchOrLinearSize = (uint)(tex.Width * tex.Height); // 8bpp
                                 break;
                             case DXGI_FORMAT.BC1_UNORM_SRGB:
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DX10;
+                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.DX10;
                                 ddsHeader.dwPitchOrLinearSize = (uint)(tex.Width * tex.Height / 2); // 4bpp
                                 break;
                             case DXGI_FORMAT.BC3_UNORM_SRGB:
@@ -450,7 +451,7 @@ namespace GameEstate.Tes.Formats
                             case DXGI_FORMAT.BC7_UNORM:
                             case DXGI_FORMAT.BC7_UNORM_SRGB:
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DX10;
+                                ddsHeader.ddspf.dwFourCC = DDS_HEADER.DX10;
                                 ddsHeader.dwPitchOrLinearSize = (uint)(tex.Width * tex.Height); // 8bpp
                                 break;
                             case DXGI_FORMAT.R8G8B8A8_UNORM:
@@ -481,7 +482,7 @@ namespace GameEstate.Tes.Formats
                                 break;
                             default: throw new ArgumentOutOfRangeException(nameof(tex.Format), $"Unsupported DDS header format. File: {file.Path}");
                         }
-                        w.Write(DDS_HEADER.Literal.DDS_);
+                        w.Write(DDS_HEADER.DDS_);
                         w.WriteT(ddsHeader, sizeof(DDS_HEADER));
                         switch ((DXGI_FORMAT)tex.Format)
                         {

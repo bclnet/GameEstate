@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Unreal.Formats
@@ -60,7 +61,7 @@ namespace GameEstate.Unreal.Formats
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             //var pak = (P4kFile)source.Tag;
             //var entry = (ZipEntry)file.Tag;
@@ -77,7 +78,7 @@ namespace GameEstate.Unreal.Formats
             return null;
         }
 
-        public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception = null)
+        public override Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             //var pak = (P4kFile)source.Tag;
             //var entry = (ZipEntry)file.Tag;

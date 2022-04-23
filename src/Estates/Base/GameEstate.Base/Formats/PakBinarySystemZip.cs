@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Formats
@@ -39,7 +40,7 @@ namespace GameEstate.Formats
             return Task.CompletedTask;
         }
 
-        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var pak = (ZipArchive)source.Tag;
             var entry = (ZipArchiveEntry)file.Tag;

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Formats
 {
@@ -73,16 +74,17 @@ namespace GameEstate.Formats
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="path">The file path.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public override Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> LoadFileDataAsync(string path, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
-            if (TryLookupPath(path, out var pak, out var nextFilePath)) return pak.LoadFileDataAsync(nextFilePath, exception);
+            if (TryLookupPath(path, out var pak, out var nextFilePath)) return pak.LoadFileDataAsync(nextFilePath, option, exception);
             var files = FilesByPath[path.Replace('\\', '/')].ToArray();
-            if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
+            if (files.Length == 1) return LoadFileDataAsync(files[0], option, exception);
             exception?.Invoke(null, $"LoadFileDataAsync: {path} @ {files.Length}"); //Log($"LoadFileDataAsync: {filePath} @ {files.Length}");
             throw new FileNotFoundException(files.Length == 0 ? path : $"More then one file found for {path}");
         }
@@ -90,14 +92,15 @@ namespace GameEstate.Formats
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="fileId">The fileId.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public override Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null)
+        public override Task<Stream> LoadFileDataAsync(int fileId, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             var files = FilesById[fileId].ToArray();
-            if (files.Length == 1) return LoadFileDataAsync(files[0], exception);
+            if (files.Length == 1) return LoadFileDataAsync(files[0], option, exception);
             exception?.Invoke(null, $"LoadFileDataAsync: {fileId}"); //Log($"LoadFileDataAsync: {fileId} @ {files.Length}");
             throw new FileNotFoundException(files.Length == 0 ? $"{fileId}" : $"More then one file found for {fileId}");
         }

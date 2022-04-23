@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate
 {
@@ -92,16 +93,18 @@ namespace GameEstate
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="path">The file path.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public abstract Task<Stream> LoadFileDataAsync(string path, Action<FileMetadata, string> exception = null);
+        public abstract Task<Stream> LoadFileDataAsync(string path, DataOption option = 0, Action<FileMetadata, string> exception = null);
         /// <summary>
         /// Loads the file data asynchronous.
         /// </summary>
         /// <param name="fileId">The fileId.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
-        public abstract Task<Stream> LoadFileDataAsync(int fileId, Action<FileMetadata, string> exception = null);
+        public abstract Task<Stream> LoadFileDataAsync(int fileId, DataOption option = 0, Action<FileMetadata, string> exception = null);
 
         /// <summary>
         /// Loads the object asynchronous.

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 using static GameEstate.EstateDebug;
 
 namespace GameEstate.Red.Formats
@@ -687,7 +688,7 @@ namespace GameEstate.Red.Formats
             BC5 = 7,        // 3DC, ATI2
         }
 
-        public unsafe override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null)
+        public unsafe override Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null)
         {
             Stream fileData = null;
             r.Position(file.Position);
@@ -863,14 +864,14 @@ namespace GameEstate.Red.Formats
                                 ddsHeader.dwPitchOrLinearSize = (uint)(bs[(int)fmt] * ((tex.Width + 3) / 4) * ((tex.Height + 3) / 4));
                                 ddsHeader.dwFlags = DDSD.LINEARSIZE;
                                 ddsHeader.ddspf.dwFlags = DDPF.FOURCC;
-                                if (fmt == FORMAT.DXT1 || fmt == FORMAT.DXT1a) ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT1;
-                                else if (fmt == FORMAT.DXT3) ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT3;
-                                else if (fmt == FORMAT.DXT5) ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT5;
-                                else if (fmt == FORMAT.DXT5n) ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.DXT5;
-                                else if (fmt == FORMAT.BC4) ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.ATI1;
-                                else if (fmt == FORMAT.DXT3) ddsHeader.ddspf.dwFourCC = DDS_HEADER.Literal.ATI2;
+                                if (fmt == FORMAT.DXT1 || fmt == FORMAT.DXT1a) ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT1;
+                                else if (fmt == FORMAT.DXT3) ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT3;
+                                else if (fmt == FORMAT.DXT5) ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT5;
+                                else if (fmt == FORMAT.DXT5n) ddsHeader.ddspf.dwFourCC = DDS_HEADER.DXT5;
+                                else if (fmt == FORMAT.BC4) ddsHeader.ddspf.dwFourCC = DDS_HEADER.ATI1;
+                                else if (fmt == FORMAT.DXT3) ddsHeader.ddspf.dwFourCC = DDS_HEADER.ATI2;
                             }
-                            w.Write(DDS_HEADER.Literal.DDS_);
+                            w.Write(DDS_HEADER.DDS_);
                             w.WriteT(ddsHeader, sizeof(DDS_HEADER));
 
                             void Read(long position)

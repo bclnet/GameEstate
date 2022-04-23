@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using static GameEstate.Estate;
 
 namespace GameEstate.Formats
 {
@@ -47,10 +48,11 @@ namespace GameEstate.Formats
         /// <param name="source">The source.</param>
         /// <param name="r">The r.</param>
         /// <param name="file">The file.</param>
+        /// <param name="option">The option.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
-        public virtual Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+        public virtual Task<Stream> ReadDataAsync(BinaryPakFile source, BinaryReader r, FileMetadata file, DataOption option = 0, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
 
         /// <summary>
         /// Writes the asynchronous.
@@ -58,11 +60,12 @@ namespace GameEstate.Formats
         /// <param name="source">The source.</param>
         /// <param name="w">The w.</param>
         /// <param name="file">The file.</param>
+        /// <param name="option">The option.</param>
         /// <param name="data">The data.</param>
         /// <param name="exception">The exception.</param>
         /// <returns></returns>
         /// <exception cref="NotSupportedException"></exception>
-        public virtual Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
+        public virtual Task WriteDataAsync(BinaryPakFile source, BinaryWriter w, FileMetadata file, Stream data, DataOption option = 0, Action<FileMetadata, string> exception = null) => throw new NotSupportedException();
 
         /// <summary>
         /// Processes this instance.
