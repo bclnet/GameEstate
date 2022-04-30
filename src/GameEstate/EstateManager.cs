@@ -26,12 +26,12 @@ namespace GameEstate
 
         public static DefaultOptions AppDefaultOptions = new DefaultOptions
         {
-            ForceOpen = true,
+            //ForceOpen = true,
             //Estate = "AC", ForcePath = "TabooTable/0E00001E.taboo",
-            //Estate = "Cry", GameId = "Hunt",
-            Estate = "Rsi",
-            GameId = "StarCitizen",
-            ForcePath = "Data/Textures/asteroids/asteroid_dmg_brown_organic_01_ddn.dds"
+            Estate = "Cry", // GameId = "Hunt",
+            //Estate = "Rsi",
+            //GameId = "StarCitizen",
+            //ForcePath = "Data/Textures/asteroids/asteroid_dmg_brown_organic_01_ddn.dds"
             //Estate = "Valve", GameId = "Dota2", ForcePath = "materials/console_background_color_psd_b9e26a4.vtex_c"
         };
 

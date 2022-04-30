@@ -33,7 +33,7 @@ namespace GameEstate.Rsi.Formats
 
             source.UseBinaryReader = false;
             var files = multiSource.Files = new List<FileMetadata>();
-            var pak = (P4kFile)(source.Tag = new P4kFile(r.BaseStream) { Key = Key });
+            var pak = (P4kFile)(source.Tag = new P4kFile(r.BaseStream, Key));
             var parentByPath = new Dictionary<string, FileMetadata>();
             var partsByPath = new Dictionary<string, SortedList<string, FileMetadata>>();
             foreach (ZipEntry entry in pak)
@@ -72,7 +72,7 @@ namespace GameEstate.Rsi.Formats
 
             source.UseBinaryReader = false;
             var files = multiSource.Files;
-            var pak = (P4kFile)(source.Tag = new P4kFile(w.BaseStream) { Key = Key });
+            var pak = (P4kFile)(source.Tag = new P4kFile(w.BaseStream, Key));
             pak.BeginUpdate();
             foreach (var file in files)
             {
