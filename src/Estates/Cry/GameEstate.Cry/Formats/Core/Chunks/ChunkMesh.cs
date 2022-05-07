@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {

@@ -1,6 +1,6 @@
 using GameEstate.Formats;
 using System.Collections.Concurrent;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Tes
 {

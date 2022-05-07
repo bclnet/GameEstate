@@ -1,7 +1,7 @@
-﻿using System;
+﻿using OpenStack;
+using System;
 using System.Threading.Tasks;
 using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
 
 namespace GameEstate
 {
@@ -9,7 +9,7 @@ namespace GameEstate
     {
         public static unsafe bool Startup()
         {
-            var task = Task.Run(() => Application.platform.ToString());
+            var task = Task.Run(() => UnityEngine.Application.platform.ToString());
             try
             {
                 EstatePlatform.Platform = task.Result;

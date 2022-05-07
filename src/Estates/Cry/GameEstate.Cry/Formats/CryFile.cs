@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Cry.Formats
 {

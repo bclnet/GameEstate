@@ -6,7 +6,7 @@ using GameEstate.Valve.Formats;
 using GameEstate.Valve.Transforms;
 using System;
 using System.Threading.Tasks;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Valve
 {

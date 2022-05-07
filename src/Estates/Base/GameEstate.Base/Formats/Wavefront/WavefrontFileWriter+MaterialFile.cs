@@ -1,7 +1,7 @@
 ﻿using GameEstate.Formats.Unknown;
 using System.IO;
 using System.Reflection;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Formats.Wavefront
 {

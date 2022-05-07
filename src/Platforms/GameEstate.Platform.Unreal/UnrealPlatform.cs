@@ -1,4 +1,6 @@
-﻿namespace GameEstate
+﻿using OpenStack;
+
+namespace GameEstate
 {
     public static class UnrealPlatform
     {

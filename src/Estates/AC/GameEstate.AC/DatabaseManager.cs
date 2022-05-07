@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.AC
 {

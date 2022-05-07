@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using static GameEstate.Estate;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Red.Formats
 {

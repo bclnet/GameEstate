@@ -1376,14 +1376,14 @@ namespace System
         /// <param name="binaryReader"></param>
         /// <param name="byteLength">Size of the Length representation</param>
         /// <returns></returns>
-        public static String ReadPString(this BinaryReader binaryReader, StringSizeEnum byteLength = StringSizeEnum.Int32) { return DDRIT.ReadPString(binaryReader, byteLength); }
+        public static String ReadPString_(this BinaryReader binaryReader, StringSizeEnum byteLength = StringSizeEnum.Int32) { return DDRIT.ReadPString(binaryReader, byteLength); }
 
         /// <summary>
         /// Read a NULL-Terminated string from the stream
         /// </summary>
         /// <param name="binaryReader"></param>
         /// <returns></returns>
-        public static String ReadCString(this BinaryReader binaryReader) { return DDRIT.ReadCString(binaryReader); }
+        public static String ReadCString_(this BinaryReader binaryReader) { return DDRIT.ReadCString(binaryReader); }
 
         /// <summary>
         /// Read a Fixed-Length string from the stream
@@ -1391,9 +1391,9 @@ namespace System
         /// <param name="binaryReader"></param>
         /// <param name="stringLength">Size of the String</param>
         /// <returns></returns>
-        public static String ReadFString(this BinaryReader binaryReader, Int32 stringLength) { return DDRIT.ReadFString(binaryReader, stringLength); }
+        public static String ReadFString_(this BinaryReader binaryReader, Int32 stringLength) { return DDRIT.ReadFString(binaryReader, stringLength); }
 
-        public static Byte[] ReadAllBytes(this Stream stream) { return DDRIT.ReadAllBytes(stream); }
+        public static Byte[] ReadAllBytes_(this Stream stream) { return DDRIT.ReadAllBytes(stream); }
 
         /// <summary>
         /// Converts a string into a target type.

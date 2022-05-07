@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Tes.Formats.Records
 {

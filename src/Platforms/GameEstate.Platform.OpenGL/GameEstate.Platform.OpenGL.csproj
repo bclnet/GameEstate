@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameEstate\GameEstate.csproj" />
-    <ProjectReference Include="..\..\OpenStack\OpenStack.Graphics.OpenGL\OpenStack.Graphics.OpenGL.csproj" />
+    <ProjectReference Include="..\..\OpenStack\Graphics\OpenStack.Graphics.OpenGL\OpenStack.Graphics.OpenGL.csproj" />
   </ItemGroup>
 
 </Project>

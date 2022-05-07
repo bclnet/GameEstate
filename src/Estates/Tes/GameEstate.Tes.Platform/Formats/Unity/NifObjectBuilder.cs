@@ -3,7 +3,7 @@ using OpenStack.Graphics;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Tes.Formats.Unity
 {

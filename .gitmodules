@@ -10,3 +10,6 @@
 [submodule "src/GameSpecs"]
 	path = src/GameSpecs
 	url = git@github.com:bclnet/GameSpecs.git
+[submodule "src/OpenStack"]
+	path = src/OpenStack
+	url = git@github.com:bclnet/OpenStack.git

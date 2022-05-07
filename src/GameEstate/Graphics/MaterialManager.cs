@@ -2,7 +2,7 @@ using OpenStack.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Graphics
 {
@@ -27,11 +27,7 @@ namespace GameEstate.Graphics
 
         public Material LoadMaterial(object key, out IDictionary<string, object> data)
         {
-            if (_cachedMaterials.TryGetValue(key, out var cache))
-            {
-                data = cache.data;
-                return cache.material;
-            }
+            if (_cachedMaterials.TryGetValue(key, out var cache)) { data = cache.data; return cache.material; }
             // Load & cache the material.
             var info = key is IMaterialInfo z ? z : LoadMaterialInfo(key);
             var material = info != null ? _builder.BuildMaterial(info) : _builder.DefaultMaterial;

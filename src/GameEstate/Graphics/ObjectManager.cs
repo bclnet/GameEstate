@@ -1,7 +1,7 @@
 ﻿using OpenStack.Graphics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Graphics
 {

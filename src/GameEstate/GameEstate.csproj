@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenStack\OpenStack.Graphics\OpenStack.Graphics.csproj" />
+    <ProjectReference Include="..\OpenStack\Graphics\OpenStack.Graphics\OpenStack.Graphics.csproj" />
   </ItemGroup>
 
 </Project>

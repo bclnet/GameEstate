@@ -120,7 +120,7 @@ namespace GameEstate.Formats
                 try
                 {
                     await source.PakBinary.WriteAsync(source, w, PakBinary.WriteStage.File);
-                    using (var r = File.Open(newPath, FileMode.Open, FileAccess.Read, FileShare.Read)) await source.WriteFileDataAsync(w, file, new MemoryStream(r.ReadAllBytes()), option, exception);
+                    using (var s = File.Open(newPath, FileMode.Open, FileAccess.Read, FileShare.Read)) await source.WriteFileDataAsync(w, file, s, option, exception);
                     advance?.Invoke(file, index);
                 }
                 catch (Exception e) { exception?.Invoke(file, $"Exception: {e.Message}"); }

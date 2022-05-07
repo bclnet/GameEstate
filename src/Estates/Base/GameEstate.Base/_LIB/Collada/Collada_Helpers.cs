@@ -1,5 +1,5 @@
 using System;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace grendgine_collada
 {

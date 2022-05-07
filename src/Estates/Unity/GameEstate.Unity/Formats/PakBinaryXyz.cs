@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using static GameEstate.Estate;
-using static GameEstate.Debug;
+using static OpenStack.Debug;
 
 namespace GameEstate.Unity.Formats
 {
