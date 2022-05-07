@@ -8,9 +8,9 @@
             {
                 EstatePlatform.Platform = "Unreal";
                 EstatePlatform.GraphicFactory = source => new UnrealGraphic(source);
-                EstateDebug.AssertFunc = x => System.Diagnostics.Debug.Assert(x);
-                EstateDebug.LogFunc = a => System.Diagnostics.Debug.Print(a);
-                EstateDebug.LogFormatFunc = (a, b) => System.Diagnostics.Debug.Print(a, b);
+                Debug.AssertFunc = x => System.Diagnostics.Debug.Assert(x);
+                Debug.LogFunc = a => System.Diagnostics.Debug.Print(a);
+                Debug.LogFormatFunc = (a, b) => System.Diagnostics.Debug.Print(a, b);
                 return true;
             }
             catch { return false; }

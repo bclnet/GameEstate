@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static GameEstate.Estate;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Cry.Formats
 {

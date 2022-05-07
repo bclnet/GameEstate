@@ -1,4 +1,4 @@
-﻿using static GameEstate.EstateDebug;
+﻿using static GameEstate.Debug;
 
 namespace GameEstate.Cry.Formats.Core.Chunks
 {

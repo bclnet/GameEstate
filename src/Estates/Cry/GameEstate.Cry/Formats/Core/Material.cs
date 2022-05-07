@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Cry.Formats.Core
 {

@@ -24,9 +24,9 @@ namespace GameEstate
             foreach (var startup in EstatePlatform.Startups) if (startup()) return;
             EstatePlatform.Platform = EstatePlatform.PlatformUnknown;
             EstatePlatform.GraphicFactory = source => null; // throw new Exception("No GraphicFactory");
-            EstateDebug.AssertFunc = x => System.Diagnostics.Debug.Assert(x);
-            EstateDebug.LogFunc = a => System.Diagnostics.Debug.Print(a);
-            EstateDebug.LogFormatFunc = (a, b) => System.Diagnostics.Debug.Print(a, b);
+            Debug.AssertFunc = x => System.Diagnostics.Debug.Assert(x);
+            Debug.LogFunc = a => System.Diagnostics.Debug.Print(a);
+            Debug.LogFormatFunc = (a, b) => System.Diagnostics.Debug.Print(a, b);
         }
 
         protected internal Estate() { }

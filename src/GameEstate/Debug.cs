@@ -3,11 +3,11 @@
 namespace GameEstate
 {
     /// <summary>
-    /// EstateDebug
+    /// Debug
     /// </summary>
-    public class EstateDebug
+    public class Debug
     {
-        static EstateDebug() => Estate.Bootstrap();
+        static Debug() => Estate.Bootstrap();
 
         public static Action<bool> AssertFunc;
         public static Action<string> LogFunc;

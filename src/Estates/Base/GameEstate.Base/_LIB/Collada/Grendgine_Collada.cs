@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace grendgine_collada
 {

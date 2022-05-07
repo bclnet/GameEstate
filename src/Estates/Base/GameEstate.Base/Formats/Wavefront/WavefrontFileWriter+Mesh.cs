@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Formats.Wavefront
 {

@@ -7,7 +7,7 @@ using GameEstate.Transforms;
 using OpenStack.Graphics;
 using System.IO;
 using System.Threading.Tasks;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Tes
 {

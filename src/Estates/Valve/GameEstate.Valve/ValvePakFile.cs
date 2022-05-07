@@ -6,7 +6,7 @@ using GameEstate.Valve.Formats;
 using GameEstate.Valve.Transforms;
 using System;
 using System.Threading.Tasks;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Valve
 {

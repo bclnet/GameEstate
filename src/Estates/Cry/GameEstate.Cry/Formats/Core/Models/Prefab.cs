@@ -59,7 +59,7 @@ namespace GameEstate.Cry.Formats.Models
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("{0} failed deserialize - {1}", materialfile, ex.Message);
+                System.Diagnostics.Debug.WriteLine("{0} failed deserialize - {1}", materialfile, ex.Message);
             }
 
             return null;

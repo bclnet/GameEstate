@@ -8,7 +8,7 @@ using System.Numerics;
 using System.Text;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Formats.Collada
 {

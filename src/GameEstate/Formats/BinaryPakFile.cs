@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static GameEstate.Estate;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Formats
 {
@@ -130,7 +130,10 @@ namespace GameEstate.Formats
         /// <returns></returns>
         public virtual object GetStringOrBytes(Stream stream, bool dispose = true)
         {
-            var bytes = stream.ReadAllBytes();
+            using var ms = new MemoryStream();
+            stream.Position = 0;
+            stream.CopyTo(ms);
+            var bytes = ms.ToArray();
             if (dispose) stream.Dispose();
             return !bytes.Contains<byte>(0x00)
                 ? (object)GetStringOrBytesEncoding.GetString(bytes)

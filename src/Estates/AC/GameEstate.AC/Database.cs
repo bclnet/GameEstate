@@ -1,7 +1,7 @@
 using GameEstate.AC.Formats.FileTypes;
 using GameEstate.Formats;
 using System.Collections.Concurrent;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.AC
 {

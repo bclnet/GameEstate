@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using static GameEstate.EstateDebug;
+using static GameEstate.Debug;
 
 namespace GameEstate.Tes.Formats.Unity
 {
