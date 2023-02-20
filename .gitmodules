@@ -13,3 +13,6 @@
 [submodule "src/OpenStack"]
 	path = src/OpenStack
 	url = git@github.com:bclnet/OpenStack.git
+[submodule "etc/Unity/UABE"]
+	path = etc/Unity/UABE
+	url = git@github.com:SeriousCache/UABE.git
